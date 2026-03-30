@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import DropZone from "@/components/DropZone";
 
 type Status = "idle" | "processing" | "done" | "error";
@@ -81,12 +81,7 @@ function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
 }
 
 export default function BackgroundRemoverClient() {
-  // Preload model on mount so first run is fast
-  useEffect(() => {
-    import("@imgly/background-removal").then(({ preload }) => {
-      preload({ model: "isnet_quint8" }).catch(() => {/* silent - will load on demand */});
-    }).catch(() => {});
-  }, []);
+  // No preload - model loads on first use
 
   const [items, setItems] = useState<ImageItem[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -124,10 +119,9 @@ export default function BackgroundRemoverClient() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
       const blob = await removeBackground(file, {
-        model: "isnet_quint8",
         output: { format: "image/png", quality: 1 },
         progress: (key: string) => {
-          const label = key.startsWith("fetch") ? "Loading model..." : "Removing background...";
+          const label = key.includes("fetch") || key.includes("load") ? "Loading AI model..." : "Removing background...";
           setItems((prev) => prev.map((i) => i.id === id ? { ...i, progressLabel: label } : i));
         },
       });
