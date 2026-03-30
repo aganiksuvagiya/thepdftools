@@ -4,7 +4,6 @@ const nextConfig = {
   images: {
     remotePatterns: [],
   },
-  transpilePackages: ["upscaler", "@upscalerjs/esrgan-slim"],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -13,19 +12,30 @@ const nextConfig = {
         path: false,
         crypto: false,
       };
-      // Fix onnxruntime-web chunk loading issues
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        "onnxruntime-web": false,
-      };
     }
 
+    // Handle onnxruntime .mjs files
     config.module.rules.push({
       test: /ort\..+\.m?js$/,
       resolve: { fullySpecified: false },
       type: "javascript/auto",
     });
 
+    // Increase chunk size limit for background-removal
+    if (!isServer && config.optimization?.splitChunks) {
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        bgRemoval: {
+          test: /[\\/]node_modules[\\/](@imgly|onnxruntime)/,
+          name: "bg-removal",
+          chunks: "async",
+          priority: 30,
+          reuseExistingChunk: true,
+        },
+      };
+    }
+
+    // Skip terser for onnxruntime files
     if (config.optimization?.minimizer) {
       const terser = config.optimization.minimizer.find(
         (m) => m.constructor.name === "TerserPlugin"
@@ -35,6 +45,7 @@ const nextConfig = {
         terser.options.exclude = /ort\..+\.m?js$/;
       }
     }
+
     return config;
   },
 };

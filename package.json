@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@imgly/background-removal": "^1.7.0",
+    "@imgly/background-removal": "^1.4.5",
     "@upscalerjs/esrgan-slim": "^1.0.0-beta.12",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
