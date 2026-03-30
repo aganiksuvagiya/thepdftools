@@ -117,14 +117,16 @@ export default function BackgroundRemoverClient() {
   const processItem = async (id: string, file: File) => {
     setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "processing", progressLabel: "Starting...", error: "" } : i));
     try {
-      const { removeBackground } = await import("@imgly/background-removal");
-      const blob = await removeBackground(file, {
+      // Load library from CDN to avoid webpack chunk issues
+      const cdnUrl = "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/dist/index.mjs";
+      const bgModule = await import(/* webpackIgnore: true */ cdnUrl);
+      const blob = await bgModule.removeBackground(file, {
         publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/dist/",
         model: "isnet_quint8",
         device: "cpu",
         output: { format: "image/png", quality: 1 },
         progress: (key: string) => {
-          const label = key.includes("fetch") || key.includes("load") ? "Loading AI model (first time may take 30s)..." : "Removing background...";
+          const label = key.includes("fetch") || key.includes("load") ? "Loading AI model (first time ~30s)..." : "Removing background...";
           setItems((prev) => prev.map((i) => i.id === id ? { ...i, progressLabel: label } : i));
         },
       });

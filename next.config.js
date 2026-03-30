@@ -13,13 +13,19 @@ const nextConfig = {
         path: false,
         crypto: false,
       };
+      // Fix onnxruntime-web chunk loading issues
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "onnxruntime-web": false,
+      };
     }
-    // Exclude onnxruntime-web bundles from Terser minification
+
     config.module.rules.push({
       test: /ort\..+\.m?js$/,
       resolve: { fullySpecified: false },
       type: "javascript/auto",
     });
+
     if (config.optimization?.minimizer) {
       const terser = config.optimization.minimizer.find(
         (m) => m.constructor.name === "TerserPlugin"
