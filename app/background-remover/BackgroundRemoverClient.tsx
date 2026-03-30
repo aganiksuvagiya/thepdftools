@@ -119,7 +119,6 @@ export default function BackgroundRemoverClient() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
       const blob = await removeBackground(file, {
-        device: "cpu",
         output: { format: "image/png", quality: 1 },
         progress: (key: string, current: number, total: number) => {
           const pct = total > 0 ? Math.round((current / total) * 100) : 0;
