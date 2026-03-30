@@ -119,6 +119,7 @@ export default function BackgroundRemoverClient() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
       const blob = await removeBackground(file, {
+        publicPath: "https://unpkg.com/@imgly/background-removal@1.7.0/dist/",
         output: { format: "image/png", quality: 1 },
         progress: (key: string) => {
           const label = key.includes("fetch") || key.includes("load") ? "Loading AI model..." : "Removing background...";
