@@ -119,18 +119,21 @@ export default function BackgroundRemoverClient() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
       const blob = await removeBackground(file, {
-        publicPath: "https://unpkg.com/@imgly/background-removal@1.7.0/dist/",
+        publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/dist/",
+        model: "isnet_quint8",
+        device: "cpu",
         output: { format: "image/png", quality: 1 },
         progress: (key: string) => {
-          const label = key.includes("fetch") || key.includes("load") ? "Loading AI model..." : "Removing background...";
+          const label = key.includes("fetch") || key.includes("load") ? "Loading AI model (first time may take 30s)..." : "Removing background...";
           setItems((prev) => prev.map((i) => i.id === id ? { ...i, progressLabel: label } : i));
         },
       });
       const url = URL.createObjectURL(blob);
       setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "done", progressLabel: "", resultUrl: url } : i));
-    } catch (err) {
-      console.error(err);
-      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "error", error: "Processing failed. Try again." } : i));
+    } catch (err: unknown) {
+      console.error("BG Removal Error:", err);
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "error", error: `Failed: ${msg.slice(0, 100)}` } : i));
     }
   };
 
