@@ -24,18 +24,18 @@ export const metadata: Metadata = {
     title: "Free Image Rotate & Flip Tool Online — Rotate Images Instantly",
     description:
       "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically. No upload, no signup — runs in your browser.",
-    url: "https://thepdftools.com/image-rotate",
+    url: "https://thepdftools.site/image-rotate",
     images: [
       {
-        url: "https://thepdftools.com/og-image-rotate.png",
+        url: "https://thepdftools.site/og-image-rotate.png",
         width: 1200,
         height: 630,
-        alt: "Free Image Rotate & Flip Tool - thepdftools.com",
+        alt: "Free Image Rotate & Flip Tool - thepdftools.site",
       },
     ],
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-rotate",
+    canonical: "https://thepdftools.site/image-rotate",
   },
 };
 
@@ -44,7 +44,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Free Image Rotate & Flip Tool",
-    url: "https://thepdftools.com/image-rotate",
+    url: "https://thepdftools.site/image-rotate",
     description:
       "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically.",
     applicationCategory: "MultimediaApplication",

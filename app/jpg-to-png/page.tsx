@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: "Free JPG to PNG Converter Online — Convert JPEG to PNG Instantly",
     description:
       "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser using HTML Canvas. Download your PNG instantly.",
-    url: "https://thepdftools.com/jpg-to-png",
-    images: [{ url: "https://thepdftools.com/og-image.png" }],
+    url: "https://thepdftools.site/jpg-to-png",
+    images: [{ url: "https://thepdftools.site/og-image.png" }],
   },
   alternates: {
-    canonical: "https://thepdftools.com/jpg-to-png",
+    canonical: "https://thepdftools.site/jpg-to-png",
   },
 };
 
@@ -36,7 +36,7 @@ export default function JpgToPngPage() {
       {
         "@type": "WebApplication",
         name: "Free JPG to PNG Converter",
-        url: "https://thepdftools.com/jpg-to-png",
+        url: "https://thepdftools.site/jpg-to-png",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {

@@ -11,7 +11,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const SITE_URL = "https://thepdftools.com";
+const SITE_URL = "https://thepdftools.site";
 
 export const viewport: Viewport = {
   width: "device-width",

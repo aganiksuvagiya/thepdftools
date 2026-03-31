@@ -10,18 +10,18 @@ export const metadata: Metadata = {
     title: "Free Online Tools — Image Compressor, PDF Merge & More",
     description:
       "Free browser-based tools for everyday tasks. Compress images, convert JPG to PNG, merge PDFs, and remove backgrounds — instantly, no signup required.",
-    url: "https://thepdftools.com",
+    url: "https://thepdftools.site",
     images: [
       {
-        url: "https://thepdftools.com/og-home.png",
+        url: "https://thepdftools.site/og-home.png",
         width: 1200,
         height: 630,
-        alt: "thepdftools.com - Free Online Tools",
+        alt: "thepdftools.site - Free Online Tools",
       },
     ],
   },
   alternates: {
-    canonical: "https://thepdftools.com",
+    canonical: "https://thepdftools.site",
   },
 };
 
@@ -30,10 +30,10 @@ const homeJsonLd = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "thepdftools",
-    url: "https://thepdftools.com",
+    url: "https://thepdftools.site",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://thepdftools.com/?q={search_term_string}",
+      target: "https://thepdftools.site/?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   },
@@ -41,8 +41,8 @@ const homeJsonLd = [
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "thepdftools",
-    url: "https://thepdftools.com",
-    logo: "https://thepdftools.com/logo.png",
+    url: "https://thepdftools.site",
+    logo: "https://thepdftools.site/logo.png",
   },
 ];
 

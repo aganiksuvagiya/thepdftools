@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     title: "Free Image to WebP Converter Online — Convert JPG/PNG to WebP",
     description:
       "Convert JPG, PNG, and BMP images to WebP format free online. Smaller file sizes with adjustable quality. Runs entirely in your browser.",
-    url: "https://thepdftools.com/image-to-webp",
+    url: "https://thepdftools.site/image-to-webp",
     images: [
       {
-        url: "https://thepdftools.com/og-image-to-webp.png",
+        url: "https://thepdftools.site/og-image-to-webp.png",
         width: 1200,
         height: 630,
         alt: "Image to WebP Converter - ThePDFTools",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "ThePDFTools",
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-to-webp",
+    canonical: "https://thepdftools.site/image-to-webp",
   },
 };
 
@@ -45,7 +45,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image to WebP Converter Online",
-      "url": "https://thepdftools.com/image-to-webp",
+      "url": "https://thepdftools.site/image-to-webp",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

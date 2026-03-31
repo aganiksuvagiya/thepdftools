@@ -21,10 +21,10 @@ export const metadata: Metadata = {
     title: "Free PNG to JPG Converter Online — Convert PNG to JPEG Instantly",
     description:
       "Convert PNG images to JPG format free online. Adjustable quality, white background for transparency. No upload required — conversion happens in your browser.",
-    url: "https://thepdftools.com/png-to-jpg",
+    url: "https://thepdftools.site/png-to-jpg",
     images: [
       {
-        url: "https://thepdftools.com/og-png-to-jpg.png",
+        url: "https://thepdftools.site/og-png-to-jpg.png",
         width: 1200,
         height: 630,
         alt: "PNG to JPG Converter - ThePDFTools",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "ThePDFTools",
   },
   alternates: {
-    canonical: "https://thepdftools.com/png-to-jpg",
+    canonical: "https://thepdftools.site/png-to-jpg",
   },
 };
 
@@ -44,7 +44,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free PNG to JPG Converter Online",
-      "url": "https://thepdftools.com/png-to-jpg",
+      "url": "https://thepdftools.site/png-to-jpg",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

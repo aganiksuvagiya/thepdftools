@@ -22,11 +22,11 @@ export const metadata: Metadata = {
     title: "Free PDF Merge Tool Online — Combine PDF Files Instantly",
     description:
       "Merge multiple PDF files into one document for free online. No upload, no signup. Drag, reorder, and combine PDFs instantly in your browser using pdf-lib.",
-    url: "https://thepdftools.com/pdf-merge",
-    images: [{ url: "https://thepdftools.com/og-image.png" }],
+    url: "https://thepdftools.site/pdf-merge",
+    images: [{ url: "https://thepdftools.site/og-image.png" }],
   },
   alternates: {
-    canonical: "https://thepdftools.com/pdf-merge",
+    canonical: "https://thepdftools.site/pdf-merge",
   },
 };
 
@@ -37,7 +37,7 @@ export default function PdfMergePage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Merge Tool",
-        url: "https://thepdftools.com/pdf-merge",
+        url: "https://thepdftools.site/pdf-merge",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {

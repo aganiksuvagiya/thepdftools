@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     title: "Free Image Cropper Online — Crop Images Instantly",
     description:
       "Crop JPG, PNG, and WebP images for free online. Select any region, choose preset aspect ratios, and download instantly. Runs entirely in your browser.",
-    url: "https://thepdftools.com/image-cropper",
+    url: "https://thepdftools.site/image-cropper",
     images: [
       {
-        url: "https://thepdftools.com/og-image-cropper.png",
+        url: "https://thepdftools.site/og-image-cropper.png",
         width: 1200,
         height: 630,
         alt: "Image Cropper - ThePDFTools",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "ThePDFTools",
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-cropper",
+    canonical: "https://thepdftools.site/image-cropper",
   },
 };
 
@@ -46,7 +46,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image Cropper Online",
-      "url": "https://thepdftools.com/image-cropper",
+      "url": "https://thepdftools.site/image-cropper",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

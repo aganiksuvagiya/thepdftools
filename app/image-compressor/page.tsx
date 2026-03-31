@@ -22,11 +22,11 @@ export const metadata: Metadata = {
     title: "Free Image Compressor Online — Reduce Image Size Without Quality Loss",
     description:
       "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality. No upload, no signup — runs in your browser.",
-    url: "https://thepdftools.com/image-compressor",
-    images: [{ url: "https://thepdftools.com/og-image.png" }],
+    url: "https://thepdftools.site/image-compressor",
+    images: [{ url: "https://thepdftools.site/og-image.png" }],
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-compressor",
+    canonical: "https://thepdftools.site/image-compressor",
   },
 };
 
@@ -37,7 +37,7 @@ export default function ImageCompressorPage() {
       {
         "@type": "WebApplication",
         name: "Free Image Compressor",
-        url: "https://thepdftools.com/image-compressor",
+        url: "https://thepdftools.site/image-compressor",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {

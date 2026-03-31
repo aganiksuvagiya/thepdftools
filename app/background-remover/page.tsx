@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: "Free AI Background Remover Online — Remove Image Background Instantly",
     description:
       "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG. No signup, no watermark.",
-    url: "https://thepdftools.com/background-remover",
-    images: [{ url: "https://thepdftools.com/og-image.png" }],
+    url: "https://thepdftools.site/background-remover",
+    images: [{ url: "https://thepdftools.site/og-image.png" }],
   },
   alternates: {
-    canonical: "https://thepdftools.com/background-remover",
+    canonical: "https://thepdftools.site/background-remover",
   },
 };
 
@@ -36,7 +36,7 @@ export default function BackgroundRemoverPage() {
       {
         "@type": "WebApplication",
         name: "Free AI Background Remover",
-        url: "https://thepdftools.com/background-remover",
+        url: "https://thepdftools.site/background-remover",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {

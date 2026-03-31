@@ -22,18 +22,18 @@ export const metadata: Metadata = {
     title: "Free Image Resizer Online — Resize Images to Any Size",
     description:
       "Resize JPG, PNG, and WebP images for free online. Set custom width and height, lock aspect ratio, and download instantly. No upload, no signup — runs in your browser.",
-    url: "https://thepdftools.com/image-resizer",
+    url: "https://thepdftools.site/image-resizer",
     images: [
       {
-        url: "https://thepdftools.com/og-image-resizer.png",
+        url: "https://thepdftools.site/og-image-resizer.png",
         width: 1200,
         height: 630,
-        alt: "Free Image Resizer Tool - thepdftools.com",
+        alt: "Free Image Resizer Tool - thepdftools.site",
       },
     ],
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-resizer",
+    canonical: "https://thepdftools.site/image-resizer",
   },
 };
 
@@ -42,7 +42,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Free Image Resizer Tool",
-    url: "https://thepdftools.com/image-resizer",
+    url: "https://thepdftools.site/image-resizer",
     description:
       "Resize JPG, PNG, and WebP images for free online. Set custom width and height, lock aspect ratio, and download instantly.",
     applicationCategory: "MultimediaApplication",

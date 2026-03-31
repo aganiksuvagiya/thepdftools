@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     title: "Free Image Watermark Tool Online — Add Watermarks Instantly",
     description:
       "Add text watermarks to JPG, PNG, and WebP images for free online. Customize font size, opacity, color, position, and tiling. Runs entirely in your browser.",
-    url: "https://thepdftools.com/image-watermark",
+    url: "https://thepdftools.site/image-watermark",
     images: [
       {
-        url: "https://thepdftools.com/og-image-watermark.png",
+        url: "https://thepdftools.site/og-image-watermark.png",
         width: 1200,
         height: 630,
         alt: "Image Watermark Tool - ThePDFTools",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "ThePDFTools",
   },
   alternates: {
-    canonical: "https://thepdftools.com/image-watermark",
+    canonical: "https://thepdftools.site/image-watermark",
   },
 };
 
@@ -45,7 +45,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image Watermark Tool Online",
-      "url": "https://thepdftools.com/image-watermark",
+      "url": "https://thepdftools.site/image-watermark",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },

@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://thepdftools.com/sitemap.xml",
-    host: "https://thepdftools.com",
+    sitemap: "https://thepdftools.site/sitemap.xml",
+    host: "https://thepdftools.site",
   };
 }
