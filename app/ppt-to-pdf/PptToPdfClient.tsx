@@ -214,7 +214,7 @@ export default function PptToPdfClient() {
 
       setProgress("Finalizing PDF...");
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       const baseName = file.name.replace(/\.[^/.]+$/, "");
 
