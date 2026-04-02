@@ -22,6 +22,7 @@ const moreTools = [
   { href: "/image-upscaler", label: "AI Upscaler" },
   { href: "/pdf-to-image", label: "PDF to Image" },
   { href: "/pdf-split", label: "PDF Split" },
+  { href: "/pdf-to-word", label: "PDF to Word" },
   { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
   { href: "/qr-generator", label: "QR Generator" },
   { href: "/color-picker", label: "Color Picker" },
@@ -34,6 +35,7 @@ const moreTools = [
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [more, setMore] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -77,6 +79,43 @@ export default function Navbar() {
                 {t.label}
               </Link>
             ))}
+
+            {/* More dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setMore(!more)}
+                onBlur={() => setTimeout(() => setMore(false), 150)}
+                className={clsx(
+                  "px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150 flex items-center gap-1",
+                  moreTools.some((t) => t.href === pathname)
+                    ? "bg-brand-600 text-white"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                )}
+              >
+                More
+                <svg className={clsx("h-3 w-3 transition-transform", more && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {more && (
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-gray-200 shadow-lg py-1 z-50">
+                  {moreTools.map((t) => (
+                    <Link
+                      key={t.href}
+                      href={t.href}
+                      className={clsx(
+                        "block px-4 py-2 text-[13px] font-medium transition-colors",
+                        pathname === t.href
+                          ? "bg-brand-50 text-brand-700"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      )}
+                    >
+                      {t.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Mobile toggle */}

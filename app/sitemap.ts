@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/image-upscaler", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-to-image", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-split", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/pdf-to-word", changeFrequency: "weekly", priority: 0.9 },
     { path: "/screenshot-to-pdf", changeFrequency: "weekly", priority: 0.85 },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.85 },
     { path: "/color-picker", changeFrequency: "weekly", priority: 0.8 },
