@@ -103,6 +103,39 @@ export default function ScreenshotToPdfPage() {
         </div>
 
         <ScreenshotToPdfClient />
+
+        {/* SEO Content */}
+        <div className="mt-12 space-y-8">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">How to Convert Screenshots to PDF</h2>
+            <ol className="mt-3 space-y-2 text-sm text-gray-600 list-decimal list-inside">
+              <li>Click the upload area or drag and drop your screenshots and images into the tool.</li>
+              <li>Add multiple images — JPG, PNG, and WebP formats are all supported.</li>
+              <li>Reorder images by dragging them into the desired page sequence.</li>
+              <li>Choose your preferred page size (A4, Letter, or Auto) and orientation.</li>
+              <li>Click &quot;Convert to PDF&quot; and download your finished PDF document.</li>
+            </ol>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Why Use Our Screenshot to PDF Converter?</h2>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Multiple Images</h3><p className="mt-1 text-sm text-gray-500">Upload and combine multiple screenshots and photos into a single, organized PDF document in one session.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Reorder Pages</h3><p className="mt-1 text-sm text-gray-500">Easily drag and rearrange your images before conversion to ensure pages appear in the correct order in your PDF.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Page Size Options</h3><p className="mt-1 text-sm text-gray-500">Choose from A4, US Letter, or Auto page sizes with portrait, landscape, or automatic orientation to fit your needs.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">No Upload Required</h3><p className="mt-1 text-sm text-gray-500">All processing runs locally in your browser. Your images are never sent to a server, ensuring complete privacy.</p></div>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Frequently Asked Questions</h2>
+            <div className="mt-3 space-y-4">
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">How many images can I add?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">There is no fixed limit on the number of images. Processing happens in your browser, so the practical limit depends on your device&apos;s memory. Most users can combine dozens of images without issues.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">What page sizes are available?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">A4, US Letter, and Auto (fit to image) page sizes are supported. You can also choose portrait, landscape, or auto orientation for each conversion.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Can I change the page orientation?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">Yes. You can select portrait, landscape, or auto orientation. Auto orientation will match each page to the dimensions of the corresponding image.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Are WebP images supported?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">Yes. JPG/JPEG, PNG, and WebP formats are all supported. WebP images are automatically converted to PNG before embedding in the PDF for maximum compatibility.</p></details>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 leading-relaxed">Convert screenshots to PDF and images to PDF online for free with our browser-based converter. Combine multiple photos, screenshots, and images into a single PDF document with customizable page sizes and orientation. This free screenshot to PDF tool is perfect for creating photo portfolios, archiving screenshots, compiling receipts, or sharing image collections as a professional PDF. No upload, no signup, no watermark.</p>
+        </div>
       </div>
     </div>
   );

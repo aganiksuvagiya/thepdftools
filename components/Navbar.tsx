@@ -24,6 +24,7 @@ const moreTools = [
   { href: "/pdf-split", label: "PDF Split" },
   { href: "/pdf-to-word", label: "PDF to Word" },
   { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
+  { href: "/ppt-to-pdf", label: "PPT to PDF" },
   { href: "/qr-generator", label: "QR Generator" },
   { href: "/color-picker", label: "Color Picker" },
   { href: "/base64", label: "Base64" },

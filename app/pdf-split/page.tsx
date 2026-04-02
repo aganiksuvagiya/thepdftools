@@ -111,6 +111,39 @@ export default function PdfSplitPage() {
         </div>
 
         <PdfSplitClient />
+
+        {/* SEO Content */}
+        <div className="mt-12 space-y-8">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">How to Split a PDF Online</h2>
+            <ol className="mt-3 space-y-2 text-sm text-gray-600 list-decimal list-inside">
+              <li>Upload your PDF file by clicking the upload area or dragging it in.</li>
+              <li>Choose whether to split into individual pages or specify custom page ranges.</li>
+              <li>Enter custom ranges like &quot;1-3, 5, 7-10&quot; to extract exactly the pages you need.</li>
+              <li>Click the &quot;Split PDF&quot; button to process your document.</li>
+              <li>Download the split pages as separate PDF files instantly.</li>
+            </ol>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Why Use Our PDF Splitter?</h2>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Custom Ranges</h3><p className="mt-1 text-sm text-gray-500">Specify exact page ranges like &quot;1-3, 5, 7-10&quot; to extract only the pages you need from any PDF document.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Individual Pages</h3><p className="mt-1 text-sm text-gray-500">Split your PDF into individual single-page files with one click. Perfect for extracting specific pages from large documents.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">Fast Processing</h3><p className="mt-1 text-sm text-gray-500">Splitting happens instantly in your browser using pdf-lib. No waiting for server uploads or downloads.</p></div>
+              <div className="p-4 rounded-lg bg-gray-50"><h3 className="text-sm font-medium text-gray-900">No Upload Required</h3><p className="mt-1 text-sm text-gray-500">Your files stay on your device. The entire splitting process runs locally in your browser for complete privacy.</p></div>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Frequently Asked Questions</h2>
+            <div className="mt-3 space-y-4">
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Can I split by custom page ranges?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">Yes. You can enter custom ranges like &quot;1-3, 5, 7-10&quot; to extract exactly the pages you need, or split every page into its own PDF file.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Is there a maximum number of pages?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">No hard limit. Processing happens in your browser, so performance depends on your device&apos;s memory. Most PDFs work smoothly regardless of page count.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Does splitting affect the quality?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">No. The split pages retain the exact same quality as the original PDF. Text, images, and formatting are preserved perfectly since pages are extracted without re-encoding.</p></details>
+              <details className="group"><summary className="cursor-pointer text-sm font-medium text-gray-900 hover:text-brand-600 [&::-webkit-details-marker]:hidden flex justify-between items-center">Can I split password-protected PDFs?<svg className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg></summary><p className="mt-2 text-sm text-gray-500">Password-protected or encrypted PDFs are not currently supported. You will need to remove the password protection first using another tool before splitting.</p></details>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 leading-relaxed">Use our free online PDF splitter to split PDF files, extract PDF pages, and separate PDF documents into individual pages or custom ranges. This browser-based PDF split tool is ideal for extracting chapters from e-books, separating invoice pages, or pulling specific pages from large reports. No server upload, no registration — just a fast, private, and free PDF page extractor.</p>
+        </div>
       </div>
     </div>
   );
