@@ -197,12 +197,142 @@ const tools = [
       </svg>
     ),
   },
+  {
+    href: "/image-upscaler",
+    title: "AI Image Upscaler",
+    description:
+      "Upscale and enhance images to 2x, 3x, or 4x resolution using high-quality canvas interpolation.",
+    badge: "AI",
+    color: "violet" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/pdf-to-image",
+    title: "PDF to Image",
+    description:
+      "Convert PDF pages to high-quality JPG or PNG images. Extract all pages or select specific ones.",
+    badge: "New",
+    color: "rose" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/pdf-split",
+    title: "PDF Split",
+    description:
+      "Split PDF files into individual pages or custom ranges. Extract specific pages from large documents.",
+    badge: "New",
+    color: "violet" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/screenshot-to-pdf",
+    title: "Screenshot to PDF",
+    description:
+      "Convert multiple screenshots or images into a single PDF document. Reorder and customize layout.",
+    badge: "New",
+    color: "blue" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/qr-generator",
+    title: "QR Code Generator",
+    description:
+      "Generate QR codes for URLs, text, or any data. Customize size, colors, and download instantly.",
+    badge: "Popular",
+    color: "indigo" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zm0 9.75c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zm9.75-9.75c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/color-picker",
+    title: "Color Picker",
+    description:
+      "Pick colors and convert between HEX, RGB, HSL, and CMYK formats. Copy values instantly.",
+    badge: "Fast",
+    color: "pink" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125V4.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/base64",
+    title: "Base64 Encoder",
+    description:
+      "Encode text to Base64 or decode Base64 back to text. Supports Unicode characters.",
+    badge: "Dev",
+    color: "teal" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/word-counter",
+    title: "Word Counter",
+    description:
+      "Count words, characters, sentences, and paragraphs. Estimate reading and speaking time.",
+    badge: "Fast",
+    color: "emerald" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+      </svg>
+    ),
+  },
+  {
+    href: "/json-formatter",
+    title: "JSON Formatter",
+    description:
+      "Format, minify, and validate JSON data. View stats and find errors with position info.",
+    badge: "Dev",
+    color: "amber" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/lorem-ipsum",
+    title: "Lorem Ipsum Generator",
+    description:
+      "Generate placeholder text in paragraphs, sentences, or words. Customizable output.",
+    badge: "Fast",
+    color: "purple" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),
+  },
 ];
 
 const stats = [
   { value: "100%", label: "Free forever" },
   { value: "0 MB", label: "Data uploaded" },
-  { value: "10+", label: "Tools available" },
+  { value: "20+", label: "Tools available" },
   { value: "<1s", label: "Processing time" },
 ];
 

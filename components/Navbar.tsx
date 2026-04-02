@@ -7,15 +7,28 @@ import clsx from "clsx";
 
 const tools = [
   { href: "/image-compressor", label: "Compress" },
-  { href: "/jpg-to-png", label: "JPG to PNG" },
-  { href: "/png-to-jpg", label: "PNG to JPG" },
+  { href: "/jpg-to-png", label: "JPG→PNG" },
+  { href: "/png-to-jpg", label: "PNG→JPG" },
   { href: "/image-to-webp", label: "WebP" },
   { href: "/image-cropper", label: "Crop" },
-  { href: "/image-watermark", label: "Watermark" },
-  { href: "/image-rotate", label: "Rotate" },
   { href: "/image-resizer", label: "Resize" },
   { href: "/pdf-merge", label: "PDF Merge" },
   { href: "/background-remover", label: "BG Remove" },
+];
+
+const moreTools = [
+  { href: "/image-rotate", label: "Rotate & Flip" },
+  { href: "/image-watermark", label: "Watermark" },
+  { href: "/image-upscaler", label: "AI Upscaler" },
+  { href: "/pdf-to-image", label: "PDF to Image" },
+  { href: "/pdf-split", label: "PDF Split" },
+  { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
+  { href: "/qr-generator", label: "QR Generator" },
+  { href: "/color-picker", label: "Color Picker" },
+  { href: "/base64", label: "Base64" },
+  { href: "/word-counter", label: "Word Counter" },
+  { href: "/json-formatter", label: "JSON Formatter" },
+  { href: "/lorem-ipsum", label: "Lorem Ipsum" },
 ];
 
 export default function Navbar() {
@@ -80,9 +93,9 @@ export default function Navbar() {
         </div>
 
         {/* Mobile */}
-        <div className={clsx("lg:hidden overflow-hidden transition-all duration-300", open ? "max-h-96 pb-4" : "max-h-0")}>
+        <div className={clsx("lg:hidden overflow-hidden transition-all duration-300", open ? "max-h-[600px] pb-4" : "max-h-0")}>
           <div className="grid grid-cols-3 gap-1 pt-2">
-            {tools.map((t) => (
+            {[...tools, ...moreTools].map((t) => (
               <Link
                 key={t.href}
                 href={t.href}
