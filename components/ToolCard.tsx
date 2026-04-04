@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import clsx from "clsx";
 import TiltCard from "./TiltCard";
 
 interface ToolCardProps {
@@ -10,6 +11,7 @@ interface ToolCardProps {
   description: string;
   badge?: string;
   color: "blue" | "purple" | "rose" | "emerald" | "violet" | "amber" | "orange" | "teal" | "indigo" | "pink";
+  stretch?: boolean;
 }
 
 const colorMap: Record<string, string> = {
@@ -32,12 +34,16 @@ export default function ToolCard({
   description,
   badge,
   color,
+  stretch = true,
 }: ToolCardProps) {
   return (
-    <TiltCard>
+    <TiltCard className="h-full"> 
       <Link
         href={href}
-        className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-6 h-full shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-brand-100/40 hover:border-brand-100"
+        className={clsx(
+          "group flex flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-brand-100 hover:shadow-lg hover:shadow-brand-100/40",
+          stretch && "h-full"
+        )}
       >
         <div className="flex items-start justify-between">
           <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${colorMap[color]} transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
@@ -53,7 +59,7 @@ export default function ToolCard({
         <h3 className="mt-4 text-[15px] font-semibold text-gray-900 group-hover:text-brand-700 transition-colors duration-200">
           {title}
         </h3>
-        <p className="mt-1.5 text-[13px] text-gray-400 leading-relaxed flex-1">
+        <p className={clsx("mt-1.5 text-[13px] leading-relaxed text-gray-400", stretch && "flex-1")}>
           {description}
         </p>
 

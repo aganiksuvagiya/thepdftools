@@ -79,7 +79,7 @@ export default function ImageCompressorClient() {
       : null;
 
   return (
-    <div className="card space-y-6">
+    <div className="space-y-6 rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <DropZone
         onFilesAccepted={handleFiles}
         accept={{ "image/*": [".jpg", ".jpeg", ".png", ".webp"] }}

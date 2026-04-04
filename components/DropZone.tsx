@@ -11,6 +11,10 @@ interface DropZoneProps {
   label?: string;
   sublabel?: string;
   disabled?: boolean;
+  className?: string;
+  iconClassName?: string;
+  labelClassName?: string;
+  sublabelClassName?: string;
 }
 
 export default function DropZone({
@@ -20,6 +24,10 @@ export default function DropZone({
   label = "Drop your file here",
   sublabel = "or click to browse",
   disabled = false,
+  className,
+  iconClassName,
+  labelClassName,
+  sublabelClassName,
 }: DropZoneProps) {
   const [ripple, setRipple] = useState(false);
 
@@ -46,7 +54,8 @@ export default function DropZone({
         isDragReject && "border-red-400 bg-red-50",
         !isDragActive && !isDragReject && "border-gray-200 bg-gray-50/50 hover:border-gray-300 hover:bg-gray-50",
         disabled && "cursor-not-allowed opacity-50",
-        ripple && "animate-[pulse_0.5s_ease-out]"
+        ripple && "animate-[pulse_0.5s_ease-out]",
+        className
       )}
     >
       <input {...getInputProps()} />
@@ -56,7 +65,8 @@ export default function DropZone({
           "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300",
           isDragActive && !isDragReject && "bg-brand-100 scale-110",
           isDragReject && "bg-red-100",
-          !isDragActive && !isDragReject && "bg-white shadow-sm group-hover:shadow group-hover:scale-105"
+          !isDragActive && !isDragReject && "bg-white shadow-sm group-hover:shadow group-hover:scale-105",
+          iconClassName
         )}
       >
         {isDragReject ? (
@@ -83,12 +93,13 @@ export default function DropZone({
         "mt-4 text-sm font-semibold",
         isDragActive && !isDragReject && "text-brand-700",
         isDragReject && "text-red-600",
-        !isDragActive && !isDragReject && "text-gray-600"
+        !isDragActive && !isDragReject && "text-gray-600",
+        labelClassName
       )}>
         {isDragReject ? "File type not supported" : isDragActive ? "Release to upload" : label}
       </p>
       {!isDragActive && (
-        <p className="mt-1 text-xs text-gray-400">{sublabel}</p>
+        <p className={clsx("mt-1 text-xs text-gray-400", sublabelClassName)}>{sublabel}</p>
       )}
     </div>
   );

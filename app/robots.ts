@@ -6,15 +6,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/"],
-      },
-      {
-        userAgent: "Googlebot",
-        allow: "/",
-      },
-      {
-        userAgent: "Bingbot",
-        allow: "/",
+        disallow: [
+          "/api/",
+          "/_next/",
+          "/admin/",
+          "/private/",
+        ],
       },
     ],
     sitemap: "https://thepdftools.site/sitemap.xml",

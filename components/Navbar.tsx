@@ -2,153 +2,306 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
-const tools = [
+const primaryLinks = [
   { href: "/image-compressor", label: "Compress" },
-  { href: "/jpg-to-png", label: "JPG→PNG" },
-  { href: "/png-to-jpg", label: "PNG→JPG" },
-  { href: "/image-to-webp", label: "WebP" },
-  { href: "/image-cropper", label: "Crop" },
-  { href: "/image-resizer", label: "Resize" },
-  { href: "/pdf-merge", label: "PDF Merge" },
   { href: "/background-remover", label: "BG Remove" },
+  { href: "/image-resizer", label: "Resize" },
+  { href: "/jpg-to-png", label: "JPG to PNG" },
+  { href: "/pdf-merge", label: "PDF Merge" },
 ];
 
-const moreTools = [
-  { href: "/image-rotate", label: "Rotate & Flip" },
-  { href: "/image-watermark", label: "Watermark" },
-  { href: "/image-upscaler", label: "AI Upscaler" },
-  { href: "/pdf-to-image", label: "PDF to Image" },
-  { href: "/pdf-split", label: "PDF Split" },
-  { href: "/pdf-to-word", label: "PDF to Word" },
-  { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
-  { href: "/ppt-to-pdf", label: "PPT to PDF" },
-  { href: "/qr-generator", label: "QR Generator" },
-  { href: "/color-picker", label: "Color Picker" },
-  { href: "/base64", label: "Base64" },
-  { href: "/word-counter", label: "Word Counter" },
-  { href: "/json-formatter", label: "JSON Formatter" },
-  { href: "/lorem-ipsum", label: "Lorem Ipsum" },
+const categories = [
+  {
+    label: "Image Tools",
+    items: [
+      { href: "/image-compressor", label: "Image Compressor" },
+      { href: "/image-resizer", label: "Image Resizer" },
+      { href: "/image-cropper", label: "Image Cropper" },
+      { href: "/jpg-to-png", label: "JPG to PNG" },
+      { href: "/png-to-jpg", label: "PNG to JPG" },
+      { href: "/image-to-webp", label: "Image to WebP" },
+      { href: "/background-remover", label: "Background Remover" },
+      { href: "/image-upscaler", label: "AI Upscaler" },
+      { href: "/image-watermark", label: "Image Watermark" },
+      { href: "/image-rotate", label: "Rotate & Flip" },
+    ],
+  },
+  {
+    label: "PDF Tools",
+    items: [
+      { href: "/pdf-merge", label: "PDF Merge" },
+      { href: "/pdf-split", label: "PDF Split" },
+      { href: "/pdf-to-image", label: "PDF to Image" },
+      { href: "/pdf-to-word", label: "PDF to Word" },
+      { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
+      { href: "/ppt-to-pdf", label: "PPT to PDF" },
+      { href: "/word-to-pdf", label: "Word to PDF" },
+    ],
+  },
+  {
+    label: "Utilities",
+    items: [
+      { href: "/qr-generator", label: "QR Generator" },
+      { href: "/color-picker", label: "Color Picker" },
+      { href: "/base64", label: "Base64" },
+      { href: "/word-counter", label: "Word Counter" },
+      { href: "/json-formatter", label: "JSON Formatter" },
+      { href: "/lorem-ipsum", label: "Lorem Ipsum" },
+    ],
+  },
 ];
+
+function hasActivePath(pathname: string, hrefs: string[]) {
+  return hrefs.includes(pathname);
+}
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [more, setMore] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", fn, { passive: true });
-    fn();
-    return () => window.removeEventListener("scroll", fn);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close menus on route change
+  useEffect(() => {
+    setMobileOpen(false);
+    setCategoriesOpen(false);
+  }, [pathname]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!categoriesOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setCategoriesOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [categoriesOpen]);
+
+  // Lock body scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const categoryHrefs = categories.flatMap((c) => c.items.map((i) => i.href));
 
   return (
     <header
       className={clsx(
         "sticky top-0 z-50 transition-all duration-300",
-        scrolled ? "glass-nav border-b border-gray-200/50 shadow-sm" : "bg-white/0"
+        scrolled
+          ? "glass-nav border-b border-slate-200/80 shadow-sm"
+          : "bg-transparent"
       )}
     >
-      <div className="mx-auto max-w-6xl px-5">
-        <div className="flex h-14 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="h-8 w-8 rounded-lg bg-brand-600 flex items-center justify-center transition-transform duration-200 group-hover:scale-105 group-active:scale-95">
-              <span className="text-white text-sm font-black">P</span>
+      <div className="mx-auto max-w-6xl px-4 sm:px-5">
+        <div className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
+          {/* Logo */}
+          <Link href="/" className="group flex items-center gap-2.5 sm:gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 via-secondary-600 to-tertiary-500 shadow-[0_12px_28px_-16px_rgba(79,70,229,0.65)] transition-transform duration-200 group-hover:scale-105 sm:h-9 sm:w-9">
+              <span className="text-xs font-black text-white sm:text-sm">P</span>
             </div>
-            <span className="text-[15px] font-bold text-gray-900 hidden sm:block">
-              thepdftools
-            </span>
+            <div className="hidden sm:block">
+              <div className="text-[15px] font-bold tracking-tight text-slate-900">
+                thepdftools
+              </div>
+              <div className="text-[11px] font-medium text-slate-400">
+                Browser-based image and PDF tools
+              </div>
+            </div>
           </Link>
 
-          {/* Desktop */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {tools.map((t) => (
+          {/* Desktop nav — single nav, responsive link visibility */}
+          <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white/80 p-1 shadow-sm backdrop-blur lg:flex">
+            {primaryLinks.map((link, idx) => (
               <Link
-                key={t.href}
-                href={t.href}
+                key={link.href}
+                href={link.href}
                 className={clsx(
-                  "px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150",
-                  pathname === t.href
-                    ? "bg-brand-600 text-white"
-                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                  "whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium transition-all duration-150 xl:px-3.5",
+                  // Hide 4th and 5th link on lg, show on xl
+                  idx >= 3 && "hidden xl:block",
+                  pathname === link.href
+                    ? "bg-brand-600 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 )}
               >
-                {t.label}
+                {link.label}
               </Link>
             ))}
 
-            {/* More dropdown */}
-            <div className="relative">
+            {/* Categories / All Tools dropdown */}
+            <div className="relative" ref={dropdownRef}>
               <button
-                onClick={() => setMore(!more)}
-                onBlur={() => setTimeout(() => setMore(false), 150)}
+                onClick={() => setCategoriesOpen((v) => !v)}
                 className={clsx(
-                  "px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150 flex items-center gap-1",
-                  moreTools.some((t) => t.href === pathname)
-                    ? "bg-brand-600 text-white"
-                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                  "flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium transition-all duration-150 xl:px-3.5",
+                  hasActivePath(pathname, categoryHrefs) &&
+                    !hasActivePath(
+                      pathname,
+                      primaryLinks.map((l) => l.href)
+                    )
+                    ? "bg-brand-600 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 )}
               >
-                More
-                <svg className={clsx("h-3 w-3 transition-transform", more && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                <span className="xl:hidden">All Tools</span>
+                <span className="hidden xl:inline">Categories</span>
+                <svg
+                  className={clsx(
+                    "h-3.5 w-3.5 transition-transform",
+                    categoriesOpen && "rotate-180"
+                  )}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
-              {more && (
-                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-gray-200 shadow-lg py-1 z-50">
-                  {moreTools.map((t) => (
-                    <Link
-                      key={t.href}
-                      href={t.href}
-                      className={clsx(
-                        "block px-4 py-2 text-[13px] font-medium transition-colors",
-                        pathname === t.href
-                          ? "bg-brand-50 text-brand-700"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      )}
-                    >
-                      {t.label}
-                    </Link>
-                  ))}
+
+              {categoriesOpen && (
+                <div className="absolute right-0 mt-3 w-[min(680px,calc(100vw-2rem))] rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.25)] sm:p-5">
+                  <div className="grid grid-cols-3 gap-4 sm:gap-5">
+                    {categories.map((category) => (
+                      <div key={category.label}>
+                        <div className="px-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          {category.label}
+                        </div>
+                        <div className="mt-2 space-y-1">
+                          {category.items.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              onClick={() => setCategoriesOpen(false)}
+                              className={clsx(
+                                "block rounded-xl px-2.5 py-2 text-[13px] font-medium transition-colors sm:px-3 sm:py-2.5",
+                                pathname === item.href
+                                  ? "bg-brand-50 text-brand-700"
+                                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                              )}
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
           </nav>
 
-          {/* Mobile toggle */}
+          {/* Hamburger — below lg */}
           <button
-            onClick={() => setOpen(!open)}
-            className="lg:hidden h-8 w-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => setMobileOpen((v) => !v)}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-colors hover:bg-slate-50 sm:h-10 sm:w-10 lg:hidden"
             aria-label="Menu"
           >
             <div className="space-y-1">
-              <span className={clsx("block h-0.5 w-4 bg-gray-600 rounded transition-all duration-200", open && "rotate-45 translate-y-[3px]")} />
-              <span className={clsx("block h-0.5 w-4 bg-gray-600 rounded transition-all duration-200", open && "-rotate-45 -translate-y-[3px]")} />
+              <span
+                className={clsx(
+                  "block h-0.5 w-4 rounded bg-current transition-all duration-200",
+                  mobileOpen && "translate-y-[3px] rotate-45"
+                )}
+              />
+              <span
+                className={clsx(
+                  "block h-0.5 w-4 rounded bg-current transition-all duration-200",
+                  mobileOpen && "-translate-y-[3px] -rotate-45"
+                )}
+              />
             </div>
           </button>
         </div>
+      </div>
 
-        {/* Mobile */}
-        <div className={clsx("lg:hidden overflow-hidden transition-all duration-300", open ? "max-h-[600px] pb-4" : "max-h-0")}>
-          <div className="grid grid-cols-3 gap-1 pt-2">
-            {[...tools, ...moreTools].map((t) => (
-              <Link
-                key={t.href}
-                href={t.href}
-                onClick={() => setOpen(false)}
-                className={clsx(
-                  "px-3 py-2.5 rounded-lg text-[13px] font-medium text-center transition-all duration-150",
-                  pathname === t.href
-                    ? "bg-brand-600 text-white"
-                    : "text-gray-500 hover:bg-gray-100"
-                )}
-              >
-                {t.label}
-              </Link>
+      {/* Mobile menu overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 top-14 z-40 bg-black/20 backdrop-blur-sm sm:top-16 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* Mobile menu */}
+      <div
+        className={clsx(
+          "fixed inset-x-0 top-14 z-50 overflow-y-auto transition-all duration-300 sm:top-16 lg:hidden",
+          mobileOpen
+            ? "max-h-[calc(100dvh-3.5rem)] opacity-100 sm:max-h-[calc(100dvh-4rem)]"
+            : "pointer-events-none max-h-0 opacity-0"
+        )}
+      >
+        <div className="mx-auto max-w-6xl px-4 pb-4 sm:px-5">
+          <div className="space-y-3 rounded-[1.25rem] border border-slate-200 bg-white p-3 shadow-lg sm:space-y-4 sm:rounded-[1.5rem] sm:p-4">
+            {/* Quick Links */}
+            <div>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Quick Links
+              </div>
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                {primaryLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={clsx(
+                      "rounded-xl px-2.5 py-2 text-center text-[12px] font-medium transition-colors sm:px-3 sm:py-2.5 sm:text-[13px]",
+                      pathname === link.href
+                        ? "bg-brand-600 text-white"
+                        : "bg-slate-50 text-slate-600 hover:bg-slate-100"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Category sections */}
+            {categories.map((category) => (
+              <div key={category.label}>
+                <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  {category.label}
+                </div>
+                <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2">
+                  {category.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={clsx(
+                        "rounded-xl px-2.5 py-2 text-[12px] font-medium transition-colors sm:px-3 sm:py-2.5 sm:text-[13px]",
+                        pathname === item.href
+                          ? "bg-brand-600 text-white"
+                          : "bg-slate-50 text-slate-600 hover:bg-slate-100"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
