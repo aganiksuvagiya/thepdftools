@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const allTools = [
   { href: "/image-compressor", label: "Image Compressor" },
@@ -20,13 +21,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-brand-600 via-secondary-600 to-tertiary-500 shadow-[0_12px_28px_-16px_rgba(79,70,229,0.65)]">
-                <span className="text-white text-xs font-black">P</span>
-              </div>
-              <span className="text-sm font-bold text-slate-900">thepdftools</span>
+            <Link href="/" className="inline-flex items-center gap-1.5">
+              <Image src="/logo.svg" alt="thepdf" width={80} height={30} className="h-7 w-auto" priority />
+              <span className="text-sm font-bold text-slate-900"></span>
             </Link>
-            <p className="mt-3 max-w-[200px] text-[13px] leading-relaxed text-slate-500">
+            <p className="mt-1 max-w-[200px] text-[13px] leading-relaxed text-slate-500">
               Free browser-based tools. Your files never leave your device.
             </p>
           </div>

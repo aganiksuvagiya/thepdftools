@@ -73,6 +73,10 @@ export const metadata: Metadata = {
     "client side image processing",
     "client side pdf processing",
   ],
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
   authors: [{ name: "thepdftools", url: SITE_URL }],
   creator: "thepdftools",
   publisher: "thepdftools",
@@ -135,7 +139,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <head>
+      <body className="flex min-h-screen flex-col">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-NWTNKWJ1JF"
           strategy="afterInteractive"
@@ -148,8 +152,6 @@ export default function RootLayout({
             gtag('config', 'G-NWTNKWJ1JF');
           `}
         </Script>
-      </head>
-      <body className="flex min-h-screen flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

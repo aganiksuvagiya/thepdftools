@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
@@ -112,18 +113,9 @@ export default function Navbar() {
       <div className="mx-auto max-w-6xl px-4 sm:px-5">
         <div className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
           {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2.5 sm:gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 via-secondary-600 to-tertiary-500 shadow-[0_12px_28px_-16px_rgba(79,70,229,0.65)] transition-transform duration-200 group-hover:scale-105 sm:h-9 sm:w-9">
-              <span className="text-xs font-black text-white sm:text-sm">P</span>
-            </div>
-            <div className="hidden sm:block">
-              <div className="text-[15px] font-bold tracking-tight text-slate-900">
-                thepdftools
-              </div>
-              <div className="text-[11px] font-medium text-slate-400">
-                Browser-based image and PDF tools
-              </div>
-            </div>
+          <Link href="/" className="group flex items-center gap-2.5 transition-opacity hover:opacity-80 sm:gap-3">
+            <Image src="/logo.svg" alt="thepdf" width={80} height={30} className="h-7 w-auto" priority />
+            <span className="text-[15px] font-bold tracking-tight text-slate-900"></span>
           </Link>
 
           {/* Desktop nav — single nav, responsive link visibility */}
