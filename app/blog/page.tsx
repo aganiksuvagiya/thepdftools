@@ -101,16 +101,29 @@ export default function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
-            Blog
-          </h1>
-          <p className="mt-4 text-base leading-8 text-slate-600 sm:text-lg">
-            Tips, guides, and tutorials to help you get the most out of your
-            images and PDFs.
-          </p>
+        {/* Hero */}
+        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
+          <div className="relative px-6 py-10 sm:px-10 sm:py-14">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                Tips &amp; Tutorials
+              </div>
+              <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
+                Blog
+                <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
+                  Guides &amp; Tutorials
+                </span>
+              </h1>
+              <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
+                Learn how to compress images, convert formats, merge PDFs, and optimize for the web. Free tips and step-by-step guides.
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* Posts Grid */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link
@@ -122,13 +135,13 @@ export default function BlogPage() {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700"
+                    className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
-              <h2 className="mt-4 text-lg font-bold text-slate-900 group-hover:text-brand-700 transition-colors">
+              <h2 className="mt-4 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
                 {post.title}
               </h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -136,8 +149,12 @@ export default function BlogPage() {
               </p>
               <div className="mt-4 flex items-center gap-3 text-xs text-slate-400">
                 <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-                <span>·</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
                 <span>{post.readTime}</span>
+              </div>
+              <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-brand-600 transition-colors group-hover:text-brand-700">
+                Read more
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
               </div>
             </Link>
           ))}
