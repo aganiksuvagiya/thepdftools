@@ -56,12 +56,12 @@ export default function Footer() {
 
           {/* Info */}
           <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Privacy</h4>
-            <ul className="mt-3 space-y-2 text-[13px] text-slate-500">
-              <li>No signup needed</li>
-              <li>No data collection</li>
-              <li>Works on any device</li>
-              <li>Free forever</li>
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Resources</h4>
+            <ul className="mt-3 space-y-2">
+              <li><Link href="/blog" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Blog</Link></li>
+              <li className="text-[13px] text-slate-500">No signup needed</li>
+              <li className="text-[13px] text-slate-500">No data collection</li>
+              <li className="text-[13px] text-slate-500">Free forever</li>
             </ul>
           </div>
         </div>

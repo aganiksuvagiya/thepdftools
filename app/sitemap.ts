@@ -33,6 +33,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/json-formatter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/word-counter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/lorem-ipsum", changeFrequency: "monthly", priority: 0.72 },
+    { path: "/blog", changeFrequency: "weekly", priority: 0.85 },
+    { path: "/blog/how-to-compress-images-for-web", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/jpg-vs-png-vs-webp-which-format", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/how-to-merge-pdf-files-online", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/remove-image-background-with-ai", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/optimize-images-for-seo", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/convert-word-to-pdf-free", changeFrequency: "monthly", priority: 0.75 },
   ];
 
   return routes.map((route) => ({
