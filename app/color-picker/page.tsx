@@ -31,45 +31,53 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free Color Picker & Converter",
-    url: "https://thepdftools.site/color-picker",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Free Color Picker & Converter",
+      url: "https://thepdftools.site/color-picker",
+      applicationCategory: "UtilityApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description:
+        "Pick any color and convert between HEX, RGB, HSL, and CMYK instantly. Free online color tool.",
     },
-    description:
-      "Pick any color and convert between HEX, RGB, HSL, and CMYK instantly. Free online color tool.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "What color formats are supported?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "HEX, RGB, HSL, and CMYK. You can type in any format and see all others update in real time.",
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "What color formats are supported?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "HEX, RGB, HSL, and CMYK. You can type in any format and see all others update in real time.",
+          },
         },
-      },
-      {
-        "@type": "Question",
-        name: "Can I copy color values?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes! Each color value has a copy button next to it for one-click copying to your clipboard.",
+        {
+          "@type": "Question",
+          name: "Can I copy color values?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes! Each color value has a copy button next to it for one-click copying to your clipboard.",
+          },
         },
-      },
-    ],
-  },
-];
+      ],
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Color Picker", "item": "https://thepdftools.site/color-picker" },
+      ],
+    },
+  ],
+};
 
 export default function ColorPickerPage() {
   return (

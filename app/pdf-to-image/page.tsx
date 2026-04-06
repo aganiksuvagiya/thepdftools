@@ -86,6 +86,13 @@ export default function PdfToImagePage() {
           },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF to Image", "item": "https://thepdftools.site/pdf-to-image" },
+        ],
+      },
     ],
   };
 

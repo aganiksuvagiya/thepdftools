@@ -26,6 +26,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/pdf-to-word", changeFrequency: "weekly", priority: 0.88 },
     { path: "/ppt-to-pdf", changeFrequency: "weekly", priority: 0.84 },
     { path: "/word-to-pdf", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/excel-to-pdf", changeFrequency: "weekly", priority: 0.84 },
+    { path: "/html-to-pdf", changeFrequency: "weekly", priority: 0.84 },
     { path: "/screenshot-to-pdf", changeFrequency: "weekly", priority: 0.84 },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.82 },
     { path: "/color-picker", changeFrequency: "weekly", priority: 0.8 },
@@ -40,6 +42,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/blog/remove-image-background-with-ai", changeFrequency: "monthly", priority: 0.75 },
     { path: "/blog/optimize-images-for-seo", changeFrequency: "monthly", priority: 0.75 },
     { path: "/blog/convert-word-to-pdf-free", changeFrequency: "monthly", priority: 0.75 },
+    { path: "/blog/best-free-online-tools-for-students-2026", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/blog/best-free-pdf-tools-india", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/free-image-tools-for-designers-uk", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/free-online-tools-small-business", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/compress-images-for-website-speed", changeFrequency: "monthly", priority: 0.78 },
   ];
 
   return routes.map((route) => ({

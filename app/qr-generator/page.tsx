@@ -31,45 +31,53 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free QR Code Generator",
-    url: "https://thepdftools.site/qr-generator",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Free QR Code Generator",
+      url: "https://thepdftools.site/qr-generator",
+      applicationCategory: "UtilityApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description:
+        "Generate QR codes for any text or URL for free online. Customize size, colors, and download instantly.",
     },
-    description:
-      "Generate QR codes for any text or URL for free online. Customize size, colors, and download instantly.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "Is this QR code generator free?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes, it is 100% free. Generate unlimited QR codes with custom colors and sizes without any signup or payment.",
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Is this QR code generator free?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes, it is 100% free. Generate unlimited QR codes with custom colors and sizes without any signup or payment.",
+          },
         },
-      },
-      {
-        "@type": "Question",
-        name: "Can I customize the QR code colors?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes! You can pick any foreground and background color using the built-in color pickers to match your brand or design.",
+        {
+          "@type": "Question",
+          name: "Can I customize the QR code colors?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes! You can pick any foreground and background color using the built-in color pickers to match your brand or design.",
+          },
         },
-      },
-    ],
-  },
-];
+      ],
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "QR Generator", "item": "https://thepdftools.site/qr-generator" },
+      ],
+    },
+  ],
+};
 
 export default function QrGeneratorPage() {
   return (

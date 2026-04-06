@@ -89,6 +89,13 @@ export default function JpgToPngPage() {
           },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "JPG to PNG", "item": "https://thepdftools.site/jpg-to-png" },
+        ],
+      },
     ],
   };
 

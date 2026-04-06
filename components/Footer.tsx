@@ -12,6 +12,9 @@ const allTools = [
   { href: "/image-rotate", label: "Rotate & Flip" },
   { href: "/background-remover", label: "BG Remover" },
   { href: "/pdf-merge", label: "PDF Merge" },
+  { href: "/word-to-pdf", label: "Word to PDF" },
+  { href: "/excel-to-pdf", label: "Excel to PDF" },
+  { href: "/html-to-pdf", label: "HTML to PDF" },
 ];
 
 export default function Footer() {

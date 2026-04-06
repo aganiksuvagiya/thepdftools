@@ -91,6 +91,13 @@ const jsonLd = {
         },
       ],
     },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Cropper", "item": "https://thepdftools.site/image-cropper" },
+      ],
+    },
   ],
 };
 

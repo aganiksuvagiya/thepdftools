@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const inter = Inter({
+const sora = Sora({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-sora",
 });
 
 const SITE_URL = "https://thepdftools.site";
@@ -16,7 +16,7 @@ const SITE_URL = "https://thepdftools.site";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#4f46e5",
+  themeColor: "#0f766e",
 };
 
 export const metadata: Metadata = {
@@ -24,54 +24,27 @@ export const metadata: Metadata = {
   applicationName: "thepdftools",
   title: {
     default: "thepdftools — Free Online Image & PDF Tools | No Upload Required",
-    template: "%s | thepdftools — Free Online Tools",
+    template: "%s | thepdftools",
   },
   description:
-    "10+ free browser-based tools: compress images, convert JPG/PNG/WebP, merge PDFs, crop, resize, rotate, watermark & remove backgrounds. 100% private — files never leave your device.",
+    "Free browser-based tools to compress images, convert files, edit visuals, and work with PDFs. Fast, private, and built to run locally in your browser.",
   keywords: [
     "free online tools",
     "online pdf tools",
     "online image tools",
-    "free image tools",
-    "free pdf tools",
     "image compressor online",
-    "compress image online free",
-    "compress jpg online",
-    "compress png online",
-    "jpg to png converter free",
-    "png to jpg converter",
-    "image to webp converter",
-    "image cropper online",
-    "image watermark tool",
-    "image rotate flip online",
-    "image resizer free",
-    "ai image upscaler",
-    "image upscaler online",
-    "background remover ai",
-    "remove background online free",
+    "background remover online",
     "pdf merge online",
-    "merge pdf free",
-    "split pdf online",
+    "pdf split online",
     "pdf to image converter",
-    "pdf to word converter",
-    "screenshot to pdf",
-    "ppt to pdf converter",
-    "qr code generator free",
-    "json formatter online",
-    "word counter online",
-    "base64 encoder decoder",
-    "color picker from image",
-    "lorem ipsum generator",
-    "compress image without losing quality",
-    "convert image format online",
-    "browser based image tools",
-    "browser based pdf tools",
-    "no upload image editor",
-    "no upload pdf tools",
-    "private image tools",
-    "private pdf tools",
-    "client side image processing",
-    "client side pdf processing",
+    "word to pdf online",
+    "png to jpg converter",
+    "jpg to png converter",
+    "image cropper online",
+    "image resizer online",
+    "image watermark online",
+    "browser based tools",
+    "client side pdf tools",
   ],
   icons: {
     icon: "/icon.svg",
@@ -95,25 +68,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "thepdftools",
-    title: "thepdftools — 10+ Free Online Image & PDF Tools",
+    title: "thepdftools — Free Online Image & PDF Tools",
     description:
-      "Compress, convert, crop, resize, rotate, watermark images & merge PDFs — all free, all private. No upload, no signup. Runs 100% in your browser.",
-    images: [
-      {
-        url: `${SITE_URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: "thepdftools — Free Online Image & PDF Tools",
-        type: "image/png",
-      },
-    ],
+      "Compress, convert, crop, resize, watermark, and merge files in a fast browser-based workspace.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "thepdftools — 10+ Free Online Image & PDF Tools",
+    title: "thepdftools — Free Online Image & PDF Tools",
     description:
-      "Compress, convert, crop, resize, rotate, watermark images & merge PDFs — free & private in your browser.",
-    images: [`${SITE_URL}/og-image.png`],
+      "A cleaner, faster workspace for image tools, PDF tools, and useful browser-based utilities.",
   },
   robots: {
     index: true,
@@ -127,7 +90,7 @@ export const metadata: Metadata = {
     },
   },
   other: {
-    "msapplication-TileColor": "#4f46e5",
+    "msapplication-TileColor": "#0f766e",
     "apple-mobile-web-app-title": "thepdftools",
   },
 };
@@ -138,8 +101,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="flex min-h-screen flex-col">
+    <html lang="en" className={sora.variable}>
+      <body className="min-h-screen bg-[var(--surface)] text-slate-900 antialiased">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-NWTNKWJ1JF"
           strategy="afterInteractive"
@@ -152,9 +115,12 @@ export default function RootLayout({
             gtag('config', 'G-NWTNKWJ1JF');
           `}
         </Script>
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <div className="relative isolate overflow-x-clip">
+          
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

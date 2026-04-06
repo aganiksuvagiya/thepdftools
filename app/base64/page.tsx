@@ -34,18 +34,29 @@ export const metadata: Metadata = {
 export default function Base64Page() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free Base64 Encoder & Decoder",
-    url: "https://thepdftools.site/base64",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    description:
-      "Encode and decode Base64 strings instantly in your browser. No upload, no signup — 100% free and private.",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: "Free Base64 Encoder & Decoder",
+        url: "https://thepdftools.site/base64",
+        applicationCategory: "UtilityApplication",
+        operatingSystem: "Any",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        description:
+          "Encode and decode Base64 strings instantly in your browser. No upload, no signup — 100% free and private.",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Base64 Encoder", "item": "https://thepdftools.site/base64" },
+        ],
+      },
+    ],
   };
 
   return (

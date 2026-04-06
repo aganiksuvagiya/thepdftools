@@ -18,6 +18,51 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "best-free-online-tools-for-students-2026",
+    title: "15 Best Free Online Tools Every Student Needs in 2026",
+    excerpt:
+      "Discover the best free online tools for students worldwide — compress images, merge PDFs, convert files, generate QR codes, and more. No signup, works on any device.",
+    date: "2026-04-07",
+    readTime: "12 min read",
+    tags: ["Productivity", "Students"],
+  },
+  {
+    slug: "best-free-pdf-tools-india",
+    title: "Best Free PDF Tools in India 2026 – No Signup Required",
+    excerpt:
+      "Free PDF and image tools for Indian students, businesses, and professionals. Works on Jio network, mobile friendly, no signup required.",
+    date: "2026-04-05",
+    readTime: "10 min read",
+    tags: ["PDF Tools", "India"],
+  },
+  {
+    slug: "free-image-tools-for-designers-uk",
+    title: "10 Free Image Tools Every UK Designer Needs in 2026",
+    excerpt:
+      "The ultimate list of free online image tools for UK designers. Compress, crop, resize, remove backgrounds, and convert formats without Photoshop.",
+    date: "2026-04-04",
+    readTime: "9 min read",
+    tags: ["Image Tools", "Design"],
+  },
+  {
+    slug: "free-online-tools-small-business",
+    title: "Free Online Tools for Small Businesses – Save Money in 2026",
+    excerpt:
+      "Stop paying for Adobe and Microsoft subscriptions. Free online tools for PDFs, images, QR codes, and more — built for small businesses.",
+    date: "2026-04-03",
+    readTime: "10 min read",
+    tags: ["Business", "Productivity"],
+  },
+  {
+    slug: "compress-images-for-website-speed",
+    title: "How to Compress Images for Faster Website Speed – Complete Guide",
+    excerpt:
+      "The definitive guide to image compression for web performance. Covers formats, compression ratios, Core Web Vitals, lazy loading, and CDN optimization.",
+    date: "2026-04-02",
+    readTime: "12 min read",
+    tags: ["Web Performance", "Image Compression"],
+  },
+  {
     slug: "how-to-compress-images-for-web",
     title: "How to Compress Images for Web Without Losing Quality",
     excerpt:

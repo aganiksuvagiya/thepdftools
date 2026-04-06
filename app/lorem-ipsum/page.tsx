@@ -49,6 +49,13 @@ export default function LoremIpsumPage() {
         description:
           "Generate lorem ipsum placeholder text instantly. Choose paragraphs, sentences, or words.",
       },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Lorem Ipsum", "item": "https://thepdftools.site/lorem-ipsum" },
+        ],
+      },
     ],
   };
 

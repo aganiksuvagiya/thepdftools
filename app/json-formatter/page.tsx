@@ -49,6 +49,13 @@ export default function JsonFormatterPage() {
         description:
           "Format, minify, and validate JSON instantly in your browser. No upload, no server, completely private.",
       },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
+        ],
+      },
     ],
   };
 

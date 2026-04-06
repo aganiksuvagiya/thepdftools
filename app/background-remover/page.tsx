@@ -89,6 +89,13 @@ export default function BackgroundRemoverPage() {
           },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Background Remover", "item": "https://thepdftools.site/background-remover" },
+        ],
+      },
     ],
   };
 

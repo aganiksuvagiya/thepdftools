@@ -34,18 +34,29 @@ export const metadata: Metadata = {
 export default function WordCounterPage() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free Word & Character Counter",
-    url: "https://thepdftools.site/word-counter",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    description:
-      "Count words, characters, sentences, and paragraphs instantly. See reading and speaking time estimates.",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: "Free Word & Character Counter",
+        url: "https://thepdftools.site/word-counter",
+        applicationCategory: "UtilityApplication",
+        operatingSystem: "Any",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        description:
+          "Count words, characters, sentences, and paragraphs instantly. See reading and speaking time estimates.",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Word Counter", "item": "https://thepdftools.site/word-counter" },
+        ],
+      },
+    ],
   };
 
   return (

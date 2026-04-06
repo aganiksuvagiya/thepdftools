@@ -40,26 +40,26 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free Image Rotate & Flip Tool",
-    url: "https://thepdftools.site/image-rotate",
-    description:
-      "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically.",
-    applicationCategory: "MultimediaApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Free Image Rotate & Flip Tool",
+      url: "https://thepdftools.site/image-rotate",
+      description:
+        "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically.",
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    browserRequirements: "Requires a modern web browser with JavaScript enabled",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
+    {
+      "@type": "FAQPage",
     mainEntity: [
       {
         "@type": "Question",
@@ -95,7 +95,15 @@ const jsonLd = [
       },
     ],
   },
-];
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Rotate", "item": "https://thepdftools.site/image-rotate" },
+      ],
+    },
+  ],
+};
 
 export default function ImageRotatePage() {
   return (

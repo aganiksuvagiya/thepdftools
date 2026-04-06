@@ -42,26 +42,26 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Free Image Resizer Tool",
-    url: "https://thepdftools.site/image-resizer",
-    description:
-      "Resize JPG, PNG, and WebP images for free online. Set custom width and height, lock aspect ratio, and download instantly.",
-    applicationCategory: "MultimediaApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Free Image Resizer Tool",
+      url: "https://thepdftools.site/image-resizer",
+      description:
+        "Resize JPG, PNG, and WebP images for free online. Set custom width and height, lock aspect ratio, and download instantly.",
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    browserRequirements: "Requires a modern web browser with JavaScript enabled",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
+    {
+      "@type": "FAQPage",
     mainEntity: [
       {
         "@type": "Question",
@@ -97,7 +97,15 @@ const jsonLd = [
       },
     ],
   },
-];
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Resizer", "item": "https://thepdftools.site/image-resizer" },
+      ],
+    },
+  ],
+};
 
 export default function ImageResizerPage() {
   return (

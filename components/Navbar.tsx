@@ -40,6 +40,8 @@ const categories = [
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
       { href: "/ppt-to-pdf", label: "PPT to PDF" },
       { href: "/word-to-pdf", label: "Word to PDF" },
+      { href: "/excel-to-pdf", label: "Excel to PDF" },
+      { href: "/html-to-pdf", label: "HTML to PDF" },
     ],
   },
   {
