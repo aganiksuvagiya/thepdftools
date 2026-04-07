@@ -42,6 +42,10 @@ const categories = [
       { href: "/word-to-pdf", label: "Word to PDF" },
       { href: "/excel-to-pdf", label: "Excel to PDF" },
       { href: "/html-to-pdf", label: "HTML to PDF" },
+      { href: "/pdf-compress", label: "PDF Compress" },
+      { href: "/pdf-unlock", label: "PDF Unlock" },
+      { href: "/image-to-pdf", label: "Image to PDF" },
+      { href: "/text-to-pdf", label: "Text to PDF" },
     ],
   },
   {
@@ -53,6 +57,8 @@ const categories = [
       { href: "/word-counter", label: "Word Counter" },
       { href: "/json-formatter", label: "JSON Formatter" },
       { href: "/lorem-ipsum", label: "Lorem Ipsum" },
+      { href: "/svg-to-png", label: "SVG to PNG" },
+      { href: "/csv-to-json", label: "CSV to JSON" },
     ],
   },
 ];

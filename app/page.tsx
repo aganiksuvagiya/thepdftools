@@ -392,12 +392,84 @@ const tools = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
       </svg>
     ),},
+  {
+    href: "/pdf-compress",
+    title: "PDF Compressor",
+    description:
+      "Reduce PDF file size without losing quality. Compress large PDFs for email, sharing, and storage.",
+    badge: "Popular",
+    color: "rose" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),},
+  {
+    href: "/image-to-pdf",
+    title: "Image to PDF",
+    description:
+      "Convert JPG, PNG, or WebP images to PDF. Combine multiple images into a single PDF document.",
+    badge: "New",
+    color: "blue" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+      </svg>
+    ),},
+  {
+    href: "/text-to-pdf",
+    title: "Text to PDF",
+    description:
+      "Convert plain text to PDF documents. Choose fonts, page size, and margins for perfect output.",
+    badge: "New",
+    color: "emerald" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),},
+  {
+    href: "/pdf-unlock",
+    title: "PDF Unlock",
+    description:
+      "Remove PDF restrictions for printing, copying, and editing. Unlock your own protected PDFs.",
+    badge: "New",
+    color: "violet" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+      </svg>
+    ),},
+  {
+    href: "/svg-to-png",
+    title: "SVG to PNG",
+    description:
+      "Convert SVG vector files to PNG images at 1x–4x scale. Transparent or white background.",
+    badge: "New",
+    color: "teal" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+      </svg>
+    ),},
+  {
+    href: "/csv-to-json",
+    title: "CSV to JSON",
+    description:
+      "Convert CSV data to JSON format. Supports custom delimiters, headers, and pretty printing.",
+    badge: "Dev",
+    color: "amber" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M10.875 12h-7.5c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 0v1.5c0 .621-.504 1.125-1.125 1.125M12 16.875c0-.621.504-1.125 1.125-1.125" />
+      </svg>
+    ),},
 ];
 
 const stats = [
   { value: "100%", label: "Free forever" },
   { value: "0 MB", label: "Data uploaded" },
-  { value: "20+", label: "Tools available" },
+  { value: "28+", label: "Tools available" },
   { value: "<1s", label: "Processing time" },
 ];
 
@@ -418,12 +490,16 @@ const seoGroups = [
   {
     title: "Popular PDF Tools",
     description:
-      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, convert PDF to images, convert PDF to Word, and build PDFs from screenshots.",
+      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, convert PDF to images, convert PDF to Word, unlock PDFs, and build PDFs from screenshots or images.",
     links: [
       { href: "/pdf-merge", label: "PDF Merge" },
       { href: "/pdf-split", label: "PDF Split" },
+      { href: "/pdf-compress", label: "PDF Compress" },
       { href: "/pdf-to-image", label: "PDF to Image" },
       { href: "/pdf-to-word", label: "PDF to Word" },
+      { href: "/pdf-unlock", label: "PDF Unlock" },
+      { href: "/image-to-pdf", label: "Image to PDF" },
+      { href: "/text-to-pdf", label: "Text to PDF" },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
       { href: "/ppt-to-pdf", label: "PPT to PDF" },
     ],
@@ -451,9 +527,13 @@ const toolCategories = [
     hrefs: [
       "/pdf-merge",
       "/pdf-split",
+      "/pdf-compress",
       "/pdf-to-image",
       "/pdf-to-word",
+      "/pdf-unlock",
       "/screenshot-to-pdf",
+      "/image-to-pdf",
+      "/text-to-pdf",
       "/ppt-to-pdf",
     ],
   },
@@ -466,6 +546,7 @@ const toolCategories = [
       "/jpg-to-png",
       "/png-to-jpg",
       "/image-to-webp",
+      "/svg-to-png",
     ],
   },
   {
@@ -486,6 +567,7 @@ const toolCategories = [
       "/base64",
       "/word-counter",
       "/lorem-ipsum",
+      "/csv-to-json",
     ],
   },
 ].map((category) => ({
