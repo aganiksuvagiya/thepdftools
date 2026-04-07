@@ -464,12 +464,72 @@ const tools = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M10.875 12h-7.5c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 0v1.5c0 .621-.504 1.125-1.125 1.125M12 16.875c0-.621.504-1.125 1.125-1.125" />
       </svg>
     ),},
+  {
+    href: "/pdf-to-excel",
+    title: "PDF to Excel",
+    description:
+      "Convert PDF tables to Excel spreadsheets. Extract data from PDFs into editable XLSX files.",
+    badge: "New",
+    color: "emerald" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125" />
+      </svg>
+    ),},
+  {
+    href: "/heic-to-jpg",
+    title: "HEIC to JPG",
+    description:
+      "Convert iPhone HEIC photos to JPG format. Batch convert Apple photos for universal compatibility.",
+    badge: "Popular",
+    color: "pink" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+      </svg>
+    ),},
+  {
+    href: "/video-to-gif",
+    title: "Video to GIF",
+    description:
+      "Convert MP4, WebM, or MOV videos to animated GIFs. Customize FPS, size, and duration.",
+    badge: "New",
+    color: "purple" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-2.625 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5c-.621 0-1.125-.504-1.125-1.125M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),},
+  {
+    href: "/markdown-to-pdf",
+    title: "Markdown to PDF",
+    description:
+      "Convert Markdown files to PDF documents. Live preview with customizable fonts and page sizes.",
+    badge: "Dev",
+    color: "indigo" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),},
+  {
+    href: "/invoice-generator",
+    title: "Invoice Generator",
+    description:
+      "Create professional PDF invoices for free. Add items, taxes, discounts — download instantly.",
+    badge: "Popular",
+    color: "orange" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+      </svg>
+    ),},
 ];
 
 const stats = [
   { value: "100%", label: "Free forever" },
   { value: "0 MB", label: "Data uploaded" },
-  { value: "28+", label: "Tools available" },
+  { value: "33+", label: "Tools available" },
   { value: "<1s", label: "Processing time" },
 ];
 
@@ -485,6 +545,8 @@ const seoGroups = [
       { href: "/background-remover", label: "Background Remover" },
       { href: "/image-watermark", label: "Image Watermark" },
       { href: "/image-upscaler", label: "AI Image Upscaler" },
+      { href: "/heic-to-jpg", label: "HEIC to JPG" },
+      { href: "/video-to-gif", label: "Video to GIF" },
     ],
   },
   {
@@ -502,6 +564,9 @@ const seoGroups = [
       { href: "/text-to-pdf", label: "Text to PDF" },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
       { href: "/ppt-to-pdf", label: "PPT to PDF" },
+      { href: "/pdf-to-excel", label: "PDF to Excel" },
+      { href: "/markdown-to-pdf", label: "Markdown to PDF" },
+      { href: "/invoice-generator", label: "Invoice Generator" },
     ],
   },
 ];
@@ -535,6 +600,9 @@ const toolCategories = [
       "/image-to-pdf",
       "/text-to-pdf",
       "/ppt-to-pdf",
+      "/pdf-to-excel",
+      "/markdown-to-pdf",
+      "/invoice-generator",
     ],
   },
   {
@@ -547,6 +615,8 @@ const toolCategories = [
       "/png-to-jpg",
       "/image-to-webp",
       "/svg-to-png",
+      "/heic-to-jpg",
+      "/video-to-gif",
     ],
   },
   {
