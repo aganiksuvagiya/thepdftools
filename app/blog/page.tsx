@@ -18,6 +18,51 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "convert-heic-to-jpg-free",
+    title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
+    excerpt:
+      "Learn how to convert iPhone HEIC photos to JPG format for free. Works on Windows, Mac, and mobile — no file uploads, everything runs in your browser.",
+    date: "2026-04-07",
+    readTime: "6 min read",
+    tags: ["Image Conversion", "HEIC to JPG"],
+  },
+  {
+    slug: "convert-pdf-to-excel-free",
+    title: "How to Convert PDF to Excel Online — Extract Tables from PDF",
+    excerpt:
+      "Extract tables and data from PDF files into Excel spreadsheets for free. No upload required — convert PDF to XLSX instantly in your browser.",
+    date: "2026-04-07",
+    readTime: "5 min read",
+    tags: ["PDF Tools", "Data Extraction"],
+  },
+  {
+    slug: "convert-video-to-gif-free",
+    title: "How to Convert Video to GIF Online — Free MP4 to GIF Converter",
+    excerpt:
+      "Convert MP4, WebM, and MOV videos to animated GIFs for free. Customize FPS, size, and duration — no upload, runs in your browser.",
+    date: "2026-04-07",
+    readTime: "5 min read",
+    tags: ["Video Tools", "GIF"],
+  },
+  {
+    slug: "free-invoice-generator-freelancers",
+    title: "Free Invoice Generator for Freelancers & Small Business",
+    excerpt:
+      "Create professional PDF invoices for free online. Add items, taxes, discounts, and download instantly — no signup, no watermarks.",
+    date: "2026-04-07",
+    readTime: "6 min read",
+    tags: ["Business", "Invoicing"],
+  },
+  {
+    slug: "compress-pdf-files-free",
+    title: "How to Compress PDF Files Online — Reduce PDF Size for Free",
+    excerpt:
+      "Reduce PDF file size for free without losing quality. Compress PDFs for email, sharing, and storage — everything runs in your browser.",
+    date: "2026-04-07",
+    readTime: "5 min read",
+    tags: ["PDF Tools", "Compression"],
+  },
+  {
     slug: "best-free-online-tools-for-students-2026",
     title: "15 Best Free Online Tools Every Student Needs in 2026",
     excerpt:

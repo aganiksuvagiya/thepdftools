@@ -58,6 +58,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/blog/free-image-tools-for-designers-uk", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/free-online-tools-small-business", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/compress-images-for-website-speed", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/convert-heic-to-jpg-free", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/convert-pdf-to-excel-free", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/convert-video-to-gif-free", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/free-invoice-generator-freelancers", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/compress-pdf-files-free", changeFrequency: "monthly", priority: 0.78 },
   ];
 
   return routes.map((route) => ({
