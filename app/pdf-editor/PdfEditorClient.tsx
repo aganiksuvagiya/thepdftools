@@ -22,6 +22,7 @@ import { PDFDocument } from "pdf-lib";
 type Tool =
   | "select"
   | "text"
+  | "editText"
   | "image"
   | "draw"
   | "highlight"
@@ -32,12 +33,55 @@ type Tool =
   | "eraser"
   | "whiteout";
 
+interface TextItem {
+  str: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fontFamily: string;
+  fontSize: number; // in viewport pixels (scaled)
+  fontSizePt: number; // in PDF points (unscaled)
+  color: string;
+  fontWeight: string; // "normal" or "bold"
+  fontStyle: string; // "normal" or "italic"
+}
+
+interface EditableTextData {
+  type: "editableText";
+  originalText: string;
+  changed: boolean;
+  originalFontSize: number; // viewport px
+  originalFontSizePt: number; // PDF points
+  originalFontWeight: string;
+  originalFontStyle: string;
+}
+
+interface TextCoverData {
+  type: "textCover";
+  originalText: string;
+}
+
+interface TextHotspotData {
+  type: "textHotspot";
+  originalText: string;
+}
+
 interface PageData {
-  dataUrl: string; // rendered page as PNG data-url
+  dataUrl: string; // rendered page as PNG data-url (without text)
   width: number;
   height: number;
   fabricJson: string | null; // serialised fabric canvas state
+  textItems: TextItem[]; // extracted text items with positions
+  scale: number; // render scale used
+  loaded: boolean; // whether the page has been fully rendered
 }
+
+type CanvasTargetLike = FabricObject & {
+  text?: string;
+  enterEditing?: () => void;
+  hiddenTextarea?: HTMLTextAreaElement | null;
+};
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -47,6 +91,142 @@ const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3;
 const THUMBNAIL_HEIGHT = 120;
+
+function mergeNearbyTextItems(items: TextItem[]) {
+  if (items.length <= 1) return items;
+
+  // Step 1: Group items into lines based on Y proximity
+  const lines: TextItem[][] = [];
+  const used = new Array(items.length).fill(false);
+
+  // Sort by Y first to help grouping
+  const byY = items.map((item, i) => ({ item, i })).sort((a, b) => a.item.y - b.item.y);
+
+  for (let i = 0; i < byY.length; i++) {
+    if (used[byY[i].i]) continue;
+    const line: TextItem[] = [byY[i].item];
+    used[byY[i].i] = true;
+    const refY = byY[i].item.y;
+    const refH = byY[i].item.height;
+
+    // Find all items on the same visual line
+    for (let j = i + 1; j < byY.length; j++) {
+      if (used[byY[j].i]) continue;
+      const other = byY[j].item;
+      const yTolerance = Math.max(8, Math.max(refH, other.height) * 0.7);
+      if (Math.abs(other.y - refY) <= yTolerance) {
+        const heightTolerance = Math.max(8, Math.min(refH, other.height) * 0.75);
+        if (Math.abs(other.height - refH) <= heightTolerance) {
+          line.push(other);
+          used[byY[j].i] = true;
+        }
+      } else if (other.y - refY > yTolerance + refH) {
+        break; // too far below, stop looking
+      }
+    }
+
+    // Sort line items by X position
+    line.sort((a, b) => a.x - b.x);
+    lines.push(line);
+  }
+
+  // Step 2: Merge ALL items on each line into one item.
+  // Since Step 1 already verified Y proximity + similar height,
+  // everything on the same line belongs together as one selectable unit.
+  // Only split if there's a truly massive gap (>40% of page width)
+  // which indicates separate columns.
+  const merged: TextItem[] = [];
+
+  for (const line of lines) {
+    let current = { ...line[0] };
+    // Estimate page width from the rightmost item
+    const lineRight = Math.max(...line.map((it) => it.x + it.width));
+    const lineWidth = lineRight - line[0].x;
+    const columnGapThreshold = Math.max(100, lineWidth * 0.4);
+
+    for (let i = 1; i < line.length; i++) {
+      const item = line[i];
+      const currentRight = current.x + current.width;
+      const gap = item.x - currentRight;
+
+      // Only split for column-level gaps (very large horizontal distance)
+      if (gap > columnGapThreshold) {
+        merged.push(current);
+        current = { ...item };
+      } else {
+        const needsSpace = gap > Math.max(2, item.fontSize * 0.15) && !current.str.endsWith(" ") && !item.str.startsWith(" ");
+        current.str = `${current.str}${needsSpace ? " " : ""}${item.str}`;
+        current.width = Math.max(currentRight, item.x + item.width) - current.x;
+        current.height = Math.max(current.height, item.height);
+        current.fontSize = Math.max(current.fontSize, item.fontSize);
+        current.fontSizePt = Math.max(current.fontSizePt, item.fontSizePt);
+        // Preserve bold/italic if any fragment has it
+        if (item.fontWeight === "bold") current.fontWeight = "bold";
+        if (item.fontStyle === "italic") current.fontStyle = "italic";
+      }
+    }
+
+    merged.push(current);
+  }
+
+  // Sort final result by Y then X
+  merged.sort((a, b) => {
+    if (Math.abs(a.y - b.y) > 4) return a.y - b.y;
+    return a.x - b.x;
+  });
+
+  return merged;
+}
+
+function resolveFabricTarget(result: unknown): CanvasTargetLike | null {
+  if (!result || typeof result !== "object") return null;
+
+  if ("target" in result) {
+    const maybeTarget = (result as { target?: unknown }).target;
+    return maybeTarget && typeof maybeTarget === "object" ? (maybeTarget as CanvasTargetLike) : null;
+  }
+
+  return "get" in result ? (result as CanvasTargetLike) : null;
+}
+
+async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport: any) {
+  const textContent = await page.getTextContent();
+  if (typeof window === "undefined") return [];
+
+  const items: TextItem[] = [];
+  for (const item of textContent.items) {
+    if (!("str" in item) || !item.str.trim()) continue;
+    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+    const style = textContent.styles?.[item.fontName];
+    const fontHeight = Math.hypot(tx[2], tx[3]);
+    const ascent = style?.ascent
+      ? style.ascent * fontHeight
+      : style?.descent
+        ? (1 + style.descent) * fontHeight
+        : fontHeight * 0.8;
+
+    // Detect bold/italic from PDF font name
+    const fn = (item.fontName || "").toLowerCase();
+    const isBold = fn.includes("bold") || fn.includes("heavy") || fn.includes("black");
+    const isItalic = fn.includes("italic") || fn.includes("oblique");
+
+    items.push({
+      str: item.str,
+      x: tx[4],
+      y: tx[5] - ascent,
+      width: Math.max(item.width * viewport.scale, item.str.length * fontHeight * 0.45),
+      height: fontHeight,
+      fontFamily: item.fontName || "Helvetica",
+      fontSize: parseFloat(fontHeight.toFixed(2)),
+      fontSizePt: parseFloat((fontHeight / viewport.scale).toFixed(2)),
+      color: "#000000",
+      fontWeight: isBold ? "bold" : "normal",
+      fontStyle: isItalic ? "italic" : "normal",
+    });
+  }
+
+  return mergeNearbyTextItems(items);
+}
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -62,6 +242,7 @@ export default function PdfEditorClient() {
   const [pages, setPages] = useState<PageData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [zoom, setZoom] = useState(1);
+  const zoomPerPageRef = useRef<Map<number, number>>(new Map());
 
   const [activeTool, setActiveTool] = useState<Tool>("select");
   const [brushColor, setBrushColor] = useState("#000000");
@@ -79,12 +260,143 @@ export default function PdfEditorClient() {
   const [showProperties, setShowProperties] = useState(false);
   const [selectedObject, setSelectedObject] = useState<FabricObject | null>(null);
 
+  const [textEditMode, setTextEditMode] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricRef = useRef<FabricCanvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pdfBytesRef = useRef<ArrayBuffer | null>(null);
   const isLoadingPage = useRef(false);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const pdfjsLibRef = useRef<any>(null);
+  const pdfDocRef = useRef<any>(null);
+
+  const clipboardRef = useRef<string | null>(null);
+  const bgImageCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
+
+  const createBackgroundImage = useCallback(async (dataUrl: string, width: number, height: number) => {
+    // Use cached HTMLImageElement to avoid re-decoding the base64 data URL
+    let htmlImg = bgImageCacheRef.current.get(dataUrl);
+    if (!htmlImg) {
+      htmlImg = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const el = new Image();
+        el.onload = () => resolve(el);
+        el.onerror = reject;
+        el.src = dataUrl;
+      });
+      bgImageCacheRef.current.set(dataUrl, htmlImg);
+    }
+
+    const img = new FabricImage(htmlImg);
+    const naturalWidth = img.width || width;
+    const naturalHeight = img.height || height;
+
+    img.set({
+      left: 0,
+      top: 0,
+      originX: "left",
+      originY: "top",
+      selectable: false,
+      evented: false,
+      scaleX: width / naturalWidth,
+      scaleY: height / naturalHeight,
+    });
+
+    return img;
+  }, []);
+
+  const applyCanvasZoom = useCallback((canvas: FabricCanvas, pageData: PageData, nextZoom: number) => {
+    canvas.setViewportTransform([nextZoom, 0, 0, nextZoom, 0, 0]);
+    canvas.setDimensions({
+      width: pageData.width * nextZoom,
+      height: pageData.height * nextZoom,
+    });
+    canvas.renderAll();
+  }, []);
+
+  const createEditableTextObjects = useCallback((item: TextItem) => {
+    const cover = new Rect({
+      left: item.x - 2,
+      top: item.y - 2,
+      width: item.width + 6,
+      height: item.height + 6,
+      originX: "left",
+      originY: "top",
+      fill: "#ffffff",
+      selectable: false,
+      evented: false,
+      visible: false,
+      excludeFromExport: true,
+      data: { type: "textCover", originalText: item.str } satisfies TextCoverData,
+    });
+
+    // Use the exact viewport-pixel fontSize — no rounding.
+    // The pt size is stored in data for display in the toolbar.
+    const textbox = new Textbox(item.str, {
+      left: item.x,
+      top: item.y,
+      originX: "left",
+      originY: "top",
+      fontSize: item.fontSize,
+      lineHeight: 1,
+      fill: item.color,
+      fontFamily: "Helvetica",
+      fontWeight: item.fontWeight || "normal",
+      fontStyle: (item.fontStyle || "normal") as "" | "normal" | "italic" | "oblique",
+      width: Math.max(item.width + 4, item.str.length * item.fontSize * 0.55),
+      editable: true,
+      backgroundColor: "transparent",
+      borderColor: "#3B82F6",
+      cornerColor: "#3B82F6",
+      borderDashArray: [8, 6],
+      cornerSize: 6,
+      transparentCorners: false,
+      padding: 0,
+      hasControls: true,
+      lockScalingFlip: true,
+      excludeFromExport: false,
+      data: {
+        type: "editableText",
+        originalText: item.str,
+        changed: false,
+        originalFontSize: item.fontSize,
+        originalFontSizePt: item.fontSizePt,
+        originalFontWeight: item.fontWeight || "normal",
+        originalFontStyle: item.fontStyle || "normal",
+      } satisfies EditableTextData,
+    });
+
+    return { cover, textbox };
+  }, []);
+
+  const applyTextEditInteractivity = useCallback((canvas: FabricCanvas) => {
+    for (const obj of canvas.getObjects()) {
+      const data = obj.get("data") as { type?: string } | undefined;
+      if (!data?.type) continue;
+
+      if (data.type === "textHotspot") {
+        obj.set({
+          selectable: false,
+          evented: textEditMode,
+          hoverCursor: textEditMode ? "text" : "default",
+          visible: textEditMode,
+          opacity: 0,
+          fill: "transparent",
+          stroke: "transparent",
+        });
+      }
+
+      if (data.type === "editableText") {
+        obj.set({
+          editable: textEditMode,
+          selectable: true,
+          evented: true,
+          lockMovementX: !textEditMode,
+          lockMovementY: !textEditMode,
+        });
+      }
+    }
+  }, [textEditMode]);
 
   /* ================================================================ */
   /*  PDF loading via pdfjs-dist CDN                                   */
@@ -116,33 +428,70 @@ export default function PdfEditorClient() {
         pdfBytesRef.current = arrayBuffer.slice(0);
 
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        pdfjsLibRef.current = pdfjsLib;
+        pdfDocRef.current = pdf;
         const totalPages = pdf.numPages;
         const pagesArr: PageData[] = [];
 
+        const renderScale = 1.5;
+        const EAGER_PAGES = Math.min(3, totalPages); // render first 3 upfront
+
         for (let i = 1; i <= totalPages; i++) {
           if (cancelled) return;
-          setProgress(`Rendering page ${i} of ${totalPages}...`);
           const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: 2 }); // high-res render
-          const canvas = document.createElement("canvas");
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          const ctx = canvas.getContext("2d")!;
-          await page.render({ canvasContext: ctx, viewport }).promise;
-          pagesArr.push({
-            dataUrl: canvas.toDataURL("image/png"),
-            width: viewport.width,
-            height: viewport.height,
-            fabricJson: null,
-          });
+          const viewport = page.getViewport({ scale: renderScale });
+
+          if (i <= EAGER_PAGES) {
+            // Fully render first few pages
+            setProgress(`Rendering page ${i} of ${totalPages}...`);
+            const canvas = document.createElement("canvas");
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext("2d")!;
+            await page.render({ canvasContext: ctx, viewport }).promise;
+
+            const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport);
+
+            pagesArr.push({
+              dataUrl: canvas.toDataURL("image/png"),
+              width: viewport.width,
+              height: viewport.height,
+              fabricJson: null,
+              textItems: mergedTextItems,
+              scale: renderScale,
+              loaded: true,
+            });
+          } else {
+            // Placeholder for lazy-loaded pages (just store dimensions)
+            pagesArr.push({
+              dataUrl: "",
+              width: viewport.width,
+              height: viewport.height,
+              fabricJson: null,
+              textItems: [],
+              scale: renderScale,
+              loaded: false,
+            });
+          }
         }
 
         if (cancelled) return;
         setPages(pagesArr);
         setCurrentPage(0);
-        setZoom(1);
         setUndoStack([]);
         setRedoStack([]);
+        // Auto-fit zoom — fit page inside container
+        setTimeout(() => {
+          if (containerRef.current && pagesArr.length > 0) {
+            const cw = containerRef.current.clientWidth - 64;
+            const ch = containerRef.current.clientHeight - 64;
+            const pw = pagesArr[0].width;
+            const ph = pagesArr[0].height;
+            setZoom(Math.min(cw / pw, ch / ph, 1));
+          } else {
+            setZoom(0.5);
+          }
+        }, 200);
       } catch (e: any) {
         if (!cancelled) setError(e?.message || "Failed to load PDF");
       } finally {
@@ -176,7 +525,11 @@ export default function PdfEditorClient() {
     const fc = fabricRef.current;
     if (!fc || isLoadingPage.current) return;
     const json = JSON.stringify(fc.toJSON());
-    setUndoStack((prev) => [...prev.slice(-49), json]);
+    setUndoStack((prev) => {
+      // Skip if identical to last state
+      if (prev.length > 0 && prev[prev.length - 1] === json) return prev;
+      return [...prev.slice(-29), json];
+    });
     setRedoStack([]);
   }, []);
 
@@ -226,17 +579,15 @@ export default function PdfEditorClient() {
     const pageData = pages[currentPage];
     if (!pageData) return;
 
-    fc.setDimensions({ width: pageData.width, height: pageData.height });
+      fc.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      fc.setDimensions({ width: pageData.width, height: pageData.height });
 
     const loadPage = async () => {
       // Clear canvas
       fc.clear();
 
       // Set background image (the rendered PDF page)
-      const img = await FabricImage.fromURL(pageData.dataUrl);
-      img.scaleToWidth(pageData.width);
-      img.scaleToHeight(pageData.height);
-      fc.backgroundImage = img;
+      fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
 
       // Restore fabric objects if any
       if (pageData.fabricJson) {
@@ -244,19 +595,133 @@ export default function PdfEditorClient() {
         if (parsed.objects && parsed.objects.length > 0) {
           await fc.loadFromJSON(parsed);
           // Re-set background since loadFromJSON may overwrite it
-          const bgImg = await FabricImage.fromURL(pageData.dataUrl);
-          bgImg.scaleToWidth(pageData.width);
-          bgImg.scaleToHeight(pageData.height);
-          fc.backgroundImage = bgImg;
+          fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
         }
       }
 
+      // In text edit mode, add click targets instead of rendering every text overlay up front.
+      if (textEditMode && !pageData.fabricJson && pageData.textItems.length > 0) {
+        for (const item of pageData.textItems) {
+          const hotspot = new Rect({
+            left: item.x,
+            top: item.y,
+            width: item.width + 2,
+            height: item.height + 2,
+            originX: "left",
+            originY: "top",
+            fill: "transparent",
+            stroke: "transparent",
+            strokeWidth: 1,
+            strokeDashArray: [4, 3],
+            opacity: 0,
+            selectable: false,
+            evented: true,
+            hoverCursor: "text",
+            rx: 2,
+            ry: 2,
+            excludeFromExport: true,
+            data: { type: "textHotspot", originalText: item.str } satisfies TextHotspotData,
+          });
+          fc.add(hotspot);
+        }
+      }
+
+      applyTextEditInteractivity(fc);
       fc.renderAll();
+      applyCanvasZoom(fc, pageData, zoom);
       isLoadingPage.current = false;
     };
 
     loadPage();
-  }, [currentPage, pages]);
+  }, [currentPage, pages, textEditMode, zoom, createBackgroundImage, applyCanvasZoom, applyTextEditInteractivity]);
+
+  useEffect(() => {
+    const fc = fabricRef.current;
+    const pageData = pages[currentPage];
+    if (!fc || !pageData || isLoadingPage.current) return;
+
+    applyTextEditInteractivity(fc);
+    applyCanvasZoom(fc, pageData, zoom);
+  }, [zoom, currentPage, pages, applyCanvasZoom, applyTextEditInteractivity]);
+
+  /* ================================================================ */
+  /*  Text edit hover highlight                                        */
+  /* ================================================================ */
+
+  useEffect(() => {
+    const fc = fabricRef.current;
+    if (!fc || !textEditMode) return;
+
+    let lastHovered: FabricObject | null = null;
+
+    const handleMouseMove = (opt: any) => {
+      if (isLoadingPage.current) return;
+      const pointer = fc.getScenePoint(opt.e);
+
+      // Find if pointer is over any textHotspot
+      let found: FabricObject | null = null;
+      for (const obj of fc.getObjects()) {
+        const data = obj.get("data") as { type?: string } | undefined;
+        if (data?.type !== "textHotspot") continue;
+        const left = obj.left ?? 0;
+        const top = obj.top ?? 0;
+        const w = (obj.width ?? 0) * (obj.scaleX ?? 1);
+        const h = (obj.height ?? 0) * (obj.scaleY ?? 1);
+        if (pointer.x >= left && pointer.x <= left + w && pointer.y >= top && pointer.y <= top + h) {
+          found = obj;
+          break;
+        }
+      }
+
+      if (found === lastHovered) return;
+
+      // Unhighlight previous
+      if (lastHovered) {
+        lastHovered.set({
+          fill: "transparent",
+          stroke: "transparent",
+          opacity: 0,
+        });
+      }
+
+      // Highlight new
+      if (found) {
+        found.set({
+          fill: "rgba(59, 130, 246, 0.08)",
+          stroke: "#93C5FD",
+          opacity: 1,
+        });
+      }
+
+      lastHovered = found;
+      fc.requestRenderAll();
+    };
+
+    const handleMouseOut = () => {
+      if (lastHovered) {
+        lastHovered.set({
+          fill: "transparent",
+          stroke: "transparent",
+          opacity: 0,
+        });
+        lastHovered = null;
+        fc.requestRenderAll();
+      }
+    };
+
+    fc.on("mouse:move", handleMouseMove);
+    fc.on("mouse:out", handleMouseOut);
+
+    return () => {
+      fc.off("mouse:move", handleMouseMove);
+      fc.off("mouse:out", handleMouseOut);
+      // Clean up any lingering highlight
+      if (lastHovered) {
+        lastHovered.set({ fill: "transparent", stroke: "transparent", opacity: 0 });
+        fc.renderAll();
+      }
+    };
+  }, [textEditMode]);
 
   /* ================================================================ */
   /*  Tool handling                                                    */
@@ -271,6 +736,11 @@ export default function PdfEditorClient() {
     fc.selection = true;
     fc.defaultCursor = "default";
     fc.hoverCursor = "move";
+
+    if (textEditMode) {
+      fc.defaultCursor = "text";
+      fc.hoverCursor = "text";
+    }
 
     if (activeTool === "draw" || activeTool === "highlight") {
       fc.isDrawingMode = true;
@@ -293,7 +763,7 @@ export default function PdfEditorClient() {
       fc.defaultCursor = "crosshair";
       fc.selection = false;
     }
-  }, [activeTool, brushColor, brushSize]);
+  }, [activeTool, brushColor, brushSize, textEditMode]);
 
   // Canvas click handler for placing objects
   useEffect(() => {
@@ -302,13 +772,102 @@ export default function PdfEditorClient() {
 
     const handleMouseDown = (opt: any) => {
       if (isLoadingPage.current) return;
+      const target = resolveFabricTarget(fc.findTarget(opt.e));
       const pointer = fc.getScenePoint(opt.e);
 
+      if (textEditMode) {
+        const targetData = target?.get("data") as
+          | (EditableTextData & { type: "editableText" })
+          | (TextHotspotData & { type: "textHotspot" })
+          | undefined;
+
+        // Also find hotspot by pointer position in case findTarget missed opacity-0 objects
+        let resolvedTarget = target;
+        let resolvedData = targetData;
+        if (!targetData || (targetData.type !== "textHotspot" && targetData.type !== "editableText")) {
+          for (const obj of fc.getObjects()) {
+            const d = obj.get("data") as { type?: string; originalText?: string } | undefined;
+            if (d?.type !== "textHotspot") continue;
+            const left = obj.left ?? 0;
+            const top = obj.top ?? 0;
+            const w = (obj.width ?? 0) * (obj.scaleX ?? 1);
+            const h = (obj.height ?? 0) * (obj.scaleY ?? 1);
+            if (pointer.x >= left && pointer.x <= left + w && pointer.y >= top && pointer.y <= top + h) {
+              resolvedTarget = obj as CanvasTargetLike;
+              resolvedData = d as TextHotspotData & { type: "textHotspot" };
+              break;
+            }
+          }
+        }
+
+        if (resolvedData?.type === "textHotspot") {
+          const originalText = resolvedData.originalText;
+          const item = pages[currentPage]?.textItems.find(
+            (textItem) =>
+              textItem.str === originalText &&
+              Math.abs(textItem.x - ((resolvedTarget?.left || 0))) < 6 &&
+              Math.abs(textItem.y - ((resolvedTarget?.top || 0))) < 6
+          );
+
+          if (item) {
+            const { cover, textbox } = createEditableTextObjects(item);
+
+            // Track cover-textbox pair via a ref on the textbox
+            (textbox as any).__coverRef = cover;
+            (textbox as any).__hotspotRef = resolvedTarget;
+
+            const syncEditedState = () => {
+              const currentText = (textbox.text || "").trim();
+              const tbData = textbox.get("data") as EditableTextData;
+              const changed = currentText !== tbData.originalText.trim();
+
+              textbox.set("data", { ...tbData, changed } satisfies EditableTextData);
+
+              if (changed) {
+                // Text was modified — keep cover visible, keep textbox on canvas
+                cover.set({ visible: true, excludeFromExport: false });
+              } else if (!textbox.isEditing) {
+                // Unchanged and not editing — restore hotspot, remove textbox
+                fc.remove(cover);
+                fc.remove(textbox);
+                if (resolvedTarget) fc.add(resolvedTarget as unknown as FabricObject);
+              }
+
+              fc.requestRenderAll();
+            };
+
+            textbox.on("editing:entered", () => {
+              cover.set({ visible: true, excludeFromExport: false });
+              fc.requestRenderAll();
+            });
+            textbox.on("editing:exited", syncEditedState);
+            textbox.on("modified", syncEditedState);
+
+            if (resolvedTarget) fc.remove(resolvedTarget as unknown as FabricObject);
+            fc.add(cover);
+            fc.add(textbox);
+            fc.setActiveObject(textbox);
+            textbox.enterEditing();
+            textbox.hiddenTextarea?.focus();
+            fc.requestRenderAll();
+          }
+          return;
+        }
+
+        // Re-editing: click on an already-edited textbox
+        if (resolvedData?.type === "editableText" && resolvedTarget?.enterEditing) {
+          fc.setActiveObject(resolvedTarget as unknown as FabricObject);
+          resolvedTarget.enterEditing();
+          resolvedTarget.hiddenTextarea?.focus();
+          fc.requestRenderAll();
+          return;
+        }
+      }
+
       if (activeTool === "eraser") {
-        const target = fc.findTarget(opt.e);
         if (target) {
           fc.remove(target as unknown as FabricObject);
-          fc.renderAll();
+          fc.requestRenderAll();
           pushUndo();
         }
         return;
@@ -318,6 +877,8 @@ export default function PdfEditorClient() {
         const text = new Textbox("Type here", {
           left: pointer.x,
           top: pointer.y,
+          originX: "left",
+          originY: "top",
           fontSize: fontSize,
           fill: brushColor,
           fontWeight: fontBold ? "bold" : "normal",
@@ -328,7 +889,7 @@ export default function PdfEditorClient() {
         fc.add(text);
         fc.setActiveObject(text);
         text.enterEditing();
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -337,6 +898,8 @@ export default function PdfEditorClient() {
         const rect = new Rect({
           left: pointer.x,
           top: pointer.y,
+          originX: "left",
+          originY: "top",
           width: 150,
           height: 30,
           fill: "#ffffff",
@@ -345,7 +908,7 @@ export default function PdfEditorClient() {
         });
         fc.add(rect);
         fc.setActiveObject(rect);
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -354,6 +917,8 @@ export default function PdfEditorClient() {
         const rect = new Rect({
           left: pointer.x,
           top: pointer.y,
+          originX: "left",
+          originY: "top",
           width: 120,
           height: 80,
           fill: "transparent",
@@ -362,7 +927,7 @@ export default function PdfEditorClient() {
         });
         fc.add(rect);
         fc.setActiveObject(rect);
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -371,6 +936,8 @@ export default function PdfEditorClient() {
         const circle = new Circle({
           left: pointer.x,
           top: pointer.y,
+          originX: "left",
+          originY: "top",
           radius: 50,
           fill: "transparent",
           stroke: brushColor,
@@ -378,7 +945,7 @@ export default function PdfEditorClient() {
         });
         fc.add(circle);
         fc.setActiveObject(circle);
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -390,7 +957,7 @@ export default function PdfEditorClient() {
         });
         fc.add(line);
         fc.setActiveObject(line);
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -416,7 +983,7 @@ export default function PdfEditorClient() {
         });
         fc.add(line);
         fc.add(arrowHead);
-        fc.renderAll();
+        fc.requestRenderAll();
         setActiveTool("select");
         return;
       }
@@ -426,7 +993,7 @@ export default function PdfEditorClient() {
     return () => {
       fc.off("mouse:down", handleMouseDown);
     };
-  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo]);
+  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo, textEditMode, pages, currentPage, createEditableTextObjects]);
 
   /* ================================================================ */
   /*  Undo / Redo                                                      */
@@ -443,13 +1010,11 @@ export default function PdfEditorClient() {
     isLoadingPage.current = true;
     const pageData = pages[currentPage];
     await fc.loadFromJSON(JSON.parse(prevState));
-    const bgImg = await FabricImage.fromURL(pageData.dataUrl);
-    bgImg.scaleToWidth(pageData.width);
-    bgImg.scaleToHeight(pageData.height);
-    fc.backgroundImage = bgImg;
+    fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
+    applyCanvasZoom(fc, pageData, zoom);
     fc.renderAll();
     isLoadingPage.current = false;
-  }, [undoStack, pages, currentPage]);
+  }, [undoStack, pages, currentPage, zoom, createBackgroundImage, applyCanvasZoom]);
 
   const handleRedo = useCallback(async () => {
     const fc = fabricRef.current;
@@ -462,13 +1027,11 @@ export default function PdfEditorClient() {
     isLoadingPage.current = true;
     const pageData = pages[currentPage];
     await fc.loadFromJSON(JSON.parse(nextState));
-    const bgImg = await FabricImage.fromURL(pageData.dataUrl);
-    bgImg.scaleToWidth(pageData.width);
-    bgImg.scaleToHeight(pageData.height);
-    fc.backgroundImage = bgImg;
+    fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
+    applyCanvasZoom(fc, pageData, zoom);
     fc.renderAll();
     isLoadingPage.current = false;
-  }, [redoStack, pages, currentPage]);
+  }, [redoStack, pages, currentPage, zoom, createBackgroundImage, applyCanvasZoom]);
 
   /* ================================================================ */
   /*  Image upload                                                     */
@@ -484,10 +1047,42 @@ export default function PdfEditorClient() {
       img.set({ left: 100, top: 100 });
       fc.add(img);
       fc.setActiveObject(img);
-      fc.renderAll();
+      fc.requestRenderAll();
     };
     reader.readAsDataURL(e.target.files[0]);
     e.target.value = "";
+  }, []);
+
+  /* ================================================================ */
+  /*  Lazy page loading                                                */
+  /* ================================================================ */
+
+  const loadSinglePage = useCallback(async (pageIndex: number) => {
+    const pdfjsLib = pdfjsLibRef.current;
+    const pdf = pdfDocRef.current;
+    if (!pdfjsLib || !pdf) return;
+
+    const renderScale = 1.5;
+    const page = await pdf.getPage(pageIndex + 1); // pdfjs uses 1-based
+    const viewport = page.getViewport({ scale: renderScale });
+    const canvas = document.createElement("canvas");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext("2d")!;
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport);
+
+    setPages((prev) => {
+      const next = [...prev];
+      next[pageIndex] = {
+        ...next[pageIndex],
+        dataUrl: canvas.toDataURL("image/png"),
+        textItems: mergedTextItems,
+        loaded: true,
+      };
+      return next;
+    });
   }, []);
 
   /* ================================================================ */
@@ -495,14 +1090,25 @@ export default function PdfEditorClient() {
   /* ================================================================ */
 
   const goToPage = useCallback(
-    (idx: number) => {
+    async (idx: number) => {
       if (idx < 0 || idx >= pages.length || idx === currentPage) return;
+      // Lazy load if not yet rendered
+      if (!pages[idx].loaded) {
+        setProgress(`Loading page ${idx + 1}...`);
+        await loadSinglePage(idx);
+        setProgress("");
+      }
+      // Save current zoom for this page
+      zoomPerPageRef.current.set(currentPage, zoom);
       saveCurrentPageState();
       setCurrentPage(idx);
+      // Restore zoom for target page (or keep current)
+      const savedZoom = zoomPerPageRef.current.get(idx);
+      if (savedZoom !== undefined) setZoom(savedZoom);
       setUndoStack([]);
       setRedoStack([]);
     },
-    [pages.length, currentPage, saveCurrentPageState]
+    [pages, currentPage, saveCurrentPageState, zoom, loadSinglePage]
   );
 
   /* ================================================================ */
@@ -555,7 +1161,7 @@ export default function PdfEditorClient() {
     saveCurrentPageState();
     setPages((prev) => [
       ...prev.slice(0, currentPage + 1),
-      { dataUrl, width: w, height: h, fabricJson: null },
+      { dataUrl, width: w, height: h, fabricJson: null, textItems: [], scale: 2, loaded: true },
       ...prev.slice(currentPage + 1),
     ]);
     setCurrentPage(currentPage + 1);
@@ -569,9 +1175,11 @@ export default function PdfEditorClient() {
   const handleZoomOut = () => setZoom((z) => Math.max(MIN_ZOOM, z - ZOOM_STEP));
   const handleFitWidth = () => {
     if (!containerRef.current || pages.length === 0) return;
-    const containerWidth = containerRef.current.clientWidth - 32;
-    const pageWidth = pages[currentPage]?.width || 800;
-    setZoom(containerWidth / pageWidth);
+    const cw = containerRef.current.clientWidth - 64;
+    const ch = containerRef.current.clientHeight - 64;
+    const pw = pages[currentPage]?.width || 800;
+    const ph = pages[currentPage]?.height || 1100;
+    setZoom(Math.min(cw / pw, ch / ph, 1));
   };
 
   /* ================================================================ */
@@ -585,7 +1193,7 @@ export default function PdfEditorClient() {
     if (active.length > 0) {
       active.forEach((obj) => fc.remove(obj));
       fc.discardActiveObject();
-      fc.renderAll();
+      fc.requestRenderAll();
       pushUndo();
     }
   }, [pushUndo]);
@@ -593,10 +1201,13 @@ export default function PdfEditorClient() {
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      const fc = fabricRef.current;
+      if (!fc) return;
+      const active = fc.getActiveObject();
+      const isEditing = active && (active as any).isEditing;
+
       if (e.key === "Delete" || e.key === "Backspace") {
-        // Only delete if not editing text
-        const active = fabricRef.current?.getActiveObject();
-        if (active && (active as any).isEditing) return;
+        if (isEditing) return;
         deleteSelected();
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "z") {
@@ -604,10 +1215,42 @@ export default function PdfEditorClient() {
         if (e.shiftKey) handleRedo();
         else handleUndo();
       }
+      // Copy (Ctrl+C / Cmd+C)
+      if ((e.metaKey || e.ctrlKey) && e.key === "c" && !isEditing) {
+        if (active) {
+          active.clone().then((cloned: FabricObject) => {
+            clipboardRef.current = JSON.stringify(cloned.toJSON());
+          });
+        }
+      }
+      // Paste (Ctrl+V / Cmd+V)
+      if ((e.metaKey || e.ctrlKey) && e.key === "v" && !isEditing) {
+        if (clipboardRef.current) {
+          e.preventDefault();
+          const parsed = JSON.parse(clipboardRef.current);
+          // Offset pasted object to avoid exact overlap
+          parsed.left = (parsed.left || 0) + 15;
+          parsed.top = (parsed.top || 0) + 15;
+          import("fabric").then(({ util }) => {
+            util.enlivenObjects([parsed]).then((objects) => {
+              for (const obj of objects) {
+                const fObj = obj as FabricObject;
+                fObj.set({ originX: "left", originY: "top" });
+                fc.add(fObj);
+              }
+              fc.setActiveObject(objects[0] as FabricObject);
+              fc.requestRenderAll();
+              pushUndo();
+              // Update clipboard offset for next paste
+              clipboardRef.current = JSON.stringify(parsed);
+            });
+          });
+        }
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [deleteSelected, handleUndo, handleRedo]);
+  }, [deleteSelected, handleUndo, handleRedo, pushUndo]);
 
   /* ================================================================ */
   /*  Save / Export PDF                                                 */
@@ -650,10 +1293,7 @@ export default function PdfEditorClient() {
         });
 
         // Set background
-        const bgImg = await FabricImage.fromURL(pg.dataUrl);
-        bgImg.scaleToWidth(pg.width);
-        bgImg.scaleToHeight(pg.height);
-        tempFc.backgroundImage = bgImg;
+        tempFc.backgroundImage = await createBackgroundImage(pg.dataUrl, pg.width, pg.height);
 
         // Load objects
         if (pg.fabricJson) {
@@ -661,19 +1301,16 @@ export default function PdfEditorClient() {
           if (parsed.objects && parsed.objects.length > 0) {
             await tempFc.loadFromJSON(parsed);
             // Re-set background
-            const bgImg2 = await FabricImage.fromURL(pg.dataUrl);
-            bgImg2.scaleToWidth(pg.width);
-            bgImg2.scaleToHeight(pg.height);
-            tempFc.backgroundImage = bgImg2;
+            tempFc.backgroundImage = await createBackgroundImage(pg.dataUrl, pg.width, pg.height);
           }
         }
 
         tempFc.renderAll();
 
-        // Export to PNG
+        // Export to PNG at 2x for sharper text
         const dataUrl = tempFc.toDataURL({
           format: "png",
-          multiplier: 1,
+          multiplier: 2,
         });
 
         // Embed in PDF
@@ -717,7 +1354,7 @@ export default function PdfEditorClient() {
     const obj = fc?.getActiveObject();
     if (!obj) return;
     obj.set(prop as any, value);
-    fc!.renderAll();
+    fc!.requestRenderAll();
     pushUndo();
   }, [pushUndo]);
 
@@ -786,7 +1423,7 @@ export default function PdfEditorClient() {
   /* ================================================================ */
 
   return (
-    <div className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white shadow-sm overflow-hidden" style={{ height: "85vh", minHeight: 600 }}>
+    <div className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white shadow-sm overflow-hidden" style={{ height: "calc(100vh - 120px)", minHeight: 600 }}>
       {/* Hidden file input for images */}
       <input
         ref={imageInputRef}
@@ -813,6 +1450,33 @@ export default function PdfEditorClient() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 6v2m16-2v2M7 6v12m0 0h2m-2 0H5m12-12v12m0 0h2m-2 0h-2" />
           </svg>
         </ToolBtn>
+
+        {/* Edit Existing Text */}
+        <button
+          onClick={() => {
+            const next = !textEditMode;
+            setTextEditMode(next);
+            setPages((prev) => {
+              const updated = [...prev];
+              if (updated[currentPage]) {
+                updated[currentPage] = { ...updated[currentPage] };
+              }
+              return updated;
+            });
+          }}
+          className={`group relative flex h-9 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-all ${
+            textEditMode
+              ? "bg-brand-600 text-white shadow-sm"
+              : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          }`}
+          title="Edit existing PDF text"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125" />
+          </svg>
+          Edit Text
+          <span className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-slate-800 px-2 py-1 text-[10px] text-white opacity-0 shadow transition-opacity group-hover:opacity-100 z-50">Edit existing PDF text</span>
+        </button>
 
         {/* White-out */}
         <ToolBtn tool="whiteout" label="White-out (cover text)">
@@ -981,6 +1645,51 @@ export default function PdfEditorClient() {
           </div>
         )}
 
+        {/* Font size controls for edit text mode */}
+        {textEditMode && selectedObject && (selectedObject as any).fontSize && (
+          <div className="flex items-center gap-1.5 ml-1">
+            <label className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Size (pt)</label>
+            <div className="relative">
+              <input
+                type="number"
+                min={4}
+                max={200}
+                value={(() => {
+                  const data = (selectedObject as any).get?.("data") as EditableTextData | undefined;
+                  return data?.originalFontSizePt || Math.round((selectedObject as any).fontSize / 1.5);
+                })()}
+                onChange={(e) => {
+                  const ptVal = Number(e.target.value);
+                  if (ptVal >= 4 && ptVal <= 200) {
+                    // Convert pt to viewport pixels (multiply by renderScale)
+                    const vpVal = Math.round(ptVal * 1.5);
+                    updateSelectedProp("fontSize", vpVal);
+                  }
+                }}
+                className="w-14 rounded border border-slate-200 px-1.5 py-0.5 text-xs text-center"
+              />
+            </div>
+            <button
+              onClick={() => {
+                const obj = selectedObject as any;
+                updateSelectedProp("fontWeight", obj.fontWeight === "bold" ? "normal" : "bold");
+              }}
+              className={`h-7 w-7 rounded text-xs font-bold ${(selectedObject as any).fontWeight === "bold" ? "bg-brand-600 text-white" : "bg-white text-slate-600 border border-slate-200"}`}
+            >
+              B
+            </button>
+            <button
+              onClick={() => {
+                const obj = selectedObject as any;
+                updateSelectedProp("fontStyle", obj.fontStyle === "italic" ? "normal" : "italic");
+              }}
+              className={`h-7 w-7 rounded text-xs italic ${(selectedObject as any).fontStyle === "italic" ? "bg-brand-600 text-white" : "bg-white text-slate-600 border border-slate-200"}`}
+            >
+              I
+            </button>
+          </div>
+        )}
+
         {/* Spacer */}
         <div className="flex-1" />
 
@@ -1077,12 +1786,21 @@ export default function PdfEditorClient() {
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    <img
-                      src={pg.dataUrl}
-                      alt={`Page ${idx + 1}`}
-                      className="w-full"
-                      style={{ height: THUMBNAIL_HEIGHT, objectFit: "cover", objectPosition: "top" }}
-                    />
+                    {pg.loaded ? (
+                      <img
+                        src={pg.dataUrl}
+                        alt={`Page ${idx + 1}`}
+                        className="w-full"
+                        style={{ height: THUMBNAIL_HEIGHT, objectFit: "cover", objectPosition: "top" }}
+                      />
+                    ) : (
+                      <div
+                        className="w-full flex items-center justify-center bg-slate-100 text-slate-400 text-xs"
+                        style={{ height: THUMBNAIL_HEIGHT }}
+                      >
+                        Click to load
+                      </div>
+                    )}
                   </button>
                   <span className={`absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                     idx === currentPage ? "bg-brand-600 text-white" : "bg-white/90 text-slate-600"
@@ -1124,18 +1842,18 @@ export default function PdfEditorClient() {
         )}
 
         {/* --- Center: canvas --- */}
-        <div
-          ref={containerRef}
-          className="flex-1 overflow-auto bg-slate-100 flex items-start justify-center p-4"
-        >
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-auto bg-slate-100"
+      >
           <div
             style={{
-              transform: `scale(${zoom})`,
-              transformOrigin: "top center",
-              transition: "transform 0.15s ease",
+              width: (pages[currentPage]?.width || 800) * zoom,
+              height: (pages[currentPage]?.height || 1100) * zoom,
+              margin: "24px auto",
             }}
           >
-            <div className="shadow-2xl rounded-sm">
+            <div className="shadow-2xl border border-slate-300 bg-white">
               <canvas ref={canvasRef} />
             </div>
           </div>

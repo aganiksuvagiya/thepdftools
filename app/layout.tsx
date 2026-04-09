@@ -115,6 +115,11 @@ export default function RootLayout({
             gtag('config', 'G-NWTNKWJ1JF');
           `}
         </Script>
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <div className="relative isolate overflow-x-clip">
           
           <Navbar />

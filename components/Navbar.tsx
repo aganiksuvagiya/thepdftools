@@ -36,6 +36,7 @@ const categories = [
   {
     label: "PDF Tools",
     items: [
+      { href: "/pdf-editor", label: "PDF Editor" },
       { href: "/pdf-merge", label: "PDF Merge" },
       { href: "/pdf-split", label: "PDF Split" },
       { href: "/pdf-to-image", label: "PDF to Image" },
