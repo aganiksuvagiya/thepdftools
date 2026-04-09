@@ -120,6 +120,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
+     crossOrigin="anonymous"></script>
         <div className="relative isolate overflow-x-clip">
           
           <Navbar />
