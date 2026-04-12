@@ -91,6 +91,7 @@ const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3;
 const THUMBNAIL_HEIGHT = 120;
+const MOBILE_QUERY = "(max-width: 767px)";
 
 function mergeNearbyTextItems(items: TextItem[]) {
   if (items.length <= 1) return items;
@@ -259,6 +260,7 @@ export default function PdfEditorClient() {
   const [showThumbnails, setShowThumbnails] = useState(true);
   const [showProperties, setShowProperties] = useState(false);
   const [selectedObject, setSelectedObject] = useState<FabricObject | null>(null);
+  const [isCompact, setIsCompact] = useState(false);
 
   const [textEditMode, setTextEditMode] = useState(false);
 
@@ -312,6 +314,38 @@ export default function PdfEditorClient() {
       height: pageData.height * nextZoom,
     });
     canvas.renderAll();
+  }, []);
+
+  const getFittedZoom = useCallback((pageData: PageData, mode: "page" | "width" = "page") => {
+    if (!containerRef.current) return 0.5;
+
+    const compact = typeof window !== "undefined" && window.matchMedia(MOBILE_QUERY).matches;
+    const edgePadding = compact ? 24 : 64;
+    const cw = Math.max(containerRef.current.clientWidth - edgePadding, 160);
+    const ch = Math.max(containerRef.current.clientHeight - edgePadding, 160);
+    const widthZoom = cw / pageData.width;
+    const heightZoom = ch / pageData.height;
+    const nextZoom = compact || mode === "width" ? widthZoom : Math.min(widthZoom, heightZoom);
+
+    return Math.min(Math.max(nextZoom, MIN_ZOOM), 1);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia(MOBILE_QUERY);
+    const syncCompactLayout = () => {
+      const compact = mediaQuery.matches;
+      setIsCompact(compact);
+      if (compact) {
+        setShowThumbnails(false);
+        setShowProperties(false);
+      }
+    };
+
+    syncCompactLayout();
+    mediaQuery.addEventListener("change", syncCompactLayout);
+    return () => mediaQuery.removeEventListener("change", syncCompactLayout);
   }, []);
 
   const createEditableTextObjects = useCallback((item: TextItem) => {
@@ -482,15 +516,7 @@ export default function PdfEditorClient() {
         setRedoStack([]);
         // Auto-fit zoom — fit page inside container
         setTimeout(() => {
-          if (containerRef.current && pagesArr.length > 0) {
-            const cw = containerRef.current.clientWidth - 64;
-            const ch = containerRef.current.clientHeight - 64;
-            const pw = pagesArr[0].width;
-            const ph = pagesArr[0].height;
-            setZoom(Math.min(cw / pw, ch / ph, 1));
-          } else {
-            setZoom(0.5);
-          }
+          setZoom(pagesArr[0] ? getFittedZoom(pagesArr[0]) : 0.5);
         }, 200);
       } catch (e: any) {
         if (!cancelled) setError(e?.message || "Failed to load PDF");
@@ -504,7 +530,7 @@ export default function PdfEditorClient() {
     return () => {
       cancelled = true;
     };
-  }, [file]);
+  }, [file, getFittedZoom]);
 
   /* ================================================================ */
   /*  Fabric canvas init / page switching                              */
@@ -643,6 +669,30 @@ export default function PdfEditorClient() {
     applyTextEditInteractivity(fc);
     applyCanvasZoom(fc, pageData, zoom);
   }, [zoom, currentPage, pages, applyCanvasZoom, applyTextEditInteractivity]);
+
+  useEffect(() => {
+    if (pages.length === 0 || !containerRef.current || !isCompact) return;
+
+    let frame = 0;
+    const fitCurrentPage = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const pageData = pages[currentPage];
+        if (pageData) setZoom(getFittedZoom(pageData, "width"));
+      });
+    };
+
+    const observer = new ResizeObserver(fitCurrentPage);
+    observer.observe(containerRef.current);
+    window.addEventListener("orientationchange", fitCurrentPage);
+    fitCurrentPage();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("orientationchange", fitCurrentPage);
+    };
+  }, [pages, currentPage, isCompact, getFittedZoom]);
 
   /* ================================================================ */
   /*  Text edit hover highlight                                        */
@@ -1174,12 +1224,9 @@ export default function PdfEditorClient() {
   const handleZoomIn = () => setZoom((z) => Math.min(MAX_ZOOM, z + ZOOM_STEP));
   const handleZoomOut = () => setZoom((z) => Math.max(MIN_ZOOM, z - ZOOM_STEP));
   const handleFitWidth = () => {
-    if (!containerRef.current || pages.length === 0) return;
-    const cw = containerRef.current.clientWidth - 64;
-    const ch = containerRef.current.clientHeight - 64;
-    const pw = pages[currentPage]?.width || 800;
-    const ph = pages[currentPage]?.height || 1100;
-    setZoom(Math.min(cw / pw, ch / ph, 1));
+    const pageData = pages[currentPage];
+    if (!pageData) return;
+    setZoom(getFittedZoom(pageData, "width"));
   };
 
   /* ================================================================ */
@@ -1373,7 +1420,7 @@ export default function PdfEditorClient() {
   }) => (
     <button
       onClick={() => setActiveTool(tool)}
-      className={`group relative flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+      className={`group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg transition-all ${
         activeTool === tool
           ? "bg-brand-600 text-white shadow-sm"
           : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -1423,7 +1470,13 @@ export default function PdfEditorClient() {
   /* ================================================================ */
 
   return (
-    <div className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white shadow-sm overflow-hidden" style={{ height: "calc(100vh - 120px)", minHeight: 600 }}>
+    <div
+      className="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm sm:rounded-[1.75rem]"
+      style={{
+        height: isCompact ? "calc(100dvh - 88px)" : "calc(100vh - 120px)",
+        minHeight: isCompact ? 520 : 600,
+      }}
+    >
       {/* Hidden file input for images */}
       <input
         ref={imageInputRef}
@@ -1434,7 +1487,7 @@ export default function PdfEditorClient() {
       />
 
       {/* ============ TOOLBAR ============ */}
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-200 bg-slate-50 px-3 py-2">
+      <div className="flex flex-nowrap items-center gap-1.5 overflow-x-auto border-b border-slate-200 bg-slate-50 px-2 py-2 sm:flex-wrap sm:px-3">
         {/* Select */}
         <ToolBtn tool="select" label="Select / Move">
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1464,7 +1517,7 @@ export default function PdfEditorClient() {
               return updated;
             });
           }}
-          className={`group relative flex h-9 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-all ${
+          className={`group relative flex h-9 flex-shrink-0 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-all ${
             textEditMode
               ? "bg-brand-600 text-white shadow-sm"
               : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -1489,7 +1542,7 @@ export default function PdfEditorClient() {
         {/* Image */}
         <button
           onClick={() => imageInputRef.current?.click()}
-          className="group relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
+          className="group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
           title="Add Image"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1554,7 +1607,7 @@ export default function PdfEditorClient() {
         {/* Delete selected */}
         <button
           onClick={deleteSelected}
-          className="group relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
+          className="group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
           title="Delete Selected"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1569,7 +1622,7 @@ export default function PdfEditorClient() {
         <button
           onClick={handleUndo}
           disabled={undoStack.length === 0}
-          className="group relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 transition-all"
+          className="group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 transition-all"
           title="Undo (Ctrl+Z)"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1580,7 +1633,7 @@ export default function PdfEditorClient() {
         <button
           onClick={handleRedo}
           disabled={redoStack.length === 0}
-          className="group relative flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 transition-all"
+          className="group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 transition-all"
           title="Redo (Ctrl+Shift+Z)"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1592,7 +1645,7 @@ export default function PdfEditorClient() {
         <div className="mx-1 h-6 w-px bg-slate-200" />
 
         {/* Color picker */}
-        <div className="relative flex items-center gap-1">
+        <div className="relative flex flex-shrink-0 items-center gap-1">
           <label className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Color</label>
           <input
             type="color"
@@ -1691,10 +1744,10 @@ export default function PdfEditorClient() {
         )}
 
         {/* Spacer */}
-        <div className="flex-1" />
+        <div className="hidden flex-1 sm:block" />
 
         {/* Zoom */}
-        <div className="flex items-center gap-1">
+        <div className="flex flex-shrink-0 items-center gap-1">
           <button onClick={handleZoomOut} className="flex h-7 w-7 items-center justify-center rounded bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 text-sm" title="Zoom out">
             -
           </button>
@@ -1712,7 +1765,7 @@ export default function PdfEditorClient() {
         {/* Toggle thumbnails */}
         <button
           onClick={() => setShowThumbnails(!showThumbnails)}
-          className={`flex h-9 items-center justify-center rounded-lg px-2.5 text-xs font-medium transition-all ${showThumbnails ? "bg-brand-50 text-brand-700" : "bg-white text-slate-600 hover:bg-slate-100"}`}
+          className={`flex h-9 flex-shrink-0 items-center justify-center rounded-lg px-2.5 text-xs font-medium transition-all ${showThumbnails ? "bg-brand-50 text-brand-700" : "bg-white text-slate-600 hover:bg-slate-100"}`}
           title="Toggle page thumbnails"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1724,7 +1777,7 @@ export default function PdfEditorClient() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex h-9 items-center gap-1.5 rounded-lg bg-brand-600 px-4 text-xs font-semibold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50 transition-all"
+          className="flex h-9 flex-shrink-0 items-center gap-1.5 rounded-lg bg-brand-600 px-4 text-xs font-semibold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50 transition-all"
         >
           {saving ? (
             <>
@@ -1752,7 +1805,7 @@ export default function PdfEditorClient() {
             fabricRef.current?.dispose();
             fabricRef.current = null;
           }}
-          className="flex h-9 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all"
+          className="flex h-9 flex-shrink-0 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all"
           title="Open new file"
         >
           <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1768,10 +1821,16 @@ export default function PdfEditorClient() {
       )}
 
       {/* ============ MAIN AREA ============ */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="relative flex flex-1 overflow-hidden">
         {/* --- Left sidebar: thumbnails --- */}
         {showThumbnails && (
-          <div className="flex w-[160px] flex-col border-r border-slate-200 bg-slate-50 overflow-y-auto">
+          <div
+            className={
+              isCompact
+                ? "absolute inset-y-0 left-0 z-20 flex w-[150px] flex-col overflow-y-auto border-r border-slate-200 bg-slate-50 shadow-xl"
+                : "flex w-[160px] flex-col overflow-y-auto border-r border-slate-200 bg-slate-50"
+            }
+          >
             <div className="p-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
               Pages ({pages.length})
             </div>
@@ -1842,15 +1901,15 @@ export default function PdfEditorClient() {
         )}
 
         {/* --- Center: canvas --- */}
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-auto bg-slate-100"
-      >
+        <div
+          ref={containerRef}
+          className="min-w-0 flex-1 touch-pan-x touch-pan-y overflow-auto bg-slate-100"
+        >
           <div
             style={{
               width: (pages[currentPage]?.width || 800) * zoom,
               height: (pages[currentPage]?.height || 1100) * zoom,
-              margin: "24px auto",
+              margin: isCompact ? "12px auto" : "24px auto",
             }}
           >
             <div className="shadow-2xl border border-slate-300 bg-white">
@@ -1861,7 +1920,13 @@ export default function PdfEditorClient() {
 
         {/* --- Right sidebar: properties --- */}
         {showProperties && selectedObject && (
-          <div className="w-[200px] border-l border-slate-200 bg-white overflow-y-auto p-3 space-y-3">
+          <div
+            className={
+              isCompact
+                ? "absolute inset-x-3 bottom-3 z-30 max-h-[45%] space-y-3 overflow-y-auto rounded-lg border border-slate-200 bg-white p-3 shadow-xl"
+                : "w-[200px] space-y-3 overflow-y-auto border-l border-slate-200 bg-white p-3"
+            }
+          >
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Properties</h3>
 
             {/* Fill color */}
@@ -1947,7 +2012,7 @@ export default function PdfEditorClient() {
       </div>
 
       {/* ============ BOTTOM BAR ============ */}
-      <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 bg-slate-50 px-3 py-1.5 sm:px-4">
         <div className="flex items-center gap-2">
           <button
             onClick={() => goToPage(currentPage - 1)}
@@ -1967,7 +2032,7 @@ export default function PdfEditorClient() {
             Next
           </button>
         </div>
-        <span className="text-[10px] text-slate-400">
+        <span className="hidden text-[10px] text-slate-400 sm:inline">
           All edits are local — your PDF never leaves your browser
         </span>
       </div>
