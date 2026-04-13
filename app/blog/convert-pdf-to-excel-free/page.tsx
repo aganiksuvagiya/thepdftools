@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-04-07T00:00:00Z",
     authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/og-home.png`, width: 1200, height: 630, alt: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -332,8 +332,8 @@ export default function ConvertPdfToExcelFree() {
                 <Link href="/blog/how-to-merge-pdf-files-online" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
                   How to Merge PDF Files Online
                 </Link>
-                <Link href="/blog/best-free-pdf-tools-online" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
-                  Best Free PDF Tools Online
+                <Link href="/blog/compress-pdf-files-free" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
+                  Compress PDF Files Online
                 </Link>
                 <Link href="/blog/convert-word-to-pdf-free" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
                   Convert Word to PDF Free

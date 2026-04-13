@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       "Free PDF and image tools that work perfectly in India. No signup, low bandwidth, mobile friendly. Ideal for students, businesses, and government form handling.",
     url: "https://thepdftools.site/blog/best-free-pdf-tools-india",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/blog/best-free-pdf-tools-india",

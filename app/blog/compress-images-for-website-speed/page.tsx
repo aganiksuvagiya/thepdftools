@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       "The definitive guide to image compression for web performance. Covers formats, compression, Core Web Vitals, lazy loading, and CDN optimization.",
     url: "https://thepdftools.site/blog/compress-images-for-website-speed",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/blog/compress-images-for-website-speed",

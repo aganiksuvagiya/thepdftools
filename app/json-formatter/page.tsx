@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Format, minify, and validate JSON instantly in your browser. Syntax highlighting, error detection with line numbers, and indentation options.",
     url: "https://thepdftools.site/json-formatter",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/json-formatter",
@@ -54,6 +54,27 @@ export default function JsonFormatterPage() {
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
           { "@type": "ListItem", "position": 2, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I format JSON online for free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The JSON Formatter is free and formats, minifies, and validates JSON in your browser.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "Is my JSON uploaded to a server?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. JSON formatting and validation runs locally in your browser so your data stays on your device.",
+            },
+          },
         ],
       },
     ],

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
-  const lastModified = new Date("2026-04-13");
+  const lastModified = new Date("2026-04-14");
 
   const routes: Array<{
     path: string;
@@ -47,6 +47,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/word-counter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/lorem-ipsum", changeFrequency: "monthly", priority: 0.72 },
     { path: "/blog", changeFrequency: "weekly", priority: 0.85 },
+    { path: "/blog/add-watermark-to-image-online-free", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/compress-pdf-for-email-online", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/blog/convert-ppt-to-pdf-online-free", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/how-to-compress-images-for-web", changeFrequency: "monthly", priority: 0.75 },
     { path: "/blog/jpg-vs-png-vs-webp-which-format", changeFrequency: "monthly", priority: 0.75 },
     { path: "/blog/how-to-merge-pdf-files-online", changeFrequency: "monthly", priority: 0.75 },

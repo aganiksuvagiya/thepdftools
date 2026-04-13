@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Convert JPG, PNG, and WebP images to PDF for free online. Combine multiple images into one PDF with custom page size, orientation, and margins. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/image-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/image-to-pdf",

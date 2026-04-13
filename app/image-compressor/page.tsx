@@ -18,6 +18,11 @@ export const metadata: Metadata = {
     "reduce image size",
     "jpg compressor",
     "png compressor",
+    "compress jpg online free no upload",
+    "compress png online free",
+    "image size reducer online",
+    "reduce jpg size online",
+    "image compressor no signup",
     "free image compression",
     "compress jpeg online",
     "compress webp online",
@@ -29,7 +34,7 @@ export const metadata: Metadata = {
     description:
       "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/image-compressor",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/image-compressor",
@@ -70,7 +75,7 @@ export default function ImageCompressorPage() {
             name: "What image formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "JPG/JPEG, PNG, and WebP formats are fully supported. You can compress any of these formats and download the optimized result instantly.",
+              text: "JPG/JPEG, PNG, and WebP formats are fully supported. You can compress JPG, PNG, or WebP images online for free and download the optimized result instantly.",
             },
           },
           {
@@ -128,7 +133,8 @@ export default function ImageCompressorPage() {
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload a JPG, PNG, or WebP file and compress it instantly in your browser.
-                No signup, no upload to a server, and no extra steps.
+                Use this free image size reducer with no signup, no server upload,
+                and no extra steps.
               </p>
             </div>
 
@@ -173,7 +179,7 @@ export default function ImageCompressorPage() {
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>Use `70%–85%` quality for most website images.</li>
               <li>Choose WebP when you want better compression than JPG.</li>
-              <li>Compress before uploading to blogs, stores, and landing pages.</li>
+              <li>Compress JPG, PNG, and WebP images before uploading to blogs, stores, and landing pages.</li>
             </ul>
           </div>
 

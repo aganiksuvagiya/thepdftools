@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-04-07T00:00:00Z",
     authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/og-home.png`, width: 1200, height: 630, alt: "How to Convert HEIC to JPG on Any Device — Free & No Upload" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Convert HEIC to JPG on Any Device — Free & No Upload" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -37,18 +37,51 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
-  description: "Learn how to convert HEIC to JPG for free on iPhone, Mac, Windows, and Android. No file uploads needed — everything runs in your browser. Covers HEIC vs JPG differences, step-by-step instructions, and pro tips.",
-  url: POST_URL,
-  datePublished: "2026-04-07T00:00:00Z",
-  dateModified: "2026-04-07T00:00:00Z",
-  author: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
-  publisher: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
-  mainEntityOfPage: { "@type": "WebPage", "@id": POST_URL },
-  wordCount: 1200,
-  articleSection: "Image Conversion",
-  keywords: ["heic to jpg", "convert heic to jpg", "heic format", "apple heic converter", "iphone heic to jpg"],
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      headline: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
+      description: "Learn how to convert HEIC to JPG for free on iPhone, Mac, Windows, and Android. No file uploads needed — everything runs in your browser. Covers HEIC vs JPG differences, step-by-step instructions, and pro tips.",
+      url: POST_URL,
+      datePublished: "2026-04-07T00:00:00Z",
+      dateModified: "2026-04-07T00:00:00Z",
+      author: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
+      publisher: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
+      mainEntityOfPage: { "@type": "WebPage", "@id": POST_URL },
+      wordCount: 1200,
+      articleSection: "Image Conversion",
+      keywords: ["heic to jpg", "convert heic to jpg", "heic format", "apple heic converter", "iphone heic to jpg"],
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+        { "@type": "ListItem", position: 3, name: "How to Convert HEIC to JPG", item: POST_URL },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Can I convert HEIC to JPG without uploading?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. The HEIC to JPG converter runs in your browser, so your photos do not need to be uploaded to a server.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Does converting HEIC to JPG work on Windows?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. Browser-based HEIC to JPG conversion works on Windows, Mac, iPhone, Android, and Linux.",
+          },
+        },
+      ],
+    },
+  ],
 };
 
 const toolLink = "font-medium text-brand-600 underline decoration-brand-200 hover:text-brand-700 hover:decoration-brand-400 transition-colors";

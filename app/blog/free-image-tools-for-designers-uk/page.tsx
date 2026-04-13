@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       "The ultimate list of free online image tools for UK designers. Compress, crop, resize, remove backgrounds, and convert formats without Photoshop.",
     url: "https://thepdftools.site/blog/free-image-tools-for-designers-uk",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/blog/free-image-tools-for-designers-uk",

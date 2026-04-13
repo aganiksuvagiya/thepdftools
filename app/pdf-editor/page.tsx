@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Edit PDF files for free online. Add text, images, shapes, highlights, and drawings to any PDF. No upload, no signup — runs entirely in your browser.",
     url: "https://thepdftools.site/pdf-editor",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-editor",

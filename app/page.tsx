@@ -4,14 +4,17 @@ import ToolCard from "@/components/ToolCard";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Free Online PDF & Image Tools — No Upload, No Signup",
+  title: "Free Online PDF & Image Tools - No Upload, No Signup",
   description:
-    "Free online tools for PDF and images. Compress images, merge PDFs, convert JPG to PNG, remove backgrounds, convert Word to PDF and more — all in your browser, no signup required.",
+    "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, convert images, resize photos, add watermarks, and more with no upload or signup.",
   keywords: [
     "free online tools",
     "free pdf tools online",
+    "free online pdf tools no upload",
+    "free image tools online no signup",
     "image compressor online",
     "merge pdf online free",
+    "compress pdf online free no upload",
     "remove background online free",
     "jpg to png converter free",
     "word to pdf converter free",
@@ -20,13 +23,13 @@ export const metadata: Metadata = {
     "pdf tools no upload",
   ],
   openGraph: {
-    title: "Free Online PDF & Image Tools — No Upload, No Signup",
+    title: "Free Online PDF & Image Tools - No Upload, No Signup",
     description:
-      "Free online tools for PDF and images. Compress images, merge PDFs, convert JPG to PNG, remove backgrounds, convert Word to PDF and more — all in your browser, no signup required.",
+      "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, convert images, resize photos, add watermarks, and more with no upload or signup.",
     url: "https://thepdftools.site",
     images: [
       {
-        url: "https://thepdftools.site/og-home.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "thepdftools.site - Free Online Tools",
@@ -44,18 +47,36 @@ const homeJsonLd = [
     "@type": "WebSite",
     name: "thepdftools",
     url: "https://thepdftools.site",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://thepdftools.site/?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
   },
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "thepdftools",
     url: "https://thepdftools.site",
-    logo: "https://thepdftools.site/logo.png",
+    logo: "https://thepdftools.site/logo.svg",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "thepdftools",
+    url: "https://thepdftools.site",
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    description:
+      "Free online PDF and image tools that run in your browser with no upload and no signup.",
+    featureList: [
+      "Merge PDF files",
+      "Compress PDF files",
+      "Compress images",
+      "Resize images",
+      "Add image watermarks",
+      "Convert image and document formats",
+    ],
   },
   {
     "@context": "https://schema.org",
@@ -663,24 +684,25 @@ export default function HomePage() {
             <div className="max-w-[640px]">
               <ScrollReveal>
                 <div className="inline-flex rounded-full bg-brand-100 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand-700">
-                  Browser-Based Productivity Tools
+                  Free Online Tools - No Upload
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={80}>
                 <h1 className="mt-8 text-4xl font-extrabold tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-[5rem] lg:leading-[0.94]">
-                  All-in-One{" "}
+                  Free Online{" "}
                   <span className="bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                    File Converter
+                    PDF &amp; Image
                   </span>{" "}
-                  &amp; Tools
+                  Tools
                 </h1>
               </ScrollReveal>
 
               <ScrollReveal delay={160}>
                 <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-500 sm:text-[1.2rem]">
-                  Compress images, merge PDFs, convert formats, and finish
-                  everyday file tasks in one clean workspace built for speed and privacy.
+                  Merge PDFs, compress PDFs, convert images, resize photos, add
+                  watermarks, and finish everyday file tasks privately in your
+                  browser. No signup, no server upload, no software install.
                 </p>
               </ScrollReveal>
 
@@ -989,10 +1011,11 @@ export default function HomePage() {
 
           <ScrollReveal delay={160}>
             <div className="mt-8 rounded-3xl border border-brand-100 bg-brand-50 p-6 text-sm leading-7 text-slate-600">
-              People usually come here to compress images, merge PDFs, resize photos,
-              convert JPG to PNG, remove backgrounds, and handle quick utility tasks.
-              This homepage is designed to surface those paths quickly and keep the
-              browsing experience focused.
+              Use free online PDF tools to merge PDF files, split PDF pages,
+              compress PDFs, convert PDF to image, and create PDFs from images.
+              Use free online image tools to compress images, resize photos,
+              convert JPG to PNG, convert PNG to JPG, remove backgrounds, and
+              add watermarks without uploading files.
             </div>
           </ScrollReveal>
         </div>
@@ -1013,11 +1036,11 @@ export default function HomePage() {
 
           <div className="mt-12 grid gap-4 lg:grid-cols-2">
             {[
-              { q: "Are these tools really free?", a: "Yes, 100% free forever. No hidden fees, no premium tiers. Every tool is free with no limits." },
-              { q: "Is my data safe?", a: "Absolutely. Everything happens in your browser. Files are never uploaded anywhere." },
-              { q: "Do I need an account?", a: "No. Just open a tool and start using it. No signup needed." },
-              { q: "What formats are supported?", a: "JPG, PNG, WebP, BMP for images and PDF for documents." },
-              { q: "Works on mobile?", a: "Yes. Fully responsive on desktop, tablet, and phone." },
+              { q: "Are these online PDF and image tools free?", a: "Yes. The tools are free to use with no hidden fees, no account, and no signup required." },
+              { q: "Are my files uploaded to a server?", a: "No. The main PDF and image tools process files locally in your browser whenever possible, so your files stay on your device." },
+              { q: "Can I use these tools on mobile?", a: "Yes. The tools are responsive and work on desktop, tablet, and phone browsers." },
+              { q: "Which file formats are supported?", a: "Common formats include PDF, JPG, PNG, WebP, HEIC, SVG, CSV, JSON, Word, Excel, PowerPoint, and Markdown, depending on the tool." },
+              { q: "Which tools should I try first?", a: "Start with Image Compressor, PDF Merge, PDF Compressor, Image Watermark, HEIC to JPG, PDF to Excel, or Background Remover." },
             ].map((item, i) => (
               <ScrollReveal key={item.q} delay={i * 50} distance={10}>
                 <details className="group rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm">

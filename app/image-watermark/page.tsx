@@ -8,25 +8,29 @@ const ImageWatermarkClient = dynamic(() => import("./ImageWatermarkClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Image Watermark Tool Online — Add Watermarks Instantly",
+  title: "Add Watermark to Image Free Online — JPG, PNG, WebP",
   description:
-    "Add text watermarks to JPG, PNG, and WebP images for free online. Customize font size, opacity, color, position, and tiling. No upload, no signup — runs entirely in your browser.",
+    "Add watermark to image free online — no upload, no signup. Convert JPG to watermark, add text to PNG or WebP instantly in your browser. Customize font, opacity, position and tiling.",
   keywords: [
-    "image watermark",
-    "add watermark online",
-    "watermark tool",
-    "text watermark",
-    "watermark image free",
-    "photo watermark",
+    "add watermark to image online free",
+    "convert jpg to watermark online",
+    "image watermark tool free",
+    "watermark jpg online",
+    "watermark png online",
+    "add text to image online",
+    "photo watermark free",
+    "watermark image no upload",
+    "online watermark maker",
+    "text watermark generator",
   ],
   openGraph: {
-    title: "Free Image Watermark Tool Online — Add Watermarks Instantly",
+    title: "Add Watermark to Image Free Online — JPG, PNG, WebP",
     description:
-      "Add text watermarks to JPG, PNG, and WebP images for free online. Customize font size, opacity, color, position, and tiling. Runs entirely in your browser.",
+      "Add watermark to image free online. Convert JPG to watermark, add text to PNG or WebP instantly. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/image-watermark",
     images: [
       {
-        url: "https://thepdftools.site/og-image-watermark.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Image Watermark Tool - ThePDFTools",
@@ -121,16 +125,14 @@ export default function ImageWatermarkPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Add watermarks
+                Add Watermark to Image
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  to protect your images
+                  Free Online — JPG, PNG, WebP
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Add custom text watermarks to your images instantly in your browser.
-                Control font size, opacity, color, position, and tiling — no upload,
-                no server, completely private.
+                Add watermark to any image free online — no upload, no signup. Convert JPG to watermark, add text to PNG or WebP instantly. Control font size, opacity, color, position, and tiling — runs entirely in your browser.
               </p>
             </div>
 

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Upscale and enhance images for free online. Increase resolution by 2x, 3x, or 4x with smooth interpolation. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/image-upscaler",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/image-upscaler",

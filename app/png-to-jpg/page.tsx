@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "png to jpeg converter",
     "convert png to jpg online",
     "free image converter",
+    "png to jpg online free no upload",
+    "png to jpeg no signup",
+    "convert png to jpg white background",
+    "png to jpg converter no watermark",
     "png jpg converter",
   ],
   openGraph: {
@@ -25,7 +29,7 @@ export const metadata: Metadata = {
     url: "https://thepdftools.site/png-to-jpg",
     images: [
       {
-        url: "https://thepdftools.site/og-png-to-jpg.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "PNG to JPG Converter - ThePDFTools",

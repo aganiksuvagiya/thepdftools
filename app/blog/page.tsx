@@ -13,10 +13,38 @@ export const metadata: Metadata = {
     description:
       "Learn how to compress images, convert formats, merge PDFs, and more. Free tips, guides, and tutorials.",
     url: "https://thepdftools.site/blog",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
 };
 
 const posts = [
+  {
+    slug: "add-watermark-to-image-online-free",
+    title: "How to Add Watermark to Image Online Free - No Upload",
+    excerpt:
+      "Add a text watermark to JPG, PNG, and WebP images online for free. No upload, no signup, and no extra watermark from us.",
+    date: "2026-04-14",
+    readTime: "5 min read",
+    tags: ["Image Editing", "Watermark"],
+  },
+  {
+    slug: "compress-pdf-for-email-online",
+    title: "How to Compress PDF for Email Online Free",
+    excerpt:
+      "Reduce PDF file size for Gmail, Outlook, portals, and forms. Free PDF compression with no upload, no signup, and no watermark.",
+    date: "2026-04-14",
+    readTime: "5 min read",
+    tags: ["PDF Tools", "Compression"],
+  },
+  {
+    slug: "convert-ppt-to-pdf-online-free",
+    title: "How to Convert PPT to PDF Online Free - No Signup",
+    excerpt:
+      "Convert PowerPoint PPTX presentations to PDF online for free. No upload, no signup, and no watermark.",
+    date: "2026-04-14",
+    readTime: "4 min read",
+    tags: ["PDF Conversion", "PowerPoint"],
+  },
   {
     slug: "convert-heic-to-jpg-free",
     title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",

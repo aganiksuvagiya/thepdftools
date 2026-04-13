@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "pdf to xlsx",
     "pdf to spreadsheet",
     "pdf to excel converter free",
+    "pdf to excel online free no upload",
+    "pdf to xlsx converter no signup",
+    "extract tables from pdf to excel",
+    "convert pdf table to excel online",
     "extract table from pdf",
     "pdf table extractor",
     "pdf data extraction",
@@ -28,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Convert PDF files to Excel spreadsheets for free online. Extract tables from PDFs and download as .xlsx files. No upload, no signup — runs entirely in your browser.",
     url: "https://thepdftools.site/pdf-to-excel",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-to-excel",

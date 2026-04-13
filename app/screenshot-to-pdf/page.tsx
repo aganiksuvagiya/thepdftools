@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Convert screenshots and images to PDF for free online. Combine multiple images into a single PDF with custom page sizes and margins. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/screenshot-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/screenshot-to-pdf",

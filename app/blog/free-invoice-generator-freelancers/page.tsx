@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-04-07T00:00:00Z",
     authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/og-home.png`, width: 1200, height: 630, alt: "Free Invoice Generator for Freelancers & Small Business" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Free Invoice Generator for Freelancers & Small Business" }],
   },
   twitter: {
     card: "summary_large_image",

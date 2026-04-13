@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Convert CSV to JSON online for free. Paste CSV data or upload a file and get formatted JSON output instantly. No upload, no signup — runs in your browser.",
     url: "https://thepdftools.site/csv-to-json",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/csv-to-json",

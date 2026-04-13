@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Convert SVG to PNG for free online. Choose scale (1x–4x), transparent or white background. No upload, no signup — runs entirely in your browser.",
     url: "https://thepdftools.site/svg-to-png",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/svg-to-png",

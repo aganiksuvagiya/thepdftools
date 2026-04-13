@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Convert plain text to PDF for free online. Choose font, size, margins, and page layout. No upload, no signup — runs entirely in your browser.",
     url: "https://thepdftools.site/text-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/text-to-pdf",

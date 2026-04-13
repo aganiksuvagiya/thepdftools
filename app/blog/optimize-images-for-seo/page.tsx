@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     authors: ["thepdftools"],
     images: [
       {
-        url: `${SITE_URL}/og-home.png`,
+        url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "Image Optimization for SEO — Complete Guide for 2026",
@@ -435,9 +435,9 @@ export default function OptimizeImagesForSEO() {
             <div className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-5">
               <h3 className="text-sm font-bold uppercase tracking-wide text-slate-900">Related Posts</h3>
               <div className="mt-4 space-y-3">
-                <Link href="/blog/compress-images" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">How to Compress Images Without Losing Quality</Link>
-                <Link href="/blog/jpg-vs-png" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">JPG vs PNG: Which Format Should You Use?</Link>
-                <Link href="/blog/remove-background" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">How to Remove Image Backgrounds Instantly</Link>
+                <Link href="/blog/how-to-compress-images-for-web" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">How to Compress Images Without Losing Quality</Link>
+                <Link href="/blog/jpg-vs-png-vs-webp-which-format" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">JPG vs PNG vs WebP: Which Format Should You Use?</Link>
+                <Link href="/blog/remove-image-background-with-ai" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">How to Remove Image Backgrounds Instantly</Link>
               </div>
             </div>
           </aside>

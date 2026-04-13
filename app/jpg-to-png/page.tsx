@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "free image converter",
     "jpg png converter",
     "jpg to png converter free",
+    "jpg to png online free no upload",
+    "jpeg to png no signup",
+    "convert jpg to png without watermark",
+    "image format converter online",
     "convert jpeg to png",
     "online jpg to png converter",
     "change jpg to png",
@@ -27,7 +31,7 @@ export const metadata: Metadata = {
     description:
       "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser using HTML Canvas. Download your PNG instantly.",
     url: "https://thepdftools.site/jpg-to-png",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/jpg-to-png",

@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     "pdf to jpg",
     "pdf to png",
     "convert pdf to image online",
+    "pdf to jpg online free no upload",
+    "convert pdf to png online free",
+    "pdf page to jpg converter",
+    "high resolution pdf to image",
+    "pdf to image converter no signup",
     "free pdf converter",
     "pdf page to image",
   ],
@@ -24,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Convert PDF pages to high-quality JPG or PNG images for free online. No upload, no signup — runs entirely in your browser using pdf.js.",
     url: "https://thepdftools.site/pdf-to-image",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-to-image",
@@ -65,7 +70,7 @@ export default function PdfToImagePage() {
             name: "What image formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "You can convert PDF pages to JPG (JPEG) or PNG format. For JPG, you can also adjust the quality level to balance file size and image quality.",
+              text: "You can convert PDF pages to JPG (JPEG) or PNG format online for free. For JPG, you can also adjust the quality level to balance file size and image quality.",
             },
           },
           {
@@ -124,8 +129,8 @@ export default function PdfToImagePage() {
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Convert PDF pages to high-quality JPG or PNG images instantly in your
-                browser. Adjust quality, preview pages, and download — no upload, no
-                server, completely private.
+                browser. Use this free PDF to image converter with no upload, no
+                signup, and adjustable image quality.
               </p>
             </div>
 
@@ -154,7 +159,7 @@ export default function PdfToImagePage() {
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>Choose PNG for higher quality, JPG for smaller file sizes.</li>
               <li>Higher DPI settings produce sharper images for printing.</li>
-              <li>Each PDF page becomes a separate image file.</li>
+              <li>Each PDF page becomes a separate JPG or PNG image file.</li>
             </ul>
           </div>
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">

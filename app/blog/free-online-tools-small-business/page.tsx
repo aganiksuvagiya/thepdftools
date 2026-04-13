@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       "Stop paying for Adobe and Microsoft subscriptions. Free online tools for PDFs, images, QR codes, and more — built for small businesses.",
     url: "https://thepdftools.site/blog/free-online-tools-small-business",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/blog/free-online-tools-small-business",

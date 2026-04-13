@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     authors: ["thepdftools"],
     images: [
       {
-        url: `${SITE_URL}/og-home.png`,
+        url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "How to Merge PDF Files Online for Free",

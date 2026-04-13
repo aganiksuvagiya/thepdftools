@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     url: "https://thepdftools.site/image-resizer",
     images: [
       {
-        url: "https://thepdftools.site/og-image-resizer.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Free Image Resizer Tool - thepdftools.site",

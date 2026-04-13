@@ -19,6 +19,10 @@ export const metadata: Metadata = {
     "free pdf merger",
     "join pdf",
     "merge pdf free",
+    "merge pdf online free no upload",
+    "combine pdf files no signup",
+    "merge pdf without watermark",
+    "join pdf files online free",
     "combine pdf online",
     "pdf merger online",
     "merge multiple pdf files",
@@ -28,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Merge multiple PDF files into one document for free online. No upload, no signup. Drag, reorder, and combine PDFs instantly in your browser using pdf-lib.",
     url: "https://thepdftools.site/pdf-merge",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-merge",

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: "https://thepdftools.site/image-cropper",
     images: [
       {
-        url: "https://thepdftools.site/og-image-cropper.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Image Cropper - ThePDFTools",

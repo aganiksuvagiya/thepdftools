@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-04-07T00:00:00Z",
     authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/og-home.png`, width: 1200, height: 630, alt: "How to Compress PDF Files Online — Reduce PDF Size for Free" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Compress PDF Files Online — Reduce PDF Size for Free" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -37,18 +37,51 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: "How to Compress PDF Files Online — Reduce PDF Size for Free",
-  description: "Learn how to compress PDF files online for free. Reduce PDF size for email, faster sharing, and storage savings with our free browser-based PDF compressor tool.",
-  url: POST_URL,
-  datePublished: "2026-04-07T00:00:00Z",
-  dateModified: "2026-04-07T00:00:00Z",
-  author: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
-  publisher: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
-  mainEntityOfPage: { "@type": "WebPage", "@id": POST_URL },
-  wordCount: 1100,
-  articleSection: "PDF Compression",
-  keywords: ["compress pdf", "reduce pdf size", "pdf compressor", "shrink pdf file", "make pdf smaller"],
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      headline: "How to Compress PDF Files Online — Reduce PDF Size for Free",
+      description: "Learn how to compress PDF files online for free. Reduce PDF size for email, faster sharing, and storage savings with our free browser-based PDF compressor tool.",
+      url: POST_URL,
+      datePublished: "2026-04-07T00:00:00Z",
+      dateModified: "2026-04-07T00:00:00Z",
+      author: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
+      publisher: { "@type": "Organization", name: "thepdftools", url: SITE_URL },
+      mainEntityOfPage: { "@type": "WebPage", "@id": POST_URL },
+      wordCount: 1100,
+      articleSection: "PDF Compression",
+      keywords: ["compress pdf", "reduce pdf size", "pdf compressor", "shrink pdf file", "make pdf smaller"],
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+        { "@type": "ListItem", position: 3, name: "How to Compress PDF Files Online", item: POST_URL },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Can I compress a PDF online for free?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. You can compress a PDF for free with the browser-based PDF Compressor on thepdftools, with no signup required.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Are PDF files uploaded while compressing?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "The PDF compression tool runs in your browser whenever possible, so your documents stay on your device instead of being uploaded to a server.",
+          },
+        },
+      ],
+    },
+  ],
 };
 
 const toolLink = "font-medium text-brand-600 underline decoration-brand-200 hover:text-brand-700 hover:decoration-brand-400 transition-colors";
@@ -309,11 +342,11 @@ export default function CompressPdfFilesFree() {
                 <Link href="/blog/how-to-merge-pdf-files-online" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
                   How to Merge PDF Files Online
                 </Link>
-                <Link href="/blog/is-online-pdf-safe" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
-                  Is Online PDF Safe?
+                <Link href="/blog/convert-pdf-to-excel-free" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
+                  Convert PDF to Excel Online
                 </Link>
-                <Link href="/blog/best-free-pdf-tools-online" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
-                  Best Free PDF Tools Online
+                <Link href="/blog/convert-word-to-pdf-free" className="block text-sm font-medium text-slate-700 hover:text-brand-700 transition-colors">
+                  Convert Word to PDF Free
                 </Link>
               </div>
             </div>

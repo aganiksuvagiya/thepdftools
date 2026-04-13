@@ -62,8 +62,8 @@ export default function Footer() {
             <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Resources</h4>
             <ul className="mt-3 space-y-2">
               <li><Link href="/blog" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Blog</Link></li>
-              <li className="text-[13px] text-slate-500">No signup needed</li>
-              <li className="text-[13px] text-slate-500">No data collection</li>
+              <li><Link href="/about" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">About</Link></li>
+              <li><Link href="/privacy" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Privacy Policy</Link></li>
               <li className="text-[13px] text-slate-500">Free forever</li>
             </ul>
           </div>

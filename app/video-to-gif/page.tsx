@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     url: "https://thepdftools.site/video-to-gif",
     images: [
       {
-        url: "https://thepdftools.site/og-video-to-gif.png",
+        url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Video to GIF Converter - ThePDFTools",

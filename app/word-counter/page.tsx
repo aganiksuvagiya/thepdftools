@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Count words, characters, sentences, and paragraphs instantly. See reading and speaking time estimates. Free, no signup — runs in your browser.",
     url: "https://thepdftools.site/word-counter",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/word-counter",
@@ -54,6 +54,27 @@ export default function WordCounterPage() {
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
           { "@type": "ListItem", "position": 2, "name": "Word Counter", "item": "https://thepdftools.site/word-counter" },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I count words and characters online for free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The Word Counter is free and counts words, characters, sentences, paragraphs, and reading time in your browser.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "Is my text uploaded while counting words?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Word and character counting runs locally in your browser so your text stays on your device.",
+            },
+          },
         ],
       },
     ],

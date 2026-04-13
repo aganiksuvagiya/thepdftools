@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     title: "15 Best Free Online Tools Every Student Needs in 2026",
     description: "Free tools for students — compress, convert, merge, edit. No signup needed.",
     url: "https://thepdftools.site/blog/best-free-online-tools-for-students-2026",
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/blog/best-free-online-tools-for-students-2026",

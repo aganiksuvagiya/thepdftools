@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "convert word to pdf free",
     "doc to pdf online",
     "word to pdf converter",
+    "word to pdf online free no upload",
+    "docx to pdf converter no signup",
+    "convert doc to pdf free",
+    "word to pdf no watermark",
     "word document to pdf",
     "free word to pdf",
     "convert docx to pdf online",
@@ -26,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Convert Word documents to PDF format free online. No signup, no server upload — runs entirely in your browser.",
     url: "https://thepdftools.site/word-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/word-to-pdf",

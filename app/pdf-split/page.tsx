@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "extract pdf pages",
     "pdf splitter",
     "free pdf split",
+    "split pdf online free no upload",
+    "extract pages from pdf online",
+    "separate pdf pages no signup",
+    "pdf page extractor free",
     "separate pdf pages",
   ],
   openGraph: {
@@ -24,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Split PDF files into individual pages or custom ranges for free online. No upload, no signup — runs entirely in your browser using pdf-lib.",
     url: "https://thepdftools.site/pdf-split",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-split",

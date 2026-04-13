@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "pdf size reducer",
     "compress pdf free",
     "shrink pdf",
+    "compress pdf online free no upload",
+    "reduce pdf size online no signup",
+    "make pdf smaller online",
+    "pdf compressor no watermark",
     "pdf compression tool",
     "compress pdf without losing quality",
     "reduce pdf file size",
@@ -29,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Compress PDF files for free online. Reduce PDF file size without losing quality. No upload, no signup — runs entirely in your browser.",
     url: "https://thepdftools.site/pdf-compress",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-compress",

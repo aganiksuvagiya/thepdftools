@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "xlsx to pdf",
     "spreadsheet to pdf",
     "convert excel to pdf free",
+    "excel to pdf online free no upload",
+    "xlsx to pdf converter no signup",
+    "convert spreadsheet to pdf online",
+    "csv to pdf online free",
     "xls to pdf",
     "csv to pdf",
     "excel to pdf converter",
@@ -26,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Convert Excel spreadsheets to PDF format free online. No signup, no server upload — runs entirely in your browser.",
     url: "https://thepdftools.site/excel-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/excel-to-pdf",
@@ -67,7 +71,7 @@ export default function ExcelToPdfPage() {
             name: "What Excel formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "XLSX (Excel 2007+) and CSV files are supported. XLSX files provide the best results with full cell data extraction.",
+              text: "XLSX (Excel 2007+) and CSV files are supported for free online Excel to PDF conversion. XLSX files provide the best results with full cell data extraction.",
             },
           },
           {
@@ -118,7 +122,8 @@ export default function ExcelToPdfPage() {
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload an XLSX or CSV file and convert it to a formatted PDF table
-                instantly in your browser. No signup, no server upload — your data stays private.
+                instantly in your browser. This free Excel to PDF converter works
+                with no signup and no server upload, so your data stays private.
               </p>
             </div>
 
@@ -147,7 +152,7 @@ export default function ExcelToPdfPage() {
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>XLSX files produce the best results with full cell data extraction.</li>
               <li>CSV files are parsed directly — ensure comma-separated format.</li>
-              <li>The first row is treated as a header row and displayed in bold.</li>
+              <li>The first row is treated as a header row and displayed in bold in the PDF.</li>
             </ul>
           </div>
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">

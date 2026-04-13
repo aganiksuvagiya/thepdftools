@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Generate lorem ipsum placeholder text instantly. Choose paragraphs, sentences, or words. Copy with one click.",
     url: "https://thepdftools.site/lorem-ipsum",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/lorem-ipsum",
@@ -54,6 +54,27 @@ export default function LoremIpsumPage() {
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
           { "@type": "ListItem", "position": 2, "name": "Lorem Ipsum", "item": "https://thepdftools.site/lorem-ipsum" },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I generate lorem ipsum text for free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The Lorem Ipsum Generator creates free placeholder text with no signup required.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "Can I choose paragraphs, sentences, or words?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. You can generate lorem ipsum as paragraphs, sentences, or words depending on your layout needs.",
+            },
+          },
         ],
       },
     ],

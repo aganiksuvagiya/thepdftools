@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Encode and decode Base64 strings instantly in your browser. No upload, no signup — 100% free and private.",
     url: "https://thepdftools.site/base64",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/base64",
@@ -54,6 +54,27 @@ export default function Base64Page() {
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
           { "@type": "ListItem", "position": 2, "name": "Base64 Encoder", "item": "https://thepdftools.site/base64" },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is this Base64 encoder and decoder free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The Base64 encoder and decoder is free to use with no signup required.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "Does Base64 encoding happen in my browser?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Base64 encoding and decoding runs locally in your browser so your text stays on your device.",
+            },
+          },
         ],
       },
     ],

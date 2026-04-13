@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Generate QR codes for any text or URL for free online. Customize size, colors, and download as PNG. No signup — runs in your browser.",
     url: "https://thepdftools.site/qr-generator",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/qr-generator",

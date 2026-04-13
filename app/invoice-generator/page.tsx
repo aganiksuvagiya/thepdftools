@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "Create professional PDF invoices for free online. Add line items, tax, discounts, and download instantly. No signup, no upload — runs entirely in your browser.",
     url: "https://thepdftools.site/invoice-generator",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/invoice-generator",

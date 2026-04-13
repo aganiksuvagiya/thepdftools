@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "powerpoint to pdf",
     "convert pptx to pdf online",
     "ppt to pdf converter free",
+    "ppt to pdf online free no upload",
+    "powerpoint to pdf no signup",
+    "convert powerpoint to pdf free",
+    "pptx to pdf converter no watermark",
     "pptx to pdf",
     "presentation to pdf",
   ],
@@ -24,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Convert PowerPoint presentations to PDF format free online. No upload required — conversion happens in your browser. Download your PDF instantly.",
     url: "https://thepdftools.site/ppt-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/ppt-to-pdf",
@@ -73,7 +77,7 @@ export default function PptToPdfPage() {
             name: "What file formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "This tool supports .pptx (PowerPoint 2007+) files.",
+              text: "This tool supports .pptx (PowerPoint 2007+) files for free online PowerPoint to PDF conversion.",
             },
           },
           {
@@ -118,14 +122,14 @@ export default function PptToPdfPage() {
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
                 Convert PPTX to PDF
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  with perfect formatting
+                  free online
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Convert your PowerPoint presentations to PDF format instantly in your
-                browser. Extract slide text content and download a clean PDF — no
-                server upload, no signup required.
+                Convert your PowerPoint presentation to PDF format instantly in your
+                browser. Use this free PPTX to PDF converter with no upload, no
+                signup, and no watermark.
               </p>
             </div>
 
@@ -154,7 +158,7 @@ export default function PptToPdfPage() {
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
               <li>PDF format ensures your slides look the same on any device.</li>
               <li>Convert before sharing to prevent accidental edits.</li>
-              <li>Ideal for creating handouts from presentation files.</li>
+              <li>Ideal for creating handouts from PPTX and PowerPoint presentation files.</li>
             </ul>
           </div>
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">

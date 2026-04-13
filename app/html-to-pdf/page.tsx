@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description:
       "Convert HTML code or files to PDF format free online. No signup, no server upload — runs entirely in your browser.",
     url: "https://thepdftools.site/html-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/html-to-pdf",

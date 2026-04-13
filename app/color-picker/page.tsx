@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Pick any color and instantly convert between HEX, RGB, HSL, and CMYK formats. Copy values with one click. Free, no signup — runs in your browser.",
     url: "https://thepdftools.site/color-picker",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/color-picker",

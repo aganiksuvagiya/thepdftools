@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Remove restrictions from PDF files for free online. Unlock printing, copying, and editing restrictions instantly in your browser. No upload, no signup — 100% private and secure.",
     url: "https://thepdftools.site/pdf-unlock",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/pdf-unlock",

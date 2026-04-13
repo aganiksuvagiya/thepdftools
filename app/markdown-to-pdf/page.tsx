@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Convert Markdown to PDF for free online. Paste or upload your .md file, preview the rendered output, and download a beautifully formatted PDF. No signup, no upload to a server — runs in your browser.",
     url: "https://thepdftools.site/markdown-to-pdf",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/markdown-to-pdf",

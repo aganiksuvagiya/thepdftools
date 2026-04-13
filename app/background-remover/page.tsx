@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description:
       "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG. No signup, no watermark.",
     url: "https://thepdftools.site/background-remover",
-    images: [{ url: "https://thepdftools.site/og-image.png" }],
+    images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
   alternates: {
     canonical: "https://thepdftools.site/background-remover",
