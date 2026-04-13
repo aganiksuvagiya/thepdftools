@@ -4,25 +4,25 @@ import ToolCard from "@/components/ToolCard";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Free Online Tools — Image Compressor, PDF Merge & More",
+  title: "Free Online PDF & Image Tools — No Upload, No Signup",
   description:
-    "Free browser-based tools for everyday tasks. Compress images, convert JPG to PNG, merge PDFs, and remove backgrounds — instantly, no signup required.",
+    "Free online tools for PDF and images. Compress images, merge PDFs, convert JPG to PNG, remove backgrounds, convert Word to PDF and more — all in your browser, no signup required.",
   keywords: [
     "free online tools",
+    "free pdf tools online",
     "image compressor online",
-    "merge pdf online",
-    "remove background online",
-    "jpg to png converter",
-    "png to jpg converter",
+    "merge pdf online free",
+    "remove background online free",
+    "jpg to png converter free",
+    "word to pdf converter free",
+    "compress pdf online free",
     "image resizer online",
-    "image cropper online",
-    "pdf tools online",
-    "image tools online",
+    "pdf tools no upload",
   ],
   openGraph: {
-    title: "Free Online Tools — Image Compressor, PDF Merge & More",
+    title: "Free Online PDF & Image Tools — No Upload, No Signup",
     description:
-      "Free browser-based tools for everyday tasks. Compress images, convert JPG to PNG, merge PDFs, and remove backgrounds — instantly, no signup required.",
+      "Free online tools for PDF and images. Compress images, merge PDFs, convert JPG to PNG, remove backgrounds, convert Word to PDF and more — all in your browser, no signup required.",
     url: "https://thepdftools.site",
     images: [
       {
@@ -309,9 +309,9 @@ const tools = [
     ),},
   {
     href: "/ppt-to-pdf",
-    title: "PPT to PDF",
+    title: "PPTX to PDF",
     description:
-      "Convert PowerPoint presentations to PDF format. Extract text content from PPTX slides.",
+      "Convert PowerPoint presentations to PDF format. Upload your PPTX file and download a clean PDF instantly.",
     badge: "New",
     color: "orange" as const,
     icon: (
@@ -563,7 +563,7 @@ const seoGroups = [
       { href: "/image-to-pdf", label: "Image to PDF" },
       { href: "/text-to-pdf", label: "Text to PDF" },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
-      { href: "/ppt-to-pdf", label: "PPT to PDF" },
+      { href: "/ppt-to-pdf", label: "PPTX to PDF" },
       { href: "/pdf-to-excel", label: "PDF to Excel" },
       { href: "/markdown-to-pdf", label: "Markdown to PDF" },
       { href: "/invoice-generator", label: "Invoice Generator" },

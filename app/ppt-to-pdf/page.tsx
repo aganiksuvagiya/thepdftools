@@ -73,7 +73,7 @@ export default function PptToPdfPage() {
             name: "What file formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "This tool supports .pptx (PowerPoint 2007+) and .ppt files. For best results, use .pptx format as it allows full text extraction from the XML-based file structure.",
+              text: "This tool supports .pptx (PowerPoint 2007+) files.",
             },
           },
           {
@@ -90,7 +90,7 @@ export default function PptToPdfPage() {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PPT to PDF", "item": "https://thepdftools.site/ppt-to-pdf" },
+          { "@type": "ListItem", "position": 2, "name": "PPTX to PDF", "item": "https://thepdftools.site/ppt-to-pdf" },
         ],
       },
     ],
@@ -112,11 +112,11 @@ export default function PptToPdfPage() {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                 </svg>
-                PPT to PDF
+                PPTX to PDF
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Convert PPT to PDF
+                Convert PPTX to PDF
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
                   with perfect formatting
                 </span>
@@ -172,7 +172,7 @@ export default function PptToPdfPage() {
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">How to Convert PowerPoint to PDF Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
-              <li>Click the upload area above or drag and drop your .pptx or .ppt file into the converter.</li>
+              <li>Click the upload area above or drag and drop your .pptx file into the converter.</li>
               <li>The tool reads your PowerPoint file directly in your browser — nothing is sent to a server.</li>
               <li>Text content is extracted from each slide and organized into a PDF document.</li>
               <li>Review the slide count and file information displayed after processing.</li>
@@ -210,7 +210,7 @@ export default function PptToPdfPage() {
               {[
                 { q: "Does this converter preserve full formatting?", a: "This lightweight browser-based converter focuses on extracting text content from your PowerPoint slides and creating a clean PDF. It does not preserve complex layouts, animations, embedded images, or custom fonts. For full visual fidelity, export directly from Microsoft PowerPoint or Google Slides." },
                 { q: "Is it safe to convert my PowerPoint file here?", a: "Absolutely. Your PowerPoint file is processed entirely within your web browser using JavaScript. No files are uploaded to any external server, no data is stored remotely, and no third parties ever see your content. The tool works with complete privacy." },
-                { q: "What file formats are supported?", a: "This tool supports .pptx (Office Open XML, PowerPoint 2007 and later) and .ppt (legacy PowerPoint format) files. For best results, use the modern .pptx format, as it uses an XML-based structure that allows complete text extraction. Legacy .ppt files have a binary format and may have limited text extraction." },
+                { q: "What file formats are supported?", a: "This tool supports .pptx (Office Open XML, PowerPoint 2007 and later) files." },
                 { q: "Can I convert multiple presentations?", a: "Yes. You can convert as many PowerPoint files as you need, one after another. Each conversion happens instantly inside your browser with no server round-trip. There are no daily limits or file-count restrictions." },
                 { q: "Is there a file size limit?", a: "There is no server-imposed file size limit. Since processing happens locally in your browser, the practical limit depends on your device's available memory. Most presentations under 100 MB convert without any issues." },
               ].map((item) => (
@@ -229,7 +229,7 @@ export default function PptToPdfPage() {
 
           {/* SEO paragraph */}
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
-            <p className="text-[15px] leading-8 text-slate-500">Our free online PowerPoint to PDF converter is designed for anyone who needs to convert PPTX presentations to PDF format quickly and securely. Whether you are a student converting lecture slides for study notes, a professional sharing presentation content with colleagues who do not have PowerPoint, or a teacher creating printable handouts from your slides, this tool handles it efficiently. Because the conversion runs entirely inside your browser using JavaScript, your files never leave your computer, eliminating privacy concerns and the wait times associated with server-side processing. The tool extracts text content from each slide in your presentation and creates a clean, organized PDF document with one page per slide. This makes it ideal for archiving presentation text, creating searchable documents from slide content, and sharing talking points without requiring PowerPoint software. The converter supports both modern .pptx files and legacy .ppt format. It works on Windows, macOS, Linux, Android, and iOS devices with any modern web browser. There are no file-size limits, no daily conversion caps, and no account registration required. Simply drop your PowerPoint file, wait for processing, and download your PDF instantly.</p>
+            <p className="text-[15px] leading-8 text-slate-500">Our free online PowerPoint to PDF converter is designed for anyone who needs to convert PPTX presentations to PDF format quickly and securely. Whether you are a student converting lecture slides for study notes, a professional sharing presentation content with colleagues who do not have PowerPoint, or a teacher creating printable handouts from your slides, this tool handles it efficiently. Because the conversion runs entirely inside your browser using JavaScript, your files never leave your computer, eliminating privacy concerns and the wait times associated with server-side processing. The tool extracts text content from each slide in your presentation and creates a clean, organized PDF document with one page per slide. This makes it ideal for archiving presentation text, creating searchable documents from slide content, and sharing talking points without requiring PowerPoint software. The converter supports modern .pptx files (PowerPoint 2007 and later). It works on Windows, macOS, Linux, Android, and iOS devices with any modern web browser. There are no file-size limits, no daily conversion caps, and no account registration required. Simply drop your PowerPoint file, wait for processing, and download your PDF instantly.</p>
           </div>
 
           {/* Related tools */}

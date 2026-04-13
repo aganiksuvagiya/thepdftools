@@ -10,7 +10,7 @@ const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
 export const metadata: Metadata = {
   title: "Convert Excel to PDF Free Online – No Upload Required",
   description:
-    "Convert Excel spreadsheets to PDF format free online. Upload your XLSX, XLS, or CSV file and download a clean PDF with table formatting. No signup, no server upload — runs entirely in your browser.",
+    "Convert Excel spreadsheets to PDF format free online. Upload your XLSX or CSV file and download a clean PDF with table formatting. No signup, no server upload — runs entirely in your browser.",
   keywords: [
     "excel to pdf",
     "xlsx to pdf",
@@ -67,7 +67,7 @@ export default function ExcelToPdfPage() {
             name: "What Excel formats are supported?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "XLSX (Excel 2007+), XLS (legacy Excel), and CSV files are all supported. XLSX files provide the best results with full cell data extraction.",
+              text: "XLSX (Excel 2007+) and CSV files are supported. XLSX files provide the best results with full cell data extraction.",
             },
           },
           {
@@ -117,7 +117,7 @@ export default function ExcelToPdfPage() {
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload an XLSX, XLS, or CSV file and convert it to a formatted PDF table
+                Upload an XLSX or CSV file and convert it to a formatted PDF table
                 instantly in your browser. No signup, no server upload — your data stays private.
               </p>
             </div>
@@ -164,7 +164,7 @@ export default function ExcelToPdfPage() {
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">How to Convert Excel to PDF Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
-              <li>Upload your Excel file by dragging and dropping or clicking the upload area. XLSX, XLS, and CSV formats are supported.</li>
+              <li>Upload your Excel file by dragging and dropping or clicking the upload area. XLSX and CSV formats are supported.</li>
               <li>Preview the extracted table data to verify the content looks correct.</li>
               <li>Click &quot;Convert to PDF&quot; to generate a formatted PDF with table borders and column sizing.</li>
               <li>Download your PDF instantly. The converted file is ready for sharing or printing.</li>
@@ -180,7 +180,7 @@ export default function ExcelToPdfPage() {
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Multiple Formats</h3>
-                <p className="mt-1 text-sm text-slate-500">Supports XLSX, XLS, and CSV files. Upload any spreadsheet format and get a formatted PDF table with your data.</p>
+                <p className="mt-1 text-sm text-slate-500">Supports XLSX and CSV files. Upload your spreadsheet and get a formatted PDF table with your data.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Data Preview</h3>
@@ -198,7 +198,7 @@ export default function ExcelToPdfPage() {
             <div className="mt-5 divide-y divide-slate-100">
               {[
                 { q: "Is it safe to convert Excel files here?", a: "Absolutely. Your Excel files never leave your browser. All conversion runs client-side using JavaScript, so no data is uploaded to any server. Your spreadsheet data remains completely private on your device." },
-                { q: "What Excel formats are supported?", a: "XLSX (Excel 2007+), XLS (legacy Excel), and CSV (comma-separated values) files are all supported. XLSX files provide the best results with full cell data extraction from the XML-based structure." },
+                { q: "What Excel formats are supported?", a: "XLSX (Excel 2007+) and CSV (comma-separated values) files are supported. XLSX files provide the best results with full cell data extraction." },
                 { q: "Will cell formatting be preserved?", a: "This converter extracts cell values and renders them as a formatted table in the PDF with borders and headers. Cell colors, merged cells, formulas, and charts are not preserved. For full visual fidelity, export directly from Microsoft Excel." },
                 { q: "Can I convert large spreadsheets?", a: "Yes. The tool auto-paginates large tables across multiple PDF pages. Performance depends on your device's memory and processing power. Most spreadsheets convert smoothly." },
                 { q: "Does it support multiple sheets?", a: "Currently the tool converts the first sheet (Sheet1) of your workbook. For multi-sheet workbooks, you can convert each sheet separately or combine them in a PDF merger tool." },
@@ -219,10 +219,10 @@ export default function ExcelToPdfPage() {
           {/* SEO Content */}
           <div className="mt-12 space-y-6 text-sm text-gray-500 leading-relaxed">
             <h2 className="text-lg font-semibold text-gray-900">About This Tool</h2>
-            <p>Our free Excel to PDF converter transforms XLSX, XLS, and CSV spreadsheets into clean, formatted PDF documents directly in your browser. The tool parses the internal XML structure of Excel files to extract cell data, shared strings, and sheet layout, then renders the content as a professional table in your PDF with borders, bold headers, and auto-sized columns. No data ever leaves your device.</p>
+            <p>Our free Excel to PDF converter transforms XLSX and CSV spreadsheets into clean, formatted PDF documents directly in your browser. The tool parses the internal XML structure of Excel files to extract cell data, shared strings, and sheet layout, then renders the content as a professional table in your PDF with borders, bold headers, and auto-sized columns. No data ever leaves your device.</p>
             <h2 className="text-lg font-semibold text-gray-900">Key Features</h2>
             <ul className="list-disc list-inside space-y-1">
-              <li>Supports XLSX, XLS, and CSV spreadsheet formats</li>
+              <li>Supports XLSX and CSV spreadsheet formats</li>
               <li>Renders data as formatted tables with borders and bold headers</li>
               <li>Auto-pagination for large spreadsheets across multiple PDF pages</li>
               <li>Live data preview before conversion</li>

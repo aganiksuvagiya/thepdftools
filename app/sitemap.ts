@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
-  const lastModified = new Date();
+  const lastModified = new Date("2026-04-13");
 
   const routes: Array<{
     path: string;
@@ -63,6 +63,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/blog/convert-video-to-gif-free", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/free-invoice-generator-freelancers", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/compress-pdf-files-free", changeFrequency: "monthly", priority: 0.78 },
+    { path: "/pdf-editor", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/about", changeFrequency: "monthly", priority: 0.6 },
+    { path: "/privacy", changeFrequency: "monthly", priority: 0.5 },
   ];
 
   return routes.map((route) => ({

@@ -43,68 +43,6 @@ export default function HtmlToPdfClient() {
     }
   }, []);
 
-  const handleSaveAsPdf = () => {
-    if (!htmlContent.trim()) {
-      setError("Please enter or upload HTML content first.");
-      return;
-    }
-
-    // Create a hidden iframe with the HTML content and trigger print dialog
-    const printW = viewport === "mobile" ? 375 : viewport === "tablet" ? 768 : 1280;
-    const printFrame = document.createElement("iframe");
-    printFrame.style.cssText =
-      `position:fixed;left:-9999px;top:-9999px;width:${printW}px;height:900px;border:none;`;
-    document.body.appendChild(printFrame);
-
-    const frameDoc = printFrame.contentDocument || printFrame.contentWindow?.document;
-    if (!frameDoc) {
-      setError("Could not create print frame. Please try again.");
-      document.body.removeChild(printFrame);
-      return;
-    }
-
-    const vpWidth = viewport === "mobile" ? 375 : viewport === "tablet" ? 768 : 1280;
-    frameDoc.open();
-    frameDoc.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=${vpWidth}">
-        <style>
-          @page { size: ${viewport === "mobile" ? "4in 8in" : viewport === "tablet" ? "8in 11in" : "A4 portrait"}; margin: 0.5cm; }
-          body { width: ${vpWidth}px; margin: 0 auto; transform-origin: top left; }
-          @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-          }
-        </style>
-      </head>
-      <body>${htmlContent.replace(/<html[^>]*>|<\/html>|<head[^>]*>[\s\S]*?<\/head>|<body[^>]*>|<\/body>/gi, (match) => {
-        if (match.toLowerCase().startsWith('<body')) return '';
-        if (match.toLowerCase() === '</body>') return '';
-        if (match.toLowerCase().startsWith('<html')) return '';
-        if (match.toLowerCase() === '</html>') return '';
-        if (match.toLowerCase().startsWith('<head')) return '';
-        return '';
-      })}</body>
-      </html>
-    `);
-    frameDoc.close();
-
-    // Wait for content to load then trigger print
-    setTimeout(() => {
-      try {
-        printFrame.contentWindow?.print();
-      } catch {
-        setError("Print dialog could not be opened. Please try again.");
-      }
-      // Clean up after a delay
-      setTimeout(() => {
-        document.body.removeChild(printFrame);
-      }, 1000);
-    }, 500);
-  };
-
   const handleExtractTextToPdf = async () => {
     if (!htmlContent.trim()) {
       setError("Please enter or upload HTML content first.");
@@ -465,55 +403,20 @@ export default function HtmlToPdfClient() {
       {htmlContent.trim() && !textResult && (
         <div className="space-y-3">
           <button
-            onClick={handleSaveAsPdf}
+            onClick={handleExtractTextToPdf}
             disabled={loading}
             className="btn-primary w-full"
           >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18.75 7.131s0 0 0 0"
-              />
-            </svg>
-            Save as PDF (Print Dialog)
-          </button>
-          <button
-            onClick={handleExtractTextToPdf}
-            disabled={loading}
-            className="btn-secondary w-full"
-          >
             {loading ? (
               <>
-                <svg
-                  className="h-4 w-4 animate-spin"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
+                <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Extracting...
+                Converting...
               </>
             ) : (
-              "Extract Text to PDF"
+              "Convert to PDF"
             )}
           </button>
         </div>
@@ -537,22 +440,6 @@ export default function HtmlToPdfClient() {
               />
             </svg>
             Download {textResult.name}
-          </button>
-          <button onClick={handleSaveAsPdf} className="btn-secondary w-full">
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18.75 7.131s0 0 0 0"
-              />
-            </svg>
-            Save as PDF (Print Dialog)
           </button>
           <button onClick={handleReset} className="btn-secondary w-full">
             Convert Another File

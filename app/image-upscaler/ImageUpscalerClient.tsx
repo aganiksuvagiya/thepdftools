@@ -15,12 +15,14 @@ export default function ImageUpscalerClient() {
   const [upscaled, setUpscaled] = useState<{ url: string; width: number; height: number } | null>(null);
   const [scale, setScale] = useState<number>(2);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleFiles = useCallback((files: File[]) => {
     const file = files[0];
     setUpscaled(null);
     setError(null);
+    setProgress("");
 
     const img = new Image();
     img.onload = () => {
@@ -41,41 +43,99 @@ export default function ImageUpscalerClient() {
     if (!original) return;
     setLoading(true);
     setError(null);
+    setProgress("Loading AI model...");
 
     try {
+      // Load image as HTMLImageElement for Upscaler
       const img = new Image();
       img.crossOrigin = "anonymous";
-
       await new Promise<void>((resolve, reject) => {
         img.onload = () => resolve();
         img.onerror = () => reject(new Error("Failed to load image"));
         img.src = original.url;
       });
 
-      const newWidth = original.width * scale;
-      const newHeight = original.height * scale;
+      setProgress("Enhancing image with AI...");
 
-      const canvas = document.createElement("canvas");
-      canvas.width = newWidth;
-      canvas.height = newHeight;
+      const Upscaler = (await import("upscaler")).default;
+      const { x2, x4 } = await import("@upscalerjs/esrgan-slim");
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Canvas not supported");
+      const model = scale >= 4 ? x4 : x2;
 
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+      const upscaler = new Upscaler({
+        model,
+      });
 
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1.0)
-      );
+      // Upscaler returns a base64 string
+      const result = await upscaler.upscale(img, {
+        output: "base64",
+        progress: (pct: number) => {
+          setProgress(`Enhancing image with AI... ${Math.round(pct * 100)}%`);
+        },
+      });
 
-      if (!blob) throw new Error("Failed to create image");
+      // Get upscaled dimensions from result
+      const upscaledImg = new Image();
+      await new Promise<void>((resolve, reject) => {
+        upscaledImg.onload = () => resolve();
+        upscaledImg.onerror = reject;
+        upscaledImg.src = result as string;
+      });
 
-      const url = URL.createObjectURL(blob);
-      setUpscaled({ url, width: newWidth, height: newHeight });
-    } catch {
-      setError("Upscaling failed. Please try another image.");
+      // If scale > 2, do additional canvas resize (ESRGAN does 2x natively)
+      if (scale > 2) {
+        setProgress(`Scaling to ${scale}x...`);
+        const targetW = original.width * scale;
+        const targetH = original.height * scale;
+        const canvas = document.createElement("canvas");
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext("2d")!;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(upscaledImg, 0, 0, targetW, targetH);
+        const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/png", 1.0));
+        if (!blob) throw new Error("Failed to create image");
+        const url = URL.createObjectURL(blob);
+        setUpscaled({ url, width: targetW, height: targetH });
+      } else {
+        // Convert base64 to blob URL
+        const res = await fetch(result as string);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        setUpscaled({ url, width: upscaledImg.naturalWidth, height: upscaledImg.naturalHeight });
+      }
+
+      setProgress("");
+    } catch (err: unknown) {
+      console.error("Upscale error:", err);
+      // Fallback to canvas resize if AI fails
+      try {
+        setProgress("AI unavailable, using smart resize...");
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        await new Promise<void>((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = reject;
+          img.src = original.url;
+        });
+        const newWidth = original.width * scale;
+        const newHeight = original.height * scale;
+        const canvas = document.createElement("canvas");
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        const ctx = canvas.getContext("2d")!;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/png", 1.0));
+        if (!blob) throw new Error("Failed to create image");
+        const url = URL.createObjectURL(blob);
+        setUpscaled({ url, width: newWidth, height: newHeight });
+        setProgress("");
+      } catch {
+        setError("Upscaling failed. Please try another image.");
+      }
     } finally {
       setLoading(false);
     }
@@ -147,10 +207,10 @@ export default function ImageUpscalerClient() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Upscaling...
+                {progress || "Processing..."}
               </>
             ) : (
-              `Upscale ${scale}x`
+              `Upscale ${scale}x with AI`
             )}
           </button>
 
@@ -181,7 +241,7 @@ export default function ImageUpscalerClient() {
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-medium text-gray-700">Upscaled</p>
+              <p className="text-sm font-medium text-gray-700">AI Upscaled</p>
               <div className="overflow-hidden rounded-xl border border-gray-100 min-h-[12rem] flex items-center justify-center bg-gray-50">
                 {upscaled ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -192,7 +252,7 @@ export default function ImageUpscalerClient() {
                   />
                 ) : (
                   <p className="text-sm text-gray-400">
-                    {loading ? "Processing..." : "Result will appear here"}
+                    {loading ? (progress || "Processing...") : "Result will appear here"}
                   </p>
                 )}
               </div>

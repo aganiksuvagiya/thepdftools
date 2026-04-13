@@ -42,7 +42,7 @@ const categories = [
       { href: "/pdf-to-image", label: "PDF to Image" },
       { href: "/pdf-to-word", label: "PDF to Word" },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
-      { href: "/ppt-to-pdf", label: "PPT to PDF" },
+      { href: "/ppt-to-pdf", label: "PPTX to PDF" },
       { href: "/word-to-pdf", label: "Word to PDF" },
       { href: "/excel-to-pdf", label: "Excel to PDF" },
       { href: "/html-to-pdf", label: "HTML to PDF" },
