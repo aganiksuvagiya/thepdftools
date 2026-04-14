@@ -217,7 +217,7 @@ export default function BackgroundRemoverClient() {
               >
                 {bgImageUrl ? "Change Image" : "Upload Image"}
               </button>
-              {bgImageUrl && <img src={bgImageUrl} alt="bg" className="h-7 w-10 object-cover rounded" />}
+              {bgImageUrl && <img src={bgImageUrl} alt="background remover preview color" className="h-7 w-10 object-cover rounded" />}
               <input ref={bgImageInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) setBgImageUrl(URL.createObjectURL(f)); }} />
             </div>
           )}
@@ -390,7 +390,7 @@ export default function BackgroundRemoverClient() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={selectedItem.previewUrl}
-                      alt="Original"
+                      alt="original image before background removal"
                       className="max-h-full max-w-full object-contain"
                       style={{ transform: `scale(${zoom})`, transformOrigin: "center" }}
                     />
@@ -404,7 +404,7 @@ export default function BackgroundRemoverClient() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={selectedItem.resultUrl}
-                        alt="Result"
+                        alt="transparent background result no upload"
                         className="max-h-full max-w-full object-contain"
                         style={{ transform: `scale(${zoom})`, transformOrigin: "center" }}
                       />

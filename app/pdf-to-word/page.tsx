@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PdfToWordClient = dynamic(() => import("./PdfToWordClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PdfToWordClient = dynamic(() => import("./PdfToWordClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PDF to Word Converter Online — Convert PDF to DOCX",
+  title: "PDF To Word Online Free No Upload",
   description:
-    "Convert PDF files to editable Word documents for free online. Extract text from PDFs and download as .doc files. No upload, no signup — runs entirely in your browser.",
+    "Use PDF To Word online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "pdf to word",
     "pdf to docx",
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     "extract text from pdf",
   ],
   openGraph: {
-    title: "Free PDF to Word Converter Online — Convert PDF to DOCX",
+    title: "PDF To Word Online Free No Upload",
     description:
-      "Convert PDF files to editable Word documents for free online. Extract text from PDFs and download as .doc files. No upload, no signup — runs entirely in your browser.",
+    "Use PDF To Word online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/pdf-to-word",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -245,6 +246,7 @@ export default function PdfToWordPage() {
               <Link href="/ppt-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PPT to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-to-word" />
         </div>
       </div>
     </div>

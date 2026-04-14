@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const BackgroundRemoverClient = dynamic(() => import("./BackgroundRemoverClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const BackgroundRemoverClient = dynamic(() => import("./BackgroundRemoverClient"
 });
 
 export const metadata: Metadata = {
-  title: "Free AI Background Remover Online — Remove Image Background Instantly",
+  title: "Background Remover Online Free No Upload",
   description:
-    "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG. No signup, no watermark.",
+    "Use Background Remover online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "background remover",
     "remove background online",
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
     "ai remove background",
   ],
   openGraph: {
-    title: "Free AI Background Remover Online — Remove Image Background Instantly",
+    title: "Background Remover Online Free No Upload",
     description:
-      "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG. No signup, no watermark.",
+    "Use Background Remover online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/background-remover",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -291,6 +292,7 @@ export default function BackgroundRemoverPage() {
               <Link href="/jpg-to-png" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">JPG to PNG</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="background-remover" />
         </div>
       </div>
     </div>

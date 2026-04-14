@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const WordToPdfClient = dynamic(() => import("./WordToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const WordToPdfClient = dynamic(() => import("./WordToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Convert Word to PDF Free Online – No Upload Required",
+  title: "Word To PDF Online Free No Upload",
   description:
-    "Convert Word documents to PDF format free online. Upload your DOC or DOCX file and download a clean PDF instantly. No signup, no server upload — runs entirely in your browser.",
+    "Use Word To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "word to pdf",
     "docx to pdf",
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     "convert docx to pdf online",
   ],
   openGraph: {
-    title: "Convert Word to PDF Free Online – No Upload Required",
+    title: "Word To PDF Online Free No Upload",
     description:
-      "Convert Word documents to PDF format free online. No signup, no server upload — runs entirely in your browser.",
+    "Use Word To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/word-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -249,6 +250,7 @@ export default function WordToPdfPage() {
               <Link href="/html-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">HTML to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="word-to-pdf" />
         </div>
       </div>
     </div>

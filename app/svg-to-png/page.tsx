@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const SvgToPngClient = dynamic(() => import("./SvgToPngClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const SvgToPngClient = dynamic(() => import("./SvgToPngClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free SVG to PNG Converter Online — Convert SVG to PNG Instantly",
+  title: "SVG To PNG Online Free No Upload",
   description:
-    "Convert SVG to PNG for free online. Choose scale (1x–4x), transparent or white background. No upload, no signup — runs entirely in your browser.",
+    "Use SVG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "svg to png",
     "convert svg to png",
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
     "free svg converter",
   ],
   openGraph: {
-    title: "Free SVG to PNG Converter Online — Convert SVG to PNG Instantly",
+    title: "SVG To PNG Online Free No Upload",
     description:
-      "Convert SVG to PNG for free online. Choose scale (1x–4x), transparent or white background. No upload, no signup — runs entirely in your browser.",
+    "Use SVG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/svg-to-png",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -299,6 +300,7 @@ export default function SvgToPngPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="svg-to-png" />
         </div>
       </div>
     </div>

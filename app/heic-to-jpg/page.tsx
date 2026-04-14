@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const HeicToJpgClient = dynamic(() => import("./HeicToJpgClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const HeicToJpgClient = dynamic(() => import("./HeicToJpgClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free HEIC to JPG Converter Online — Convert iPhone Photos to JPG",
+  title: "HEIC To JPG Online Free No Upload",
   description:
-    "Convert HEIC and HEIF images to JPG format free online. Perfect for iPhone photos. Adjustable quality, batch conversion, no upload required — runs entirely in your browser.",
+    "Use HEIC To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "heic to jpg",
     "convert heic to jpg",
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
     "open heic on windows",
   ],
   openGraph: {
-    title: "Free HEIC to JPG Converter Online — Convert iPhone Photos to JPG",
+    title: "HEIC To JPG Online Free No Upload",
     description:
-      "Convert HEIC and HEIF images to JPG format free online. Perfect for iPhone photos. No upload required — runs entirely in your browser.",
+    "Use HEIC To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/heic-to-jpg",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
     type: "website",
@@ -306,6 +307,7 @@ export default function HeicToJpgPage() {
               <Link href="/image-resizer" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Resizer</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="heic-to-jpg" />
         </div>
       </div>
     </div>

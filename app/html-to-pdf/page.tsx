@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const HtmlToPdfClient = dynamic(() => import("./HtmlToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const HtmlToPdfClient = dynamic(() => import("./HtmlToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Convert HTML to PDF Free Online – No Upload Required",
+  title: "HTML To PDF Online Free No Upload",
   description:
-    "Convert HTML code or files to PDF format free online. Paste HTML or upload an .html file and save as PDF with full formatting. No signup, no server upload — runs entirely in your browser.",
+    "Use HTML To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "html to pdf",
     "convert html to pdf",
@@ -22,9 +23,9 @@ export const metadata: Metadata = {
     "html to pdf online free",
   ],
   openGraph: {
-    title: "Convert HTML to PDF Free Online – No Upload Required",
+    title: "HTML To PDF Online Free No Upload",
     description:
-      "Convert HTML code or files to PDF format free online. No signup, no server upload — runs entirely in your browser.",
+    "Use HTML To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/html-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -246,6 +247,7 @@ export default function HtmlToPdfPage() {
               <Link href="/ppt-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PPT to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="html-to-pdf" />
         </div>
       </div>
     </div>

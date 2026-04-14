@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PdfUnlockClient = dynamic(() => import("./PdfUnlockClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PdfUnlockClient = dynamic(() => import("./PdfUnlockClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PDF Unlock Tool Online — Remove PDF Restrictions",
+  title: "PDF Unlock Online Free No Upload",
   description:
-    "Remove restrictions from PDF files for free online. Unlock printing, copying, and editing restrictions instantly in your browser. No upload, no signup — 100% private and secure.",
+    "Use PDF Unlock online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "pdf unlock",
     "remove pdf password",
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
     "free pdf unlocker",
   ],
   openGraph: {
-    title: "Free PDF Unlock Tool Online — Remove PDF Restrictions",
+    title: "PDF Unlock Online Free No Upload",
     description:
-      "Remove restrictions from PDF files for free online. Unlock printing, copying, and editing restrictions instantly in your browser. No upload, no signup — 100% private and secure.",
+    "Use PDF Unlock online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/pdf-unlock",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -411,6 +412,7 @@ export default function PdfUnlockPage() {
               </Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-unlock" />
         </div>
       </div>
     </div>

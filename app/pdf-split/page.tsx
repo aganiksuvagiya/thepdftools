@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PdfSplitClient = dynamic(() => import("./PdfSplitClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PdfSplitClient = dynamic(() => import("./PdfSplitClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PDF Split Tool Online — Extract & Split PDF Pages",
+  title: "PDF Split Online Free No Upload",
   description:
-    "Split PDF files into individual pages or custom ranges for free online. No upload, no signup — runs entirely in your browser using pdf-lib.",
+    "Use PDF Split online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "pdf split",
     "split pdf online",
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     "separate pdf pages",
   ],
   openGraph: {
-    title: "Free PDF Split Tool Online — Extract & Split PDF Pages",
+    title: "PDF Split Online Free No Upload",
     description:
-      "Split PDF files into individual pages or custom ranges for free online. No upload, no signup — runs entirely in your browser using pdf-lib.",
+    "Use PDF Split online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/pdf-split",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -245,6 +246,7 @@ export default function PdfSplitPage() {
               <Link href="/screenshot-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Screenshot to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-split" />
         </div>
       </div>
     </div>

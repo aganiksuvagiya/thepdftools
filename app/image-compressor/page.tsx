@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageCompressorClient = dynamic(() => import("./ImageCompressorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageCompressorClient = dynamic(() => import("./ImageCompressorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Image Compressor Online — Reduce Image Size Without Quality Loss",
+  title: "Image Compressor Online Free No Upload",
   description:
-    "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality. No upload, no signup — runs in your browser.",
+    "Use Image Compressor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "image compressor",
     "compress image online",
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
     "compress images for website",
   ],
   openGraph: {
-    title: "Free Image Compressor Online — Reduce Image Size Without Quality Loss",
+    title: "Image Compressor Online Free No Upload",
     description:
-      "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality. No upload, no signup — runs in your browser.",
+    "Use Image Compressor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-compressor",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -296,6 +297,7 @@ export default function ImageCompressorPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-compressor" />
         </div>
       </div>
     </div>

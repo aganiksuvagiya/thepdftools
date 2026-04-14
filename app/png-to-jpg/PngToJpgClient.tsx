@@ -133,7 +133,7 @@ export default function PngToJpgClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
-                  alt="Original PNG"
+                  alt="original PNG before JPG conversion"
                   className="w-full object-contain max-h-48 bg-gray-50"
                 />
               </div>
@@ -152,7 +152,7 @@ export default function PngToJpgClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={result.url}
-                    alt="Converted JPG"
+                    alt="converted JPG image online free no upload"
                     className="w-full object-contain max-h-48 animate-fade-in"
                   />
                 ) : (

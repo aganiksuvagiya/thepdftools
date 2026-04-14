@@ -3,300 +3,335 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 const PdfCompressClient = dynamic(() => import("./PdfCompressClient"), {
-  loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
+  loading: () => (
+    <div className="h-64 animate-pulse rounded-lg border border-slate-200 bg-white" />
+  ),
   ssr: false,
 });
 
+const SITE_URL = "https://thepdftools.site";
+const PAGE_URL = `${SITE_URL}/pdf-compress`;
+
 export const metadata: Metadata = {
-  title: "Free PDF Compressor Online — Reduce PDF File Size Instantly",
+  title: "Compress PDF Online Free (No Upload, Fast & Secure)",
   description:
-    "Compress PDF files for free online. Reduce PDF file size without losing quality. No upload, no signup — runs entirely in your browser.",
+    "Reduce PDF file size without losing quality. Free, fast & no upload required.",
   keywords: [
-    "pdf compressor",
-    "compress pdf online",
-    "reduce pdf size",
-    "pdf size reducer",
-    "compress pdf free",
-    "shrink pdf",
-    "compress pdf online free no upload",
-    "reduce pdf size online no signup",
-    "make pdf smaller online",
-    "pdf compressor no watermark",
-    "pdf compression tool",
-    "compress pdf without losing quality",
-    "reduce pdf file size",
-    "online pdf compressor",
+    "compress pdf online free",
+    "compress pdf without losing quality online free",
+    "reduce pdf file size online",
+    "pdf compressor no upload",
     "free pdf compressor",
+    "no upload pdf tools",
+    "browser-based pdf compressor",
+    "secure file processing",
   ],
-  openGraph: {
-    title: "Free PDF Compressor Online — Reduce PDF File Size Instantly",
-    description:
-      "Compress PDF files for free online. Reduce PDF file size without losing quality. No upload, no signup — runs entirely in your browser.",
-    url: "https://thepdftools.site/pdf-compress",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
   alternates: {
-    canonical: "https://thepdftools.site/pdf-compress",
+    canonical: PAGE_URL,
+  },
+  openGraph: {
+    title: "Compress PDF Online Free (No Upload, Fast & Secure)",
+    description:
+      "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+    url: PAGE_URL,
+    type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "compress pdf online free no upload",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Compress PDF Online Free (No Upload, Fast & Secure)",
+    description:
+      "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 
-export default function PdfCompressPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebApplication",
-        name: "Free PDF Compressor",
-        url: "https://thepdftools.site/pdf-compress",
-        applicationCategory: "UtilityApplication",
-        operatingSystem: "Any",
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-        },
-        description:
-          "Compress PDF files for free online. Reduce PDF file size without losing quality. Runs entirely in your browser.",
-      },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to compress PDFs here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your PDF files never leave your browser. All compression is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "How much can I reduce the PDF file size?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Reduction depends on the original PDF content. PDFs with lots of metadata, unused objects, or embedded fonts can see significant size reductions. Typical savings range from 5% to 40%.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will compressing my PDF reduce its quality?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. Our compressor removes unnecessary metadata and unused objects without altering the visual content of your PDF. Text, images, and layout remain intact.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens in your browser, so it depends on your device's memory. Most PDFs up to 100MB work smoothly on modern devices.",
-            },
-          },
-        ],
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Compressor", "item": "https://thepdftools.site/pdf-compress" },
-        ],
-      },
-    ],
-  };
+const faqItems = [
+  {
+    question: "Is this PDF compressor safe?",
+    answer:
+      "Yes. This PDF compressor is safe to use because it is built for secure file processing in your browser. Your document is handled locally whenever browser-based compression is supported.",
+  },
+  {
+    question: "Does it upload files?",
+    answer:
+      "No. This is a PDF compressor no upload workflow. Your file is processed in the browser, so you can reduce PDF file size online without sending the document to a server.",
+  },
+  {
+    question: "How to compress PDF without losing quality?",
+    answer:
+      "To compress PDF without losing quality online free, upload your PDF, start with a balanced compression setting, preview the output, and download the reduced file. Text and layout are preserved while unnecessary file data is optimized.",
+  },
+  {
+    question: "Is it free?",
+    answer:
+      "Yes. The tool is free to use with no signup, no watermark, and no forced software installation.",
+  },
+  {
+    question: "Does it work on mobile?",
+    answer:
+      "Yes. The PDF compressor works on modern mobile, tablet, and desktop browsers with a responsive interface.",
+  },
+];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      name: "Compress PDF Online Free",
+      url: PAGE_URL,
+      description:
+        "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+      mainEntity: {
+        "@id": `${PAGE_URL}#pdf-compressor-app`,
+      },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${PAGE_URL}#pdf-compressor-app`,
+      name: "Compress PDF Online Free",
+      applicationCategory: "UtilitiesApplication",
+      operatingSystem: "Any",
+      url: PAGE_URL,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description:
+        "Free browser-based PDF compressor no upload tool to reduce PDF file size online without losing quality.",
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Compress PDF Online Free",
+          item: PAGE_URL,
+        },
+      ],
+    },
+  ],
+};
+
+export default function PdfCompressPage() {
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
-          <div className="relative px-6 py-10 sm:px-10 sm:py-12">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-                PDF Compress
-              </div>
 
-              <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Compress PDFs
-                <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  without losing quality
-                </span>
-              </h1>
-
-              <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload a PDF file and reduce its size instantly in your browser.
-                No signup, no upload to a server, and no extra steps.
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <section className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="grid gap-8 p-6 sm:p-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="inline-flex rounded-lg bg-brand-50 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-brand-700">
+                PDF compressor no upload
               </p>
-            </div>
-
-            <div className="mt-8">
-              <PdfCompressClient />
-            </div>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {[
-                {
-                  title: "Best for sharing",
-                  text: "Send smaller PDFs via email, chat, or file-sharing platforms without hitting size limits.",
-                },
-                {
-                  title: "Best for storage",
-                  text: "Free up disk space and cloud storage by compressing archived documents and reports.",
-                },
-                {
-                  title: "Best for privacy",
-                  text: "Everything runs locally on your device with browser-only processing. No data leaves your machine.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm"
+              <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+                Compress PDF Online Free
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                Reduce PDF file size online with a free, fast, browser-based
+                PDF compressor. No upload required, no signup, and no extra
+                software installation.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#pdf-compressor"
+                  className="inline-flex justify-center rounded-lg bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-800"
                 >
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">
-                    {item.title}
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    {item.text}
+                  Upload PDF
+                </a>
+                <a
+                  href="#pdf-compressor"
+                  className="inline-flex justify-center rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+                >
+                  Compress Now
+                </a>
+                <a
+                  href="#related-tools"
+                  className="inline-flex justify-center rounded-lg border border-slate-200 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-800 transition-colors hover:border-brand-300 hover:text-brand-700"
+                >
+                  Try Other Tools
+                </a>
+              </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+              {[
+                ["No Upload Required", "Your PDF stays in the browser workflow."],
+                ["Fast Compression", "Reduce PDF file size online in seconds."],
+                ["Free to Use", "No signup, no watermark, no install."],
+              ].map(([title, text]) => (
+                <div
+                  key={title}
+                  className="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                >
+                  <h2 className="text-sm font-bold text-slate-900">{title}</h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {text}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_320px]">
-          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Quick Tips</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-              <li>Use &quot;Medium&quot; compression for most documents — it strips metadata while preserving content.</li>
-              <li>PDFs with lots of embedded fonts and unused objects see the biggest reductions.</li>
-              <li>Compress before emailing to avoid attachment size limits.</li>
-            </ul>
+        <section id="pdf-compressor" className="mt-8">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <PdfCompressClient />
           </div>
+        </section>
 
-          <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Best For</h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Email attachments", "Cloud storage", "Document archiving", "Sharing reports"].map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm"
-                >
-                  {item}
-                </span>
-              ))}
+        <section className="mt-8 rounded-lg border border-brand-100 bg-brand-50 p-6 sm:p-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+            100% Privacy - No File Upload Required
+          </h2>
+          <p className="mt-4 text-[15px] leading-8 text-slate-700">
+            This no upload PDF tool is designed for people who need secure file
+            processing without sending documents to a remote server. The PDF
+            compressor runs as a browser-based tool whenever possible, so your
+            file stays on your device while you reduce PDF file size online.
+            That makes it useful for invoices, contracts, resumes, reports,
+            school documents, tax files, and other private PDFs that should not
+            pass through an unknown upload queue.
+          </p>
+        </section>
+
+        <article className="mt-8 space-y-8">
+          <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+              Compress PDF without losing quality
+            </h2>
+            <p className="mt-4 text-[15px] leading-8 text-slate-600">
+              The best way to compress PDF without losing quality online free
+              is to start with a balanced compression workflow. A PDF can become
+              large because it contains embedded images, fonts, metadata,
+              unused objects, editing history, or duplicate internal resources.
+              A good PDF compressor does not simply blur the document or damage
+              text. Instead, it optimizes the file structure, removes
+              unnecessary data, and keeps the pages readable. That is why this
+              page focuses on practical PDF compression for documents you still
+              need to share, print, upload, or archive.
+            </p>
+            <h3 className="mt-6 text-lg font-semibold text-slate-900">
+              Reduce PDF file size online
+            </h3>
+            <p className="mt-3 text-[15px] leading-8 text-slate-600">
+              When you reduce PDF file size online, the goal is not always the
+              smallest possible number. For email attachments, form submissions,
+              job applications, and client reports, the better goal is a smaller
+              file that still opens cleanly and looks professional. Use this
+              free PDF compressor before uploading to portals with strict size
+              limits, before sending documents through Gmail or Outlook, or
+              before storing large batches of scanned files in cloud storage.
+              The page is mobile responsive, so you can compress a PDF from a
+              phone, tablet, laptop, or desktop browser.
+            </p>
+            <h3 className="mt-6 text-lg font-semibold text-slate-900">
+              PDF compressor no upload
+            </h3>
+            <p className="mt-3 text-[15px] leading-8 text-slate-600">
+              A PDF compressor no upload workflow is especially important when
+              a document contains personal or business information. Many online
+              tools require you to upload the file first, wait for server-side
+              processing, then download the result. This browser-based PDF
+              compressor keeps the flow direct: choose your PDF, compress it,
+              and download the optimized version. There is no account gate, no
+              hidden watermark step, and no need to install a desktop app just
+              to make one file smaller.
+            </p>
+            <p className="mt-3 text-[15px] leading-8 text-slate-600">
+              Use the tool above when you need to compress PDF online free,
+              reduce PDF file size online, or prepare a lighter document for
+              sharing. After compression, open the result and check key pages:
+              make sure text is sharp, images are acceptable, and the file size
+              matches your upload requirement. If you are building a final
+              document from multiple files, merge the PDFs first, then compress
+              the finished file. If you only need a few pages, split the PDF
+              first, then compress the smaller document.
+            </p>
+          </section>
+
+          <section id="related-tools" className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+              Related PDF tools
+            </h2>
+            <p className="mt-3 text-[15px] leading-8 text-slate-600">
+              Continue your PDF workflow with these internal tools.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/pdf-merge"
+                className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+              >
+                Merge PDF
+              </Link>
+              <Link
+                href="/pdf-split"
+                className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+              >
+                Split PDF
+              </Link>
+              <Link
+                href="/pdf-to-word"
+                className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+              >
+                PDF to Word
+              </Link>
             </div>
-          </aside>
-        </div>
+          </section>
 
-        {/* SEO Content */}
-        <div className="mt-14 space-y-8">
-          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">How to Compress PDF Files Online</h2>
-            <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
-              <li>Upload your PDF by dragging and dropping or clicking the upload area. Our PDF compressor accepts any standard PDF file.</li>
-              <li>Choose your compression level — Light, Medium, or Maximum — depending on how aggressively you want to reduce the file size.</li>
-              <li>Download your compressed PDF instantly. The optimized file is ready for emailing, uploading, or archiving.</li>
-            </ol>
-          </div>
-
-          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">Why Use Our Free PDF Compressor?</h2>
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">No Upload to Any Server</h3>
-                <p className="mt-1 text-sm text-slate-500">Your PDFs never leave your device. All compression happens locally in your browser using JavaScript, keeping your documents 100% private and secure.</p>
-              </div>
-              <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">Preserves Visual Quality</h3>
-                <p className="mt-1 text-sm text-slate-500">Our compressor removes unnecessary metadata, unused objects, and redundant data without altering the visual content. Text, images, and layout remain untouched.</p>
-              </div>
-              <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">Multiple Compression Levels</h3>
-                <p className="mt-1 text-sm text-slate-500">Choose from Light, Medium, or Maximum compression to control the trade-off between file size reduction and metadata preservation.</p>
-              </div>
-              <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">Works With Any PDF</h3>
-                <p className="mt-1 text-sm text-slate-500">Handles scanned documents, text-heavy reports, presentations, forms, and more. No restrictions on page count or content type.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">
+          <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
               Frequently Asked Questions
             </h2>
             <div className="mt-5 divide-y divide-slate-100">
-              {[
-                {
-                  q: "Is it safe to compress PDFs here?",
-                  a: "Absolutely. Your PDF files never leave your browser. All compression runs client-side using JavaScript, so no data is uploaded to any server. Your documents remain completely private on your device.",
-                },
-                {
-                  q: "How much can I reduce the PDF file size?",
-                  a: "Results vary depending on the original PDF. Documents with extensive metadata, unused objects, or redundant structures can see reductions of 5% to 40%. Already-optimized PDFs may show minimal further reduction.",
-                },
-                {
-                  q: "Will compressing my PDF reduce its quality?",
-                  a: "No. Our PDF compressor removes unnecessary metadata and unused internal objects without altering the visual content. All text, images, and formatting remain exactly as they were in the original document.",
-                },
-                {
-                  q: "Is there a file size limit?",
-                  a: "There is no hard file size limit. Since all processing happens in your browser, performance depends on your device memory. Most PDFs up to 100MB compress smoothly on modern devices.",
-                },
-                {
-                  q: "What do the compression levels mean?",
-                  a: "Light compression copies pages to a fresh PDF to remove unused objects. Medium adds metadata stripping (title, author, keywords). Maximum applies all optimizations including internal structure cleanup for the smallest possible file.",
-                },
-              ].map((item) => (
-                <details key={item.q} className="group py-5">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-medium text-slate-900 transition-colors hover:text-brand-700 [&::-webkit-details-marker]:hidden">
-                    <span>{item.q}</span>
-                    <svg
-                      className="h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-180"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
+              {faqItems.map((item) => (
+                <details key={item.question} className="group py-5">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-[15px] font-semibold text-slate-900 transition-colors hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.question}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">
+                      +
+                    </span>
                   </summary>
-                  <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-500">
-                    {item.a}
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {item.answer}
                   </p>
                 </details>
               ))}
             </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
-            <p className="text-[15px] leading-8 text-slate-500">
-              PDF compression is essential for anyone who regularly works with digital documents. Whether you need to compress PDF files for email attachments that exceed size limits, reduce PDF size for faster uploads to cloud storage services like Google Drive, Dropbox, and OneDrive, or shrink PDF documents for archiving and long-term storage, our free online PDF compressor delivers reliable results. Unlike other tools that require uploading your files to remote servers, this PDF size reducer processes everything locally in your browser, ensuring complete privacy and security. Business professionals rely on PDF compression to share reports and proposals without worrying about file size restrictions. Students and academics compress research papers and lecture notes to save storage space. Legal and financial teams use it to manage large document libraries efficiently while maintaining full document integrity.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">
-              Related PDF Tools
-            </h2>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/pdf-merge" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Merge</Link>
-              <Link href="/pdf-split" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Split</Link>
-              <Link href="/pdf-to-image" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF to Image</Link>
-              <Link href="/pdf-to-word" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF to Word</Link>
-              <Link href="/word-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Word to PDF</Link>
-            </div>
-          </div>
-        </div>
-      </div>
+          </section>
+        </article>
+      </main>
     </div>
   );
 }

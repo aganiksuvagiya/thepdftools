@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const WordCounterClient = dynamic(() => import("./WordCounterClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const WordCounterClient = dynamic(() => import("./WordCounterClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Word & Character Counter Online",
+  title: "Word Counter Online Free No Upload",
   description:
-    "Count words, characters, sentences, and paragraphs instantly. See reading and speaking time estimates. Free, no signup — runs in your browser.",
+    "Use Word Counter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "word counter",
     "character counter",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "reading time calculator",
   ],
   openGraph: {
-    title: "Free Word & Character Counter Online",
+    title: "Word Counter Online Free No Upload",
     description:
-      "Count words, characters, sentences, and paragraphs instantly. See reading and speaking time estimates. Free, no signup — runs in your browser.",
+    "Use Word Counter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/word-counter",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -215,6 +216,7 @@ export default function WordCounterPage() {
               <Link href="/pdf-merge" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Merge</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="word-counter" />
         </div>
       </div>
     </div>

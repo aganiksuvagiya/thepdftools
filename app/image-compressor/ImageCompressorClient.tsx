@@ -146,7 +146,7 @@ export default function ImageCompressorClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={original.url}
-                  alt="Original"
+                  alt="original image before online compression"
                   className="w-full object-contain max-h-48 bg-gray-50"
                 />
               </div>
@@ -160,7 +160,7 @@ export default function ImageCompressorClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={compressed.url}
-                    alt="Compressed"
+                    alt="compressed image online free no upload"
                     className="w-full object-contain max-h-48"
                   />
                 ) : (

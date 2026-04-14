@@ -201,7 +201,7 @@ export default function SvgToPngClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={svgPreview}
-                  alt="Original SVG"
+                  alt="original SVG before PNG conversion"
                   className="w-full object-contain max-h-48"
                 />
               </div>
@@ -220,7 +220,7 @@ export default function SvgToPngClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={result.url}
-                    alt="Converted PNG"
+                    alt="converted PNG from SVG online free"
                     className="w-full object-contain max-h-48 animate-fade-in"
                   />
                 ) : (

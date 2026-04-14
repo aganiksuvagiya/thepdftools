@@ -135,7 +135,7 @@ export default function ImageToWebpClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
-                  alt="Original image"
+                  alt="original image before WebP conversion"
                   className="w-full object-contain max-h-48 bg-gray-50"
                 />
               </div>
@@ -154,7 +154,7 @@ export default function ImageToWebpClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={result.url}
-                    alt="Converted WebP"
+                    alt="converted WebP image online no upload"
                     className="w-full object-contain max-h-48 animate-fade-in"
                   />
                 ) : (

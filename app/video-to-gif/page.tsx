@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const VideoToGifClient = dynamic(() => import("./VideoToGifClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const VideoToGifClient = dynamic(() => import("./VideoToGifClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Video to GIF Converter Online — Convert MP4 to GIF Instantly",
+  title: "Video To Gif Online Free No Upload",
   description:
-    "Convert MP4, WebM, MOV, and AVI videos to GIF format free online. Adjust FPS, width, quality, and trim duration. No upload required — conversion happens in your browser.",
+    "Use Video To Gif online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "video to gif",
     "mp4 to gif",
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     "mov to gif",
   ],
   openGraph: {
-    title: "Free Video to GIF Converter Online — Convert MP4 to GIF Instantly",
+    title: "Video To Gif Online Free No Upload",
     description:
-      "Convert MP4, WebM, MOV, and AVI videos to GIF format free online. Adjust FPS, width, quality, and trim duration. Runs entirely in your browser.",
+    "Use Video To Gif online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/video-to-gif",
     images: [
       {
@@ -259,6 +260,7 @@ export default function VideoToGifPage() {
               <Link href="/svg-to-png" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">SVG to PNG</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="video-to-gif" />
         </div>
       </div>
     </div>

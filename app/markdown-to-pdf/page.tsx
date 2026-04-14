@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const MarkdownToPdfClient = dynamic(() => import("./MarkdownToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const MarkdownToPdfClient = dynamic(() => import("./MarkdownToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Markdown to PDF Converter Online — Convert MD to PDF Instantly",
+  title: "Markdown To PDF Online Free No Upload",
   description:
-    "Convert Markdown to PDF for free online. Paste or upload your .md file, preview the rendered output, and download a beautifully formatted PDF. No signup, no upload to a server — runs in your browser.",
+    "Use Markdown To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "markdown to pdf",
     "convert markdown to pdf",
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
     "markdown preview pdf",
   ],
   openGraph: {
-    title: "Free Markdown to PDF Converter Online — Convert MD to PDF Instantly",
+    title: "Markdown To PDF Online Free No Upload",
     description:
-      "Convert Markdown to PDF for free online. Paste or upload your .md file, preview the rendered output, and download a beautifully formatted PDF. No signup, no upload to a server — runs in your browser.",
+    "Use Markdown To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/markdown-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -297,6 +298,7 @@ export default function MarkdownToPdfPage() {
               <Link href="/html-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">HTML to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="markdown-to-pdf" />
         </div>
       </div>
     </div>

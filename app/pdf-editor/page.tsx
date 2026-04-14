@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PdfEditorClient = dynamic(() => import("./PdfEditorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PdfEditorClient = dynamic(() => import("./PdfEditorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PDF Editor Online — Edit PDF Files Directly in Your Browser",
+  title: "PDF Editor Online Free No Upload",
   description:
-    "Edit PDF files for free online. Add text, images, shapes, highlights, and drawings to any PDF. Delete, reorder, and manage pages. No upload, no signup — runs entirely in your browser.",
+    "Use PDF Editor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "pdf editor",
     "edit pdf online",
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     "add text to pdf",
   ],
   openGraph: {
-    title: "Free PDF Editor Online — Edit PDF Files Directly in Your Browser",
+    title: "PDF Editor Online Free No Upload",
     description:
-      "Edit PDF files for free online. Add text, images, shapes, highlights, and drawings to any PDF. No upload, no signup — runs entirely in your browser.",
+    "Use PDF Editor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/pdf-editor",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -449,6 +450,7 @@ export default function PdfEditorPage() {
               </Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-editor" />
         </div>
       </div>
     </div>

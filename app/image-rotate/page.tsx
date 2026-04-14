@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageRotateClient = dynamic(() => import("./ImageRotateClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageRotateClient = dynamic(() => import("./ImageRotateClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Image Rotate & Flip Tool Online — Rotate Images Instantly",
+  title: "Image Rotate Online Free No Upload",
   description:
-    "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically. No upload, no signup — runs in your browser.",
+    "Use Image Rotate online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "image rotate",
     "rotate image online",
@@ -22,9 +23,9 @@ export const metadata: Metadata = {
     "image flip tool",
   ],
   openGraph: {
-    title: "Free Image Rotate & Flip Tool Online — Rotate Images Instantly",
+    title: "Image Rotate Online Free No Upload",
     description:
-      "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically. No upload, no signup — runs in your browser.",
+    "Use Image Rotate online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-rotate",
     images: [
       {
@@ -251,6 +252,7 @@ export default function ImageRotatePage() {
               <Link href="/image-watermark" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Watermark</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-rotate" />
         </div>
       </div>
     </div>

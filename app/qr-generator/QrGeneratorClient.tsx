@@ -145,7 +145,7 @@ export default function QrGeneratorClient() {
               <img
                 ref={imgRef}
                 src={qrUrl}
-                alt="Generated QR Code"
+                alt="generated QR code online free"
                 width={Math.min(size, 400)}
                 height={Math.min(size, 400)}
                 className="block"

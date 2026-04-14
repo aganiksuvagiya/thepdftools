@@ -590,6 +590,17 @@ const seoGroups = [
       { href: "/invoice-generator", label: "Invoice Generator" },
     ],
   },
+  {
+    title: "Free Alternative Pages",
+    description:
+      "Compare lightweight no-signup workflows against larger PDF suites when you only need a fast browser-based tool.",
+    links: [
+      { href: "/smallpdf-vs-thepdftools", label: "Smallpdf vs thepdftools" },
+      { href: "/ilovepdf-alternative", label: "iLovePDF Alternative" },
+      { href: "/blog/smallpdf-alternatives-free", label: "Smallpdf Alternatives Free" },
+      { href: "/blog/free-pdf-tools-no-signup", label: "Free PDF Tools No Signup" },
+    ],
+  },
 ];
 
 const toolColorMap: Record<string, string> = {
@@ -818,10 +829,10 @@ export default function HomePage() {
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                  Featured Tools
+                  Popular Tools
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  Start with the tools people use most
+                  Start with the most popular free online tools
                 </h2>
               </div>
               {/* <p className="max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">

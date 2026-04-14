@@ -300,7 +300,7 @@ export default function VideoToGifClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={gifUrl}
-                  alt="Generated GIF"
+                  alt="generated GIF from video online free"
                   className="w-full object-contain max-h-64 animate-fade-in"
                 />
               </div>

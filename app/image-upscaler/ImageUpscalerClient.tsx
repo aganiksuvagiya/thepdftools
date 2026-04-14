@@ -228,7 +228,7 @@ export default function ImageUpscalerClient() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={original.url}
-                  alt="Original"
+                  alt="original image before AI upscaling"
                   className="w-full object-contain max-h-48 bg-gray-50"
                 />
               </div>
@@ -247,7 +247,7 @@ export default function ImageUpscalerClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={upscaled.url}
-                    alt="Upscaled"
+                    alt="upscaled image online browser-based tool"
                     className="w-full object-contain max-h-48"
                   />
                 ) : (

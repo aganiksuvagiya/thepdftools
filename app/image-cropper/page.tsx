@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageCropperClient = dynamic(() => import("./ImageCropperClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageCropperClient = dynamic(() => import("./ImageCropperClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Image Cropper Online — Crop Images Instantly",
+  title: "Image Cropper Online Free No Upload",
   description:
-    "Crop JPG, PNG, and WebP images for free online. Select any region, choose preset aspect ratios, and download instantly. No upload, no signup — runs in your browser.",
+    "Use Image Cropper online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "image cropper",
     "crop image online",
@@ -21,9 +22,9 @@ export const metadata: Metadata = {
     "aspect ratio crop",
   ],
   openGraph: {
-    title: "Free Image Cropper Online — Crop Images Instantly",
+    title: "Image Cropper Online Free No Upload",
     description:
-      "Crop JPG, PNG, and WebP images for free online. Select any region, choose preset aspect ratios, and download instantly. Runs entirely in your browser.",
+    "Use Image Cropper online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-cropper",
     images: [
       {
@@ -294,6 +295,7 @@ export default function ImageCropperPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-cropper" />
         </div>
       </div>
     </div>

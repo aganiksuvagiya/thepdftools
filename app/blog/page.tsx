@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { growthBlogPosts } from "@/lib/seo-growth";
 
 export const metadata: Metadata = {
   title: "Blog — Tips, Guides & Tutorials for Image & PDF Tools",
@@ -18,6 +19,14 @@ export const metadata: Metadata = {
 };
 
 const posts = [
+  ...growthBlogPosts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.description,
+    date: post.date,
+    readTime: post.readTime,
+    tags: post.tags,
+  })),
   {
     slug: "add-watermark-to-image-online-free",
     title: "How to Add Watermark to Image Online Free - No Upload",

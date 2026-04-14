@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageWatermarkClient = dynamic(() => import("./ImageWatermarkClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageWatermarkClient = dynamic(() => import("./ImageWatermarkClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Add Watermark to Image Free Online — JPG, PNG, WebP",
+  title: "Image Watermark Online Free No Upload",
   description:
-    "Add watermark to image free online — no upload, no signup. Convert JPG to watermark, add text to PNG or WebP instantly in your browser. Customize font, opacity, position and tiling.",
+    "Use Image Watermark online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "add watermark to image online free",
     "convert jpg to watermark online",
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     "text watermark generator",
   ],
   openGraph: {
-    title: "Add Watermark to Image Free Online — JPG, PNG, WebP",
+    title: "Image Watermark Online Free No Upload",
     description:
-      "Add watermark to image free online. Convert JPG to watermark, add text to PNG or WebP instantly. No upload, no signup — runs in your browser.",
+    "Use Image Watermark online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-watermark",
     images: [
       {
@@ -248,6 +249,7 @@ export default function ImageWatermarkPage() {
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-watermark" />
         </div>
       </div>
     </div>

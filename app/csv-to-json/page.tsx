@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const CsvToJsonClient = dynamic(() => import("./CsvToJsonClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const CsvToJsonClient = dynamic(() => import("./CsvToJsonClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free CSV to JSON Converter Online — Convert CSV to JSON Instantly",
+  title: "CSV To JSON Online Free No Upload",
   description:
-    "Convert CSV to JSON online for free. Paste CSV data or upload a file and get formatted JSON output instantly. Supports custom delimiters, headers, and pretty printing. No upload, no signup — runs in your browser.",
+    "Use CSV To JSON online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "csv to json",
     "csv to json converter",
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
     "csv data converter",
   ],
   openGraph: {
-    title: "Free CSV to JSON Converter Online — Convert CSV to JSON Instantly",
+    title: "CSV To JSON Online Free No Upload",
     description:
-      "Convert CSV to JSON online for free. Paste CSV data or upload a file and get formatted JSON output instantly. No upload, no signup — runs in your browser.",
+    "Use CSV To JSON online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/csv-to-json",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -299,6 +300,7 @@ export default function CsvToJsonPage() {
               <Link href="/word-counter" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Word Counter</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="csv-to-json" />
         </div>
       </div>
     </div>

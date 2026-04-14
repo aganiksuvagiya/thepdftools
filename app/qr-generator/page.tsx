@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const QrGeneratorClient = dynamic(() => import("./QrGeneratorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const QrGeneratorClient = dynamic(() => import("./QrGeneratorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free QR Code Generator Online — Create QR Codes Instantly",
+  title: "QR Generator Online Free No Upload",
   description:
-    "Generate QR codes for any text or URL for free online. Customize size, colors, and download as PNG. No signup — runs in your browser.",
+    "Use QR Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "qr code generator",
     "create qr code online",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "text to qr code",
   ],
   openGraph: {
-    title: "Free QR Code Generator Online — Create QR Codes Instantly",
+    title: "QR Generator Online Free No Upload",
     description:
-      "Generate QR codes for any text or URL for free online. Customize size, colors, and download as PNG. No signup — runs in your browser.",
+    "Use QR Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/qr-generator",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -217,6 +218,7 @@ export default function QrGeneratorPage() {
               <Link href="/screenshot-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Screenshot to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="qr-generator" />
         </div>
       </div>
     </div>

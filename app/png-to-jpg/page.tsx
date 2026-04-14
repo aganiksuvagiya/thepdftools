@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PngToJpgClient = dynamic(() => import("./PngToJpgClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PngToJpgClient = dynamic(() => import("./PngToJpgClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PNG to JPG Converter Online — Convert PNG to JPEG Instantly",
+  title: "PNG To JPG Online Free No Upload",
   description:
-    "Convert PNG images to JPG format free online. Adjustable quality, white background for transparency. No upload required — conversion happens in your browser using HTML Canvas.",
+    "Use PNG To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "png to jpg",
     "png to jpeg converter",
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
     "png jpg converter",
   ],
   openGraph: {
-    title: "Free PNG to JPG Converter Online — Convert PNG to JPEG Instantly",
+    title: "PNG To JPG Online Free No Upload",
     description:
-      "Convert PNG images to JPG format free online. Adjustable quality, white background for transparency. No upload required — conversion happens in your browser.",
+    "Use PNG To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/png-to-jpg",
     images: [
       {
@@ -294,6 +295,7 @@ export default function PngToJpgPage() {
               <Link href="/image-resizer" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Resizer</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="png-to-jpg" />
         </div>
       </div>
     </div>

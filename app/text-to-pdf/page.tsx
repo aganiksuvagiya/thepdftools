@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const TextToPdfClient = dynamic(() => import("./TextToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const TextToPdfClient = dynamic(() => import("./TextToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Text to PDF Converter Online — Convert Text to PDF Instantly",
+  title: "Text To PDF Online Free No Upload",
   description:
-    "Convert plain text to PDF for free online. Choose font, size, margins, and page layout. No upload, no signup — runs entirely in your browser.",
+    "Use Text To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "text to pdf",
     "convert text to pdf",
@@ -25,9 +26,9 @@ export const metadata: Metadata = {
     "text to pdf generator",
   ],
   openGraph: {
-    title: "Free Text to PDF Converter Online — Convert Text to PDF Instantly",
+    title: "Text To PDF Online Free No Upload",
     description:
-      "Convert plain text to PDF for free online. Choose font, size, margins, and page layout. No upload, no signup — runs entirely in your browser.",
+    "Use Text To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/text-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -290,6 +291,7 @@ export default function TextToPdfPage() {
               <Link href="/screenshot-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Screenshot to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="text-to-pdf" />
         </div>
       </div>
     </div>

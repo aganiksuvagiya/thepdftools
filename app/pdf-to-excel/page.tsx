@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const PdfToExcelClient = dynamic(() => import("./PdfToExcelClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const PdfToExcelClient = dynamic(() => import("./PdfToExcelClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free PDF to Excel Converter Online — Convert PDF to XLSX Instantly",
+  title: "PDF To Excel Online Free No Upload",
   description:
-    "Convert PDF files to Excel spreadsheets for free online. Extract tables from PDFs and download as .xlsx files. No upload, no signup — runs entirely in your browser.",
+    "Use PDF To Excel online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "pdf to excel",
     "convert pdf to excel",
@@ -28,9 +29,9 @@ export const metadata: Metadata = {
     "free pdf to xlsx converter",
   ],
   openGraph: {
-    title: "Free PDF to Excel Converter Online — Convert PDF to XLSX Instantly",
+    title: "PDF To Excel Online Free No Upload",
     description:
-      "Convert PDF files to Excel spreadsheets for free online. Extract tables from PDFs and download as .xlsx files. No upload, no signup — runs entirely in your browser.",
+    "Use PDF To Excel online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/pdf-to-excel",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -258,6 +259,7 @@ export default function PdfToExcelPage() {
               <Link href="/excel-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Excel to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-to-excel" />
         </div>
       </div>
     </div>

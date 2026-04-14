@@ -78,6 +78,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [toolQuery, setToolQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -114,6 +115,14 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   const categoryHrefs = categories.flatMap((c) => c.items.map((i) => i.href));
+  const filteredTools = categories
+    .flatMap((category) =>
+      category.items.map((item) => ({ ...item, category: category.label }))
+    )
+    .filter((item) =>
+      item.label.toLowerCase().includes(toolQuery.trim().toLowerCase())
+    )
+    .slice(0, 8);
 
   return (
     <header
@@ -128,7 +137,7 @@ export default function Navbar() {
         <div className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-2.5 transition-opacity hover:opacity-80 sm:gap-3">
-            <Image src="/logo.svg" alt="thepdf" width={80} height={30} className="h-7 w-auto" priority />
+            <Image src="/logo.svg" alt="thepdftools free online PDF tools no upload" width={80} height={30} className="h-7 w-auto" priority />
             <span className="text-[15px] font-bold tracking-tight text-slate-900"></span>
           </Link>
 
@@ -219,6 +228,41 @@ export default function Navbar() {
             </div>
           </nav>
 
+          <div className="relative hidden xl:block">
+            <label className="sr-only" htmlFor="tool-search">
+              Search tools
+            </label>
+            <input
+              id="tool-search"
+              value={toolQuery}
+              onChange={(event) => setToolQuery(event.target.value)}
+              placeholder="Search tools"
+              className="h-10 w-44 rounded-lg border border-slate-200 bg-white px-3 text-[13px] font-medium text-slate-700 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:w-56 focus:border-brand-300 focus:ring-2 focus:ring-brand-100"
+            />
+            {toolQuery.trim() && (
+              <div className="absolute right-0 mt-2 w-72 rounded-lg border border-slate-200 bg-white p-2 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)]">
+                {filteredTools.length ? (
+                  filteredTools.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-brand-700"
+                    >
+                      <span>{item.label}</span>
+                      <span className="ml-2 text-xs font-normal text-slate-400">
+                        {item.category}
+                      </span>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="px-3 py-2 text-sm text-slate-500">
+                    No matching tools yet.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Hamburger — below lg */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
@@ -262,6 +306,38 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-6xl px-4 pb-4 sm:px-5">
           <div className="space-y-3 rounded-[1.25rem] border border-slate-200 bg-white p-3 shadow-lg sm:space-y-4 sm:rounded-[1.5rem] sm:p-4">
+            <div>
+              <label className="sr-only" htmlFor="mobile-tool-search">
+                Search tools
+              </label>
+              <input
+                id="mobile-tool-search"
+                value={toolQuery}
+                onChange={(event) => setToolQuery(event.target.value)}
+                placeholder="Search tools"
+                className="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-700 outline-none placeholder:text-slate-400 focus:border-brand-300 focus:bg-white focus:ring-2 focus:ring-brand-100"
+              />
+              {toolQuery.trim() && (
+                <div className="mt-2 grid grid-cols-1 gap-1.5">
+                  {filteredTools.length ? (
+                    filteredTools.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="rounded-lg bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700"
+                      >
+                        {item.label}
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-500">
+                      No matching tools yet.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Quick Links */}
             <div>
               <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">

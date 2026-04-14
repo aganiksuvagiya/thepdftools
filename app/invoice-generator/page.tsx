@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const InvoiceGeneratorClient = dynamic(() => import("./InvoiceGeneratorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const InvoiceGeneratorClient = dynamic(() => import("./InvoiceGeneratorClient"),
 });
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator Online — Create Professional PDF Invoices",
+  title: "Invoice Generator Online Free No Upload",
   description:
-    "Create professional PDF invoices for free online. Add line items, tax, discounts, and download instantly. No signup, no upload — runs entirely in your browser.",
+    "Use Invoice Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "invoice generator",
     "free invoice generator",
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     "small business invoice",
   ],
   openGraph: {
-    title: "Free Invoice Generator Online — Create Professional PDF Invoices",
+    title: "Invoice Generator Online Free No Upload",
     description:
-      "Create professional PDF invoices for free online. Add line items, tax, discounts, and download instantly. No signup, no upload — runs entirely in your browser.",
+    "Use Invoice Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/invoice-generator",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -298,6 +299,7 @@ export default function InvoiceGeneratorPage() {
               <Link href="/pdf-compress" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Compress</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="invoice-generator" />
         </div>
       </div>
     </div>

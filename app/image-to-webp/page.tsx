@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageToWebpClient = dynamic(() => import("./ImageToWebpClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageToWebpClient = dynamic(() => import("./ImageToWebpClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Image to WebP Converter Online — Convert JPG/PNG to WebP",
+  title: "Image To WebP Online Free No Upload",
   description:
-    "Convert JPG, PNG, and BMP images to WebP format free online. Smaller file sizes with adjustable quality. No upload required — conversion happens in your browser.",
+    "Use Image To WebP online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "image to webp",
     "jpg to webp",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "webp converter",
   ],
   openGraph: {
-    title: "Free Image to WebP Converter Online — Convert JPG/PNG to WebP",
+    title: "Image To WebP Online Free No Upload",
     description:
-      "Convert JPG, PNG, and BMP images to WebP format free online. Smaller file sizes with adjustable quality. Runs entirely in your browser.",
+    "Use Image To WebP online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-to-webp",
     images: [
       {
@@ -246,6 +247,7 @@ export default function ImageToWebpPage() {
               <Link href="/image-rotate" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Rotate</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-to-webp" />
         </div>
       </div>
     </div>

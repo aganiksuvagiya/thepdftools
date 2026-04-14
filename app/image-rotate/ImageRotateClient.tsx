@@ -289,14 +289,14 @@ export default function ImageRotateClient() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={resultUrl}
-                  alt="Transformed preview"
+                  alt="rotated image preview online free"
                   className="max-h-full max-w-full object-contain"
                 />
               ) : previewUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={previewUrl}
-                  alt="Original preview"
+                  alt="original image before rotate and flip"
                   className="max-h-full max-w-full object-contain"
                 />
               ) : null}

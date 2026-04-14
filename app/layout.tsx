@@ -93,6 +93,12 @@ export const metadata: Metadata = {
     "msapplication-TileColor": "#0f766e",
     "apple-mobile-web-app-title": "thepdftools",
     "google-adsense-account": "ca-pub-1726872213486410",
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? {
+          "google-site-verification":
+            process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        }
+      : {}),
   },
 };
 

@@ -341,7 +341,7 @@ export default function ImageResizerClient() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={selectedItem.resultUrl ?? selectedItem.previewUrl}
-              alt="preview"
+              alt="resized image preview online no signup"
               className="max-h-full max-w-full object-contain"
             />
             {selectedItem.status === "done" && (

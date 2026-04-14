@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ColorPickerClient = dynamic(() => import("./ColorPickerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ColorPickerClient = dynamic(() => import("./ColorPickerClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Color Picker & Converter Online — HEX, RGB, HSL, CMYK",
+  title: "Color Picker Online Free No Upload",
   description:
-    "Pick any color and instantly convert between HEX, RGB, HSL, and CMYK formats. Copy values with one click. Free, no signup — runs in your browser.",
+    "Use Color Picker online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "color picker",
     "color converter",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "free color picker",
   ],
   openGraph: {
-    title: "Free Color Picker & Converter Online — HEX, RGB, HSL, CMYK",
+    title: "Color Picker Online Free No Upload",
     description:
-      "Pick any color and instantly convert between HEX, RGB, HSL, and CMYK formats. Copy values with one click. Free, no signup — runs in your browser.",
+    "Use Color Picker online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/color-picker",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -216,6 +217,7 @@ export default function ColorPickerPage() {
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="color-picker" />
         </div>
       </div>
     </div>

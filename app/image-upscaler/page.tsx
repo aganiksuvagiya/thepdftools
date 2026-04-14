@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ImageUpscalerClient = dynamic(() => import("./ImageUpscalerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ImageUpscalerClient = dynamic(() => import("./ImageUpscalerClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free AI Image Upscaler Online — Enhance Image Quality",
+  title: "Image Upscaler Online Free No Upload",
   description:
-    "Upscale and enhance images for free online. Increase resolution by 2x, 3x, or 4x with smooth interpolation. No upload, no signup — runs in your browser.",
+    "Use Image Upscaler online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "image upscaler",
     "upscale image online",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "free image upscaler",
   ],
   openGraph: {
-    title: "Free AI Image Upscaler Online — Enhance Image Quality",
+    title: "Image Upscaler Online Free No Upload",
     description:
-      "Upscale and enhance images for free online. Increase resolution by 2x, 3x, or 4x with smooth interpolation. No upload, no signup — runs in your browser.",
+    "Use Image Upscaler online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/image-upscaler",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -234,6 +235,7 @@ export default function ImageUpscalerPage() {
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="image-upscaler" />
         </div>
       </div>
     </div>

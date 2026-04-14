@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Convert Excel to PDF Free Online – No Upload Required",
+  title: "Excel To PDF Online Free No Upload",
   description:
-    "Convert Excel spreadsheets to PDF format free online. Upload your XLSX or CSV file and download a clean PDF with table formatting. No signup, no server upload — runs entirely in your browser.",
+    "Use Excel To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "excel to pdf",
     "xlsx to pdf",
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
     "convert xlsx to pdf online",
   ],
   openGraph: {
-    title: "Convert Excel to PDF Free Online – No Upload Required",
+    title: "Excel To PDF Online Free No Upload",
     description:
-      "Convert Excel spreadsheets to PDF format free online. No signup, no server upload — runs entirely in your browser.",
+    "Use Excel To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/excel-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -251,6 +252,7 @@ export default function ExcelToPdfPage() {
               <Link href="/ppt-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PPT to PDF</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="excel-to-pdf" />
         </div>
       </div>
     </div>

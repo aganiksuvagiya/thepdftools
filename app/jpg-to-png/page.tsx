@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const JpgToPngClient = dynamic(() => import("./JpgToPngClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const JpgToPngClient = dynamic(() => import("./JpgToPngClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free JPG to PNG Converter Online — Convert JPEG to PNG Instantly",
+  title: "JPG To PNG Online Free No Upload",
   description:
-    "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser using HTML Canvas. Download your PNG instantly.",
+    "Use JPG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "jpg to png",
     "jpeg to png converter",
@@ -27,9 +28,9 @@ export const metadata: Metadata = {
     "change jpg to png",
   ],
   openGraph: {
-    title: "Free JPG to PNG Converter Online — Convert JPEG to PNG Instantly",
+    title: "JPG To PNG Online Free No Upload",
     description:
-      "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser using HTML Canvas. Download your PNG instantly.",
+    "Use JPG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/jpg-to-png",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -292,6 +293,7 @@ export default function JpgToPngPage() {
               <Link href="/image-resizer" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Resizer</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="jpg-to-png" />
         </div>
       </div>
     </div>

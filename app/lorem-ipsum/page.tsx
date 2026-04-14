@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 
 const LoremIpsumClient = dynamic(() => import("./LoremIpsumClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -8,9 +9,9 @@ const LoremIpsumClient = dynamic(() => import("./LoremIpsumClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Free Lorem Ipsum Generator Online",
+  title: "Lorem Ipsum Online Free No Upload",
   description:
-    "Generate lorem ipsum placeholder text instantly. Choose paragraphs, sentences, or words. Copy with one click — no signup, no ads.",
+    "Use Lorem Ipsum online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
   keywords: [
     "lorem ipsum generator",
     "placeholder text",
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
     "text generator",
   ],
   openGraph: {
-    title: "Free Lorem Ipsum Generator Online",
+    title: "Lorem Ipsum Online Free No Upload",
     description:
-      "Generate lorem ipsum placeholder text instantly. Choose paragraphs, sentences, or words. Copy with one click.",
+    "Use Lorem Ipsum online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
     url: "https://thepdftools.site/lorem-ipsum",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -215,6 +216,7 @@ export default function LoremIpsumPage() {
               <Link href="/qr-generator" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">QR Code Generator</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="lorem-ipsum" />
         </div>
       </div>
     </div>

@@ -307,7 +307,7 @@ export default function ImageCropperClient() {
             <img
               ref={imgRef}
               src={imageUrl}
-              alt="Source"
+              alt="source image before online crop"
               onLoad={handleImageLoad}
               className="block w-full h-auto"
               draggable={false}
@@ -393,7 +393,7 @@ export default function ImageCropperClient() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={resultUrl}
-              alt="Cropped result"
+              alt="cropped image result online no upload"
               className="max-h-96 max-w-full object-contain"
             />
             <div className="absolute top-2 right-2 rounded-full bg-green-500 px-2.5 py-0.5 text-xs font-semibold text-white shadow">

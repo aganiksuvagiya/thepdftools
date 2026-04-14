@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { growthBlogPosts } from "@/lib/seo-growth";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
@@ -47,6 +48,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/word-counter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/lorem-ipsum", changeFrequency: "monthly", priority: 0.72 },
     { path: "/blog", changeFrequency: "weekly", priority: 0.85 },
+    { path: "/smallpdf-vs-thepdftools", changeFrequency: "monthly", priority: 0.84 },
+    { path: "/ilovepdf-alternative", changeFrequency: "monthly", priority: 0.84 },
+    ...growthBlogPosts.map((post) => ({
+      path: `/blog/${post.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.82,
+    })),
     { path: "/blog/add-watermark-to-image-online-free", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/compress-pdf-for-email-online", changeFrequency: "monthly", priority: 0.78 },
     { path: "/blog/convert-ppt-to-pdf-online-free", changeFrequency: "monthly", priority: 0.78 },
