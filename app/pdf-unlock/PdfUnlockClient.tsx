@@ -19,6 +19,20 @@ async function loadPdfjsLib() {
   return lib;
 }
 
+function copyFileBuffer(buffer: ArrayBuffer) {
+  return buffer.slice(0);
+}
+
+function toArrayBuffer(bytes: Uint8Array) {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes);
+  return copy.buffer;
+}
+
+function getPasswordMessage(error: any) {
+  return error?.name === "PasswordException" || /password/i.test(error?.message || "");
+}
+
 export default function PdfUnlockClient() {
   const [file, setFile] = useState<File | null>(null);
   const [stage, setStage] = useState<Stage>("idle");
@@ -54,12 +68,13 @@ export default function PdfUnlockClient() {
       const pdfjsLib = await loadPdfjsLib();
 
       try {
-        const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
+        const pdf = await pdfjsLib.getDocument({ data: copyFileBuffer(buffer) }).promise;
         setPageCount(pdf.numPages);
+        await pdf.destroy();
         setStage("ready");
         setProgress("");
       } catch (e: any) {
-        if (e?.name === "PasswordException") {
+        if (getPasswordMessage(e)) {
           setStage("needs-password");
           setProgress("");
           setTimeout(() => passwordInputRef.current?.focus(), 100);
@@ -71,6 +86,28 @@ export default function PdfUnlockClient() {
       setStage("error");
       setError(err?.message || "Failed to read PDF. Please try another file.");
     }
+  }, []);
+
+  const saveUnlockedPdf = useCallback((bytes: Uint8Array, numPages: number) => {
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    const blob = new Blob([toArrayBuffer(bytes)], { type: "application/pdf" });
+    setResultUrl(URL.createObjectURL(blob));
+    setResultSize(blob.size);
+    setPageCount(numPages);
+    setStage("done");
+    setProgress("");
+  }, [resultUrl]);
+
+  const unlockWithPdfLib = useCallback(async (buffer: ArrayBuffer) => {
+    const { PDFDocument } = await import("pdf-lib");
+    const srcDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
+    const newPdf = await PDFDocument.create();
+    const copiedPages = await newPdf.copyPages(srcDoc, srcDoc.getPageIndices());
+    copiedPages.forEach((page) => newPdf.addPage(page));
+    return {
+      bytes: await newPdf.save(),
+      numPages: copiedPages.length,
+    };
   }, []);
 
   const handleFiles = useCallback((files: File[]) => {
@@ -88,19 +125,27 @@ export default function PdfUnlockClient() {
 
     try {
       const buffer = await file.arrayBuffer();
+
+      if (!pwd) {
+        setProgress("Removing restrictions...");
+        const { bytes, numPages } = await unlockWithPdfLib(copyFileBuffer(buffer));
+        saveUnlockedPdf(bytes, numPages);
+        return;
+      }
+
       const pdfjsLib = await loadPdfjsLib();
 
       setProgress("Loading PDF...");
 
       // Load with password if provided
-      const loadParams: any = { data: new Uint8Array(buffer) };
+      const loadParams: any = { data: copyFileBuffer(buffer) };
       if (pwd) loadParams.password = pwd;
 
       let pdfDoc: any;
       try {
         pdfDoc = await pdfjsLib.getDocument(loadParams).promise;
       } catch (e: any) {
-        if (e?.name === "PasswordException") {
+        if (getPasswordMessage(e)) {
           setStage("needs-password");
           setPasswordError("Incorrect password. Please try again.");
           setProgress("");
@@ -129,7 +174,7 @@ export default function PdfUnlockClient() {
         canvas.height = viewport.height;
         const ctx = canvas.getContext("2d")!;
 
-        await page.render({ canvasContext: ctx, viewport }).promise;
+        await page.render({ canvasContext: ctx, canvas, viewport }).promise;
 
         const imgData = canvas.toDataURL("image/jpeg", 0.92);
         const imgBytes = await fetch(imgData).then((r) => r.arrayBuffer());
@@ -143,19 +188,14 @@ export default function PdfUnlockClient() {
 
       setProgress("Saving unlocked PDF...");
       const pdfBytes = await newPdf.save();
-      const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
-
-      setResultUrl(URL.createObjectURL(blob));
-      setResultSize(blob.size);
-      setPageCount(numPages);
-      setStage("done");
-      setProgress("");
+      await pdfDoc.destroy();
+      saveUnlockedPdf(pdfBytes, numPages);
     } catch (err: any) {
       setStage("error");
       setError(err?.message || "Failed to unlock PDF.");
       setProgress("");
     }
-  }, [file]);
+  }, [file, saveUnlockedPdf, unlockWithPdfLib]);
 
   const handleDownload = () => {
     if (!resultUrl || !file) return;
