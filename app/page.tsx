@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ToolCard from "@/components/ToolCard";
 import ScrollReveal from "@/components/ScrollReveal";
+import { growthBlogPosts } from "@/lib/seo-growth";
+
+const SITE_URL = "https://thepdftools.site";
 
 export const metadata: Metadata = {
   title: "Free Online PDF & Image Tools - No Upload, No Signup",
@@ -36,6 +39,13 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Online PDF & Image Tools - No Upload, No Signup",
+    description:
+      "Free online PDF and image tools that run in your browser with no upload, no signup, and fast browser-based processing.",
+    images: ["https://thepdftools.site/opengraph-image"],
+  },
   alternates: {
     canonical: "https://thepdftools.site",
   },
@@ -46,14 +56,19 @@ const homeJsonLd = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "thepdftools",
-    url: "https://thepdftools.site",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/blog?query={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   },
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "thepdftools",
-    url: "https://thepdftools.site",
-    logo: "https://thepdftools.site/logo.svg",
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.svg`,
   },
   {
     "@context": "https://schema.org",
@@ -83,12 +98,12 @@ const homeJsonLd = [
     "@type": "ItemList",
     name: "Popular online tools",
     itemListElement: [
-      "https://thepdftools.site/image-compressor",
-      "https://thepdftools.site/pdf-merge",
-      "https://thepdftools.site/background-remover",
-      "https://thepdftools.site/image-resizer",
-      "https://thepdftools.site/jpg-to-png",
-      "https://thepdftools.site/png-to-jpg",
+      `${SITE_URL}/image-compressor`,
+      `${SITE_URL}/pdf-merge`,
+      `${SITE_URL}/background-remover`,
+      `${SITE_URL}/image-resizer`,
+      `${SITE_URL}/jpg-to-png`,
+      `${SITE_URL}/png-to-jpg`,
     ].map((url, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -679,6 +694,49 @@ const toolCategories = [
     .filter(Boolean),
 }));
 
+const latestGuides = [...growthBlogPosts]
+  .sort((a, b) => b.date.localeCompare(a.date))
+  .slice(0, 6);
+
+const popularSearchPages = [
+  {
+    href: "/compress-pdf-to-100kb",
+    title: "Compress PDF to 100KB",
+    description:
+      "Target-size workflow for forms, portals, and upload limits.",
+  },
+  {
+    href: "/compress-pdf-for-govt-exam",
+    title: "Compress PDF for Govt Exam",
+    description:
+      "Useful for exam portals, certificates, and application uploads.",
+  },
+  {
+    href: "/reduce-pdf-size-online-free",
+    title: "Reduce PDF Size Online Free",
+    description:
+      "General-purpose PDF compression page for email and sharing.",
+  },
+  {
+    href: "/convert-jpeg-to-png-online-free",
+    title: "Convert JPEG to PNG Online Free",
+    description:
+      "JPEG-focused image conversion page for editing and compatibility.",
+  },
+  {
+    href: "/jpg-to-png-no-upload",
+    title: "JPG to PNG No Upload",
+    description:
+      "Privacy-first image conversion with browser-based processing.",
+  },
+  {
+    href: "/jpg-to-png-for-logos",
+    title: "JPG to PNG for Logos",
+    description:
+      "Design-intent page for logos, graphics, and crisp image assets.",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="flex flex-col bg-[#fcfcfd]">
@@ -1029,6 +1087,108 @@ export default function HomePage() {
               add watermarks without uploading files.
             </div>
           </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="py-20 bg-[#f8fafc]">
+        <div className="mx-auto max-w-6xl px-5">
+          <ScrollReveal>
+            <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
+                  Latest Guides
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                  Fresh blog posts for high-intent search topics
+                </h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
+                  Browse step-by-step guides around PDF conversion, image optimization,
+                  WebP, QR codes, and file privacy. These pages help users find the
+                  right workflow and strengthen internal linking across the site.
+                </p>
+              </div>
+              <Link
+                href="/blog"
+                className="inline-flex items-center text-sm font-semibold text-brand-700 transition-colors hover:text-brand-800"
+              >
+                View all blog posts
+              </Link>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latestGuides.map((post, index) => (
+              <ScrollReveal key={post.slug} delay={index * 60}>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="group block rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
+                >
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.slice(0, 2).map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="mt-4 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {post.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-3 text-xs text-slate-400">
+                    <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                    <span className="h-1 w-1 rounded-full bg-slate-300" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </Link>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-5">
+          <ScrollReveal>
+            <div className="mb-12 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
+                Popular Searches
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Search-intent pages built for long-tail traffic
+              </h2>
+              <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
+                These focused landing pages are designed around specific file
+                jobs people actually search for, which helps search engines
+                discover more entry points across the same core tools.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {popularSearchPages.map((page, index) => (
+              <ScrollReveal key={page.href} delay={index * 60}>
+                <Link
+                  href={page.href}
+                  className="group block rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] p-6 shadow-sm transition-all hover:border-brand-200 hover:bg-white hover:shadow-md"
+                >
+                  <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
+                    {page.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {page.description}
+                  </p>
+                  <div className="mt-4 text-sm font-medium text-brand-600 transition-colors group-hover:text-brand-700">
+                    Open page
+                  </div>
+                </Link>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 

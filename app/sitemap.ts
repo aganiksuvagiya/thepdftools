@@ -3,7 +3,7 @@ import { growthBlogPosts } from "@/lib/seo-growth";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
-  const lastModified = new Date("2026-04-14");
+  const siteUpdatedAt = new Date("2026-04-30");
 
   const routes: Array<{
     path: string;
@@ -18,6 +18,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/image-cropper", changeFrequency: "weekly", priority: 0.92 },
     { path: "/image-upscaler", changeFrequency: "weekly", priority: 0.92 },
     { path: "/jpg-to-png", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/convert-jpeg-to-png-online-free", changeFrequency: "weekly", priority: 0.86 },
+    { path: "/jpg-to-png-no-upload", changeFrequency: "weekly", priority: 0.86 },
+    { path: "/jpg-to-png-for-logos", changeFrequency: "weekly", priority: 0.84 },
     { path: "/png-to-jpg", changeFrequency: "weekly", priority: 0.9 },
     { path: "/image-to-webp", changeFrequency: "weekly", priority: 0.9 },
     { path: "/image-rotate", changeFrequency: "weekly", priority: 0.86 },
@@ -31,6 +34,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/html-to-pdf", changeFrequency: "weekly", priority: 0.84 },
     { path: "/screenshot-to-pdf", changeFrequency: "weekly", priority: 0.84 },
     { path: "/pdf-compress", changeFrequency: "weekly", priority: 0.95 },
+    { path: "/compress-pdf-to-100kb", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/compress-pdf-for-govt-exam", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/reduce-pdf-size-online-free", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-unlock", changeFrequency: "weekly", priority: 0.84 },
     { path: "/image-to-pdf", changeFrequency: "weekly", priority: 0.9 },
     { path: "/text-to-pdf", changeFrequency: "weekly", priority: 0.84 },
@@ -79,10 +85,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/privacy", changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  return routes.map((route) => ({
-    url: `${baseUrl}${route.path}`,
-    lastModified,
-    changeFrequency: route.changeFrequency,
-    priority: route.priority,
-  }));
+  return routes.map((route) => {
+    const blogPost = route.path.startsWith("/blog/")
+      ? growthBlogPosts.find((post) => `/blog/${post.slug}` === route.path)
+      : undefined;
+
+    return {
+      url: `${baseUrl}${route.path}`,
+      lastModified: blogPost ? new Date(blogPost.date) : siteUpdatedAt,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+    };
+  });
 }

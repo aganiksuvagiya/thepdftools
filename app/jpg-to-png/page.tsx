@@ -200,6 +200,28 @@ export default function JpgToPngPage() {
         {/* SEO CONTENT SECTIONS */}
         <div className="mt-14 space-y-8">
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">
+              Popular JPG to PNG pages
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Use these focused landing pages when you want a more specific JPG
+              to PNG workflow for privacy, JPEG conversion intent, or design
+              asset preparation.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/convert-jpeg-to-png-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                Convert JPEG to PNG Online Free
+              </Link>
+              <Link href="/jpg-to-png-no-upload" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                JPG to PNG No Upload
+              </Link>
+              <Link href="/jpg-to-png-for-logos" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                JPG to PNG for Logos
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">How to Convert JPG to PNG Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Click the upload area above or drag and drop your JPG or JPEG image into the converter.</li>

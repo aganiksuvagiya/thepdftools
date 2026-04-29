@@ -226,6 +226,36 @@ export default function PdfCompressPage() {
           </p>
         </section>
 
+        <section className="mt-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+            Popular PDF compression pages
+          </h2>
+          <p className="mt-4 text-[15px] leading-8 text-slate-600">
+            If you need a more specific workflow, use one of these focused
+            landing pages built around common search intent and upload limits.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href="/compress-pdf-to-100kb"
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+            >
+              Compress PDF to 100KB
+            </Link>
+            <Link
+              href="/compress-pdf-for-govt-exam"
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+            >
+              Compress PDF for Govt Exam
+            </Link>
+            <Link
+              href="/reduce-pdf-size-online-free"
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+            >
+              Reduce PDF Size Online Free
+            </Link>
+          </div>
+        </section>
+
         <article className="mt-8 space-y-8">
           <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <h2 className="text-2xl font-bold tracking-tight text-slate-950">

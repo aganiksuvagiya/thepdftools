@@ -71,12 +71,21 @@ export const metadata: Metadata = {
     title: "thepdftools — Free Online Image & PDF Tools",
     description:
       "Compress, convert, crop, resize, watermark, and merge files in a fast browser-based workspace.",
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "thepdftools — Free Online Image & PDF Tools",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "thepdftools — Free Online Image & PDF Tools",
     description:
       "A cleaner, faster workspace for image tools, PDF tools, and useful browser-based utilities.",
+    images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {
     index: true,

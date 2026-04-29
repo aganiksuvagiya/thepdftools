@@ -17,11 +17,20 @@ const allTools = [
   { href: "/html-to-pdf", label: "HTML to PDF" },
 ];
 
+const popularSearchLinks = [
+  { href: "/compress-pdf-to-100kb", label: "Compress PDF to 100KB" },
+  { href: "/compress-pdf-for-govt-exam", label: "Compress PDF for Govt Exam" },
+  { href: "/reduce-pdf-size-online-free", label: "Reduce PDF Size Online Free" },
+  { href: "/convert-jpeg-to-png-online-free", label: "Convert JPEG to PNG" },
+  { href: "/jpg-to-png-no-upload", label: "JPG to PNG No Upload" },
+  { href: "/jpg-to-png-for-logos", label: "JPG to PNG for Logos" },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-[#f8fafc] text-slate-600">
       <div className="mx-auto max-w-6xl px-5 py-14">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="inline-flex items-center gap-1.5">
@@ -65,6 +74,19 @@ export default function Footer() {
               <li><Link href="/about" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">About</Link></li>
               <li><Link href="/privacy" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Privacy Policy</Link></li>
               <li className="text-[13px] text-slate-500">Free forever</li>
+            </ul>
+          </div>
+
+          <div className="col-span-2 sm:col-span-1">
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Popular searches</h4>
+            <ul className="mt-3 space-y-2">
+              {popularSearchLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
