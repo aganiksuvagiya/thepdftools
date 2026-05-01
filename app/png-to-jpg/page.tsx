@@ -202,6 +202,28 @@ export default function PngToJpgPage() {
         {/* SEO CONTENT SECTIONS */}
         <div className="mt-14 space-y-8">
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">
+              Popular PNG to JPG pages
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Use these focused landing pages when you want a more specific PNG
+              to JPG workflow for photos, general conversion intent, or
+              transparency handling.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/convert-png-to-jpg-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                Convert PNG to JPG Online Free
+              </Link>
+              <Link href="/png-to-jpg-for-photos" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                PNG to JPG for Photos
+              </Link>
+              <Link href="/png-to-jpg-white-background" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                PNG to JPG White Background
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">How to Convert PNG to JPG Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Drag and drop your PNG image into the upload area above, or click to browse and select a file from your device.</li>

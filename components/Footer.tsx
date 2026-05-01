@@ -34,7 +34,14 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="inline-flex items-center gap-1.5">
-              <Image src="/logo.svg" alt="thepdftools browser-based PDF and image tools" width={80} height={30} className="h-7 w-auto" priority />
+              <Image
+                src="/logo.svg"
+                alt="thepdftools browser-based PDF and image tools"
+                width={80}
+                height={30}
+                className="h-7 w-auto"
+                style={{ width: "auto", height: "28px" }}
+              />
               <span className="text-sm font-bold text-slate-900"></span>
             </Link>
             <p className="mt-1 max-w-[200px] text-[13px] leading-relaxed text-slate-500">

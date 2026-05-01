@@ -49,6 +49,10 @@ const categories = [
       { href: "/pdf-compress", label: "PDF Compress" },
       { href: "/pdf-unlock", label: "PDF Unlock" },
       { href: "/pdf-to-excel", label: "PDF to Excel" },
+      { href: "/pdf-redaction", label: "PDF Redaction" },
+      { href: "/pdf-compare", label: "PDF Compare" },
+      { href: "/ai-invoice-extractor", label: "AI Invoice Extractor" },
+      { href: "/scanned-pdf-to-searchable-pdf", label: "Searchable PDF OCR" },
       { href: "/image-to-pdf", label: "Image to PDF" },
       { href: "/text-to-pdf", label: "Text to PDF" },
       { href: "/markdown-to-pdf", label: "Markdown to PDF" },
@@ -137,7 +141,15 @@ export default function Navbar() {
         <div className="flex h-14 items-center justify-between gap-3 sm:h-16 sm:gap-4">
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-2.5 transition-opacity hover:opacity-80 sm:gap-3">
-            <Image src="/logo.svg" alt="thepdftools free online PDF tools no upload" width={80} height={30} className="h-7 w-auto" priority />
+            <Image
+              src="/logo.svg"
+              alt="thepdftools free online PDF tools no upload"
+              width={80}
+              height={30}
+              className="h-7 w-auto"
+              style={{ width: "auto", height: "28px" }}
+              priority
+            />
             <span className="text-[15px] font-bold tracking-tight text-slate-900"></span>
           </Link>
 

@@ -116,6 +116,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const shouldLoadAds = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en" className={sora.variable}>
       <body className="min-h-screen bg-[var(--surface)] text-slate-900 antialiased">
@@ -131,13 +133,14 @@ export default function RootLayout({
             gtag('config', 'G-NWTNKWJ1JF');
           `}
         </Script>
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {shouldLoadAds ? (
+          <Script
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        ) : null}
         <div className="relative isolate overflow-x-clip">
-          
           <Navbar />
           <main>{children}</main>
           <Footer />
