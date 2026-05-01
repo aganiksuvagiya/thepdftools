@@ -76,7 +76,8 @@ export default function PdfRotateClient() {
       }
 
       const pdfBytes = await doc.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const pdfOutput = Uint8Array.from(pdfBytes);
+      const blob = new Blob([pdfOutput], { type: "application/pdf" });
       setResultUrl(URL.createObjectURL(blob));
       setResultSize(blob.size);
     } catch (err: unknown) {

@@ -3,6 +3,21 @@
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function loadPdfJs(): Promise<any> {
+  const cdnUrl = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+  const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+  return pdfjsLib;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function loadPptxGenJs(): Promise<any> {
+  const cdnUrl = "https://esm.sh/pptxgenjs@4.0.1?bundle";
+  return Function(`return import("${cdnUrl}")`)() as Promise<any>;
+}
+
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
   const k = 1024;
@@ -35,18 +50,13 @@ export default function PdfToPptClient() {
     setProgress("Loading PDF…");
 
     try {
-      const [{ getDocument, GlobalWorkerOptions }, pptxgen] = await Promise.all([
-        import("pdfjs-dist"),
-        import("pptxgenjs"),
+      const [pdfjsLib, pptxgen] = await Promise.all([
+        loadPdfJs(),
+        loadPptxGenJs(),
       ]);
 
-      GlobalWorkerOptions.workerSrc = new URL(
-        "pdfjs-dist/build/pdf.worker.min.mjs",
-        import.meta.url
-      ).toString();
-
       const buf = await file.arrayBuffer();
-      const pdf = await getDocument({ data: buf }).promise;
+      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
       const numPages = pdf.numPages;
 
       const PptxGenJS = (pptxgen as { default?: typeof pptxgen } & typeof pptxgen).default ?? pptxgen;

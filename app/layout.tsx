@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const sora = Sora({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sora",
-});
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -170,7 +163,7 @@ export default function RootLayout({
   const shouldLoadAds = process.env.NODE_ENV === "production";
 
   return (
-    <html lang="en" className={sora.variable}>
+    <html lang="en">
       <body className="min-h-screen bg-[var(--surface)] text-slate-900 antialiased">
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-NWTNKWJ1JF"
