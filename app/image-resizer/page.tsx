@@ -9,9 +9,9 @@ const ImageResizerClient = dynamic(() => import("./ImageResizerClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Image Resizer Online Free No Upload",
+  title: "Resize Images Online Free - JPG, PNG, WebP No Upload",
   description:
-    "Use Image Resizer online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Resize images online free with no upload required. Change JPG, PNG, and WebP dimensions in your browser with no signup.",
   keywords: [
     "image resizer",
     "resize image online",
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     "resize image in pixels",
   ],
   openGraph: {
-    title: "Image Resizer Online Free No Upload",
+    title: "Resize Images Online Free - JPG, PNG, WebP No Upload",
     description:
-    "Use Image Resizer online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Resize images online free with no upload required. Change JPG, PNG, and WebP dimensions in your browser with no signup.",
     url: "https://thepdftools.site/image-resizer",
     images: [
       {
@@ -129,16 +129,16 @@ export default function ImageResizerPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Resize images
+                Resize images online
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  to any dimension
+                  free to any dimension
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Resize JPG, PNG, and WebP images to any dimension instantly in your
-                browser. Lock aspect ratio, batch resize, and download — no upload,
-                no server, completely private.
+                Resize JPG, PNG, and WebP images to any dimension instantly in
+                your browser. Lock aspect ratio, batch resize, and download with
+                no upload, no signup, and fully private processing.
               </p>
             </div>
 

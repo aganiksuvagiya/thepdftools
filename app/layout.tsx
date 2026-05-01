@@ -22,27 +22,79 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: "thepdftools",
+  manifest: "/manifest.webmanifest",
   title: {
-    default: "thepdftools — Free Online Image & PDF Tools | No Upload Required",
+    default:
+      "thepdftools — Free Online PDF & Image Tools | Compress, Convert, Edit",
     template: "%s | thepdftools",
   },
   description:
-    "Free browser-based tools to compress images, convert files, edit visuals, and work with PDFs. Fast, private, and built to run locally in your browser.",
+    "Free browser-based PDF and image tools to compress, convert, merge, sign, crop, OCR, and edit files online with no upload required. Fast, private, and built to run locally in your browser.",
   keywords: [
     "free online tools",
     "online pdf tools",
     "online image tools",
+    "free pdf tools no upload",
+    "browser based pdf tools",
+    "free pdf tools no signup",
+    "free online pdf converter",
+    "free online image converter",
+    "private pdf tools online",
+    "client side image tools",
+    "free document tools online",
+    "no upload pdf editor",
+    "no upload image editor",
     "image compressor online",
+    "compress image online free",
+    "reduce image size online",
     "background remover online",
+    "remove background online free",
     "pdf merge online",
     "pdf split online",
+    "compress pdf online free",
+    "merge pdf online free",
+    "split pdf online free",
+    "pdf redaction online",
+    "pdf compare online",
+    "searchable pdf ocr",
+    "ai invoice extractor",
+    "pdf sign online free",
+    "pdf watermark online",
+    "pdf protect online",
+    "pdf rotate online",
+    "pdf page numbers online",
+    "pdf to ppt converter",
+    "ppt to pdf online free",
+    "pdf to excel converter",
+    "pdf to word converter",
+    "word to pdf converter",
+    "excel to pdf converter",
+    "html to pdf converter",
+    "image to pdf online",
+    "text to pdf online",
+    "screenshot to pdf online",
+    "scanned pdf to text",
+    "searchable scanned pdf",
     "pdf to image converter",
     "word to pdf online",
     "png to jpg converter",
     "jpg to png converter",
+    "svg to png converter",
+    "heic to jpg converter",
+    "video to gif converter",
+    "image to webp converter",
     "image cropper online",
     "image resizer online",
     "image watermark online",
+    "ai image upscaler",
+    "image rotate and flip online",
+    "qr code generator free",
+    "json formatter online",
+    "csv to json converter",
+    "base64 encoder decoder",
+    "word counter online",
+    "lorem ipsum generator",
+    "invoice generator free",
     "browser based tools",
     "client side pdf tools",
   ],
@@ -53,6 +105,11 @@ export const metadata: Metadata = {
   authors: [{ name: "thepdftools", url: SITE_URL }],
   creator: "thepdftools",
   publisher: "thepdftools",
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+  },
   alternates: {
     canonical: SITE_URL,
   },
@@ -68,9 +125,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "thepdftools",
-    title: "thepdftools — Free Online Image & PDF Tools",
+    title: "thepdftools — Free Online PDF & Image Tools",
     description:
-      "Compress, convert, crop, resize, watermark, and merge files in a fast browser-based workspace.",
+      "Compress, convert, crop, resize, watermark, merge, sign, redact, and OCR files in a fast browser-based workspace.",
     images: [
       {
         url: `${SITE_URL}/opengraph-image`,
@@ -82,9 +139,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "thepdftools — Free Online Image & PDF Tools",
+    title: "thepdftools — Free Online PDF & Image Tools",
     description:
-      "A cleaner, faster workspace for image tools, PDF tools, and useful browser-based utilities.",
+      "A cleaner, faster workspace for PDF tools, image tools, and useful browser-based utilities.",
     images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {
@@ -102,12 +159,6 @@ export const metadata: Metadata = {
     "msapplication-TileColor": "#0f766e",
     "apple-mobile-web-app-title": "thepdftools",
     "google-adsense-account": "ca-pub-1726872213486410",
-    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-      ? {
-          "google-site-verification":
-            process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-        }
-      : {}),
   },
 };
 

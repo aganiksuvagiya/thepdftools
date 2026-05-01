@@ -13,9 +13,9 @@ const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-compress`;
 
 export const metadata: Metadata = {
-  title: "Compress PDF Online Free (No Upload, Fast & Secure)",
+  title: "Compress PDF Online Free - Reduce PDF Size No Upload",
   description:
-    "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+    "Compress PDF online free and reduce PDF file size fast with no upload required. Private browser-based PDF compressor with no signup.",
   keywords: [
     "compress pdf online free",
     "compress pdf without losing quality online free",
@@ -30,9 +30,9 @@ export const metadata: Metadata = {
     canonical: PAGE_URL,
   },
   openGraph: {
-    title: "Compress PDF Online Free (No Upload, Fast & Secure)",
+    title: "Compress PDF Online Free - Reduce PDF Size No Upload",
     description:
-      "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+      "Compress PDF online free and reduce PDF file size fast with no upload required. Private browser-based PDF compressor with no signup.",
     url: PAGE_URL,
     type: "website",
     images: [
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Compress PDF Online Free (No Upload, Fast & Secure)",
+    title: "Compress PDF Online Free - Reduce PDF Size No Upload",
     description:
-      "Reduce PDF file size without losing quality. Free, fast & no upload required.",
+      "Compress PDF online free and reduce PDF file size fast with no upload required. Private browser-based PDF compressor with no signup.",
     images: [`${SITE_URL}/opengraph-image`],
   },
 };
@@ -156,7 +156,7 @@ export default function PdfCompressPage() {
                 PDF compressor no upload
               </p>
               <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
-                Compress PDF Online Free
+                Compress PDF online free
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                 Reduce PDF file size online with a free, fast, browser-based

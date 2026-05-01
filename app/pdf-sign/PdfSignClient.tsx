@@ -32,69 +32,73 @@ export default function PdfSignClient() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const lastPos = useRef<{ x: number; y: number } | null>(null);
-
-  const getPos = (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    if (e instanceof TouchEvent) {
-      return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
-    }
-    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
-  };
-
-  const startDraw = useCallback((e: MouseEvent | TouchEvent) => {
-    e.preventDefault();
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    setIsDrawing(true);
-    lastPos.current = getPos(e, canvas);
-  }, []);
-
-  const draw = useCallback((e: MouseEvent | TouchEvent) => {
-    e.preventDefault();
-    if (!isDrawing) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx || !lastPos.current) return;
-    const pos = getPos(e, canvas);
-    ctx.beginPath();
-    ctx.moveTo(lastPos.current.x, lastPos.current.y);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = "#1e293b";
-    ctx.lineWidth = 2.5;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.stroke();
-    lastPos.current = pos;
-    setHasSignature(true);
-  }, [isDrawing]);
-
-  const stopDraw = useCallback(() => {
-    setIsDrawing(false);
-    lastPos.current = null;
-  }, []);
+  const drawingRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.addEventListener("mousedown", startDraw);
-    canvas.addEventListener("mousemove", draw);
-    canvas.addEventListener("mouseup", stopDraw);
-    canvas.addEventListener("mouseleave", stopDraw);
-    canvas.addEventListener("touchstart", startDraw, { passive: false });
-    canvas.addEventListener("touchmove", draw, { passive: false });
-    canvas.addEventListener("touchend", stopDraw);
-    return () => {
-      canvas.removeEventListener("mousedown", startDraw);
-      canvas.removeEventListener("mousemove", draw);
-      canvas.removeEventListener("mouseup", stopDraw);
-      canvas.removeEventListener("mouseleave", stopDraw);
-      canvas.removeEventListener("touchstart", startDraw);
-      canvas.removeEventListener("touchmove", draw);
-      canvas.removeEventListener("touchend", stopDraw);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = "#1e293b";
+  }, []);
+
+  const getPos = (
+    clientX: number,
+    clientY: number,
+    canvas: HTMLCanvasElement
+  ) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
     };
-  }, [startDraw, draw, stopDraw]);
+  };
+
+  const startDraw = useCallback((clientX: number, clientY: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const pos = getPos(clientX, clientY, canvas);
+    drawingRef.current = true;
+    setIsDrawing(true);
+    lastPos.current = pos;
+
+    // Draw a tiny starting point so single taps/clicks also register visually.
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 1.2, 0, Math.PI * 2);
+    ctx.fillStyle = "#1e293b";
+    ctx.fill();
+    setHasSignature(true);
+  }, []);
+
+  const draw = useCallback((clientX: number, clientY: number) => {
+    if (!drawingRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx || !lastPos.current) return;
+
+    const pos = getPos(clientX, clientY, canvas);
+    ctx.beginPath();
+    ctx.moveTo(lastPos.current.x, lastPos.current.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastPos.current = pos;
+    setHasSignature(true);
+  }, []);
+
+  const stopDraw = useCallback(() => {
+    drawingRef.current = false;
+    setIsDrawing(false);
+    lastPos.current = null;
+  }, []);
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -160,7 +164,8 @@ export default function PdfSignClient() {
       }
 
       const pdfBytes = await doc.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const pdfOutput = Uint8Array.from(pdfBytes);
+      const blob = new Blob([pdfOutput], { type: "application/pdf" });
       setResultUrl(URL.createObjectURL(blob));
       setResultSize(blob.size);
     } catch (err: unknown) {
@@ -215,7 +220,28 @@ export default function PdfSignClient() {
                     width={600}
                     height={150}
                     className="w-full rounded-xl border-2 border-dashed border-gray-300 bg-white cursor-crosshair touch-none"
-                    style={{ height: "120px" }}
+                    style={{ height: "120px", touchAction: "none" }}
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      (e.currentTarget as HTMLCanvasElement).setPointerCapture?.(e.pointerId);
+                      startDraw(e.clientX, e.clientY);
+                    }}
+                    onPointerMove={(e) => {
+                      e.preventDefault();
+                      draw(e.clientX, e.clientY);
+                    }}
+                    onPointerUp={(e) => {
+                      e.preventDefault();
+                      (e.currentTarget as HTMLCanvasElement).releasePointerCapture?.(e.pointerId);
+                      stopDraw();
+                    }}
+                    onPointerCancel={(e) => {
+                      e.preventDefault();
+                      stopDraw();
+                    }}
+                    onPointerLeave={() => {
+                      stopDraw();
+                    }}
                   />
                   <p className="mt-1 text-xs text-gray-400 text-center">Draw with mouse or finger</p>
                 </div>

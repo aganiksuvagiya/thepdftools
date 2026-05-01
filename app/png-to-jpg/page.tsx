@@ -9,9 +9,9 @@ const PngToJpgClient = dynamic(() => import("./PngToJpgClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PNG To JPG Online Free No Upload",
+  title: "PNG to JPG Converter Online Free - No Upload",
   description:
-    "Use PNG To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PNG to JPG online free with no upload required. Fast browser-based PNG to JPG converter with adjustable quality.",
   keywords: [
     "png to jpg",
     "png to jpeg converter",
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     "png jpg converter",
   ],
   openGraph: {
-    title: "PNG To JPG Online Free No Upload",
+    title: "PNG to JPG Converter Online Free - No Upload",
     description:
-    "Use PNG To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PNG to JPG online free with no upload required. Fast browser-based PNG to JPG converter with adjustable quality.",
     url: "https://thepdftools.site/png-to-jpg",
     images: [
       {
@@ -125,16 +125,16 @@ export default function PngToJpgPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Convert PNG to JPG
+                PNG to JPG converter
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  for smaller file sizes
+                  online free with no upload
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Convert PNG images to JPG format instantly in your browser. Adjust
-                quality, handle transparency with a white background — download your
-                JPG in seconds.
+                quality, handle transparency with a white background, and
+                download your JPG in seconds.
               </p>
             </div>
 

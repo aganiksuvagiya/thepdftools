@@ -11,9 +11,9 @@ const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-sign`;
 
 export const metadata: Metadata = {
-  title: "Sign PDF Online Free — Draw or Type Signature, No Upload",
+  title: "Sign PDF Online Free - Add Signature No Upload",
   description:
-    "Sign PDF documents online for free. Draw or type your signature and add it to any PDF — no upload, no signup, runs entirely in your browser.",
+    "Sign PDF online free by drawing or typing your signature. Add a signature to any PDF in your browser with no upload or signup.",
   keywords: [
     "sign pdf online free",
     "pdf signature online",
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     "electronic signature pdf",
   ],
   openGraph: {
-    title: "Sign PDF Online Free — Draw or Type Signature, No Upload",
-    description: "Sign PDF documents online for free. Draw or type your signature. No upload, no signup.",
+    title: "Sign PDF Online Free - Add Signature No Upload",
+    description: "Sign PDF online free by drawing or typing your signature. No upload, no signup.",
     url: PAGE_URL,
     images: [{ url: `${SITE_URL}/opengraph-image` }],
   },
@@ -96,13 +96,15 @@ export default function PdfSignPage() {
                 PDF Sign
               </div>
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Sign PDF documents
+                Sign PDF online free
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  free &amp; no upload
+                  add signature with no upload
                 </span>
               </h1>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Draw or type your signature and embed it into any PDF document. Works on desktop and mobile — your files never leave your browser.
+                Draw or type your signature and add it to any PDF document.
+                Works on desktop and mobile, and your files never leave your
+                browser.
               </p>
             </div>
             <div className="mt-8"><PdfSignClient /></div>

@@ -9,9 +9,9 @@ const PdfToWordClient = dynamic(() => import("./PdfToWordClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF To Word Online Free No Upload",
+  title: "PDF to Word Converter Online Free - No Upload",
   description:
-    "Use PDF To Word online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to Word online free with no upload required. Extract editable text from PDFs in your browser with no signup.",
   keywords: [
     "pdf to word",
     "pdf to docx",
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     "extract text from pdf",
   ],
   openGraph: {
-    title: "PDF To Word Online Free No Upload",
+    title: "PDF to Word Converter Online Free - No Upload",
     description:
-    "Use PDF To Word online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to Word online free with no upload required. Extract editable text from PDFs in your browser with no signup.",
     url: "https://thepdftools.site/pdf-to-word",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -121,16 +121,16 @@ export default function PdfToWordPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Convert PDF to Word
+                PDF to Word converter
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  for easy editing
+                  online free with no upload
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Convert PDF files to editable Word documents instantly in your
-                browser. Extract text with page breaks preserved — no upload, no
-                server, completely private.
+                browser. Extract text with page breaks preserved with no upload,
+                no signup, and fully private processing.
               </p>
             </div>
 

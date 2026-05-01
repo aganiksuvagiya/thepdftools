@@ -9,9 +9,9 @@ const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF Merge Online Free No Upload",
+  title: "Merge PDF Files Online Free - Combine PDFs No Upload",
   description:
-    "Use PDF Merge online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Merge PDF files online free with no upload required. Combine multiple PDFs into one document in your browser with no signup.",
   keywords: [
     "pdf merge",
     "merge pdf online",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     "merge multiple pdf files",
   ],
   openGraph: {
-    title: "PDF Merge Online Free No Upload",
+    title: "Merge PDF Files Online Free - Combine PDFs No Upload",
     description:
-    "Use PDF Merge online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Merge PDF files online free with no upload required. Combine multiple PDFs into one document in your browser with no signup.",
     url: "https://thepdftools.site/pdf-merge",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -125,15 +125,16 @@ export default function PdfMergePage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Merge PDF files
+                Merge PDF files online
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  into a single document
+                  into one document free
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Combine multiple PDF files into a single document in seconds. Reorder
-                files, then merge — everything happens in your browser, privately.
+                Combine multiple PDF files into a single document in seconds.
+                Reorder files, then merge them privately in your browser with no
+                upload required.
               </p>
             </div>
 

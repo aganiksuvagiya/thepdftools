@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DropZone from "@/components/DropZone";
 
 type RedactionBox = {
@@ -47,13 +47,22 @@ export default function PdfRedactionClient() {
   const [downloadSize, setDownloadSize] = useState(0);
   const [draftRedaction, setDraftRedaction] = useState<RedactionBox | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const thumbnailsRef = useRef<HTMLDivElement | null>(null);
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+  const wheelLockRef = useRef(false);
 
   const activePage = pages[currentPage] ?? null;
   const totalRedactions = useMemo(
     () => pages.reduce((count, page) => count + page.redactions.length, 0),
     [pages]
   );
+
+  useEffect(() => {
+    const activeThumb = thumbnailsRef.current?.querySelector<HTMLButtonElement>(
+      `[data-page-index="${currentPage}"]`
+    );
+    activeThumb?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [currentPage]);
 
   const releaseUrls = useCallback((items: PagePreview[]) => {
     for (const page of items) {
@@ -243,6 +252,30 @@ export default function PdfRedactionClient() {
     setDraftRedaction(null);
   }, []);
 
+  const handleViewerWheel = useCallback(
+    (event: React.WheelEvent<HTMLDivElement>) => {
+      if (pages.length <= 1) return;
+
+      event.preventDefault();
+
+      if (wheelLockRef.current) return;
+      if (Math.abs(event.deltaY) < 12) return;
+
+      wheelLockRef.current = true;
+      setCurrentPage((current) => {
+        if (event.deltaY > 0) {
+          return Math.min(current + 1, pages.length - 1);
+        }
+        return Math.max(current - 1, 0);
+      });
+
+      window.setTimeout(() => {
+        wheelLockRef.current = false;
+      }, 220);
+    },
+    [pages.length]
+  );
+
   const removeRedaction = useCallback(
     (id: string) => {
       setPages((current) =>
@@ -410,7 +443,7 @@ export default function PdfRedactionClient() {
 
           {pages.length > 0 && activePage && (
             <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
-              <aside className="space-y-4 rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm">
+              <aside className="space-y-4 self-start rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm xl:sticky xl:top-24">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl bg-slate-50 p-3">
                     <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Pages</div>
@@ -424,10 +457,14 @@ export default function PdfRedactionClient() {
 
                 <div className="space-y-2">
                   <p className="text-sm font-semibold text-slate-900">Pages</p>
-                  <div className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
+                  <div
+                    ref={thumbnailsRef}
+                    className="max-h-[calc(100vh-17rem)] space-y-2 overflow-y-auto pr-2"
+                  >
                     {pages.map((page, index) => (
                       <button
                         key={page.pageNumber}
+                        data-page-index={index}
                         onClick={() => setCurrentPage(index)}
                         className={`w-full rounded-xl border p-2 text-left transition ${
                           currentPage === index
@@ -474,11 +511,12 @@ export default function PdfRedactionClient() {
 
                 <div
                   ref={containerRef}
-                  className="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-50 cursor-crosshair select-none"
+                  className="relative max-h-[calc(100vh-12rem)] overflow-auto rounded-[1.5rem] border border-slate-200 bg-slate-50 cursor-crosshair select-none"
                   onMouseDown={(event) => beginDrag(event.clientX, event.clientY)}
                   onMouseMove={(event) => updateDrag(event.clientX, event.clientY)}
                   onMouseUp={(event) => finishDrag(event.clientX, event.clientY)}
                   onMouseLeave={cancelDrag}
+                  onWheel={handleViewerWheel}
                   onTouchStart={(event) => beginDrag(event.touches[0].clientX, event.touches[0].clientY)}
                   onTouchMove={(event) => {
                     const touch = event.touches[0];

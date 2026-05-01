@@ -94,6 +94,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/pdf-sign", changeFrequency: "weekly", priority: 0.92 },
     { path: "/pdf-to-ppt", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-editor", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/pdf-redaction", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/pdf-compare", changeFrequency: "weekly", priority: 0.86 },
+    {
+      path: "/scanned-pdf-to-searchable-pdf",
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    { path: "/ai-invoice-extractor", changeFrequency: "weekly", priority: 0.88 },
     { path: "/about", changeFrequency: "monthly", priority: 0.6 },
     { path: "/privacy", changeFrequency: "monthly", priority: 0.5 },
   ];

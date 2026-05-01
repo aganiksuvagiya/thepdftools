@@ -9,9 +9,9 @@ const ImageCompressorClient = dynamic(() => import("./ImageCompressorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Image Compressor Online Free No Upload",
+  title: "Compress Images Online Free - JPG, PNG, WebP No Upload",
   description:
-    "Use Image Compressor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Compress images online free with no upload required. Reduce JPG, PNG, and WebP file size fast in your browser with no signup needed.",
   keywords: [
     "image compressor",
     "compress image online",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     "compress images for website",
   ],
   openGraph: {
-    title: "Image Compressor Online Free No Upload",
+    title: "Compress Images Online Free - JPG, PNG, WebP No Upload",
     description:
-    "Use Image Compressor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Compress images online free with no upload required. Reduce JPG, PNG, and WebP file size fast in your browser with no signup needed.",
     url: "https://thepdftools.site/image-compressor",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -126,16 +126,16 @@ export default function ImageCompressorPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Compress images
+                Compress images online
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  without the heavy file size
+                  free with no upload
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload a JPG, PNG, or WebP file and compress it instantly in your browser.
-                Use this free image size reducer with no signup, no server upload,
-                and no extra steps.
+                Compress JPG, PNG, and WebP images instantly in your browser.
+                Use this free image compressor to reduce file size with no signup,
+                no server upload, and no extra steps.
               </p>
             </div>
 

@@ -9,9 +9,9 @@ const JpgToPngClient = dynamic(() => import("./JpgToPngClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "JPG To PNG Online Free No Upload",
+  title: "JPG to PNG Converter Online Free - No Upload",
   description:
-    "Use JPG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert JPG to PNG online free with no upload required. Fast browser-based JPG to PNG converter with no signup.",
   keywords: [
     "jpg to png",
     "jpeg to png converter",
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     "change jpg to png",
   ],
   openGraph: {
-    title: "JPG To PNG Online Free No Upload",
+    title: "JPG to PNG Converter Online Free - No Upload",
     description:
-    "Use JPG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert JPG to PNG online free with no upload required. Fast browser-based JPG to PNG converter with no signup.",
     url: "https://thepdftools.site/jpg-to-png",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -124,15 +124,16 @@ export default function JpgToPngPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Convert JPG to PNG
+                JPG to PNG converter
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  instantly and losslessly
+                  online free with no upload
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Convert JPEG images to PNG format instantly in your browser. No
-                server upload, no quality loss — download your PNG in seconds.
+                server upload, no signup, and no quality loss — download your PNG
+                in seconds.
               </p>
             </div>
 

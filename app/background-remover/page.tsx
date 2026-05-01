@@ -9,9 +9,9 @@ const BackgroundRemoverClient = dynamic(() => import("./BackgroundRemoverClient"
 });
 
 export const metadata: Metadata = {
-  title: "Background Remover Online Free No Upload",
+  title: "Remove Background From Image Online Free - AI No Upload",
   description:
-    "Use Background Remover online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Remove background from images online free with AI and no upload required. Create transparent PNGs in your browser with no signup.",
   keywords: [
     "background remover",
     "remove background online",
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     "ai remove background",
   ],
   openGraph: {
-    title: "Background Remover Online Free No Upload",
+    title: "Remove Background From Image Online Free - AI No Upload",
     description:
-    "Use Background Remover online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Remove background from images online free with AI and no upload required. Create transparent PNGs in your browser with no signup.",
     url: "https://thepdftools.site/background-remover",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -120,16 +120,16 @@ export default function BackgroundRemoverPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Remove backgrounds
+                Remove background from image
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  with AI precision
+                  online free with AI
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Remove backgrounds from photos instantly using AI. Perfect for
-                product images, profile pictures, and logos. Download as
-                transparent PNG.
+                Remove image backgrounds instantly using AI. Perfect for product
+                photos, profile pictures, and logos. Download a transparent PNG
+                with no upload and no signup.
               </p>
             </div>
 

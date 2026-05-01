@@ -9,9 +9,9 @@ const WordToPdfClient = dynamic(() => import("./WordToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Word To PDF Online Free No Upload",
+  title: "Word to PDF Converter Online Free - DOCX No Upload",
   description:
-    "Use Word To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Word to PDF online free with no upload required. Turn DOC and DOCX files into PDFs in your browser with no signup.",
   keywords: [
     "word to pdf",
     "docx to pdf",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "convert docx to pdf online",
   ],
   openGraph: {
-    title: "Word To PDF Online Free No Upload",
+    title: "Word to PDF Converter Online Free - DOCX No Upload",
     description:
-    "Use Word To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Word to PDF online free with no upload required. Turn DOC and DOCX files into PDFs in your browser with no signup.",
     url: "https://thepdftools.site/word-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -115,15 +115,16 @@ export default function WordToPdfPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
-                Convert Word to PDF
+                Word to PDF converter
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  with perfect formatting
+                  online free with no upload
                 </span>
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload a DOC or DOCX file and convert it to PDF instantly in your browser.
-                No signup, no server upload — your documents stay private.
+                Upload a DOC or DOCX file and convert it to PDF instantly in
+                your browser. No signup, no server upload — your documents stay
+                private.
               </p>
             </div>
 
