@@ -61,43 +61,6 @@ export default function ImageCompressorPage() {
           "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality.",
       },
       {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to compress images here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your images never leave your browser. All compression is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What image formats are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "JPG/JPEG, PNG, and WebP formats are fully supported. You can compress JPG, PNG, or WebP images online for free and download the optimized result instantly.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "How much can I reduce file size?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Up to 90% reduction depending on the original image and quality settings. You can adjust the quality slider to find the perfect balance between file size and visual quality.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens in your browser, so it depends on your device's memory. Most images up to 50MB work smoothly.",
-            },
-          },
-        ],
-      },
-      {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },

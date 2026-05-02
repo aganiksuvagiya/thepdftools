@@ -57,27 +57,6 @@ export default function Base64Page() {
           { "@type": "ListItem", "position": 2, "name": "Base64 Encoder", "item": "https://thepdftools.site/base64" },
         ],
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Is this Base64 encoder and decoder free?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. The Base64 encoder and decoder is free to use with no signup required.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "Does Base64 encoding happen in my browser?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Base64 encoding and decoding runs locally in your browser so your text stays on your device.",
-            },
-          },
-        ],
-      },
     ],
   };
 
