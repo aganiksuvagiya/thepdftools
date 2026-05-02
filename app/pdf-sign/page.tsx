@@ -152,6 +152,15 @@ export default function PdfSignPage() {
             </p>
           </div>
 
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related Guides</h2>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/blog/sign-pdf-online-free-no-signup" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Sign PDF Online Free</Link>
+              <Link href="/blog/edit-pdf-online-free-no-signup-guide" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Edit PDF Online Free</Link>
+              <Link href="/blog/how-to-highlight-pdf-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Highlight PDF Online</Link>
+            </div>
+          </div>
+
           <div>
             <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related PDF Tools</h2>
             <div className="mt-5 flex flex-wrap gap-3">

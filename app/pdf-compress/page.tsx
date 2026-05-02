@@ -311,9 +311,9 @@ export default function PdfCompressPage() {
             </p>
           </section>
 
-          <section id="related-tools" className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
-              Related PDF tools
+        <section id="related-tools" className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+            Related PDF tools
             </h2>
             <p className="mt-3 text-[15px] leading-8 text-slate-600">
               Continue your PDF workflow with these internal tools.
@@ -337,6 +337,20 @@ export default function PdfCompressPage() {
               >
                 PDF to Word
               </Link>
+            </div>
+          </section>
+
+          <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+              Related guides
+            </h2>
+            <p className="mt-3 text-[15px] leading-8 text-slate-600">
+              Read these guides if you want extra help with compression settings, email limits, and related PDF workflows.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/blog/how-to-compress-pdf-without-losing-quality" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF Without Losing Quality</Link>
+              <Link href="/blog/compress-pdf-for-email-online" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF for Email</Link>
+              <Link href="/blog/compress-pdf-files-free" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Reduce PDF Size Free</Link>
             </div>
           </section>
 

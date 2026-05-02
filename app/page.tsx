@@ -9,7 +9,7 @@ const SITE_URL = "https://thepdftools.site";
 export const metadata: Metadata = {
   title: "Free Online PDF & Image Tools - No Upload, No Signup",
   description:
-    "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, redact files, sign documents, OCR scans, convert images, resize photos, add watermarks, and more with no upload or signup.",
+    "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, highlight PDFs, redact files, sign documents, OCR scans, convert images, resize photos, add watermarks, and more with no upload or signup.",
   keywords: [
     "free online tools",
     "free pdf tools online",
@@ -44,6 +44,8 @@ export const metadata: Metadata = {
     "no upload pdf tools",
     "no upload image tools",
     "pdf sign online free",
+    "pdf highlight online free",
+    "highlight text in pdf online",
     "pdf redaction online free",
     "pdf compare online free",
     "scanned pdf to searchable pdf",
@@ -55,7 +57,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free Online PDF & Image Tools - No Upload, No Signup",
     description:
-      "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, sign, redact, OCR, convert images, resize photos, add watermarks, and more with no upload or signup.",
+      "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, highlight PDFs, sign, redact, OCR, convert images, resize photos, add watermarks, and more with no upload or signup.",
     url: "https://thepdftools.site",
     images: [
       {
@@ -84,6 +86,12 @@ const homeJsonLd = [
     "@type": "WebSite",
     name: "thepdftools",
     url: SITE_URL,
+    inLanguage: "en",
+    publisher: {
+      "@type": "Organization",
+      name: "thepdftools",
+      url: SITE_URL,
+    },
   },
   {
     "@context": "https://schema.org",
@@ -109,6 +117,7 @@ const homeJsonLd = [
     featureList: [
       "Merge PDF files",
       "Compress PDF files",
+      "Highlight PDF files",
       "Sign PDF files",
       "Redact PDF files",
       "Compare PDF files",
@@ -131,6 +140,7 @@ const homeJsonLd = [
       `${SITE_URL}/jpg-to-png`,
       `${SITE_URL}/png-to-jpg`,
       `${SITE_URL}/pdf-sign`,
+      `${SITE_URL}/pdf-highlight`,
       `${SITE_URL}/pdf-redaction`,
       `${SITE_URL}/scanned-pdf-to-searchable-pdf`,
       `${SITE_URL}/ai-invoice-extractor`,
@@ -165,10 +175,26 @@ const homeJsonLd = [
         name: "Which tools are most popular?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Popular tools include Image Compressor, PDF Merge, PDF Sign, PDF Redaction, Background Remover, JPG to PNG, and Image Resizer.",
+          text: "Popular tools include Image Compressor, PDF Merge, PDF Highlight, PDF Sign, PDF Redaction, Background Remover, JPG to PNG, and Image Resizer.",
         },
       },
     ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "thepdftools Guides",
+    url: `${SITE_URL}/blog`,
+    blogPost: [...growthBlogPosts]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, 6)
+      .map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.description,
+        url: `${SITE_URL}/blog/${post.slug}`,
+        datePublished: post.date,
+      })),
   },
 ];
 
@@ -359,6 +385,18 @@ const tools = [
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),},
+  {
+    href: "/pdf-highlight",
+    title: "PDF Highlight",
+    description:
+      "Highlight important text, clauses, totals, and sections in a PDF online. Export a clean highlighted PDF in your browser.",
+    badge: "New",
+    color: "amber" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 3h6l3 3-9 9-4 1 1-4 9-9zM7 17h10M6 21h12" />
       </svg>
     ),},
   {
@@ -618,11 +656,12 @@ const seoGroups = [
   {
     title: "Popular PDF Tools",
     description:
-      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, convert PDF to images, convert PDF to Word, unlock PDFs, and build PDFs from screenshots or images.",
+      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, highlight PDFs, convert PDF to images, convert PDF to Word, unlock PDFs, and build PDFs from screenshots or images.",
     links: [
       { href: "/pdf-merge", label: "PDF Merge" },
       { href: "/pdf-split", label: "PDF Split" },
       { href: "/pdf-compress", label: "PDF Compress" },
+      { href: "/pdf-highlight", label: "PDF Highlight" },
       { href: "/pdf-to-image", label: "PDF to Image" },
       { href: "/pdf-to-word", label: "PDF to Word" },
       { href: "/pdf-unlock", label: "PDF Unlock" },
@@ -644,6 +683,32 @@ const seoGroups = [
       { href: "/ilovepdf-alternative", label: "iLovePDF Alternative" },
       { href: "/blog/smallpdf-alternatives-free", label: "Smallpdf Alternatives Free" },
       { href: "/blog/free-pdf-tools-no-signup", label: "Free PDF Tools No Signup" },
+    ],
+  },
+  {
+    title: "City Pages",
+    description:
+      "Location-focused pages help users discover the right PDF and image workflows for city-based searches and strengthen internal linking for SEO.",
+    links: [
+      { href: "/pdf-tools-in/ahmedabad", label: "PDF Tools in Ahmedabad" },
+      { href: "/pdf-tools-in/surat", label: "PDF Tools in Surat" },
+      { href: "/pdf-tools-in/vadodara", label: "PDF Tools in Vadodara" },
+      { href: "/pdf-tools-in/mumbai", label: "PDF Tools in Mumbai" },
+      { href: "/pdf-tools-in/delhi", label: "PDF Tools in Delhi" },
+      { href: "/pdf-tools-in/bangalore", label: "PDF Tools in Bengaluru" },
+    ],
+  },
+  {
+    title: "Country Pages",
+    description:
+      "Country-focused landing pages strengthen international SEO and help search engines connect your main PDF and image tools with location-based search intent.",
+    links: [
+      { href: "/pdf-tools-in-country/india", label: "PDF Tools in India" },
+      { href: "/pdf-tools-in-country/united-states", label: "PDF Tools in United States" },
+      { href: "/pdf-tools-in-country/united-kingdom", label: "PDF Tools in United Kingdom" },
+      { href: "/pdf-tools-in-country/canada", label: "PDF Tools in Canada" },
+      { href: "/pdf-tools-in-country/australia", label: "PDF Tools in Australia" },
+      { href: "/pdf-tools-in-country/united-arab-emirates", label: "PDF Tools in UAE" },
     ],
   },
 ];
@@ -670,6 +735,7 @@ const toolCategories = [
       "/pdf-merge",
       "/pdf-split",
       "/pdf-compress",
+      "/pdf-highlight",
       "/pdf-to-image",
       "/pdf-to-word",
       "/pdf-unlock",

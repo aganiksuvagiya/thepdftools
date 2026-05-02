@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 import { growthBlogPosts } from "@/lib/seo-growth";
+import { citySeoPages } from "@/lib/seo-cities";
+import { countrySeoPages } from "@/lib/seo-countries";
+import { localSeoTools } from "@/lib/local-seo-tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
@@ -92,6 +95,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/pdf-watermark", changeFrequency: "weekly", priority: 0.88 },
     { path: "/pdf-page-numbers", changeFrequency: "weekly", priority: 0.86 },
     { path: "/pdf-sign", changeFrequency: "weekly", priority: 0.92 },
+    { path: "/pdf-highlight", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-to-ppt", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-editor", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-redaction", changeFrequency: "weekly", priority: 0.88 },
@@ -106,16 +110,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/privacy", changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  return routes.map((route) => {
-    const blogPost = route.path.startsWith("/blog/")
-      ? growthBlogPosts.find((post) => `/blog/${post.slug}` === route.path)
-      : undefined;
+  return routes
+    .map((route) => {
+      const blogPost = route.path.startsWith("/blog/")
+        ? growthBlogPosts.find((post) => `/blog/${post.slug}` === route.path)
+        : undefined;
 
-    return {
-      url: `${baseUrl}${route.path}`,
-      lastModified: blogPost ? new Date(blogPost.date) : siteUpdatedAt,
-      changeFrequency: route.changeFrequency,
-      priority: route.priority,
-    };
-  });
+      return {
+        url: `${baseUrl}${route.path}`,
+        lastModified: blogPost ? new Date(blogPost.date) : siteUpdatedAt,
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
+      };
+    })
+    .concat(
+      citySeoPages.flatMap((city) =>
+        localSeoTools.map((tool) => ({
+          url: `${baseUrl}/${tool.slug}-in-${city.slug}`,
+          lastModified: siteUpdatedAt,
+          changeFrequency: "weekly" as const,
+          priority: 0.79,
+        })),
+      ),
+      citySeoPages.map((city) => ({
+        url: `${baseUrl}/pdf-tools-in/${city.slug}`,
+        lastModified: siteUpdatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.72,
+      })),
+      citySeoPages.map((city) => ({
+        url: `${baseUrl}/pdf-tools-in-country/${city.countrySlug}/${city.slug}`,
+        lastModified: siteUpdatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.73,
+      })),
+      countrySeoPages.map((country) => ({
+        url: `${baseUrl}/pdf-tools-in-country/${country.slug}`,
+        lastModified: siteUpdatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.74,
+      })),
+    );
 }

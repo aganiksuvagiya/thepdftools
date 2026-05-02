@@ -11,12 +11,31 @@ type RedactionBox = {
   height: number;
 };
 
+type TextSpan = {
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
 type PagePreview = {
   pageNumber: number;
   width: number;
   height: number;
   imageUrl: string;
   redactions: RedactionBox[];
+  textSpans: TextSpan[];
+};
+
+type SearchMatch = {
+  id: string;
+  pageIndex: number;
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 };
 
 function formatBytes(bytes: number): string {
@@ -35,6 +54,38 @@ async function loadPdfJs() {
   return pdfjsLib;
 }
 
+async function extractTextSpans(pdfjsLib: any, page: any, viewport: any): Promise<TextSpan[]> {
+  const textContent = await page.getTextContent();
+  const spans: TextSpan[] = [];
+
+  for (const item of textContent.items as any[]) {
+    if (!("str" in item) || !item.str.trim()) continue;
+
+    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+    const fontHeight = Math.hypot(tx[2], tx[3]);
+    const style = textContent.styles?.[item.fontName];
+    const ascent = style?.ascent
+      ? style.ascent * fontHeight
+      : style?.descent
+        ? (1 + style.descent) * fontHeight
+        : fontHeight * 0.8;
+
+    spans.push({
+      text: item.str,
+      x: tx[4],
+      y: tx[5] - ascent,
+      width: Math.max(item.width * viewport.scale, item.str.length * fontHeight * 0.45),
+      height: fontHeight,
+    });
+  }
+
+  return spans;
+}
+
+function createRedactionId(prefix: string) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 export default function PdfRedactionClient() {
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<PagePreview[]>([]);
@@ -46,12 +97,19 @@ export default function PdfRedactionClient() {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [downloadSize, setDownloadSize] = useState(0);
   const [draftRedaction, setDraftRedaction] = useState<RedactionBox | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchMatches, setSearchMatches] = useState<SearchMatch[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const pageSurfaceRef = useRef<HTMLDivElement | null>(null);
   const thumbnailsRef = useRef<HTMLDivElement | null>(null);
   const dragStartRef = useRef<{ x: number; y: number } | null>(null);
   const wheelLockRef = useRef(false);
 
   const activePage = pages[currentPage] ?? null;
+  const activePageMatches = useMemo(
+    () => searchMatches.filter((match) => match.pageIndex === currentPage),
+    [currentPage, searchMatches]
+  );
   const totalRedactions = useMemo(
     () => pages.reduce((count, page) => count + page.redactions.length, 0),
     [pages]
@@ -83,6 +141,8 @@ export default function PdfRedactionClient() {
     setDownloadUrl(null);
     setDownloadSize(0);
     setDraftRedaction(null);
+    setSearchQuery("");
+    setSearchMatches([]);
   }, [downloadUrl, pages, releaseUrls]);
 
   const loadFile = useCallback(
@@ -100,6 +160,7 @@ export default function PdfRedactionClient() {
       setDownloadUrl(null);
       setDownloadSize(0);
       setDraftRedaction(null);
+      setSearchMatches([]);
 
       try {
         const pdfjsLib = await loadPdfJs();
@@ -121,6 +182,7 @@ export default function PdfRedactionClient() {
           }
 
           await page.render({ canvasContext: context, viewport, canvas }).promise;
+          const textSpans = await extractTextSpans(pdfjsLib, page, viewport);
           const blob = await new Promise<Blob>((resolve, reject) => {
             canvas.toBlob((value) => {
               if (value) resolve(value);
@@ -134,6 +196,7 @@ export default function PdfRedactionClient() {
             height: canvas.height,
             imageUrl: URL.createObjectURL(blob),
             redactions: [],
+            textSpans,
           });
         }
 
@@ -159,10 +222,10 @@ export default function PdfRedactionClient() {
 
   const getRelativePoint = useCallback(
     (clientX: number, clientY: number) => {
-      const container = containerRef.current;
-      if (!container || !activePage) return null;
+      const surface = pageSurfaceRef.current;
+      if (!surface || !activePage) return null;
 
-      const rect = container.getBoundingClientRect();
+      const rect = surface.getBoundingClientRect();
       const x = ((clientX - rect.left) / rect.width) * activePage.width;
       const y = ((clientY - rect.top) / rect.height) * activePage.height;
 
@@ -232,7 +295,7 @@ export default function PdfRedactionClient() {
                 redactions: [
                   ...page.redactions,
                   {
-                    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                    id: createRedactionId("manual"),
                     x,
                     y,
                     width,
@@ -304,6 +367,68 @@ export default function PdfRedactionClient() {
       )
     );
   }, [currentPage]);
+
+  const findTextMatches = useCallback(() => {
+    const needle = searchQuery.trim().toLowerCase();
+    if (!needle) {
+      setSearchMatches([]);
+      return;
+    }
+
+    const matches: SearchMatch[] = [];
+
+    pages.forEach((page, pageIndex) => {
+      page.textSpans.forEach((span) => {
+        const haystack = span.text.toLowerCase();
+        let startIndex = 0;
+
+        while (startIndex < haystack.length) {
+          const foundAt = haystack.indexOf(needle, startIndex);
+          if (foundAt === -1) break;
+
+          const charWidth = span.width / Math.max(span.text.length, 1);
+          matches.push({
+            id: `${pageIndex}-${foundAt}-${matches.length}`,
+            pageIndex,
+            text: span.text.slice(foundAt, foundAt + needle.length),
+            x: span.x + charWidth * foundAt,
+            y: span.y,
+            width: Math.max(charWidth * needle.length, 12),
+            height: Math.max(span.height, 12),
+          });
+
+          startIndex = foundAt + needle.length;
+        }
+      });
+    });
+
+    setSearchMatches(matches);
+  }, [pages, searchQuery]);
+
+  const redactSearchMatches = useCallback(() => {
+    if (!searchMatches.length) return;
+
+    setPages((current) =>
+      current.map((page, pageIndex) => {
+        const pageMatches = searchMatches.filter((match) => match.pageIndex === pageIndex);
+        if (!pageMatches.length) return page;
+
+        return {
+          ...page,
+          redactions: [
+            ...page.redactions,
+            ...pageMatches.map((match) => ({
+              id: createRedactionId("search"),
+              x: match.x,
+              y: match.y,
+              width: match.width,
+              height: match.height,
+            })),
+          ],
+        };
+      })
+    );
+  }, [searchMatches]);
 
   const exportRedactedPdf = useCallback(async () => {
     if (!file || !pages.length) return;
@@ -429,6 +554,41 @@ export default function PdfRedactionClient() {
             </div>
           </div>
 
+          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Search & Redact Text</div>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Search common private text like company names, emails, IDs, or phone numbers and turn matches into redaction boxes.
+                </p>
+              </div>
+              <div className="flex w-full flex-col gap-2 lg:w-auto lg:min-w-[440px]">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <input
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") findTextMatches();
+                    }}
+                    placeholder="Search text to redact..."
+                    className="h-11 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-brand-300 focus:bg-white focus:ring-2 focus:ring-brand-100"
+                  />
+                  <button onClick={findTextMatches} className="btn-secondary text-sm" disabled={!searchQuery.trim()}>
+                    Find Matches
+                  </button>
+                  <button onClick={redactSearchMatches} className="btn-primary text-sm" disabled={!searchMatches.length}>
+                    Redact All
+                  </button>
+                </div>
+                <p className="text-xs text-slate-500">
+                  {searchMatches.length
+                    ? `${searchMatches.length} match${searchMatches.length === 1 ? "" : "es"} found across ${new Set(searchMatches.map((match) => match.pageIndex)).size} page${new Set(searchMatches.map((match) => match.pageIndex)).size === 1 ? "" : "s"}.`
+                    : "No text matches selected yet."}
+                </p>
+              </div>
+            </div>
+          </div>
+
           {(loading || saving || progress) && (
             <div className="rounded-[1.5rem] border border-blue-100 bg-blue-50 p-5 text-sm text-blue-700">
               {progress || "Working..."}
@@ -491,7 +651,9 @@ export default function PdfRedactionClient() {
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900">Page {activePage.pageNumber}</h3>
-                    <p className="text-sm text-slate-500">Click and drag to place a redaction box.</p>
+                    <p className="text-sm text-slate-500">
+                      Click and drag to place a redaction box. {activePageMatches.length ? `${activePageMatches.length} search match${activePageMatches.length === 1 ? "" : "es"} on this page.` : ""}
+                    </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button onClick={exportRedactedPdf} disabled={saving || loading || totalRedactions === 0} className="btn-primary text-sm">
@@ -511,61 +673,79 @@ export default function PdfRedactionClient() {
 
                 <div
                   ref={containerRef}
-                  className="relative max-h-[calc(100vh-12rem)] overflow-auto rounded-[1.5rem] border border-slate-200 bg-slate-50 cursor-crosshair select-none"
-                  onMouseDown={(event) => beginDrag(event.clientX, event.clientY)}
-                  onMouseMove={(event) => updateDrag(event.clientX, event.clientY)}
-                  onMouseUp={(event) => finishDrag(event.clientX, event.clientY)}
-                  onMouseLeave={cancelDrag}
+                  className="max-h-[calc(100vh-12rem)] overflow-auto rounded-[1.5rem] border border-slate-200 bg-slate-50 select-none"
                   onWheel={handleViewerWheel}
-                  onTouchStart={(event) => beginDrag(event.touches[0].clientX, event.touches[0].clientY)}
-                  onTouchMove={(event) => {
-                    const touch = event.touches[0];
-                    if (touch) updateDrag(touch.clientX, touch.clientY);
-                  }}
-                  onTouchEnd={(event) => {
-                    const touch = event.changedTouches[0];
-                    if (touch) finishDrag(touch.clientX, touch.clientY);
-                  }}
                 >
-                  <img
-                    src={activePage.imageUrl}
-                    alt={`PDF page ${activePage.pageNumber}`}
-                    className="block h-auto w-full select-none"
-                    draggable={false}
-                  />
-
-                  {draftRedaction &&
-                  draftRedaction.width > 0 &&
-                  draftRedaction.height > 0 ? (
-                    <div
-                      className="pointer-events-none absolute border-2 border-dashed border-brand-500 bg-brand-500/20"
-                      style={{
-                        left: `${(draftRedaction.x / activePage.width) * 100}%`,
-                        top: `${(draftRedaction.y / activePage.height) * 100}%`,
-                        width: `${(draftRedaction.width / activePage.width) * 100}%`,
-                        height: `${(draftRedaction.height / activePage.height) * 100}%`,
-                      }}
+                  <div
+                    ref={pageSurfaceRef}
+                    className="relative w-full cursor-crosshair"
+                    onMouseDown={(event) => beginDrag(event.clientX, event.clientY)}
+                    onMouseMove={(event) => updateDrag(event.clientX, event.clientY)}
+                    onMouseUp={(event) => finishDrag(event.clientX, event.clientY)}
+                    onMouseLeave={cancelDrag}
+                    onTouchStart={(event) => beginDrag(event.touches[0].clientX, event.touches[0].clientY)}
+                    onTouchMove={(event) => {
+                      const touch = event.touches[0];
+                      if (touch) updateDrag(touch.clientX, touch.clientY);
+                    }}
+                    onTouchEnd={(event) => {
+                      const touch = event.changedTouches[0];
+                      if (touch) finishDrag(touch.clientX, touch.clientY);
+                    }}
+                  >
+                    <img
+                      src={activePage.imageUrl}
+                      alt={`PDF page ${activePage.pageNumber}`}
+                      className="block h-auto w-full select-none"
+                      draggable={false}
                     />
-                  ) : null}
 
-                  {activePage.redactions.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => removeRedaction(item.id)}
-                      className="group absolute border-2 border-red-200 bg-black/85 transition hover:border-red-400"
-                      style={{
-                        left: `${(item.x / activePage.width) * 100}%`,
-                        top: `${(item.y / activePage.height) * 100}%`,
-                        width: `${(item.width / activePage.width) * 100}%`,
-                        height: `${(item.height / activePage.height) * 100}%`,
-                      }}
-                      title="Click to remove this redaction box"
-                    >
-                      <span className="absolute right-1 top-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 opacity-0 transition group-hover:opacity-100">
-                        Remove
-                      </span>
-                    </button>
-                  ))}
+                    {activePageMatches.map((match) => (
+                      <div
+                        key={match.id}
+                        className="pointer-events-none absolute border border-amber-400 bg-amber-300/25"
+                        style={{
+                          left: `${(match.x / activePage.width) * 100}%`,
+                          top: `${(match.y / activePage.height) * 100}%`,
+                          width: `${(match.width / activePage.width) * 100}%`,
+                          height: `${(match.height / activePage.height) * 100}%`,
+                        }}
+                      />
+                    ))}
+
+                    {draftRedaction &&
+                    draftRedaction.width > 0 &&
+                    draftRedaction.height > 0 ? (
+                      <div
+                        className="pointer-events-none absolute border-2 border-dashed border-brand-500 bg-brand-500/20"
+                        style={{
+                          left: `${(draftRedaction.x / activePage.width) * 100}%`,
+                          top: `${(draftRedaction.y / activePage.height) * 100}%`,
+                          width: `${(draftRedaction.width / activePage.width) * 100}%`,
+                          height: `${(draftRedaction.height / activePage.height) * 100}%`,
+                        }}
+                      />
+                    ) : null}
+
+                    {activePage.redactions.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => removeRedaction(item.id)}
+                        className="group absolute border-2 border-red-200 bg-black/85 transition hover:border-red-400"
+                        style={{
+                          left: `${(item.x / activePage.width) * 100}%`,
+                          top: `${(item.y / activePage.height) * 100}%`,
+                          width: `${(item.width / activePage.width) * 100}%`,
+                          height: `${(item.height / activePage.height) * 100}%`,
+                        }}
+                        title="Click to remove this redaction box"
+                      >
+                        <span className="absolute right-1 top-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700 opacity-0 transition group-hover:opacity-100">
+                          Remove
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="rounded-xl bg-amber-50 p-4 text-sm leading-6 text-amber-800">

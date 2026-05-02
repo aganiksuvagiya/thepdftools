@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { citySeoPages } from "@/lib/seo-cities";
 
 const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -241,6 +242,15 @@ export default function PdfMergePage() {
             <p className="text-[15px] leading-8 text-slate-500">Our free online PDF merge tool lets you combine PDF files, join PDF documents, and merge multiple PDFs into one file without uploading to a server. This browser-based PDF merger is perfect for combining contracts, reports, invoices, and scanned documents into a single organized PDF. No registration, no watermark, no file limit — just a fast, private, and free PDF combiner that works on any device.</p>
           </div>
 
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related Guides</h2>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/blog/how-to-merge-pdf-files-online" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">How to Merge PDF Files Online</Link>
+              <Link href="/blog/how-to-merge-pdf-without-upload" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Merge PDF Without Upload</Link>
+              <Link href="/blog/best-free-pdf-tools-online-2026" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Best Free PDF Tools Online</Link>
+            </div>
+          </div>
+
           {/* Related tools */}
           <div>
             <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related PDF Tools</h2>
@@ -249,6 +259,24 @@ export default function PdfMergePage() {
               <Link href="/pdf-to-image" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF to Image</Link>
               <Link href="/pdf-to-word" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF to Word</Link>
               <Link href="/screenshot-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Screenshot to PDF</Link>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8">
+            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Merge PDF in top cities</h2>
+            <p className="mt-3 max-w-3xl text-[15px] leading-8 text-slate-500">
+              City-focused landing pages help match location-based searches like "Ahmedabad PDF merge", "Mumbai PDF merger", and similar local queries while still sending users to the same browser-based tool.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {citySeoPages.slice(0, 8).map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/merge-pdf-in-${city.slug}`}
+                  className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+                >
+                  Merge PDF in {city.city}
+                </Link>
+              ))}
             </div>
           </div>
           <ToolSeoGrowth slug="pdf-merge" />
