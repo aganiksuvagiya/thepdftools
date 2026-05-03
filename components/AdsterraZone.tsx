@@ -32,8 +32,8 @@ export default function AdsterraZone({
     const container = document.createElement("div");
     container.id = containerId;
 
-    host.appendChild(script);
     host.appendChild(container);
+    host.appendChild(script);
 
     return () => {
       host.innerHTML = "";
