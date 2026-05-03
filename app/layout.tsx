@@ -192,11 +192,20 @@ export default function RootLayout({
         <div className="relative isolate overflow-x-clip">
           <Navbar />
           {shouldLoadAds ? (
-            <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6 lg:px-8">
-              <AdsterraZone
-                scriptSrc="https://pl29326576.profitablecpmratenetwork.com/2d68db8c87963829eba3e71616c6a80d/invoke.js"
-                containerId="container-2d68db8c87963829eba3e71616c6a80d"
-              />
+            <div className="pointer-events-none fixed right-4 top-28 z-30 hidden xl:block">
+              <div className="pointer-events-auto w-[300px]">
+                <AdsterraZone
+                  className="rounded-[1.5rem] border border-slate-200/80 bg-white/95 p-3 shadow-[0_18px_60px_-28px_rgba(15,23,42,0.28)] backdrop-blur"
+                  optionsScript={`atOptions = {
+  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
+  'format' : 'iframe',
+  'height' : 90,
+  'width' : 728,
+  'params' : {}
+};`}
+                  scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
+                />
+              </div>
             </div>
           ) : null}
           <main>{children}</main>

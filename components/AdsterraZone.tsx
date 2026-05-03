@@ -3,14 +3,14 @@
 import { useEffect, useRef } from "react";
 
 type AdsterraZoneProps = {
+  optionsScript?: string;
   scriptSrc: string;
-  containerId: string;
   className?: string;
 };
 
 export default function AdsterraZone({
+  optionsScript,
   scriptSrc,
-  containerId,
   className = "",
 }: AdsterraZoneProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -24,21 +24,21 @@ export default function AdsterraZone({
 
     host.innerHTML = "";
 
-    const script = document.createElement("script");
-    script.async = true;
-    script.setAttribute("data-cfasync", "false");
-    script.src = scriptSrc;
+    if (optionsScript) {
+      const optionsTag = document.createElement("script");
+      optionsTag.text = optionsScript;
+      host.appendChild(optionsTag);
+    }
 
-    const container = document.createElement("div");
-    container.id = containerId;
-
-    host.appendChild(container);
-    host.appendChild(script);
+    const invokeScript = document.createElement("script");
+    invokeScript.async = true;
+    invokeScript.src = scriptSrc;
+    host.appendChild(invokeScript);
 
     return () => {
       host.innerHTML = "";
     };
-  }, [containerId, scriptSrc]);
+  }, [optionsScript, scriptSrc]);
 
   return (
     <div className={className}>
