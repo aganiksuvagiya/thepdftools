@@ -193,7 +193,10 @@ export default function RootLayout({
           <Navbar />
           {shouldLoadAds ? (
             <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6 lg:px-8">
-              <AdsterraZone scriptSrc="https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js" />
+              <AdsterraZone
+                scriptSrc="https://pl29326576.profitablecpmratenetwork.com/2d68db8c87963829eba3e71616c6a80d/invoke.js"
+                containerId="container-2d68db8c87963829eba3e71616c6a80d"
+              />
             </div>
           ) : null}
           <main>{children}</main>

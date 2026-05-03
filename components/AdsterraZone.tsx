@@ -4,43 +4,47 @@ import { useEffect, useRef } from "react";
 
 type AdsterraZoneProps = {
   scriptSrc: string;
+  containerId: string;
   className?: string;
-  minHeightClassName?: string;
 };
 
 export default function AdsterraZone({
   scriptSrc,
+  containerId,
   className = "",
-  minHeightClassName = "min-h-[90px]",
 }: AdsterraZoneProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const hostRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const host = hostRef.current;
 
-    if (!container) {
+    if (!host) {
       return;
     }
 
-    container.innerHTML = "";
+    host.innerHTML = "";
 
     const script = document.createElement("script");
     script.async = true;
     script.setAttribute("data-cfasync", "false");
     script.src = scriptSrc;
 
-    container.appendChild(script);
+    const container = document.createElement("div");
+    container.id = containerId;
+
+    host.appendChild(script);
+    host.appendChild(container);
 
     return () => {
-      container.innerHTML = "";
+      host.innerHTML = "";
     };
-  }, [scriptSrc]);
+  }, [containerId, scriptSrc]);
 
   return (
     <div className={className}>
       <div
-        ref={containerRef}
-        className={`mx-auto flex w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm ${minHeightClassName}`}
+        ref={hostRef}
+        className="mx-auto min-h-[90px] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
       />
     </div>
   );
