@@ -50,14 +50,7 @@ export default function Footer() {
             />
             <AdsterraZone
               className="rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm"
-              optionsScript={`atOptions = {
-  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
-  'format' : 'iframe',
-  'height' : 90,
-  'width' : 728,
-  'params' : {}
-};`}
-              scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
+              scriptSrc="https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js"
             />
           </div>
         ) : null}
