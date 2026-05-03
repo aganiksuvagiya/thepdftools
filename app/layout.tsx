@@ -178,11 +178,23 @@ export default function RootLayout({
           `}
         </Script>
         {shouldLoadAds ? (
-          <Script
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
+          <>
+            <Script
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
+            <Script
+              src="//pl29226076.profitablecpmratenetwork.com/29226076/invoke.js"
+              data-cfasync="false"
+              strategy="afterInteractive"
+            />
+            <Script
+              src="//pl29226077.profitablecpmratenetwork.com/29226077/invoke.js"
+              data-cfasync="false"
+              strategy="afterInteractive"
+            />
+          </>
         ) : null}
         <div className="relative isolate overflow-x-clip">
           <Navbar />
