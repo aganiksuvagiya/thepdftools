@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import AdsterraZone from "@/components/AdsterraZone";
 
 const allTools = [
   { href: "/image-compressor", label: "Image Compressor" },
@@ -27,9 +28,40 @@ const popularSearchLinks = [
 ];
 
 export default function Footer() {
+  const shouldShowAds =
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_SHOW_ADS === "true";
+
   return (
     <footer className="border-t border-slate-200 bg-[#f8fafc] text-slate-600">
       <div className="mx-auto max-w-6xl px-5 py-14">
+        {shouldShowAds ? (
+          <div className="mb-10 grid gap-4 lg:grid-cols-2">
+            <AdsterraZone
+              className="rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm"
+              optionsScript={`atOptions = {
+  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
+  'format' : 'iframe',
+  'height' : 90,
+  'width' : 728,
+  'params' : {}
+};`}
+              scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
+            />
+            <AdsterraZone
+              className="rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm"
+              optionsScript={`atOptions = {
+  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
+  'format' : 'iframe',
+  'height' : 90,
+  'width' : 728,
+  'params' : {}
+};`}
+              scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
+            />
+          </div>
+        ) : null}
+
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">

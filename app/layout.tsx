@@ -3,7 +3,6 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AdsterraZone from "@/components/AdsterraZone";
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -191,23 +190,6 @@ export default function RootLayout({
         ) : null}
         <div className="relative isolate overflow-x-clip">
           <Navbar />
-          {shouldLoadAds ? (
-            <div className="pointer-events-none fixed right-4 top-28 z-30 hidden xl:block">
-              <div className="pointer-events-auto w-[300px]">
-                <AdsterraZone
-                  className="rounded-[1.5rem] border border-slate-200/80 bg-white/95 p-3 shadow-[0_18px_60px_-28px_rgba(15,23,42,0.28)] backdrop-blur"
-                  optionsScript={`atOptions = {
-  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
-  'format' : 'iframe',
-  'height' : 90,
-  'width' : 728,
-  'params' : {}
-};`}
-                  scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
-                />
-              </div>
-            </div>
-          ) : null}
           <main>{children}</main>
           <Footer />
         </div>
