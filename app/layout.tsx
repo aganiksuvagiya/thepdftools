@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AdsterraZone from "@/components/AdsterraZone";
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -160,7 +161,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const shouldLoadAds = process.env.NODE_ENV === "production";
+  const shouldLoadAds =
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_SHOW_ADS === "true";
 
   return (
     <html lang="en">
@@ -184,20 +187,15 @@ export default function RootLayout({
               crossOrigin="anonymous"
               strategy="afterInteractive"
             />
-            <Script
-              src="//pl29226076.profitablecpmratenetwork.com/29226076/invoke.js"
-              data-cfasync="false"
-              strategy="afterInteractive"
-            />
-            <Script
-              src="//pl29226077.profitablecpmratenetwork.com/29226077/invoke.js"
-              data-cfasync="false"
-              strategy="afterInteractive"
-            />
           </>
         ) : null}
         <div className="relative isolate overflow-x-clip">
           <Navbar />
+          {shouldLoadAds ? (
+            <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6 lg:px-8">
+              <AdsterraZone scriptSrc="https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js" />
+            </div>
+          ) : null}
           <main>{children}</main>
           <Footer />
         </div>
