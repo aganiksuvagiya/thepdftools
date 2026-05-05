@@ -38,7 +38,7 @@ export default function Footer() {
         {shouldShowAds ? (
           <div className="mb-10 flex flex-col items-center gap-4">
             {/* Footer Ad 1 – 728×90 leaderboard */}
-            <div className="w-full overflow-hidden rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
               <AdsterraZone
                 optionsScript={`atOptions = {
   'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
@@ -50,10 +50,17 @@ export default function Footer() {
                 scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
               />
             </div>
-            {/* Footer Ad 2 – profitablecpmratenetwork */}
-            <div className="w-full overflow-hidden rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+            {/* Footer Ad 2 – 468×60 banner */}
+            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
               <AdsterraZone
-                scriptSrc="https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js"
+                optionsScript={`atOptions = {
+  'key' : '80a23f387f5024bf62bbe2dccf30a4c5',
+  'format' : 'iframe',
+  'height' : 60,
+  'width' : 468,
+  'params' : {}
+};`}
+                scriptSrc="https://www.highperformanceformat.com/80a23f387f5024bf62bbe2dccf30a4c5/invoke.js"
               />
             </div>
           </div>

@@ -12,21 +12,11 @@ export default function SidePopupAd() {
 
     host.innerHTML = "";
 
-    const optionsTag = document.createElement("script");
-    optionsTag.text = `atOptions = {
-  'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
-  'format' : 'iframe',
-  'height' : 90,
-  'width' : 728,
-  'params' : {}
-};`;
-    host.appendChild(optionsTag);
-
-    const invokeScript = document.createElement("script");
-    invokeScript.async = true;
-    invokeScript.src =
-      "https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js";
-    host.appendChild(invokeScript);
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      "https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js";
+    host.appendChild(script);
 
     return () => {
       host.innerHTML = "";
@@ -45,7 +35,7 @@ export default function SidePopupAd() {
         ✕ Close
       </button>
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-        <div ref={hostRef} className="min-h-[90px] w-[728px] max-w-[calc(100vw-2rem)]" />
+        <div ref={hostRef} className="min-h-[60px] min-w-[200px]" />
       </div>
     </div>
   );
