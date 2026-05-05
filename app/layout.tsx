@@ -3,6 +3,11 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+
+const SidePopupAd = dynamic(() => import("@/components/SidePopupAd"), {
+  ssr: false,
+});
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -192,6 +197,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          {shouldLoadAds ? <SidePopupAd /> : null}
         </div>
       </body>
     </html>
