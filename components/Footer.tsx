@@ -40,6 +40,7 @@ export default function Footer() {
             {/* Footer Ad 1 – 728×90 leaderboard */}
             <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
               <AdsterraZone
+                height={90}
                 optionsScript={`atOptions = {
   'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
   'format' : 'iframe',
@@ -53,6 +54,7 @@ export default function Footer() {
             {/* Footer Ad 2 – 468×60 banner */}
             <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
               <AdsterraZone
+                height={60}
                 optionsScript={`atOptions = {
   'key' : '80a23f387f5024bf62bbe2dccf30a4c5',
   'format' : 'iframe',

@@ -26,7 +26,7 @@ export default function SidePopupAd() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-6 right-4 z-50 flex flex-col items-end gap-1">
+    <div className="fixed bottom-6 right-4 z-50 flex flex-col items-end gap-1 hidden">
       <button
         onClick={() => setVisible(false)}
         className="self-end rounded-full bg-slate-700/80 px-2 py-0.5 text-[11px] text-white hover:bg-slate-900"
