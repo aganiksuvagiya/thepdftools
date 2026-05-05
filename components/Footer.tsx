@@ -36,29 +36,31 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-[#f8fafc] text-slate-600">
       <div className="mx-auto max-w-6xl px-5 py-14">
         {shouldShowAds ? (
-          <div className="mb-10 grid gap-4 lg:grid-cols-2">
-            <AdsterraZone
-              className="rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm"
-              optionsScript={`atOptions = {
+          <div className="mb-10 flex flex-col items-center gap-4">
+            <div className="w-full overflow-hidden rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+              <AdsterraZone
+                optionsScript={`atOptions = {
   'key' : 'cc4425738f06f5ed0d6a50f38827eacf',
   'format' : 'iframe',
   'height' : 90,
   'width' : 728,
   'params' : {}
 };`}
-              scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
-            />
-            <AdsterraZone
-              className="rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm"
-              optionsScript={`atOptions = {
+                scriptSrc="https://www.highperformanceformat.com/cc4425738f06f5ed0d6a50f38827eacf/invoke.js"
+              />
+            </div>
+            <div className="w-full overflow-hidden rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+              <AdsterraZone
+                optionsScript={`atOptions = {
   'key' : '80a23f387f5024bf62bbe2dccf30a4c5',
   'format' : 'iframe',
   'height' : 60,
   'width' : 468,
   'params' : {}
 };`}
-              scriptSrc="https://www.highperformanceformat.com/80a23f387f5024bf62bbe2dccf30a4c5/invoke.js"
-            />
+                scriptSrc="https://www.highperformanceformat.com/80a23f387f5024bf62bbe2dccf30a4c5/invoke.js"
+              />
+            </div>
           </div>
         ) : null}
 

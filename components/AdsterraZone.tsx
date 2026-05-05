@@ -44,7 +44,7 @@ export default function AdsterraZone({
     <div className={className}>
       <div
         ref={hostRef}
-        className="mx-auto min-h-[90px] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+        className="mx-auto min-h-[60px] w-full overflow-hidden"
       />
     </div>
   );
