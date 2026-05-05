@@ -187,6 +187,10 @@ export default function RootLayout({
         {shouldLoadAds ? (
           <>
             <Script
+              src="https://pl29326575.profitablecpmratenetwork.com/d7/ee/d5/d7eed5555f86f85f375c72554f939983.js"
+              strategy="afterInteractive"
+            />
+            <Script
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
               crossOrigin="anonymous"
               strategy="afterInteractive"
