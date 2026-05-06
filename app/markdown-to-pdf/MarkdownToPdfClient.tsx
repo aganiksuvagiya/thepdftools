@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useCallback, useMemo, useState } from "react";
 import DropZone from "@/components/DropZone";
 import { marked } from "marked";
 
@@ -13,13 +13,7 @@ const FONT_SIZE_VALUES: Record<FontSize, number> = {
   large: 16,
 };
 
-function formatBytes(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-}
+const EXPORT_MARGIN_MM = 15;
 
 const DEFAULT_MARKDOWN = `# Welcome to Markdown to PDF
 
@@ -38,8 +32,131 @@ console.log("Hello, PDF!");
 \`\`\`
 `;
 
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+}
+
+function sanitizeHtml(html: string): string {
+  if (typeof window === "undefined") return html;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  doc
+    .querySelectorAll(
+      "script, style, iframe, object, embed, form, input, button, textarea, select, meta, link"
+    )
+    .forEach((node) => node.remove());
+
+  doc.querySelectorAll("*").forEach((element) => {
+    for (const attr of Array.from(element.attributes)) {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+
+      if (name.startsWith("on")) {
+        element.removeAttribute(attr.name);
+        continue;
+      }
+
+      if (
+        (name === "href" || name === "src" || name === "xlink:href") &&
+        (value.startsWith("javascript:") || value.startsWith("data:text/html"))
+      ) {
+        element.removeAttribute(attr.name);
+      }
+    }
+  });
+
+  return doc.body.innerHTML;
+}
+
+type PdfBlock =
+  | { kind: "h1" | "h2" | "h3" | "body" | "quote" | "code" | "list"; text: string }
+  | { kind: "rule" };
+
+function htmlToPlainText(html: string): string {
+  if (typeof window === "undefined") return html;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  return (doc.body.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function inlineMarkdownToText(text: string): string {
+  return htmlToPlainText(marked.parseInline(text) as string);
+}
+
+function markdownToPdfBlocks(markdownSource: string): PdfBlock[] {
+  const tokens = marked.lexer(markdownSource) as any[];
+  const blocks: PdfBlock[] = [];
+
+  for (const token of tokens) {
+    if (token.type === "space") continue;
+
+    if (token.type === "heading") {
+      const text = inlineMarkdownToText(token.text || "");
+      if (!text) continue;
+      if (token.depth === 1) blocks.push({ kind: "h1", text });
+      else if (token.depth === 2) blocks.push({ kind: "h2", text });
+      else blocks.push({ kind: "h3", text });
+      continue;
+    }
+
+    if (token.type === "paragraph" || token.type === "text") {
+      const text = inlineMarkdownToText(token.text || "");
+      if (text) blocks.push({ kind: "body", text });
+      continue;
+    }
+
+    if (token.type === "blockquote") {
+      const text = inlineMarkdownToText(token.text || "");
+      if (text) blocks.push({ kind: "quote", text });
+      continue;
+    }
+
+    if (token.type === "code") {
+      const text = (token.text || "").trim();
+      if (text) blocks.push({ kind: "code", text });
+      continue;
+    }
+
+    if (token.type === "list") {
+      token.items.forEach((item: any, index: number) => {
+        const marker = token.ordered ? `${index + 1}.` : "\u2022";
+        const text = inlineMarkdownToText(item.text || "");
+        if (text) blocks.push({ kind: "list", text: `${marker} ${text}` });
+      });
+      continue;
+    }
+
+    if (token.type === "hr") {
+      blocks.push({ kind: "rule" });
+      continue;
+    }
+
+    if (token.type === "table") {
+      const header = (token.header || [])
+        .map((cell: any) => inlineMarkdownToText(cell.text || ""))
+        .join(" | ");
+      if (header) blocks.push({ kind: "h3", text: header });
+
+      (token.rows || []).forEach((row: any[]) => {
+        const text = row
+          .map((cell: any) => inlineMarkdownToText(cell.text || cell || ""))
+          .join(" | ");
+        if (text) blocks.push({ kind: "body", text });
+      });
+    }
+  }
+
+  return blocks;
+}
+
 export default function MarkdownToPdfClient() {
-  const [markdown, setMarkdown] = useState("");
+  const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN);
   const [inputMode, setInputMode] = useState<"type" | "upload">("type");
   const [pageSize, setPageSize] = useState<PageSize>("a4");
   const [fontSize, setFontSize] = useState<FontSize>("medium");
@@ -47,11 +164,11 @@ export default function MarkdownToPdfClient() {
   const [fileSize, setFileSize] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
 
-  const renderedHtml = markdown.trim()
-    ? (marked.parse(markdown) as string)
-    : "";
+  const renderedHtml = useMemo(() => {
+    if (!markdown.trim()) return "";
+    return sanitizeHtml(marked.parse(markdown) as string);
+  }, [markdown]);
 
   const handleFiles = useCallback((files: File[]) => {
     if (files.length > 0) {
@@ -59,9 +176,14 @@ export default function MarkdownToPdfClient() {
       setFileName(file.name);
       setFileSize(file.size);
       setError(null);
-      file.text().then((text) => {
-        setMarkdown(text);
-      });
+      file
+        .text()
+        .then((text) => {
+          setMarkdown(text);
+        })
+        .catch(() => {
+          setError("Failed to read the Markdown file. Please try again.");
+        });
     }
   }, []);
 
@@ -72,65 +194,94 @@ export default function MarkdownToPdfClient() {
 
     try {
       const { jsPDF } = await import("jspdf");
-      const fs = FONT_SIZE_VALUES[fontSize];
-      const format = pageSize === "a4" ? "a4" : "letter";
+      const blocks = markdownToPdfBlocks(markdown);
 
-      const container = document.createElement("div");
-      container.style.cssText = `
-        position: absolute; left: -9999px; top: -9999px;
-        width: ${pageSize === "a4" ? "210mm" : "215.9mm"};
-        padding: 20mm;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-size: ${fs}px;
-        line-height: 1.6;
-        color: #1a1a1a;
-        background: #fff;
-        box-sizing: border-box;
-      `;
-      container.innerHTML = `
-        <style>
-          h1 { font-size: 1.8em; font-weight: 700; margin: 0.6em 0 0.4em; color: #111; }
-          h2 { font-size: 1.4em; font-weight: 600; margin: 0.6em 0 0.4em; color: #222; }
-          h3 { font-size: 1.2em; font-weight: 600; margin: 0.5em 0 0.3em; color: #333; }
-          p { margin: 0.5em 0; }
-          ul, ol { margin: 0.5em 0; padding-left: 1.5em; }
-          li { margin: 0.2em 0; }
-          blockquote { margin: 0.8em 0; padding: 0.5em 1em; border-left: 4px solid #d1d5db; background: #f9fafb; color: #4b5563; }
-          code { font-family: "SFMono-Regular", Menlo, monospace; font-size: 0.9em; background: #f3f4f6; padding: 0.15em 0.4em; border-radius: 4px; }
-          pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 8px; overflow-x: auto; margin: 0.8em 0; }
-          pre code { background: none; padding: 0; color: inherit; }
-          a { color: #2563eb; text-decoration: underline; }
-          table { border-collapse: collapse; width: 100%; margin: 0.8em 0; }
-          th, td { border: 1px solid #d1d5db; padding: 0.5em 0.75em; text-align: left; }
-          th { background: #f3f4f6; font-weight: 600; }
-          hr { border: none; border-top: 1px solid #e5e7eb; margin: 1.5em 0; }
-          img { max-width: 100%; height: auto; }
-        </style>
-        ${renderedHtml}
-      `;
-      document.body.appendChild(container);
+      if (blocks.length === 0) {
+        throw new Error("No printable text found in the Markdown.");
+      }
 
       const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
-        format,
+        format: pageSize,
       });
 
-      await doc.html(container, {
-        callback: (d) => {
-          d.save(
-            fileName
-              ? fileName.replace(/\.[^/.]+$/, "") + ".pdf"
-              : "markdown-document.pdf"
-          );
-        },
-        x: 0,
-        y: 0,
-        width: pageSize === "a4" ? 210 : 215.9,
-        windowWidth: container.scrollWidth,
-      });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const contentWidth = pageWidth - EXPORT_MARGIN_MM * 2;
+      const bottomLimit = pageHeight - EXPORT_MARGIN_MM;
+      const baseFontSize = FONT_SIZE_VALUES[fontSize];
+      let y = EXPORT_MARGIN_MM;
 
-      document.body.removeChild(container);
+      const ensureSpace = (heightNeeded: number) => {
+        if (y + heightNeeded > bottomLimit) {
+          doc.addPage();
+          y = EXPORT_MARGIN_MM;
+        }
+      };
+
+      for (const block of blocks) {
+        if (block.kind === "rule") {
+          ensureSpace(8);
+          doc.setDrawColor(203, 213, 225);
+          doc.line(EXPORT_MARGIN_MM, y, pageWidth - EXPORT_MARGIN_MM, y);
+          y += 8;
+          continue;
+        }
+
+        const fontSizePt =
+          block.kind === "h1"
+            ? baseFontSize + 8
+            : block.kind === "h2"
+              ? baseFontSize + 4
+              : block.kind === "h3"
+                ? baseFontSize + 2
+                : baseFontSize;
+        const lineHeight = fontSizePt * 0.42 * (block.kind === "code" ? 1.45 : 1.55);
+        const gapAfter =
+          block.kind === "h1"
+            ? lineHeight * 0.9
+            : block.kind === "h2"
+              ? lineHeight * 0.7
+              : block.kind === "h3"
+                ? lineHeight * 0.55
+                : lineHeight * 0.45;
+        const x =
+          block.kind === "quote"
+            ? EXPORT_MARGIN_MM + 4
+            : block.kind === "list"
+              ? EXPORT_MARGIN_MM + 2
+              : EXPORT_MARGIN_MM;
+
+        doc.setFont(block.kind === "code" ? "courier" : "helvetica", block.kind.startsWith("h") ? "bold" : "normal");
+        doc.setFontSize(fontSizePt);
+        if (block.kind === "quote") doc.setTextColor(71, 85, 105);
+        else if (block.kind === "code") doc.setTextColor(30, 41, 59);
+        else doc.setTextColor(15, 23, 42);
+
+        if (block.kind === "quote") {
+          ensureSpace(lineHeight);
+          doc.setDrawColor(148, 163, 184);
+          doc.line(EXPORT_MARGIN_MM, y - 1, EXPORT_MARGIN_MM, y + lineHeight * 2);
+        }
+
+        const lines = doc.splitTextToSize(block.text, contentWidth - (x - EXPORT_MARGIN_MM)) as string[];
+        ensureSpace(lines.length * lineHeight + gapAfter);
+
+        for (const line of lines) {
+          ensureSpace(lineHeight);
+          doc.text(line, x, y);
+          y += lineHeight;
+        }
+
+        y += gapAfter;
+      }
+
+      doc.save(
+        fileName
+          ? fileName.replace(/\.[^/.]+$/, "") + ".pdf"
+          : "markdown-document.pdf"
+      );
     } catch (err: any) {
       setError(err.message || "Failed to generate PDF. Please try again.");
     } finally {
@@ -208,7 +359,6 @@ export default function MarkdownToPdfClient() {
               Live Preview
             </label>
             <div
-              ref={previewRef}
               className="min-h-[360px] max-h-[500px] overflow-auto rounded-xl border border-slate-200 bg-white p-4 prose prose-sm prose-slate"
               dangerouslySetInnerHTML={{
                 __html: renderedHtml || '<p class="text-slate-400 italic">Preview will appear here...</p>',
