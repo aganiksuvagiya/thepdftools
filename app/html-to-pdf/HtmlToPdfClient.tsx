@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import DropZone from "@/components/DropZone";
 
 function formatBytes(bytes: number): string {
@@ -18,6 +18,100 @@ interface TextPdfResult {
   pageCount: number;
 }
 
+function sanitizeHtml(html: string): string {
+  if (typeof window === "undefined") return html;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  doc
+    .querySelectorAll(
+      "script, iframe, object, embed, form, input, button, textarea, select, meta, link[rel='preload'], link[rel='modulepreload']"
+    )
+    .forEach((node) => node.remove());
+
+  doc.querySelectorAll("*").forEach((element) => {
+    for (const attr of Array.from(element.attributes)) {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+
+      if (name.startsWith("on")) {
+        element.removeAttribute(attr.name);
+        continue;
+      }
+
+      if (
+        (name === "href" || name === "src" || name === "xlink:href") &&
+        (value.startsWith("javascript:") || value.startsWith("data:text/html"))
+      ) {
+        element.removeAttribute(attr.name);
+      }
+    }
+  });
+
+  return doc.documentElement.outerHTML;
+}
+
+function buildPrintableDocument(html: string, title: string, viewportWidth: number): string {
+  const hasHtmlTag = /<html[\s>]/i.test(html);
+  const content = hasHtmlTag ? html : `<!DOCTYPE html><html><head></head><body>${html}</body></html>`;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, "text/html");
+
+  if (!doc.querySelector("meta[charset]")) {
+    const meta = doc.createElement("meta");
+    meta.setAttribute("charset", "utf-8");
+    doc.head.prepend(meta);
+  }
+
+  const titleEl = doc.querySelector("title") || doc.createElement("title");
+  titleEl.textContent = title;
+  if (!titleEl.parentElement) doc.head.appendChild(titleEl);
+
+  const style = doc.createElement("style");
+  style.textContent = `
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      width: ${viewportWidth}px;
+      min-height: 100%;
+      overflow: visible;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      margin: 12mm;
+      size: auto;
+    }
+
+    @media print {
+      html, body {
+        width: auto;
+      }
+    }
+  `;
+  doc.head.appendChild(style);
+
+  return `<!DOCTYPE html>\n${doc.documentElement.outerHTML}`;
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | null> {
+  return new Promise((resolve) => {
+    const timer = window.setTimeout(() => resolve(null), timeoutMs);
+    promise
+      .then((value) => {
+        window.clearTimeout(timer);
+        resolve(value);
+      })
+      .catch(() => {
+        window.clearTimeout(timer);
+        resolve(null);
+      });
+  });
+}
+
 export default function HtmlToPdfClient() {
   const [htmlContent, setHtmlContent] = useState("");
   const [inputMode, setInputMode] = useState<"paste" | "upload">("paste");
@@ -29,6 +123,7 @@ export default function HtmlToPdfClient() {
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
   const previewRef = useRef<HTMLIFrameElement>(null);
+  const printableHtml = useMemo(() => sanitizeHtml(htmlContent), [htmlContent]);
 
   const handleFiles = useCallback((files: File[]) => {
     if (files.length > 0) {
@@ -42,6 +137,102 @@ export default function HtmlToPdfClient() {
       });
     }
   }, []);
+
+  const handleSaveAsPdf = async () => {
+    if (!htmlContent.trim()) {
+      setError("Please enter or upload HTML content first.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setProgress("Preparing print preview...");
+
+    const printFrame = document.createElement("iframe");
+    printFrame.style.position = "fixed";
+    printFrame.style.left = "-10000px";
+    printFrame.style.top = "0";
+    printFrame.style.width = `${viewport === "mobile" ? 375 : viewport === "tablet" ? 768 : 1280}px`;
+    printFrame.style.height = "1200px";
+    printFrame.style.opacity = "0";
+    printFrame.style.pointerEvents = "none";
+    printFrame.style.border = "0";
+    printFrame.setAttribute("aria-hidden", "true");
+
+    try {
+      const title = fileName
+        ? fileName.replace(/\.[^/.]+$/, "")
+        : "html-document";
+      const viewportWidth = viewport === "mobile" ? 375 : viewport === "tablet" ? 768 : 1280;
+      const wrappedHtml = buildPrintableDocument(printableHtml, title, viewportWidth);
+
+      document.body.appendChild(printFrame);
+      const frameDoc = printFrame.contentDocument;
+      if (!frameDoc) {
+        throw new Error("Print preview is not available in this browser.");
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        printFrame.onload = () => resolve();
+        printFrame.onerror = () => reject(new Error("Failed to load the HTML preview for printing."));
+        frameDoc.open();
+        frameDoc.write(wrappedHtml);
+        frameDoc.close();
+      });
+
+      const frameWindow = printFrame.contentWindow;
+      const readyDoc = printFrame.contentDocument;
+      if (!frameWindow || !readyDoc) {
+        throw new Error("Print preview is not available in this browser.");
+      }
+
+      const images = Array.from(readyDoc.images);
+      const pendingImages = images.filter((img) => !img.complete);
+      const hasCustomFonts =
+        readyDoc.querySelector("style, link[rel='stylesheet']")?.textContent?.includes("@font-face") ||
+        false;
+
+      if (pendingImages.length > 0 || hasCustomFonts) {
+        setProgress("Rendering content...");
+      }
+
+      if ("fonts" in readyDoc && hasCustomFonts) {
+        await withTimeout(
+          (readyDoc as Document & { fonts: FontFaceSet }).fonts.ready.then(() => true),
+          400
+        );
+      }
+
+      if (pendingImages.length > 0) {
+        await withTimeout(
+          Promise.all(
+            pendingImages.map(
+              (img) =>
+                new Promise<void>((resolve) => {
+                  img.addEventListener("load", () => resolve(), { once: true });
+                  img.addEventListener("error", () => resolve(), { once: true });
+                })
+            )
+          ).then(() => true),
+          700
+        );
+      }
+
+      await new Promise((resolve) => window.setTimeout(resolve, 80));
+
+      setProgress("Opening print dialog...");
+      frameWindow.focus();
+      frameWindow.print();
+      setProgress("");
+    } catch (err: any) {
+      setError(err.message || "Failed to open the print dialog. Please try again.");
+    } finally {
+      setLoading(false);
+      window.setTimeout(() => {
+        printFrame.remove();
+      }, 1500);
+    }
+  };
 
   const handleExtractTextToPdf = async () => {
     if (!htmlContent.trim()) {
@@ -57,7 +248,7 @@ export default function HtmlToPdfClient() {
     try {
       // Parse HTML and extract text
       const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlContent, "text/html");
+      const doc = parser.parseFromString(printableHtml, "text/html");
       const rawText = doc.body?.textContent || doc.documentElement?.textContent || "";
       // Remove non-WinAnsi characters (keep basic ASCII + common Latin)
       const safeText = rawText.replace(/[^\x20-\x7E\xA0-\xFF\n\t]/g, "");
@@ -337,8 +528,8 @@ export default function HtmlToPdfClient() {
           <div className="bg-slate-100 flex justify-center overflow-auto p-2" style={{ minHeight: 300 }}>
             <iframe
               ref={previewRef}
-              srcDoc={htmlContent}
-              sandbox="allow-same-origin allow-scripts"
+              srcDoc={printableHtml}
+              sandbox="allow-same-origin"
               className="bg-white border border-slate-200 rounded-lg shadow-sm transition-all duration-300"
               style={{
                 width: viewport === "mobile" ? 375 : viewport === "tablet" ? 768 : "100%",
@@ -390,7 +581,7 @@ export default function HtmlToPdfClient() {
       {textResult && (
         <div className="rounded-xl bg-green-50 border border-green-100 p-4 space-y-1 text-center">
           <p className="text-sm font-semibold text-green-800">
-            Text PDF Generated
+            Text-only PDF Generated
           </p>
           <p className="text-xs text-green-600">
             {textResult.pageCount} page{textResult.pageCount !== 1 ? "s" : ""}{" "}
@@ -403,9 +594,26 @@ export default function HtmlToPdfClient() {
       {htmlContent.trim() && !textResult && (
         <div className="space-y-3">
           <button
-            onClick={handleExtractTextToPdf}
+            onClick={handleSaveAsPdf}
             disabled={loading}
             className="btn-primary w-full"
+          >
+            {loading ? (
+              <>
+                <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Opening print dialog...
+              </>
+            ) : (
+              "Save as PDF"
+            )}
+          </button>
+          <button
+            onClick={handleExtractTextToPdf}
+            disabled={loading}
+            className="btn-secondary w-full"
           >
             {loading ? (
               <>
@@ -416,7 +624,7 @@ export default function HtmlToPdfClient() {
                 Converting...
               </>
             ) : (
-              "Convert to PDF"
+              "Extract Text to PDF"
             )}
           </button>
         </div>
