@@ -1,8 +1,5 @@
 import { MetadataRoute } from "next";
 import { growthBlogPosts } from "@/lib/seo-growth";
-import { citySeoPages } from "@/lib/seo-cities";
-import { countrySeoPages } from "@/lib/seo-countries";
-import { localSeoTools } from "@/lib/local-seo-tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://thepdftools.site";
@@ -55,7 +52,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/invoice-generator", changeFrequency: "weekly", priority: 0.88 },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.82 },
     { path: "/color-picker", changeFrequency: "weekly", priority: 0.8 },
+    { path: "/color-gradient", changeFrequency: "weekly", priority: 0.8 },
     { path: "/tailwind-colors", changeFrequency: "weekly", priority: 0.8 },
+    { path: "/signature-generator", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/barcode-generator", changeFrequency: "weekly", priority: 0.88 },
+    { path: "/favicon-generator", changeFrequency: "weekly", priority: 0.85 },
     { path: "/base64", changeFrequency: "weekly", priority: 0.78 },
     { path: "/json-formatter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/word-counter", changeFrequency: "weekly", priority: 0.78 },
@@ -96,6 +97,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/pdf-watermark", changeFrequency: "weekly", priority: 0.88 },
     { path: "/pdf-page-numbers", changeFrequency: "weekly", priority: 0.86 },
     { path: "/pdf-sign", changeFrequency: "weekly", priority: 0.92 },
+    { path: "/pdf-to-jpg", changeFrequency: "weekly", priority: 0.93 },
+    { path: "/jpg-to-pdf", changeFrequency: "weekly", priority: 0.93 },
+    { path: "/pdf-form-filler", changeFrequency: "weekly", priority: 0.91 },
     { path: "/pdf-highlight", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-to-ppt", changeFrequency: "weekly", priority: 0.9 },
     { path: "/pdf-editor", changeFrequency: "weekly", priority: 0.9 },
@@ -124,12 +128,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: route.priority,
       };
     })
-    .concat(
-      countrySeoPages.map((country) => ({
-        url: `${baseUrl}/pdf-tools-in-country/${country.slug}`,
-        lastModified: siteUpdatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.74,
-      })),
-    );
+    ;
 }

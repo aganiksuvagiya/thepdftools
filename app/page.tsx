@@ -668,32 +668,6 @@ const seoGroups = [
       { href: "/blog/free-pdf-tools-no-signup", label: "Free PDF Tools No Signup" },
     ],
   },
-  {
-    title: "City Pages",
-    description:
-      "Location-focused pages help users discover the right PDF and image workflows for city-based searches and strengthen internal linking for SEO.",
-    links: [
-      { href: "/pdf-tools-in/ahmedabad", label: "PDF Tools in Ahmedabad" },
-      { href: "/pdf-tools-in/surat", label: "PDF Tools in Surat" },
-      { href: "/pdf-tools-in/vadodara", label: "PDF Tools in Vadodara" },
-      { href: "/pdf-tools-in/mumbai", label: "PDF Tools in Mumbai" },
-      { href: "/pdf-tools-in/delhi", label: "PDF Tools in Delhi" },
-      { href: "/pdf-tools-in/bangalore", label: "PDF Tools in Bengaluru" },
-    ],
-  },
-  {
-    title: "Country Pages",
-    description:
-      "Country-focused landing pages strengthen international SEO and help search engines connect your main PDF and image tools with location-based search intent.",
-    links: [
-      { href: "/pdf-tools-in-country/india", label: "PDF Tools in India" },
-      { href: "/pdf-tools-in-country/united-states", label: "PDF Tools in United States" },
-      { href: "/pdf-tools-in-country/united-kingdom", label: "PDF Tools in United Kingdom" },
-      { href: "/pdf-tools-in-country/canada", label: "PDF Tools in Canada" },
-      { href: "/pdf-tools-in-country/australia", label: "PDF Tools in Australia" },
-      { href: "/pdf-tools-in-country/united-arab-emirates", label: "PDF Tools in UAE" },
-    ],
-  },
 ];
 
 const toolColorMap: Record<string, string> = {

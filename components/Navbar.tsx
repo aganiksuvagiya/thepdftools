@@ -47,6 +47,7 @@ const pdfSections: DropdownSection[] = [
     title: "Convert & Create",
     items: [
       { href: "/image-to-pdf", label: "Image to PDF", icon: "photo", bg: "bg-sky-100", fg: "text-sky-700" },
+      { href: "/jpg-to-pdf", label: "JPG to PDF", icon: "photo", bg: "bg-red-100", fg: "text-red-700" },
       { href: "/word-to-pdf", label: "Word to PDF", icon: "word", bg: "bg-blue-100", fg: "text-blue-700" },
       { href: "/excel-to-pdf", label: "Excel to PDF", icon: "sheet", bg: "bg-green-100", fg: "text-green-700" },
       { href: "/ppt-to-pdf", label: "PPT to PDF", icon: "slides", bg: "bg-orange-100", fg: "text-orange-700" },
@@ -62,10 +63,12 @@ const pdfSections: DropdownSection[] = [
       { href: "/pdf-to-word", label: "PDF to Word", icon: "word", bg: "bg-blue-100", fg: "text-blue-700" },
       { href: "/pdf-to-excel", label: "PDF to Excel", icon: "sheet", bg: "bg-green-100", fg: "text-green-700" },
       { href: "/pdf-to-ppt", label: "PDF to PPT", icon: "slides", bg: "bg-orange-100", fg: "text-orange-700" },
+      { href: "/pdf-to-jpg", label: "PDF to JPG", icon: "photo", bg: "bg-amber-100", fg: "text-amber-700" },
       { href: "/pdf-editor", label: "PDF Editor", icon: "edit", bg: "bg-amber-100", fg: "text-amber-700" },
       { href: "/pdf-highlight", label: "PDF Highlight", icon: "highlight", bg: "bg-yellow-100", fg: "text-yellow-700" },
       { href: "/pdf-sign", label: "PDF Sign", icon: "sign", bg: "bg-rose-100", fg: "text-rose-700" },
       { href: "/pdf-to-image", label: "PDF to Image", icon: "photo", bg: "bg-pink-100", fg: "text-pink-700" },
+      { href: "/pdf-form-filler", label: "PDF Form Filler", icon: "edit", bg: "bg-emerald-100", fg: "text-emerald-700" },
     ],
   },
   {
