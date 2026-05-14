@@ -55,43 +55,7 @@ const jsonLd = {
       "description":
         "Crop JPG, PNG, and WebP images for free online. Select any region, choose preset aspect ratios, and download instantly.",
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What aspect ratios are available?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The tool includes common presets such as 1:1 (square), 4:3, 16:9, 3:2, and free-form selection so you can crop to any custom region.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Does cropping reduce image quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. Cropping simply removes the pixels outside the selected area. The remaining pixels retain their original quality with no recompression.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Can I crop transparent PNGs?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. The cropper preserves the alpha channel, so transparent areas in your PNG remain transparent after cropping.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Is there a size limit?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There is no fixed limit. Because the tool runs entirely in your browser, the maximum size depends on your device's available memory. Most images up to 50 MP work smoothly.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

@@ -90,14 +90,7 @@ export default function GrowthBlogPostPage({ params }: PageProps) {
         wordCount: 1250,
         keywords: [post.primaryKeyword, ...post.tags],
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: post.faq.map((item) => ({
-          "@type": "Question",
-          name: item.q,
-          acceptedAnswer: { "@type": "Answer", text: item.a },
-        })),
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

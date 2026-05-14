@@ -55,51 +55,7 @@ export default function CsvToJsonPage() {
         description:
           "Convert CSV to JSON online for free. Paste CSV data or upload a file and get formatted JSON output instantly.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert CSV to JSON here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your CSV data never leaves your browser. All parsing and conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What delimiters are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The converter supports comma, semicolon, tab, and pipe delimiters. You can select your preferred delimiter before converting to ensure accurate parsing of your CSV data.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I convert CSV files with headers?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. When the 'First row as headers' option is enabled (default), the first row of your CSV is used as JSON object keys. Disable it to get arrays of values instead.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Since all processing happens in your browser, the practical limit depends on your device's memory. Most CSV files up to several megabytes convert smoothly.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it handle special characters and quoted fields?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. The converter correctly handles quoted fields, commas inside quotes, newlines within fields, and escaped characters following the CSV standard (RFC 4180).",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

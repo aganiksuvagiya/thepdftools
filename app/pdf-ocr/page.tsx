@@ -47,43 +47,7 @@ export default function PdfOcrPage() {
         description:
           "Extract text from scanned PDF files using OCR online for free. No upload required — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What is PDF OCR?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "OCR (Optical Character Recognition) reads text from scanned images or image-based PDFs and converts it into selectable, copyable text.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is my PDF uploaded to a server?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. All OCR processing happens in your browser using pdf.js and Tesseract.js. Your file never leaves your device.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What languages are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool supports English OCR. Tesseract.js supports many languages — English is loaded by default for fast processing.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will it work on all PDFs?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "It works best on scanned PDFs and image-based PDFs. For PDFs that already contain selectable text, you can copy text directly without OCR.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

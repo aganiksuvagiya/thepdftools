@@ -2,22 +2,6 @@
 
 import { useState, useMemo } from "react";
 
-function ClipboardIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  );
-}
-
 function formatTime(minutes: number): string {
   if (minutes < 1) return "< 1 min";
   if (minutes < 60) return `${Math.ceil(minutes)} min`;
@@ -26,75 +10,47 @@ function formatTime(minutes: number): string {
   return mins > 0 ? `${hrs} hr ${mins} min` : `${hrs} hr`;
 }
 
-interface Stats {
-  words: number;
-  charsWithSpaces: number;
-  charsNoSpaces: number;
-  sentences: number;
-  paragraphs: number;
-  readingTime: string;
-  speakingTime: string;
-}
-
-interface WordFreq {
-  word: string;
-  count: number;
-}
-
-function computeStats(text: string): Stats {
+function computeStats(text: string) {
   const trimmed = text.trim();
-  if (!trimmed) {
-    return {
-      words: 0,
-      charsWithSpaces: 0,
-      charsNoSpaces: 0,
-      sentences: 0,
-      paragraphs: 0,
-      readingTime: "0 min",
-      speakingTime: "0 min",
-    };
-  }
-
+  if (!trimmed) return { words: 0, charsWithSpaces: 0, charsNoSpaces: 0, sentences: 0, paragraphs: 0, readingTime: "0 min", speakingTime: "0 min" };
   const words = trimmed.split(/\s+/).filter(Boolean).length;
-  const charsWithSpaces = text.length;
-  const charsNoSpaces = text.replace(/\s/g, "").length;
-  const sentences = (trimmed.match(/[.!?]+(\s|$)/g) || []).length || (words > 0 ? 1 : 0);
-  const paragraphs = trimmed.split(/\n\s*\n/).filter((p) => p.trim().length > 0).length || (words > 0 ? 1 : 0);
-  const readingTime = formatTime(words / 200);
-  const speakingTime = formatTime(words / 130);
-
-  return { words, charsWithSpaces, charsNoSpaces, sentences, paragraphs, readingTime, speakingTime };
+  return {
+    words,
+    charsWithSpaces: text.length,
+    charsNoSpaces: text.replace(/\s/g, "").length,
+    sentences: (trimmed.match(/[.!?]+(\s|$)/g) || []).length || (words > 0 ? 1 : 0),
+    paragraphs: trimmed.split(/\n\s*\n/).filter((p) => p.trim().length > 0).length || (words > 0 ? 1 : 0),
+    readingTime: formatTime(words / 200),
+    speakingTime: formatTime(words / 130),
+  };
 }
 
-function computeTopWords(text: string, count: number): WordFreq[] {
-  const trimmed = text.trim();
-  if (!trimmed) return [];
-
+function computeTopWords(text: string, n: number) {
+  if (!text.trim()) return [];
   const freq: Record<string, number> = {};
-  const words = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
-
-  for (const w of words) {
-    const cleaned = w.replace(/[^a-zA-Z0-9'-]/g, "");
-    if (cleaned.length < 2) continue;
-    freq[cleaned] = (freq[cleaned] || 0) + 1;
+  for (const w of text.trim().toLowerCase().split(/\s+/)) {
+    const c = w.replace(/[^a-zA-Z0-9'-]/g, "");
+    if (c.length >= 2) freq[c] = (freq[c] || 0) + 1;
   }
-
-  return Object.entries(freq)
-    .map(([word, cnt]) => ({ word, count: cnt }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, count);
+  return Object.entries(freq).map(([word, count]) => ({ word, count })).sort((a, b) => b.count - a.count).slice(0, n);
 }
 
 export default function WordCounterClient() {
   const [text, setText] = useState("");
   const [copied, setCopied] = useState(false);
+  const [charLimit, setCharLimit] = useState<number | null>(null);
+  const [charLimitInput, setCharLimitInput] = useState("");
+  const [findWord, setFindWord] = useState("");
 
   const stats = useMemo(() => computeStats(text), [text]);
   const topWords = useMemo(() => computeTopWords(text, 5), [text]);
 
-  const handleClear = () => {
-    setText("");
-  };
+  const findCount = useMemo(() => {
+    if (!findWord.trim() || !text) return 0;
+    return (text.toLowerCase().match(new RegExp(findWord.trim().toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length;
+  }, [text, findWord]);
+
+  const limitExceeded = charLimit !== null && text.length > charLimit;
 
   const copyToClipboard = async () => {
     if (!text) return;
@@ -103,29 +59,31 @@ export default function WordCounterClient() {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const caseConvert = (fn: (t: string) => string) => setText(fn(text));
+  const toUpper     = () => caseConvert((t) => t.toUpperCase());
+  const toLower     = () => caseConvert((t) => t.toLowerCase());
+  const toTitle     = () => caseConvert((t) => t.replace(/\b\w/g, (c) => c.toUpperCase()));
+  const toSentence  = () => caseConvert((t) => t.charAt(0).toUpperCase() + t.slice(1).toLowerCase());
+  const removeWhitespace = () => setText(text.replace(/\s+/g, " ").trim());
+
   const statItems = [
-    { label: "Words", value: stats.words.toLocaleString(), color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
-    { label: "Characters", value: stats.charsWithSpaces.toLocaleString(), color: "bg-blue-50 text-blue-700 border-blue-100" },
-    { label: "No Spaces", value: stats.charsNoSpaces.toLocaleString(), color: "bg-purple-50 text-purple-700 border-purple-100" },
-    { label: "Sentences", value: stats.sentences.toLocaleString(), color: "bg-amber-50 text-amber-700 border-amber-100" },
-    { label: "Paragraphs", value: stats.paragraphs.toLocaleString(), color: "bg-rose-50 text-rose-700 border-rose-100" },
-    { label: "Reading Time", value: stats.readingTime, color: "bg-teal-50 text-teal-700 border-teal-100" },
-    { label: "Speaking Time", value: stats.speakingTime, color: "bg-indigo-50 text-indigo-700 border-indigo-100" },
+    { label: "Words",         value: stats.words.toLocaleString(),            color: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+    { label: "Characters",    value: stats.charsWithSpaces.toLocaleString(),  color: "bg-blue-50 text-blue-700 border-blue-100" },
+    { label: "No Spaces",     value: stats.charsNoSpaces.toLocaleString(),    color: "bg-purple-50 text-purple-700 border-purple-100" },
+    { label: "Sentences",     value: stats.sentences.toLocaleString(),        color: "bg-amber-50 text-amber-700 border-amber-100" },
+    { label: "Paragraphs",    value: stats.paragraphs.toLocaleString(),       color: "bg-rose-50 text-rose-700 border-rose-100" },
+    { label: "Reading Time",  value: stats.readingTime,                       color: "bg-teal-50 text-teal-700 border-teal-100" },
+    { label: "Speaking Time", value: stats.speakingTime,                      color: "bg-indigo-50 text-indigo-700 border-indigo-100" },
   ];
 
   return (
     <div className="space-y-4">
-      {/* Stats grid */}
+      {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         {statItems.map((item) => (
-          <div
-            key={item.label}
-            className={`rounded-xl border p-3 text-center transition-all duration-200 ${item.color}`}
-          >
+          <div key={item.label} className={`rounded-xl border p-3 text-center ${item.color}`}>
             <p className="text-[22px] font-bold leading-tight">{item.value}</p>
-            <p className="mt-1 text-[11px] font-medium uppercase tracking-wide opacity-70">
-              {item.label}
-            </p>
+            <p className="mt-1 text-[11px] font-medium uppercase tracking-wide opacity-70">{item.label}</p>
           </div>
         ))}
       </div>
@@ -135,33 +93,95 @@ export default function WordCounterClient() {
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-700">Your Text</h2>
           <div className="flex items-center gap-2">
-            <button
-              onClick={copyToClipboard}
-              disabled={!text}
-              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 transition-colors disabled:opacity-40"
-              title="Copy text"
-            >
-              {copied ? <CheckIcon /> : <ClipboardIcon />}
-              {copied ? "Copied" : "Copy"}
+            <button onClick={copyToClipboard} disabled={!text}
+              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 disabled:opacity-40 transition-colors">
+              {copied ? "Copied ✓" : "Copy"}
             </button>
-            <button
-              onClick={handleClear}
-              disabled={!text}
-              className="btn-secondary text-xs px-4 py-2 disabled:opacity-40"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-              </svg>
-              Clear
-            </button>
+            <button onClick={() => setText("")} disabled={!text}
+              className="btn-secondary text-xs px-4 py-2 disabled:opacity-40">Clear</button>
           </div>
         </div>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type or paste your text here..."
-          className="w-full h-64 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100 focus:outline-none resize-none transition-colors leading-relaxed"
+          className={`w-full h-64 rounded-xl border px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:outline-none resize-none transition-colors leading-relaxed ${limitExceeded ? "border-red-300 focus:border-red-400 focus:ring-red-100 bg-red-50" : "border-gray-200 bg-gray-50 focus:border-emerald-300 focus:ring-emerald-100"}`}
         />
+        {charLimit !== null && (
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className={limitExceeded ? "text-red-500 font-semibold" : "text-gray-500"}>
+                {text.length.toLocaleString()} / {charLimit.toLocaleString()} characters
+              </span>
+              {limitExceeded && <span className="text-red-500 font-semibold">{(text.length - charLimit).toLocaleString()} over limit</span>}
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full rounded-full transition-all ${limitExceeded ? "bg-red-400" : text.length / charLimit > 0.8 ? "bg-amber-400" : "bg-emerald-400"}`}
+                style={{ width: `${Math.min(100, (text.length / charLimit) * 100)}%` }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Tools row */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {/* Case converter */}
+        <div className="card space-y-3">
+          <h3 className="text-sm font-semibold text-gray-700">Case Converter</h3>
+          <div className="flex flex-wrap gap-2">
+            {[["UPPERCASE", toUpper], ["lowercase", toLower], ["Title Case", toTitle], ["Sentence case", toSentence]].map(([label, fn]) => (
+              <button key={label as string} onClick={fn as () => void} disabled={!text}
+                className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-brand-300 hover:text-brand-700 disabled:opacity-40 transition-colors">
+                {label as string}
+              </button>
+            ))}
+            <button onClick={removeWhitespace} disabled={!text}
+              className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-brand-300 hover:text-brand-700 disabled:opacity-40 transition-colors">
+              Remove Extra Spaces
+            </button>
+          </div>
+        </div>
+
+        {/* Find & count + Char limit */}
+        <div className="card space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-700">Find & Count</h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={findWord}
+              onChange={(e) => setFindWord(e.target.value)}
+              placeholder="Type a word to count..."
+              className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-100"
+            />
+            {findWord && (
+              <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${findCount > 0 ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-400"}`}>
+                {findCount}x
+              </span>
+            )}
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Character Limit</h3>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min={1}
+                value={charLimitInput}
+                onChange={(e) => { setCharLimitInput(e.target.value); setCharLimit(e.target.value ? Number(e.target.value) : null); }}
+                placeholder="e.g. 280 for Twitter…"
+                className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-100"
+              />
+              {charLimit !== null && (
+                <button onClick={() => { setCharLimit(null); setCharLimitInput(""); }}
+                  className="text-xs text-gray-400 hover:text-red-400">Clear</button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Top words */}
@@ -170,15 +190,11 @@ export default function WordCounterClient() {
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Top 5 Most Used Words</h2>
           <div className="flex flex-wrap gap-2">
             {topWords.map((item, i) => (
-              <div
-                key={item.word}
-                className="inline-flex items-center gap-2 rounded-lg bg-gray-50 border border-gray-100 px-3 py-2 text-sm"
-              >
-                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700">
-                  {i + 1}
-                </span>
+              <div key={item.word} className="inline-flex items-center gap-2 rounded-lg bg-gray-50 border border-gray-100 px-3 py-2 text-sm">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700">{i + 1}</span>
                 <span className="font-medium text-gray-800">{item.word}</span>
                 <span className="text-xs text-gray-400">{item.count}x</span>
+                <span className="text-xs text-gray-300">{stats.words > 0 ? Math.round((item.count / stats.words) * 100) : 0}%</span>
               </div>
             ))}
           </div>

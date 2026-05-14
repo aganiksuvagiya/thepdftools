@@ -57,51 +57,7 @@ const jsonLd = {
       "description":
         "Convert HEIC and HEIF images to JPG format free online. Perfect for iPhone photos. Adjustable quality, batch conversion — runs entirely in your browser.",
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a HEIC file?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "HEIC (High Efficiency Image Container) is the default photo format used by Apple iPhones and iPads since iOS 11. It uses the HEIF standard to store images at half the file size of JPEG while maintaining the same visual quality.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Why can't I open HEIC files on Windows?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Windows does not natively support HEIC files without installing additional codecs. Converting HEIC to JPG makes your photos universally compatible with all devices, browsers, and applications.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Is my image uploaded to a server?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. The entire HEIC to JPG conversion happens locally in your web browser using JavaScript. Your photos never leave your device, making this tool completely safe for personal and sensitive images.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Can I convert multiple HEIC files at once?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Our converter supports batch conversion. You can select multiple HEIC files at once and convert them all to JPG in a single operation.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Will converting HEIC to JPG reduce quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "At the default quality setting of 92%, the visual difference is imperceptible. You can adjust the quality slider to find the perfect balance between file size and image quality.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

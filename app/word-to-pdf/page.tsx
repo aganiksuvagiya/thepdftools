@@ -56,43 +56,7 @@ export default function WordToPdfPage() {
         description:
           "Convert Word documents to PDF format free online. No signup, no upload — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert Word to PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your Word files never leave your browser. All conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What Word formats are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Both DOC and DOCX formats are supported. DOCX files (Microsoft Word 2007 and later) provide the best conversion results with full text extraction.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does this preserve formatting?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This converter extracts text content from your Word document and creates a clean PDF. For full formatting preservation including images and complex layouts, use Microsoft Word or Google Docs.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens in your browser, so it depends on your device's memory. Most documents up to 20MB work smoothly.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

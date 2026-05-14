@@ -57,43 +57,7 @@ const jsonLd = {
       "description":
         "Convert PNG images to JPG format free online. Adjustable quality, white background for transparency. No upload required — conversion happens in your browser.",
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What happens to transparent areas?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "JPG does not support transparency. Any transparent areas in your PNG will be filled with a white background during conversion.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Can I control JPG quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Use the quality slider to choose a value between 0 and 1. Higher values produce better-looking images with larger file sizes, while lower values create smaller files with some quality loss.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Is my image uploaded to a server?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. The entire conversion happens locally in your browser using the HTML Canvas API. Your images never leave your device.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "What's the difference between PNG and JPG?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "PNG is a lossless format that supports transparency, making it ideal for graphics and logos. JPG uses lossy compression, producing much smaller files suited for photographs and web images where transparency is not needed.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

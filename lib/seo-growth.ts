@@ -125,7 +125,85 @@ export const seoTools: SeoTool[] = [
     ],
   },
   {
+    slug: "color-picker",
+    name: "Color Picker",
+    category: "Image Tools",
+    primaryKeyword: "color picker online free",
+    secondaryKeywords: [
+      "hex to rgb converter",
+      "rgb to hex converter",
+      "hsl to rgb converter",
+      "hex to cmyk",
+      "css color picker",
+    ],
+    promise:
+      "Pick, convert, and copy HEX, RGB, HSL, and CMYK color codes instantly in your browser without signup.",
+    bestFor: ["Web design", "CSS styling", "UI design", "Brand palettes"],
+    related: ["image-compressor", "image-resizer", "image-to-webp", "svg-to-png"],
+    faq: [
+      {
+        q: "What color formats are supported?",
+        a: "The color picker supports HEX, RGB, HSL, and CMYK. Type or paste any value and all other formats update instantly.",
+      },
+      {
+        q: "Can I copy color codes for CSS?",
+        a: "Yes. Click the copy button next to any value to copy it directly to your clipboard for CSS, Tailwind, design tools, or code editors.",
+      },
+      {
+        q: "Is this tool free and without signup?",
+        a: "Yes. The tool is free to use with no signup required and no server upload, so it stays fast and private in your browser.",
+      },
+      {
+        q: "Can I use it on mobile?",
+        a: "Yes. It works on any modern browser, so you can pick and convert colors from your phone, tablet, or desktop device.",
+      },
+      {
+        q: "How accurate are the color conversions?",
+        a: "Conversions are based on standard color math. CMYK values are approximate because exact print profiles vary, but the tool gives reliable values for digital design and color planning.",
+      },
+    ],
+  },
+  {
+    slug: "tailwind-colors",
+    name: "Tailwind Colors",
+    category: "Utilities",
+    primaryKeyword: "tailwind color palette",
+    secondaryKeywords: [
+      "tailwind css colors",
+      "tailwind color chart",
+      "tailwind color reference",
+      "tailwind color picker",
+    ],
+    promise:
+      "Browse all Tailwind CSS color palettes with HEX codes, copy classes instantly for your design projects.",
+    bestFor: ["Tailwind developers", "UI designers", "Web projects", "Color reference"],
+    related: ["color-picker", "image-compressor", "image-resizer", "qr-generator"],
+    faq: [
+      {
+        q: "What are Tailwind colors?",
+        a: "Tailwind CSS provides a comprehensive color palette with shades from 50 to 900 for each color family, perfect for consistent design systems.",
+      },
+      {
+        q: "Can I copy Tailwind classes?",
+        a: "Yes. Click any color swatch to copy the Tailwind class (like bg-blue-500) directly to your clipboard.",
+      },
+      {
+        q: "Are these the latest Tailwind colors?",
+        a: "Yes. The palette includes all standard Tailwind CSS colors with their exact HEX values.",
+      },
+      {
+        q: "How do I use these in my project?",
+        a: "Simply copy the class name and use it in your HTML or JSX. For example, className=\"bg-red-500 text-white\".",
+      },
+      {
+        q: "Can I see contrast ratios?",
+        a: "The color picker tool has contrast checking. Use it alongside this reference for accessible color combinations.",
+      },
+    ],
+  },
+  {
     slug: "pdf-to-word",
+
     name: "PDF to Word Converter",
     category: "PDF Tools",
     primaryKeyword: "pdf to word online free no upload",

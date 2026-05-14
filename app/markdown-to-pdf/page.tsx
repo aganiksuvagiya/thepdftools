@@ -55,51 +55,7 @@ export default function MarkdownToPdfPage() {
         description:
           "Convert Markdown to PDF for free online. Paste or upload your .md file and download a beautifully formatted PDF instantly.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert Markdown to PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your Markdown content never leaves your browser. All conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What Markdown features are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "All standard Markdown syntax is supported including headings, bold, italic, links, images, code blocks, blockquotes, tables, ordered and unordered lists, and horizontal rules.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I upload a .md file?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can either type/paste your Markdown content directly or upload a .md or .markdown file. The content will be parsed and rendered with a live preview before PDF generation.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I customize the PDF output?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can choose the page size (A4 or Letter) and font size (Small, Medium, or Large) to customize how your PDF looks before generating it.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Do I need to install any software?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. This Markdown to PDF converter runs entirely in your web browser. There is nothing to download or install. Just open the page and start converting.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

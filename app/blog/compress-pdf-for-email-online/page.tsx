@@ -60,27 +60,7 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Compress PDF for Email", item: POST_URL },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "How do I compress a PDF for email?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Use a PDF compressor, choose a compression level, and download the smaller PDF before attaching it to email.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What size should a PDF be for email?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Many email services limit attachments to about 25 MB, so compressing a PDF below that size helps avoid failed sends.",
-          },
-        },
-      ],
-    },
+    
   ],
 };
 

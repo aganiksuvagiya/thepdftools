@@ -54,6 +54,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
       description,
       images: [`${SITE_URL}/opengraph-image`],
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 
@@ -152,36 +156,6 @@ export default function LocalSeoToolCityPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
-              <h2 className="text-lg font-semibold text-slate-900">Other popular searches in {cityPage.city}</h2>
-              <div className="mt-4 flex flex-wrap gap-3">
-                {otherToolsInCity.map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={`/${item.slug}-in-${cityPage.slug}`}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 hover:border-brand-300 hover:text-brand-700"
-                  >
-                    {item.label} in {cityPage.city}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
-              <h2 className="text-lg font-semibold text-slate-900">Same tool in other cities</h2>
-              <div className="mt-4 flex flex-wrap gap-3">
-                {otherCitiesForTool.map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={`/${tool.slug}-in-${item.slug}`}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 hover:border-brand-300 hover:text-brand-700"
-                  >
-                    {tool.label} in {item.city}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

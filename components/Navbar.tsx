@@ -120,6 +120,8 @@ const utilitySections: DropdownSection[] = [
     title: "Quick Utilities",
     items: [
       { href: "/color-picker", label: "Color Picker", icon: "palette", bg: "bg-pink-100", fg: "text-pink-700" },
+      { href: "/color-gradient", label: "Gradient Generator", icon: "gradient", bg: "bg-purple-100", fg: "text-purple-700" },
+      { href: "/tailwind-colors", label: "Tailwind Colors", icon: "swatch", bg: "bg-indigo-100", fg: "text-indigo-700" },
       { href: "/json-formatter", label: "JSON Formatter", icon: "braces", bg: "bg-slate-100", fg: "text-slate-700" },
       { href: "/csv-to-json", label: "CSV to JSON", icon: "table", bg: "bg-blue-100", fg: "text-blue-700" },
       { href: "/base64", label: "Base64", icon: "code", bg: "bg-zinc-100", fg: "text-zinc-700" },
@@ -127,12 +129,20 @@ const utilitySections: DropdownSection[] = [
       { href: "/lorem-ipsum", label: "Lorem Ipsum", icon: "paragraph", bg: "bg-emerald-100", fg: "text-emerald-700" },
     ],
   },
+  {
+    title: "Generators",
+    items: [
+      { href: "/signature-generator", label: "Signature Generator", icon: "sign", bg: "bg-violet-100", fg: "text-violet-700" },
+      { href: "/barcode-generator", label: "Barcode Generator", icon: "barcode", bg: "bg-teal-100", fg: "text-teal-700" },
+      { href: "/favicon-generator", label: "Favicon Generator", icon: "favicon", bg: "bg-amber-100", fg: "text-amber-700" },
+    ],
+  },
 ];
 
 const searchTools: SearchTool[] = [
   ...pdfSections.flatMap((section) => section.items.map((item) => ({ ...item, category: section.title }))),
   ...imageSections.flatMap((section) => section.items.map((item) => ({ ...item, category: section.title }))),
-  ...utilitySections.flatMap((section) => section.items.map((item) => ({ ...item, category: section.title }))),
+...utilitySections.flatMap((section) => section.items.map((item) => ({ ...item, category: section.title }))),
 ];
 
 function ToolGlyph({ icon, cls = "h-4 w-4" }: { icon: string; cls?: string }) {
@@ -190,6 +200,12 @@ function ToolGlyph({ icon, cls = "h-4 w-4" }: { icon: string; cls?: string }) {
       return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM17 14h3v3h-3zM14 17h3v3h-3z" /></svg>;
     case "palette":
       return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3a9 9 0 100 18h1.2a1.8 1.8 0 001.8-1.8 1.8 1.8 0 011.8-1.8H18A3 3 0 0021 14a11 11 0 00-9-11z" /></svg>;
+    case "gradient":
+      return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="currentColor" stopOpacity="1"/><stop offset="100%" stopColor="currentColor" stopOpacity="0.2"/></linearGradient></defs><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" fill="none" /><path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18M8 6v12M16 6v12" /></svg>;
+    case "barcode":
+      return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h1v12H4zM7 6h1v12H7zM11 6h2v12h-2zM15 6h1v12h-1zM18 6h2v12h-2z" /></svg>;
+    case "favicon":
+      return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><rect x="3" y="3" width="18" height="18" rx="3" strokeLinecap="round" strokeLinejoin="round" /><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8M12 8v8" /></svg>;
     case "invoice":
       return <svg className={cls} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M7 3h7l5 5v13H5V3h2zm1 8h8M8 15h8M8 19h5" /></svg>;
     case "shield":

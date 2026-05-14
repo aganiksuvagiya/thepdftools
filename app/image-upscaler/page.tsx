@@ -49,35 +49,7 @@ const jsonLd = {
       description:
         "Upscale and enhance images for free online. Increase resolution by 2x, 3x, or 4x with smooth interpolation.",
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "How does the image upscaler work?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The upscaler uses high-quality canvas interpolation to increase image resolution by 2x, 3x, or 4x while maintaining smooth edges and details.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What image formats are supported?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "JPG/JPEG, PNG, and WebP formats are fully supported. You can upscale any of these formats and download the enhanced result instantly.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Is there a file size limit?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No hard limit. Processing happens in your browser, so it depends on your device's memory. Most images up to 50MB work smoothly.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

@@ -60,27 +60,7 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Convert PPT to PDF Online", item: POST_URL },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Can I convert PPT to PDF online for free?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. The PPT to PDF tool converts PowerPoint PPTX files to PDF online for free with no signup required.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Are PowerPoint files uploaded while converting?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No. The tool runs in your browser whenever possible, so your presentation stays on your device.",
-          },
-        },
-      ],
-    },
+    
   ],
 };
 

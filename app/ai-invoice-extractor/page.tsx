@@ -46,35 +46,7 @@ export default function AiInvoiceExtractorPage() {
         description:
           "Extract invoice number, dates, amounts, tax, vendor, customer, and raw invoice text from PDFs directly in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What fields can this invoice extractor detect?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "It can detect invoice number, invoice date, due date, vendor, customer, subtotal, tax, total, currency, and the full extracted invoice text.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it work on scanned invoice PDFs?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. If the PDF does not contain enough selectable text, OCR starts automatically to read scanned invoices.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I export the extracted data?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can copy the extracted invoice JSON or download it for later use in spreadsheets, scripts, or accounting workflows.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

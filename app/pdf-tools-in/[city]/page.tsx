@@ -62,6 +62,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
       description,
       images: [`${SITE_URL}/opengraph-image`],
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 
@@ -133,80 +137,6 @@ export default function CityPdfToolsPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-10">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Popular tools for users in {cityPage.city}</h2>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link
-                href={`/merge-pdf-in-${cityPage.slug}`}
-                className="rounded-full border border-brand-200 bg-brand-50 px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-800"
-              >
-                Merge PDF in {cityPage.city}
-              </Link>
-              {featuredTools.map((tool) => (
-                <Link
-                  key={tool.href}
-                  href={tool.href}
-                  className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  {tool.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
-              <h3 className="text-lg font-semibold text-slate-900">Why this page helps local SEO</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                People often search for phrases like "PDF tools in {cityPage.city}", "compress PDF online {cityPage.city}", or "PDF editor {cityPage.city}".
-                This page gives search engines a dedicated location-focused landing page while still linking to the actual tools people need.
-              </p>
-            </div>
-            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-6">
-              <h3 className="text-lg font-semibold text-slate-900">Typical local use cases</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Use these tools for application forms, invoices, contracts, student documents, portfolio files, scanned IDs, offer letters, and client-ready PDFs in {cityPage.city}, {cityPage.country}.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-xl font-bold text-slate-900">Top tool searches in {cityPage.city}</h2>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {localSeoTools.map((tool) => (
-                <Link
-                  key={tool.slug}
-                  href={`/${tool.slug}-in-${cityPage.slug}`}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  {tool.label} in {cityPage.city}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-xl font-bold text-slate-900">Related city pages</h2>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {citySeoPages
-                .filter((item) => item.slug !== cityPage.slug)
-                .sort((a, b) => {
-                  const aScore = a.countrySlug === cityPage.countrySlug ? 0 : 1;
-                  const bScore = b.countrySlug === cityPage.countrySlug ? 0 : 1;
-                  return aScore - bScore;
-                })
-                .slice(0, 8)
-                .map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={`/pdf-tools-in/${item.slug}`}
-                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                  >
-                    {item.city}
-                  </Link>
-                ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>

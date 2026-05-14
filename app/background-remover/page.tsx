@@ -53,43 +53,7 @@ export default function BackgroundRemoverPage() {
         description:
           "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "How does AI background removal work?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Our tool uses a machine learning model that runs directly in your browser. It analyzes the image to detect the foreground subject and separates it from the background, producing a transparent PNG.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What image quality can I expect?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The AI produces clean, high-quality cutouts with smooth edges. Results are best with clear subjects and good contrast between foreground and background. The output is a full-resolution transparent PNG.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is it free?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely free with no watermarks, no signup required, and no usage limits. The AI model runs in your browser so there are no server costs.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it work with complex backgrounds?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, the AI model handles complex and cluttered backgrounds well. It works best with photos of people, products, and animals, even against busy or multicolored backgrounds.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

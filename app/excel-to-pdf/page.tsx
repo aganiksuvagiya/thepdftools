@@ -56,43 +56,7 @@ export default function ExcelToPdfPage() {
         description:
           "Convert Excel spreadsheets to PDF format free online. No signup, no upload — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert Excel files here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your Excel files never leave your browser. All conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What Excel formats are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "XLSX (Excel 2007+) and CSV files are supported for free online Excel to PDF conversion. XLSX files provide the best results with full cell data extraction.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does this preserve cell formatting?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This converter extracts cell data and renders it as a formatted table in the PDF. Colors, merged cells, and formulas are not preserved. For full formatting, export directly from Excel.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I convert large spreadsheets?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. The tool handles large spreadsheets by auto-paginating the table across multiple PDF pages. Performance depends on your device's memory.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

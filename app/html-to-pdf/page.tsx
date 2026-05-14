@@ -52,43 +52,7 @@ export default function HtmlToPdfPage() {
         description:
           "Convert HTML code or files to PDF format free online. No signup, no upload — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Does this preserve CSS styling?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. The 'Save as PDF' option uses your browser's built-in print engine, which preserves all CSS styling, images, and layout. The 'Extract Text to PDF' option creates a clean text-only PDF.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is it safe to convert HTML here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your HTML content is processed entirely in your browser. Nothing is uploaded to any server. The preview uses a sandboxed iframe for security.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I paste HTML code directly?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can either paste HTML code into the text editor or upload an .html file. Both methods work with full preview and conversion support.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What is the difference between the two conversion options?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "'Save as PDF' opens your browser's print dialog which preserves all formatting, images, and CSS. 'Extract Text to PDF' creates a lightweight PDF with just the text content using pdf-lib.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

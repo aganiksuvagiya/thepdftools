@@ -56,51 +56,7 @@ export default function ImageToPdfPage() {
         description:
           "Convert JPG, PNG, and WebP images to PDF for free online. Combine multiple images into one PDF with custom page size, orientation, and margins.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert images to PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your images never leave your browser. All conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What image formats can I convert to PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "JPG/JPEG, PNG, and WebP formats are fully supported. You can convert any of these formats into a professional PDF document instantly.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I combine multiple images into one PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes! You can add multiple images, reorder them as needed, and combine them all into a single PDF document. Each image gets its own page.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I choose the page size and orientation?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Absolutely. You can choose A4, Letter, or Fit to Image page size. Portrait and Landscape orientations are available, along with adjustable margins.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a limit on how many images I can convert?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "There is no hard limit. Since all processing happens in your browser, it depends on your device memory. Most users can convert dozens of images smoothly.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

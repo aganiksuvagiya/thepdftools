@@ -48,43 +48,7 @@ export default function PdfProtectPage() {
         description:
           "Password protect PDF files online for free. Add encryption to your PDF documents instantly in your browser with no file upload.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to add a password here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. Your PDF and password never leave your browser. All encryption is done client-side using pdf-lib — nothing is sent to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What type of encryption is used?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool uses PDF RC4 128-bit encryption which provides standard password protection compatible with Adobe Acrobat and most PDF readers.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I remove the password later?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. Use our PDF Unlock tool to remove the password protection from a PDF file.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will the password protect against printing?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool adds a user password to open the PDF. You can choose to also restrict printing and copying via the owner password settings.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

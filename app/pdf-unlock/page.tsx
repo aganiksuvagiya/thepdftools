@@ -55,51 +55,7 @@ export default function PdfUnlockPage() {
         description:
           "Remove restrictions from PDF files for free online. Unlock printing, copying, and editing restrictions instantly in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it legal to unlock a PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, it is completely legal to remove restrictions from a PDF that you own or have authorization to access. This tool is designed for removing restrictions from your own documents.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is it safe to unlock my PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your PDF never leaves your browser. All processing happens client-side using JavaScript, so no data is uploaded to any server. Your files remain completely private.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What types of PDF restrictions can be removed?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool removes owner-password restrictions such as printing, copying text, editing, and form-filling restrictions. It works with PDFs that have permission-based restrictions set by the document owner.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does this work on all protected PDFs?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool removes owner-level restrictions (printing, copying, editing). PDFs encrypted with a user password that prevents opening the file entirely require decryption software.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will unlocking change the PDF content?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. Unlocking simply removes the restrictions. All pages, text, images, and formatting remain exactly the same in the unlocked PDF.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

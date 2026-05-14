@@ -48,43 +48,7 @@ export default function PdfRotatePage() {
         description:
           "Rotate PDF pages online for free. Choose 90°, 180°, or 270° rotation for all pages or specific pages. No upload required.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to rotate PDFs here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF never leaves your browser. All rotation is done client-side using pdf-lib — no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I rotate only specific pages?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can rotate all pages at once or choose individual pages to rotate independently.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does rotation affect PDF quality?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. Rotating a PDF only changes the page orientation metadata — text, images, and formatting remain at full quality.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What rotation angles are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "You can rotate pages by 90° (clockwise), 180° (upside down), or 270° (counter-clockwise / 90° left).",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

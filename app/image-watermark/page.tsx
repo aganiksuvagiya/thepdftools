@@ -58,43 +58,7 @@ const jsonLd = {
       "description":
         "Add text watermarks to JPG, PNG, and WebP images for free online. Customize font size, opacity, color, position, and tiling.",
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Can I add watermarks in bulk?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Currently the tool processes one image at a time. You can quickly watermark multiple images by repeating the process — each takes just seconds since everything runs locally in your browser.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "What watermark styles are available?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can customize the watermark text, font size, color, opacity, and position. You can also enable tiling to repeat the watermark diagonally across the entire image for maximum protection.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Does watermarking reduce image quality?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The watermark is composited onto the image using the Canvas API at full resolution. The underlying image quality remains unchanged — only the watermark overlay is added.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Is the watermark permanent?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Once you download the watermarked image, the text is permanently embedded into the image pixels. It cannot be removed without visibly damaging the image, which is what makes watermarks effective for copyright protection.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

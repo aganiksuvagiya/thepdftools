@@ -7,6 +7,20 @@ const linkClass =
 export default function ToolSeoGrowth({ slug }: { slug: string }) {
   const tool = getSeoTool(slug) ?? createFallbackTool(slug);
 
+  const faqJsonLd = tool.faq.length
+    ? {
+        "@type": "FAQPage",
+        mainEntity: tool.faq.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.a,
+          },
+        })),
+      }
+    : null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -28,6 +42,7 @@ export default function ToolSeoGrowth({ slug }: { slug: string }) {
         keywords: [tool.primaryKeyword, ...tool.secondaryKeywords],
         description: tool.promise,
       },
+      ...(faqJsonLd ? [faqJsonLd] : []),
     ],
   };
 

@@ -49,27 +49,7 @@ const jsonLd = {
       description:
         "Generate QR codes for any text or URL for free online. Customize size, colors, and download instantly.",
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Is this QR code generator free?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes, it is 100% free. Generate unlimited QR codes with custom colors and sizes without any signup or payment.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I customize the QR code colors?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes! You can pick any foreground and background color using the built-in color pickers to match your brand or design.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

@@ -55,43 +55,7 @@ export default function PdfToImagePage() {
         description:
           "Convert PDF pages to high-quality JPG or PNG images for free online. No upload, no signup — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert PDFs here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF files never leave your browser. All conversion is done client-side using JavaScript (pdf.js), so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What image formats are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "You can convert PDF pages to JPG (JPEG) or PNG format online for free. For JPG, you can also adjust the quality level to balance file size and image quality.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I convert all pages at once?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, the tool converts all pages of your PDF at once. You can then download individual pages or all of them.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a page limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens in your browser, so performance depends on your device's memory and the PDF's complexity.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

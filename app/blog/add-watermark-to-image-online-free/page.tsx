@@ -62,27 +62,7 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Add Watermark to Image Online", item: POST_URL },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Can I add a watermark to an image online for free?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. You can add a text watermark to JPG, PNG, and WebP images for free with the Image Watermark tool.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Are my photos uploaded while adding a watermark?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "No. The watermark tool runs in your browser, so your image stays on your device.",
-          },
-        },
-      ],
-    },
+    
   ],
 };
 

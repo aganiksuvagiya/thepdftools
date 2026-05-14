@@ -150,36 +150,7 @@ const homeJsonLd = [
       url,
     })),
   },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "Are these tools free to use?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. Every tool on thepdftools is free to use with no signup required.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Do files get uploaded to a server?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "No. The main image and PDF tools process files locally in your browser for better privacy.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Which tools are most popular?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Popular tools include Image Compressor, PDF Merge, PDF Highlight, PDF Sign, PDF Redaction, Background Remover, JPG to PNG, and Image Resizer.",
-        },
-      },
-    ],
-  },
+  
   {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -446,6 +417,18 @@ const tools = [
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125V4.5" />
+      </svg>
+    ),},
+  {
+    href: "/tailwind-colors",
+    title: "Tailwind Colors",
+    description:
+      "Browse all Tailwind CSS colors with HEX codes. Copy classes instantly for web design.",
+    badge: "Design",
+    color: "indigo" as const,
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125H12M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.592l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
       </svg>
     ),},
   {
@@ -776,6 +759,7 @@ const toolCategories = [
     hrefs: [
       "/qr-generator",
       "/color-picker",
+      "/tailwind-colors",
       "/json-formatter",
       "/base64",
       "/word-counter",

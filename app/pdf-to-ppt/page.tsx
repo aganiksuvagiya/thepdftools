@@ -46,31 +46,7 @@ export default function PdfToPptPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Convert PDF files to PowerPoint PPTX online for free. Each PDF page becomes a slide. No upload required.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "How does PDF to PPT conversion work?",
-            acceptedAnswer: { "@type": "Answer", text: "Each page of your PDF is rendered as a high-quality image and placed into a PowerPoint slide. The result is a PPTX file where each slide shows one PDF page." },
-          },
-          {
-            "@type": "Question",
-            name: "Is my file uploaded to a server?",
-            acceptedAnswer: { "@type": "Answer", text: "No. All conversion happens in your browser using pdf.js and pptxgenjs. Your PDF never leaves your device." },
-          },
-          {
-            "@type": "Question",
-            name: "Will the text be editable in PowerPoint?",
-            acceptedAnswer: { "@type": "Answer", text: "Each page is converted as an image slide, so text will not be directly editable in PowerPoint. This is a visual conversion — for editable text, use our PDF to Word tool instead." },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a page limit?",
-            acceptedAnswer: { "@type": "Answer", text: "No hard limit, but large PDFs with many pages may take longer to process depending on your device's speed." },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

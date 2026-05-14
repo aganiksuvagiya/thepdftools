@@ -55,51 +55,7 @@ export default function SvgToPngPage() {
         description:
           "Convert SVG to PNG for free online. Choose scale (1x–4x), transparent or white background. Runs entirely in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert SVG files here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your SVG files never leave your browser. All conversion is done client-side using JavaScript and the Canvas API, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What scale should I choose?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Use 1x for web-sized images, 2x for retina displays and most use cases, 3x for high-resolution prints, and 4x for maximum quality. Higher scales produce larger PNG files.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I keep the transparent background?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. Select the 'Transparent' background option to preserve the original SVG transparency in the output PNG file. Choose 'White' if you need an opaque background.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Why convert SVG to PNG?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "PNG is a raster format supported everywhere — social media, email clients, presentation software, and older browsers. Converting SVG to PNG ensures universal compatibility while preserving image quality at the chosen resolution.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens entirely in your browser, so performance depends on your device. Most SVG files convert smoothly regardless of complexity.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

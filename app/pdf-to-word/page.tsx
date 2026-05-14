@@ -54,43 +54,7 @@ export default function PdfToWordPage() {
         description:
           "Convert PDF files to editable Word documents for free online. Extract text and download as .doc — runs entirely in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert PDFs here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF files never leave your browser. All text extraction and conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What kind of PDFs can I convert?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool works best with text-based PDFs. Scanned PDFs (images) will not produce extractable text. Encrypted or password-protected PDFs are also not supported.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will the formatting be preserved?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The tool extracts text content and preserves paragraph structure and page breaks. Complex formatting like tables, columns, and images may not be fully preserved.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What format is the output file?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The output is a .doc file that can be opened in Microsoft Word, Google Docs, LibreOffice, and other word processors.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

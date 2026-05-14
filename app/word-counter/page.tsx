@@ -57,27 +57,7 @@ export default function WordCounterPage() {
           { "@type": "ListItem", "position": 2, "name": "Word Counter", "item": "https://thepdftools.site/word-counter" },
         ],
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Can I count words and characters online for free?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. The Word Counter is free and counts words, characters, sentences, paragraphs, and reading time in your browser.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "Is my text uploaded while counting words?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. Word and character counting runs locally in your browser so your text stays on your device.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

@@ -46,35 +46,7 @@ export default function PdfRedactionPage() {
         description:
           "Black out sensitive information in PDF files and download a flattened redacted PDF.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What does PDF redaction do?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "PDF redaction permanently hides sensitive information such as names, addresses, account numbers, and private notes before you share the file.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is the redacted PDF safe to share?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool exports a flattened image-based PDF so text hidden under black boxes does not remain selectable in the final output.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Do files get uploaded?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. Redaction and export happen locally in your browser without uploading the PDF to a server.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

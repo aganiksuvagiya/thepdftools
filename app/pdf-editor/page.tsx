@@ -56,59 +56,7 @@ export default function PdfEditorPage() {
         description:
           "Edit PDF files for free online. Add text, images, shapes, highlights, and freehand drawings. Delete and reorder pages. No signup, no server upload — 100% browser-based.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is this PDF editor completely free?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% free with no hidden costs, no trial period, and no premium tier. Edit as many PDFs as you like without any restrictions or watermarks.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is it safe to edit my PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF files never leave your browser. All rendering, editing, and saving is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I edit the existing text in my PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "You can cover existing text with a white rectangle (whiteout tool) and type new text on top. Direct inline text editing of PDFs in a browser is technically impossible due to the PDF format's complexity, but the whiteout-and-retype approach produces the same visual result.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What editing tools are available?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The editor includes: text boxes, image placement, freehand drawing, highlighter, shapes (rectangle, circle, line, arrow), whiteout tool, eraser, undo/redo, page management (delete, reorder, add blank pages), and zoom controls.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I edit multi-page PDFs?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. The editor supports multi-page PDFs with a thumbnail sidebar for easy navigation. You can edit each page individually, reorder pages, delete pages, and add blank pages.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "How do I save my edited PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Click the 'Save PDF' button in the toolbar. The editor combines your edits with the original pages and generates a new PDF file that downloads automatically to your device.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

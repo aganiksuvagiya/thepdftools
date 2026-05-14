@@ -59,51 +59,6 @@ const jsonLd = {
         "Convert MP4, WebM, MOV, and AVI videos to GIF format free online. Adjust FPS, width, quality, and trim duration. Runs entirely in your browser.",
     },
     {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I convert a video to GIF online?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Simply drag and drop your video file into the converter, choose your desired settings like FPS, width, and quality, then click Convert to GIF. The conversion runs entirely in your browser with no server upload required.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "What video formats are supported?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Our converter supports all major video formats including MP4, WebM, MOV, and AVI. Any video format that your browser can play will work with the converter.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Can I trim the video before converting to GIF?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, you can set a custom start time and duration to extract only the portion of the video you want to convert. This helps keep your GIF file size manageable.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "What is the best FPS for a GIF?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "For most use cases, 10 to 15 FPS provides a good balance between smooth animation and file size. Higher FPS like 20 produces smoother motion but significantly larger files. For simple animations, 5 FPS may be sufficient.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Is there a file size limit?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There is no hard file size limit since the conversion runs entirely in your browser. However, very large or long videos may take more time to process. We recommend keeping GIFs under 10 seconds for best results.",
-          },
-        },
-      ],
-    },
-    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
@@ -231,6 +186,8 @@ export default function VideoToGifPage() {
                 { q: "Can I trim the video before converting to GIF?", a: "Yes, you can set a custom start time and duration using the slider controls to extract only the exact portion of the video you want to turn into a GIF. This is especially useful for keeping file sizes manageable." },
                 { q: "What FPS should I use for my GIF?", a: "For most use cases, 10 to 15 FPS provides a good balance between smooth animation and reasonable file size. Use 5 FPS for simple step-by-step tutorials, and 15 to 20 FPS when you need smoother motion like screen recordings or action clips." },
                 { q: "Is there a file size or duration limit?", a: "There is no hard limit since everything runs in your browser. However, very long or high-resolution videos will take longer to process and produce larger GIF files. For best results, we recommend keeping GIFs under 10 seconds and using a width of 480 pixels or less." },
+                { q: "Can I use this converter on mobile?", a: "Yes. The converter works on any modern browser, including mobile devices on iOS and Android, as long as the browser supports video playback and the HTML5 Canvas API." },
+                { q: "Will the GIF quality be good enough for social sharing?", a: "Yes. By choosing the right balance of FPS, width, and quality settings, you can create GIFs that look great on social media while keeping file size manageable." },
               ].map((item) => (
                 <details key={item.q} className="group py-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-medium text-slate-900 transition-colors hover:text-brand-700 [&::-webkit-details-marker]:hidden">

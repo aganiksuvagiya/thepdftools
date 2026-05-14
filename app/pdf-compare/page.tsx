@@ -46,35 +46,7 @@ export default function PdfComparePage() {
         description:
           "Compare two PDF versions, detect changed pages, and review added or removed text directly in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What does PDF Compare do?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "It extracts text from two PDF files and shows which pages changed, along with lines that appear only in the original or only in the revised version.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it upload my PDF files?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. Comparison runs locally in your browser using client-side PDF text extraction.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will it work on scanned PDFs?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This version works best on text-based PDFs. For scanned image PDFs, run OCR first before comparing.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

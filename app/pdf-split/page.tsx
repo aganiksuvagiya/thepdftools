@@ -54,43 +54,7 @@ export default function PdfSplitPage() {
         description:
           "Split PDF files into individual pages or custom ranges for free online. No upload, no signup — runs in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to split PDFs here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF files never leave your browser. All splitting is done client-side using JavaScript (pdf-lib), so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I extract specific pages?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, you can split all pages into individual PDFs, or specify custom ranges like '1-3, 5, 7-10' to extract exactly the pages you need.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a page limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No hard limit. Processing happens in your browser, so performance depends on your device's memory. Most PDFs work smoothly.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it work offline?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Once the page is loaded, the splitting functionality works entirely in your browser. However, you need an internet connection to initially load the tool.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

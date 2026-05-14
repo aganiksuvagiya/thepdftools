@@ -46,31 +46,7 @@ export default function PdfPageNumbersPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Add page numbers to PDF files online for free. No upload required.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Can I choose where the page numbers appear?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. You can place page numbers at the bottom center, bottom right, bottom left, or top center of each page." },
-          },
-          {
-            "@type": "Question",
-            name: "Can I choose the starting page number?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. You can set any starting number, for example starting from page 5 if this PDF continues from another document." },
-          },
-          {
-            "@type": "Question",
-            name: "What number formats are available?",
-            acceptedAnswer: { "@type": "Answer", text: 'You can choose from: plain numbers (1, 2, 3), "Page 1" format, "1 / 10" format, or "Page 1 of 10" format.' },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: { "@type": "Answer", text: "No hard limit. All processing happens in your browser using pdf-lib, so performance depends on your device." },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

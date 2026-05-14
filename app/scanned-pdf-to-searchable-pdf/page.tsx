@@ -46,35 +46,7 @@ export default function SearchablePdfPage() {
         description:
           "Convert scanned PDFs into searchable PDFs using OCR entirely in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What is a searchable PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "A searchable PDF contains selectable text behind the scanned page image, so you can search, copy, and find words inside the document.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does my scanned PDF get uploaded?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. OCR and PDF rebuilding happen in your browser using client-side libraries.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I use it for invoices and forms?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. It works well for scanned invoices, receipts, books, reports, and many document types that need searchable text.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

@@ -57,6 +57,10 @@ export function generateMetadata({ params }: PageProps): Metadata {
       description,
       images: [`${SITE_URL}/opengraph-image`],
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 
@@ -130,65 +134,6 @@ export default function CountryCityPdfToolsPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-10">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Popular tools for users in {cityPage.city}</h2>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link
-                href={`/merge-pdf-in-${cityPage.slug}`}
-                className="rounded-full border border-brand-200 bg-brand-50 px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-800"
-              >
-                Merge PDF in {cityPage.city}
-              </Link>
-              {featuredTools.map((tool) => (
-                <Link
-                  key={tool.href}
-                  href={tool.href}
-                  className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  {tool.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-xl font-bold text-slate-900">Top tool searches in {cityPage.city}</h2>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {localSeoTools.map((tool) => (
-                <Link
-                  key={tool.slug}
-                  href={`/${tool.slug}-in-${cityPage.slug}`}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  {tool.label} in {cityPage.city}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-6">
-            <h2 className="text-xl font-bold text-slate-900">Related cities in {cityPage.country}</h2>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {relatedCities.length ? (
-                relatedCities.slice(0, 10).map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={`/pdf-tools-in-country/${item.countrySlug}/${item.slug}`}
-                    className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                  >
-                    {item.city}
-                  </Link>
-                ))
-              ) : (
-                <Link
-                  href={`/pdf-tools-in-country/${cityPage.countrySlug}`}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  View country page
-                </Link>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -50,35 +50,7 @@ export default function ScreenshotToPdfPage() {
         description:
           "Convert screenshots and images to PDF for free online. Combine multiple images into a single PDF.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Can I combine multiple screenshots into one PDF?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes! Upload multiple screenshots or images and they will be combined into a single PDF document. You can reorder them before converting.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What page sizes are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "A4, US Letter, and Auto (fit to image) page sizes are supported. You can also choose portrait, landscape, or auto orientation.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What image formats can I convert?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "JPG/JPEG, PNG, and WebP formats are supported. WebP images are automatically converted to PNG before embedding in the PDF.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

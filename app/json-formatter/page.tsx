@@ -57,27 +57,7 @@ export default function JsonFormatterPage() {
           { "@type": "ListItem", "position": 2, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
         ],
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Can I format JSON online for free?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. The JSON Formatter is free and formats, minifies, and validates JSON in your browser.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "Is my JSON uploaded to a server?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. JSON formatting and validation runs locally in your browser so your data stays on your device.",
-            },
-          },
-        ],
-      },
+      
     ],
   };
 

@@ -55,43 +55,7 @@ export default function TextToPdfPage() {
         description:
           "Convert plain text to PDF for free online. Choose font, size, margins, and page layout. Runs entirely in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert text to PDF here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% safe. Your text never leaves your browser. All PDF generation is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I choose the font and page size?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can choose from Helvetica, Courier, or Times fonts, set the font size from 10pt to 18pt, pick A4 or Letter page size, and adjust margins to small, medium, or large.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does it handle long text with multiple pages?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. The converter automatically wraps text and creates as many pages as needed. You can see an estimated page count before generating the PDF.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a character limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "There is no hard character limit. Since processing happens in your browser, it depends on your device's memory. Most documents up to hundreds of pages work smoothly.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

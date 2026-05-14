@@ -46,31 +46,7 @@ export default function PdfWatermarkPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Add text watermarks to PDF files online for free. No upload required.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to watermark PDFs here?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. Your PDF never leaves your browser. All processing runs locally using pdf-lib — nothing is uploaded to any server." },
-          },
-          {
-            "@type": "Question",
-            name: "Can I customize the watermark?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. You can set custom watermark text, choose the position (center diagonal, corners), adjust font size, and control opacity." },
-          },
-          {
-            "@type": "Question",
-            name: "Will the watermark appear on all pages?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. The watermark is applied to every page of your PDF document." },
-          },
-          {
-            "@type": "Question",
-            name: "Can the watermark be removed?",
-            acceptedAnswer: { "@type": "Answer", text: "Watermarks added by this tool are embedded directly into the PDF content. They are not easily removable with standard PDF readers." },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

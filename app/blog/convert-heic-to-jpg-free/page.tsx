@@ -60,27 +60,7 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "How to Convert HEIC to JPG", item: POST_URL },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Can I convert HEIC to JPG without uploading?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. The HEIC to JPG converter runs in your browser, so your photos do not need to be uploaded to a server.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does converting HEIC to JPG work on Windows?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Browser-based HEIC to JPG conversion works on Windows, Mac, iPhone, Android, and Linux.",
-          },
-        },
-      ],
-    },
+    
   ],
 };
 

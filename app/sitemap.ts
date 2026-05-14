@@ -55,6 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/invoice-generator", changeFrequency: "weekly", priority: 0.88 },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.82 },
     { path: "/color-picker", changeFrequency: "weekly", priority: 0.8 },
+    { path: "/tailwind-colors", changeFrequency: "weekly", priority: 0.8 },
     { path: "/base64", changeFrequency: "weekly", priority: 0.78 },
     { path: "/json-formatter", changeFrequency: "weekly", priority: 0.78 },
     { path: "/word-counter", changeFrequency: "weekly", priority: 0.78 },
@@ -124,26 +125,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       };
     })
     .concat(
-      citySeoPages.flatMap((city) =>
-        localSeoTools.map((tool) => ({
-          url: `${baseUrl}/${tool.slug}-in-${city.slug}`,
-          lastModified: siteUpdatedAt,
-          changeFrequency: "weekly" as const,
-          priority: 0.79,
-        })),
-      ),
-      citySeoPages.map((city) => ({
-        url: `${baseUrl}/pdf-tools-in/${city.slug}`,
-        lastModified: siteUpdatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.72,
-      })),
-      citySeoPages.map((city) => ({
-        url: `${baseUrl}/pdf-tools-in-country/${city.countrySlug}/${city.slug}`,
-        lastModified: siteUpdatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.73,
-      })),
       countrySeoPages.map((country) => ({
         url: `${baseUrl}/pdf-tools-in-country/${country.slug}`,
         lastModified: siteUpdatedAt,

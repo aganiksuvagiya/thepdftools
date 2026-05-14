@@ -60,27 +60,7 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "How to Compress PDF Files Online", item: POST_URL },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Can I compress a PDF online for free?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. You can compress a PDF for free with the browser-based PDF Compressor on thepdftools, with no signup required.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Are PDF files uploaded while compressing?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "The PDF compression tool runs in your browser whenever possible, so your documents stay on your device instead of being uploaded to a server.",
-          },
-        },
-      ],
-    },
+    
   ],
 };
 

@@ -58,51 +58,7 @@ export default function PdfToExcelPage() {
         description:
           "Convert PDF files to Excel spreadsheets for free online. Extract tables and download as .xlsx — runs entirely in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is it safe to convert PDFs to Excel here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PDF files never leave your browser. All table extraction and conversion is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What kind of PDFs work best for Excel conversion?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool works best with text-based PDFs that contain structured tabular data such as invoices, financial reports, and data tables. Scanned PDFs (images) will not produce extractable data.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Will the table structure be preserved?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The tool detects rows and columns from text positioning in the PDF and organizes them into spreadsheet cells. Simple tables with consistent spacing are extracted most accurately.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What format is the output file?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The output is a .xlsx file that can be opened in Microsoft Excel, Google Sheets, LibreOffice Calc, and other spreadsheet applications.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is there a file size limit?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "There is no server-imposed file size limit. Since processing happens locally in your browser, the practical limit depends on your device's available memory. Files up to 100 MB typically work without issues.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

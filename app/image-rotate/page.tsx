@@ -59,43 +59,7 @@ const jsonLd = {
       },
       browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    {
-      "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "Can I rotate by a custom angle?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes! In addition to quick 90° and 180° presets, you can enter any custom angle from 0° to 360° using the angle slider or input field. The preview updates in real time so you can fine-tune the rotation.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Does rotating reduce quality?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "No. Rotations at 90°, 180°, and 270° are lossless. Custom angle rotations use high-quality canvas rendering to preserve as much detail as possible. You can also choose your output format and quality level.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Can I flip and rotate at the same time?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Absolutely. You can combine any rotation with a horizontal or vertical flip. All transformations are applied together and previewed in real time before you download.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What formats are supported?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "The tool supports JPG, PNG, and WebP images. You can rotate or flip any of these formats and download the result in the same format or convert to another supported format.",
-        },
-      },
-    ],
-  },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

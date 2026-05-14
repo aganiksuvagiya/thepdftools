@@ -61,43 +61,7 @@ const jsonLd = {
       },
       browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    {
-      "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "Can I resize multiple images at once?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes! You can drop or select multiple images at once and apply the same dimensions to all of them. Each resized image can be downloaded individually or as a batch.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Will resizing reduce quality?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Enlarging images beyond their original size may reduce sharpness, but downscaling preserves quality. The tool uses high-quality canvas rendering with smooth interpolation to give you the best possible result.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What preset sizes are available?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Common presets include social media sizes (Instagram, Facebook, Twitter), standard web dimensions, and custom sizes. You can also enter any exact pixel width and height you need.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Can I change the output format?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Yes. You can resize your image and download it as JPG, PNG, or WebP regardless of the original format. This lets you resize and convert in a single step.",
-        },
-      },
-    ],
-  },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

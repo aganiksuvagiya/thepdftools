@@ -54,43 +54,7 @@ const jsonLd = {
       "description":
         "Convert JPG, PNG, and BMP images to WebP format free online. Smaller file sizes with adjustable quality. Runs entirely in your browser.",
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is WebP format?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "WebP is a modern image format developed by Google that provides superior lossy and lossless compression for images on the web. It supports transparency and animation while producing significantly smaller files than PNG or JPEG.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Which browsers support WebP?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "WebP is supported by all modern browsers including Google Chrome, Mozilla Firefox, Microsoft Edge, Safari (14.1+), and Opera. It covers over 97% of global browser usage.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "How much smaller are WebP files?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "WebP images are typically 25-35% smaller than JPEG files and up to 26% smaller than PNG files at equivalent visual quality, making them ideal for faster web page loading.",
-          },
-        },
-        {
-          "@type": "Question",
-          "name": "Will I lose quality converting to WebP?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "With lossy compression there is a small quality reduction, but it is usually imperceptible at the default quality setting. You can adjust the quality slider to find the perfect balance between file size and visual fidelity.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [

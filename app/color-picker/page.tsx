@@ -9,21 +9,27 @@ const ColorPickerClient = dynamic(() => import("./ColorPickerClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Color Picker Online Free No Upload",
+  title: "Free CSS Color Picker Online — HEX, RGB, HSL & CMYK Converter",
   description:
-    "Use Color Picker online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Free CSS color picker online for HEX, RGB, HSL, and CMYK conversion. Generate web color codes, copy CSS variables, and check contrast for accessible UI without signup.",
   keywords: [
-    "color picker",
-    "color converter",
-    "hex to rgb",
-    "rgb to hsl",
-    "rgb to cmyk",
-    "free color picker",
+    "color picker online free",
+    "hex color picker online",
+    "rgb to hex converter",
+    "hsl to hex",
+    "hex to cmyk",
+    "css color picker",
+    "web color picker",
+    "color code generator online",
+    "color palette generator",
+    "color accessibility checker",
+    "tailwind color picker",
+    "css variable generator",
   ],
   openGraph: {
-    title: "Color Picker Online Free No Upload",
+    title: "Free CSS Color Picker Online — HEX, RGB, HSL & CMYK Converter",
     description:
-    "Use Color Picker online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+      "Free CSS color picker online for HEX, RGB, HSL, and CMYK conversion. Copy CSS variables, check contrast, and generate web-ready color codes in your browser.",
     url: "https://thepdftools.site/color-picker",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },
@@ -47,29 +53,9 @@ const jsonLd = {
         priceCurrency: "USD",
       },
       description:
-        "Pick any color and convert between HEX, RGB, HSL, and CMYK instantly. Free online color tool.",
+        "Pick any color and convert between HEX, RGB, HSL, and CMYK instantly. Free browser-based color tool for designers and developers.",
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "What color formats are supported?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "HEX, RGB, HSL, and CMYK. You can type in any format and see all others update in real time.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I copy color values?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes! Each color value has a copy button next to it for one-click copying to your clipboard.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -108,6 +94,14 @@ export default function ColorPickerPage() {
                 Pick any color and instantly see its HEX, RGB, HSL, and CMYK values.
                 Edit any format to update all others. Copy with one click — no
                 signup, runs in your browser.
+              </p>
+              <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
+                Ideal for designers, developers, and brand teams who need pixel-perfect
+                color codes for CSS, design systems, Tailwind, and UI work without switching apps.
+              </p>
+              <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
+                Generate web-ready CSS variables, compare contrast for accessible text,
+                and build color palettes for websites, apps, and product designs.
               </p>
             </div>
 
@@ -155,8 +149,9 @@ export default function ColorPickerPage() {
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Use the color picker or enter a value in any format (HEX, RGB, HSL, or CMYK).</li>
               <li>View all color format conversions update instantly in real time.</li>
-              <li>Click the copy button next to any value to copy it to your clipboard.</li>
-              <li>Use the color history to revisit previously selected colors.</li>
+              <li>Copy the matching CSS or Tailwind-ready color code with a single click.</li>
+              <li>Check contrast ratios and choose black or white text for accessible design.</li>
+              <li>Save your favorite colors in the history panel for quick reuse.</li>
             </ol>
           </div>
 
@@ -182,28 +177,6 @@ export default function ColorPickerPage() {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Frequently Asked Questions</h2>
-            <div className="mt-5 divide-y divide-slate-100">
-              {[
-                { q: "What color formats are supported?", a: "The color picker supports HEX, RGB, HSL, and CMYK formats. You can type in any format and all other values update automatically in real time." },
-                { q: "How do I copy a color value?", a: "Each color value has a copy button next to it. Click it once and the value is copied to your clipboard, ready to paste into your CSS, design tool, or code editor." },
-                { q: "Does the tool keep a color history?", a: "Yes, your recently selected colors are saved in a visual history panel so you can quickly go back to any color you picked during your session." },
-                { q: "How accurate are the color conversions?", a: "The conversions use standard color math algorithms and are highly accurate. Note that CMYK values are approximations since exact CMYK depends on the specific print profile being used." },
-              ].map((item) => (
-                <details key={item.q} className="group py-5">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-medium text-slate-900 transition-colors hover:text-brand-700 [&::-webkit-details-marker]:hidden">
-                    <span>{item.q}</span>
-                    <svg className="h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-                  <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-500">{item.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Use our free online color picker to convert between HEX, RGB, HSL, and CMYK color formats instantly. Whether you need to convert hex to rgb, rgb to hex, or find the perfect HSL value, this color converter handles it all in your browser. Save colors to your history, generate random colors for inspiration, and copy any value with one click. No signup required — ideal for web designers, developers, and digital artists.</p>
           </div>
@@ -215,6 +188,7 @@ export default function ColorPickerPage() {
               <Link href="/image-resizer" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Resizer</Link>
               <Link href="/qr-generator" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">QR Code Generator</Link>
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
+              <Link href="/tailwind-colors" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Tailwind Colors</Link>
             </div>
           </div>
           <ToolSeoGrowth slug="color-picker" />

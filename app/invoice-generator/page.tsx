@@ -56,51 +56,7 @@ export default function InvoiceGeneratorPage() {
         description:
           "Create professional PDF invoices for free online. Add line items, tax, discounts, and download instantly.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is the invoice generator completely free?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, 100% free. There are no hidden fees, no watermarks, and no limits on the number of invoices you can create. You can generate as many professional PDF invoices as you need.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is my invoice data safe?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Absolutely. All invoice generation happens locally in your browser. No data is uploaded to any server, and your business information stays completely private on your device.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I add tax and discounts to my invoice?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes. You can add a tax percentage and a flat discount amount. The tool automatically calculates subtotal, tax, discount, and the final total for you.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What currencies are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The invoice generator supports USD ($), EUR (€), GBP (£), and INR (₹). Select your preferred currency before generating the invoice.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I use this for my freelance business?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Absolutely. This tool is perfect for freelancers, contractors, and small business owners who need to send professional invoices to clients without paying for expensive invoicing software.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [

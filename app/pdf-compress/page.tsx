@@ -109,17 +109,7 @@ const jsonLd = {
       description:
         "Free browser-based PDF compressor no upload tool to reduce PDF file size online without losing quality.",
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: faqItems.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: item.answer,
-        },
-      })),
-    },
+    
     {
       "@type": "BreadcrumbList",
       itemListElement: [

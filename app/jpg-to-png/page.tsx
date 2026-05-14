@@ -57,43 +57,7 @@ export default function JpgToPngPage() {
         description:
           "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Why convert JPG to PNG?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "PNG supports transparency (alpha channel), is lossless with no compression artifacts, and is better for screenshots, logos, and images with text. Converting from JPG to PNG preserves quality for further editing.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does conversion lose quality?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "No. The conversion from JPG to PNG is lossless — the PNG output preserves every pixel of the original JPG. PNG is a lossless format, so no additional quality is lost during conversion.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I convert multiple files?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, you can convert multiple JPG files to PNG one after another. Each conversion happens instantly in your browser with no waiting for server processing.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is my data safe?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Absolutely. Your images never leave your device. The conversion uses the HTML Canvas API directly in your browser — no files are uploaded to any server.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

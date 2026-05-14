@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
-import { citySeoPages } from "@/lib/seo-cities";
 
 const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -12,7 +11,7 @@ const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
 export const metadata: Metadata = {
   title: "Merge PDF Files Online Free - Combine PDFs, Images & Certificates",
   description:
-    "Merge PDF files online free. Combine PDFs, images, certificates, marksheets, and screenshots into one clean PDF for job forms, admissions, and office work with no signup required.",
+    "Merge PDF files online free. Combine PDFs, images, certificates, marksheets, and screenshots into one clean PDF for job forms, admissions, and office work with no signup, no upload, and no watermark.",
   keywords: [
     "pdf merge",
     "merge pdf online",
@@ -87,59 +86,7 @@ const jsonLd = {
       description:
         "Merge multiple PDF files into one document for free online. Perfect for resumes, certificates, forms, assignments, and office files.",
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Is it safe to merge PDFs here?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes, completely safe. Your PDF files never leave your browser. All merging is done client-side using JavaScript (pdf-lib), so no data is uploaded to any server.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How many PDFs can I merge?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "There is no fixed limit on the number of PDFs you can merge. Processing happens in your browser, so performance depends on your device's memory. Most users can merge dozens of files without any issues.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I reorder pages?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes, you can reorder the PDF files before merging using the arrow buttons. The final merged document follows the exact order you set.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I merge resume and certificates into one PDF?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. This tool is useful for job applications, college admissions, and office submissions where you need one clean PDF with documents in the right order.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can I merge PDF and image files together?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. You can combine PDF files with JPG, PNG, and WebP images to create one final PDF document.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does it work offline?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Once the page is loaded, the merging functionality works entirely in your browser. However, you need an internet connection to initially load the tool.",
-          },
-        },
-      ],
-    },
+    
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -332,6 +279,13 @@ export default function PdfMergePage() {
             </div>
           </div>
 
+          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Merge PDF Online Without Upload</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Your PDF and image files are merged entirely in your browser, with no upload to any server. This keeps your resume, certificates, admission forms, and government documents private while still creating one final PDF instantly.
+            </p>
+          </div>
+
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">Best Next Step After Merging</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
@@ -375,7 +329,7 @@ export default function PdfMergePage() {
 
           {/* SEO paragraph */}
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
-            <p className="text-[15px] leading-8 text-slate-500">Our free online PDF merge tool lets you combine PDF files and merge multiple PDFs into one clean document without signup. It is useful for resumes, certificates, marksheets, scanned documents, office files, reports, and assignment pages. Reorder files before merging, download instantly, and use the final PDF for portal uploads, email sharing, or document submission on any device.</p>
+            <p className="text-[15px] leading-8 text-slate-500">Our free online PDF merge tool lets you combine PDF files, merge multiple PDFs, and join PDFs with images into one clean document without signup or upload. It is useful for resumes, certificates, marksheets, scanned documents, office files, reports, and assignment pages. Reorder files before merging, download instantly, and use the final PDF for portal uploads, email sharing, job applications, college admissions, or government form submissions on any device.</p>
           </div>
 
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
@@ -400,23 +354,6 @@ export default function PdfMergePage() {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8">
-            <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Merge PDF in top cities</h2>
-            <p className="mt-3 max-w-3xl text-[15px] leading-8 text-slate-500">
-              City-focused landing pages help match location-based searches like "Ahmedabad PDF merge", "Mumbai PDF merger", and similar local queries while still sending users to the same browser-based tool.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {citySeoPages.slice(0, 8).map((city) => (
-                <Link
-                  key={city.slug}
-                  href={`/merge-pdf-in-${city.slug}`}
-                  className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700"
-                >
-                  Merge PDF in {city.city}
-                </Link>
-              ))}
-            </div>
-          </div>
           <ToolSeoGrowth slug="pdf-merge" />
         </div>
       </div>

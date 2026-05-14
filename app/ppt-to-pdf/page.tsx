@@ -54,43 +54,7 @@ export default function PptToPdfPage() {
         description:
           "Convert PowerPoint presentations to PDF format free online. No upload required — conversion happens in your browser.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Does this converter preserve formatting?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This lightweight browser-based converter extracts text content from your PowerPoint slides and creates a clean PDF. For full formatting, images, and layout preservation, use Microsoft Office or Google Slides to export as PDF.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Is it safe to convert my PowerPoint here?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, completely safe. Your PowerPoint file never leaves your browser. All processing is done client-side using JavaScript, so no data is uploaded to any server.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "What file formats are supported?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "This tool supports .pptx (PowerPoint 2007+) files for free online PowerPoint to PDF conversion.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Can I convert multiple presentations?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "Yes, you can convert presentations one after another. Each conversion happens instantly in your browser with no waiting for server processing.",
-            },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         "itemListElement": [

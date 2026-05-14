@@ -46,31 +46,7 @@ export default function PdfSignPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Sign PDF files online for free. Draw or type your signature and embed it into any PDF without uploading the file.",
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "Is this a legally binding signature?",
-            acceptedAnswer: { "@type": "Answer", text: "This tool creates a visual signature image embedded into the PDF. For legally binding e-signatures, additional authentication may be required depending on your jurisdiction." },
-          },
-          {
-            "@type": "Question",
-            name: "Is my PDF uploaded anywhere?",
-            acceptedAnswer: { "@type": "Answer", text: "No. Your PDF and signature never leave your browser. All processing runs locally using pdf-lib and the Canvas API." },
-          },
-          {
-            "@type": "Question",
-            name: "Can I choose where the signature appears?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. You can place the signature at the bottom-right, bottom-left, or bottom-center of the last page or all pages." },
-          },
-          {
-            "@type": "Question",
-            name: "Can I sign on mobile?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. The drawing canvas supports touch input, so you can draw your signature with your finger on a phone or tablet." },
-          },
-        ],
-      },
+      
       {
         "@type": "BreadcrumbList",
         itemListElement: [
