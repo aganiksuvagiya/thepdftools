@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   title: {
     default:
-      "thepdftools — Free Online PDF & Image Tools | Compress, Convert, Edit",
+      "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF | thepdftools",
     template: "%s | thepdftools",
   },
   description:
-    "Free browser-based PDF and image tools to compress, convert, merge, sign, crop, OCR, and edit files online with no upload required. Fast, private, and built to run locally in your browser.",
+    "Free online PDF tools to merge PDF, compress PDF, convert PDF to Word, split PDF, and edit PDF files. No upload, no signup — runs privately in your browser. Also includes free image conversion tools.",
   keywords: [
     "free online tools",
     "online pdf tools",
@@ -123,9 +123,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "thepdftools",
-    title: "thepdftools — Free Online PDF & Image Tools",
+    title: "thepdftools — Free PDF Tools Online | Merge, Compress, Convert PDF",
     description:
-      "Compress, convert, crop, resize, watermark, merge, sign, redact, and OCR files in a fast browser-based workspace.",
+      "Free online PDF tools: merge PDF, compress PDF, convert PDF to Word, split PDF, edit PDF, and more. Plus image tools — all free, private, no upload required.",
     images: [
       {
         url: `${SITE_URL}/opengraph-image`,
@@ -137,9 +137,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "thepdftools — Free Online PDF & Image Tools",
+    title: "thepdftools — Free PDF Tools Online | Merge, Compress, Convert PDF",
     description:
-      "A cleaner, faster workspace for PDF tools, image tools, and useful browser-based utilities.",
+      "Free online PDF tools: merge PDF, compress PDF, convert PDF to Word, split PDF, and edit PDF files. Plus image tools — all free, no upload required.",
     images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {

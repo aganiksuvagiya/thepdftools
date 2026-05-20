@@ -9,9 +9,9 @@ const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Excel To PDF Online Free No Upload",
+  title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
   description:
-    "Use Excel To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Excel spreadsheets to PDF online free — turn any XLSX or XLS file into a clean PDF document for sharing or printing. No upload required, no signup.",
   keywords: [
     "excel to pdf",
     "xlsx to pdf",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "convert xlsx to pdf online",
   ],
   openGraph: {
-    title: "Excel To PDF Online Free No Upload",
+    title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
     description:
-    "Use Excel To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Excel spreadsheets to PDF online free — turn any XLSX or XLS file into a clean PDF document for sharing or printing. No upload required, no signup.",
     url: "https://thepdftools.site/excel-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

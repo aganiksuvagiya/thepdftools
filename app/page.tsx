@@ -7,72 +7,75 @@ import { growthBlogPosts } from "@/lib/seo-growth";
 const SITE_URL = "https://thepdftools.site";
 
 export const metadata: Metadata = {
-  title: "Free Online PDF & Image Tools - No Upload, No Signup",
+  title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
   description:
-    "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, highlight PDFs, redact files, sign documents, OCR scans, convert images, resize photos, add watermarks, and more with no upload or signup.",
+    "The best free online PDF tools: merge PDF, compress PDF, convert PDF to Word, split PDF, edit PDF online, PDF to JPG, JPG to PDF, and more. No upload, no signup — all processing runs privately in your browser.",
   keywords: [
-    "free online tools",
+    "pdf tool",
+    "pdf tools",
+    "free pdf tools",
+    "online pdf tools",
     "free pdf tools online",
+    "pdf converter",
+    "free pdf converter",
+    "pdf editor",
+    "online pdf editor",
+    "free online pdf editor",
+    "merge pdf",
+    "merge pdf online",
+    "pdf merger",
+    "compress pdf",
+    "compress pdf online",
+    "pdf compressor",
+    "split pdf",
+    "split pdf online",
+    "pdf splitter",
+    "pdf to word",
+    "word to pdf",
+    "jpg to pdf",
+    "pdf to jpg",
+    "image to pdf",
+    "all in one pdf tool",
+    "convert pdf online",
+    "pdf file converter",
+    "document converter",
+    "convert files online",
     "free online pdf tools no upload",
-    "free image tools online no signup",
-    "free pdf tools no signup",
+    "pdf tools no upload",
     "online pdf converter free",
-    "online image converter free",
-    "private browser based tools",
-    "image compressor online",
-    "compress image online free",
-    "reduce image size online",
+    "compress pdf online free",
     "merge pdf online free",
-    "compress pdf online free no upload",
     "split pdf online free",
-    "remove background online free",
-    "jpg to png converter free",
-    "png to jpg converter free",
-    "image to webp converter free",
-    "word to pdf converter free",
     "pdf to word converter free",
     "pdf to excel converter free",
-    "ppt to pdf converter free",
-    "pdf to ppt converter free",
-    "html to pdf converter free",
-    "compress pdf online free",
-    "image resizer online",
-    "image cropper online free",
-    "image watermark online free",
-    "ai image upscaler free",
-    "pdf tools no upload",
-    "no upload pdf tools",
-    "no upload image tools",
+    "edit pdf online free",
     "pdf sign online free",
     "pdf highlight online free",
-    "highlight text in pdf online",
-    "pdf redaction online free",
-    "pdf compare online free",
     "scanned pdf to searchable pdf",
-    "invoice extractor online",
-    "searchable pdf ocr online",
-    "qr code generator free",
-    "invoice generator free",
+    "free image tools online",
+    "image compressor online",
+    "jpg to png converter free",
+    "png to jpg converter free",
   ],
   openGraph: {
-    title: "Free Online PDF & Image Tools - No Upload, No Signup",
+    title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
     description:
-      "Free online PDF and image tools that run in your browser. Merge PDFs, compress PDFs, highlight PDFs, sign, redact, OCR, convert images, resize photos, add watermarks, and more with no upload or signup.",
+      "Merge PDF, compress PDF, convert PDF to Word, split PDF, edit PDF online — all free. No upload, no signup. Plus free image tools. Runs privately in your browser.",
     url: "https://thepdftools.site",
     images: [
       {
         url: "https://thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "thepdftools.site - Free Online Tools",
+        alt: "thepdftools.site — Free PDF Tools Online",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Online PDF & Image Tools - No Upload, No Signup",
+    title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
     description:
-      "Free online PDF and image tools that run in your browser with no upload, no signup, and fast browser-based processing.",
+      "Merge PDF, compress PDF, convert PDF to Word, split PDF, and edit PDF files online — free, no upload, no signup required.",
     images: ["https://thepdftools.site/opengraph-image"],
   },
   alternates: {
@@ -84,9 +87,11 @@ const homeJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "thepdftools",
+    name: "thepdftools — Free PDF Tools Online",
     url: SITE_URL,
     inLanguage: "en",
+    description:
+      "Free online PDF tools to merge, compress, convert, split, and edit PDF files. No upload, no signup required.",
     publisher: {
       "@type": "Organization",
       name: "thepdftools",
@@ -98,13 +103,18 @@ const homeJsonLd = [
     "@type": "Organization",
     name: "thepdftools",
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.svg`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/icon.svg`,
+    },
+    description:
+      "thepdftools provides free online PDF tools including PDF merger, PDF compressor, PDF converter, PDF editor, and image tools — all running privately in your browser.",
   },
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "thepdftools",
-    url: "https://thepdftools.site",
+    name: "thepdftools — Free PDF Tools Online",
+    url: SITE_URL,
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any",
     offers: {
@@ -113,44 +123,99 @@ const homeJsonLd = [
       priceCurrency: "USD",
     },
     description:
-      "Free online PDF and image tools that run in your browser with no upload and no signup.",
+      "Free online PDF tools: merge PDF, compress PDF, convert PDF to Word, split PDF, edit PDF files, and convert images. All tools run privately in your browser with no upload and no signup.",
     featureList: [
-      "Merge PDF files",
-      "Compress PDF files",
-      "Highlight PDF files",
-      "Sign PDF files",
-      "Redact PDF files",
-      "Compare PDF files",
-      "Convert scanned PDF to searchable PDF",
-      "Compress images",
-      "Resize images",
-      "Add image watermarks",
-      "Convert image and document formats",
+      "Merge PDF files online free",
+      "Compress PDF files online free",
+      "Split PDF files online free",
+      "Convert PDF to Word online free",
+      "Convert PDF to JPG online free",
+      "Convert JPG to PDF online free",
+      "Edit PDF online free",
+      "Sign PDF files online free",
+      "Highlight PDF files online free",
+      "Convert PDF to Excel online free",
+      "Compress images online free",
+      "Convert image formats online free",
     ],
   },
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Popular online tools",
+    name: "Popular free PDF tools online",
     itemListElement: [
-      `${SITE_URL}/image-compressor`,
       `${SITE_URL}/pdf-merge`,
-      `${SITE_URL}/background-remover`,
-      `${SITE_URL}/image-resizer`,
-      `${SITE_URL}/jpg-to-png`,
-      `${SITE_URL}/png-to-jpg`,
+      `${SITE_URL}/pdf-compress`,
+      `${SITE_URL}/pdf-split`,
+      `${SITE_URL}/pdf-to-word`,
+      `${SITE_URL}/jpg-to-pdf`,
+      `${SITE_URL}/pdf-to-jpg`,
+      `${SITE_URL}/pdf-to-excel`,
+      `${SITE_URL}/image-to-pdf`,
       `${SITE_URL}/pdf-sign`,
       `${SITE_URL}/pdf-highlight`,
-      `${SITE_URL}/pdf-redaction`,
-      `${SITE_URL}/scanned-pdf-to-searchable-pdf`,
-      `${SITE_URL}/ai-invoice-extractor`,
+      `${SITE_URL}/image-compressor`,
+      `${SITE_URL}/background-remover`,
     ].map((url, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url,
     })),
   },
-  
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Are these online PDF tools free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. All PDF tools on thepdftools.site are completely free with no hidden fees, no account, and no signup required.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I merge PDF files online for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Use the free PDF Merge tool at thepdftools.site/pdf-merge. Upload your PDF files, drag to reorder pages if needed, then click merge. Your combined PDF downloads instantly with no upload to any server.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I compress a PDF file online?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Open the PDF Compressor at thepdftools.site/pdf-compress, upload your PDF, and download the compressed file. The tool reduces PDF file size for email, sharing, and portal uploads — no signup needed.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I convert PDF to Word online for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Use the PDF to Word converter at thepdftools.site/pdf-to-word to convert PDF files to editable Word documents instantly, completely free with no upload to a server.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Are my files uploaded to a server when using these PDF tools?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. The main PDF and image tools on thepdftools.site process files locally in your browser using client-side JavaScript. Your files stay on your device and are never sent to any server.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I convert JPG to PDF online for free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Use the JPG to PDF tool at thepdftools.site/jpg-to-pdf to convert JPG, PNG, or WebP images to a PDF document. Combine multiple images into one PDF — free and no signup required.",
+        },
+      },
+    ],
+  },
   {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -622,45 +687,45 @@ const stats = [
 
 const seoGroups = [
   {
-    title: "Popular Image Tools",
+    title: "Popular PDF Tools",
     description:
-      "Use browser-based tools to compress images, resize photos, crop screenshots, remove backgrounds, add watermarks, and convert JPG, PNG, and WebP files.",
+      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, convert PDF to Word, convert PDF to JPG, edit PDF online, unlock PDFs, and build PDFs from images — all free, no upload.",
     links: [
-      { href: "/image-compressor", label: "Image Compressor" },
-      { href: "/image-resizer", label: "Image Resizer" },
-      { href: "/image-cropper", label: "Image Cropper" },
-      { href: "/background-remover", label: "Background Remover" },
-      { href: "/image-watermark", label: "Image Watermark" },
-      { href: "/image-upscaler", label: "AI Image Upscaler" },
-      { href: "/heic-to-jpg", label: "HEIC to JPG" },
-      { href: "/video-to-gif", label: "Video to GIF" },
+      { href: "/pdf-merge", label: "Merge PDF" },
+      { href: "/pdf-compress", label: "Compress PDF" },
+      { href: "/pdf-split", label: "Split PDF" },
+      { href: "/pdf-to-word", label: "PDF to Word" },
+      { href: "/pdf-to-jpg", label: "PDF to JPG" },
+      { href: "/jpg-to-pdf", label: "JPG to PDF" },
+      { href: "/pdf-to-excel", label: "PDF to Excel" },
+      { href: "/pdf-highlight", label: "PDF Editor (Highlight)" },
+      { href: "/pdf-sign", label: "Sign PDF" },
+      { href: "/pdf-unlock", label: "Unlock PDF" },
+      { href: "/image-to-pdf", label: "Image to PDF" },
+      { href: "/word-to-pdf", label: "Word to PDF" },
+      { href: "/ppt-to-pdf", label: "PPT to PDF" },
+      { href: "/pdf-to-image", label: "PDF to Image" },
     ],
   },
   {
-    title: "Popular PDF Tools",
+    title: "Popular Image Tools",
     description:
-      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, highlight PDFs, convert PDF to images, convert PDF to Word, unlock PDFs, and build PDFs from screenshots or images.",
+      "Use browser-based image tools to compress images, resize photos, crop screenshots, remove backgrounds, convert JPG to PNG, convert PNG to JPG, add watermarks, and convert to WebP — all free.",
     links: [
-      { href: "/pdf-merge", label: "PDF Merge" },
-      { href: "/pdf-split", label: "PDF Split" },
-      { href: "/pdf-compress", label: "PDF Compress" },
-      { href: "/pdf-highlight", label: "PDF Highlight" },
-      { href: "/pdf-to-image", label: "PDF to Image" },
-      { href: "/pdf-to-word", label: "PDF to Word" },
-      { href: "/pdf-unlock", label: "PDF Unlock" },
-      { href: "/image-to-pdf", label: "Image to PDF" },
-      { href: "/text-to-pdf", label: "Text to PDF" },
-      { href: "/screenshot-to-pdf", label: "Screenshot to PDF" },
-      { href: "/ppt-to-pdf", label: "PPTX to PDF" },
-      { href: "/pdf-to-excel", label: "PDF to Excel" },
-      { href: "/markdown-to-pdf", label: "Markdown to PDF" },
-      { href: "/invoice-generator", label: "Invoice Generator" },
+      { href: "/image-compressor", label: "Image Compressor" },
+      { href: "/jpg-to-png", label: "JPG to PNG" },
+      { href: "/png-to-jpg", label: "PNG to JPG" },
+      { href: "/image-resizer", label: "Image Resizer" },
+      { href: "/background-remover", label: "Background Remover" },
+      { href: "/image-cropper", label: "Image Cropper" },
+      { href: "/image-watermark", label: "Image Watermark" },
+      { href: "/heic-to-jpg", label: "HEIC to JPG" },
     ],
   },
   {
     title: "Free Alternative Pages",
     description:
-      "Compare lightweight no-signup workflows against larger PDF suites when you only need a fast browser-based tool.",
+      "Compare lightweight no-signup PDF workflows against larger PDF suites when you only need a fast browser-based tool.",
     links: [
       { href: "/smallpdf-vs-thepdftools", label: "Smallpdf vs thepdftools" },
       { href: "/ilovepdf-alternative", label: "iLovePDF Alternative" },
@@ -670,75 +735,85 @@ const seoGroups = [
   },
 ];
 
-const toolColorMap: Record<string, string> = {
-  blue: "bg-tertiary-100 text-tertiary-600",
-  purple: "bg-secondary-100 text-secondary-600",
-  rose: "bg-secondary-100 text-secondary-600",
-  emerald: "bg-brand-100 text-brand-600",
-  violet: "bg-secondary-100 text-secondary-600",
-  amber: "bg-brand-100 text-brand-700",
-  orange: "bg-tertiary-100 text-tertiary-700",
-  teal: "bg-tertiary-100 text-tertiary-600",
-  indigo: "bg-brand-100 text-brand-700",
-  pink: "bg-secondary-100 text-secondary-600",
-};
-
 const toolLookup = Object.fromEntries(tools.map((tool) => [tool.href, tool]));
+
+const featuredPdfHrefs = [
+  "/pdf-merge",
+  "/pdf-compress",
+  "/pdf-split",
+  "/pdf-to-word",
+  "/image-to-pdf",
+  "/pdf-to-image",
+  "/pdf-to-excel",
+  "/pdf-highlight",
+  "/pdf-unlock",
+];
+const featuredTools = featuredPdfHrefs.map((href) => toolLookup[href]).filter(Boolean);
 
 const toolCategories = [
   {
-    title: "Popular PDF Tools",
+    title: "PDF Converter Tools",
+    hrefs: [
+      "/pdf-to-word",
+      "/pdf-to-excel",
+      "/pdf-to-jpg",
+      "/jpg-to-pdf",
+      "/image-to-pdf",
+      "/word-to-pdf",
+      "/pdf-to-image",
+      "/ppt-to-pdf",
+    ],
+  },
+  {
+    title: "PDF Editor & Utility Tools",
     hrefs: [
       "/pdf-merge",
       "/pdf-split",
       "/pdf-compress",
       "/pdf-highlight",
-      "/pdf-to-image",
-      "/pdf-to-word",
+      "/pdf-sign",
       "/pdf-unlock",
       "/screenshot-to-pdf",
-      "/image-to-pdf",
-      "/text-to-pdf",
-      "/ppt-to-pdf",
       "/pdf-to-excel",
+      "/text-to-pdf",
       "/markdown-to-pdf",
       "/invoice-generator",
     ],
   },
   {
-    title: "Image & Graphics",
+    title: "Image Converter Tools",
     hrefs: [
       "/image-compressor",
-      "/image-resizer",
-      "/image-cropper",
       "/jpg-to-png",
       "/png-to-jpg",
+      "/image-resizer",
+      "/image-cropper",
       "/image-to-webp",
-      "/svg-to-png",
       "/heic-to-jpg",
-      "/video-to-gif",
+      "/svg-to-png",
     ],
   },
   {
-    title: "AI & Creative",
+    title: "AI & Creative Tools",
     hrefs: [
       "/background-remover",
       "/image-upscaler",
       "/image-watermark",
       "/image-rotate",
+      "/video-to-gif",
     ],
   },
   {
-    title: "Quick Utilities",
+    title: "Developer & Utility Tools",
     hrefs: [
       "/qr-generator",
-      "/color-picker",
-      "/tailwind-colors",
       "/json-formatter",
+      "/csv-to-json",
       "/base64",
       "/word-counter",
       "/lorem-ipsum",
-      "/csv-to-json",
+      "/color-picker",
+      "/tailwind-colors",
     ],
   },
 ].map((category) => ({
@@ -807,7 +882,7 @@ export default function HomePage() {
             <div className="max-w-[640px]">
               <ScrollReveal>
                 <div className="inline-flex rounded-full bg-brand-100 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand-700">
-                  Free Online Tools - No Upload
+                  Free PDF Tools - No Upload, No Signup
                 </div>
               </ScrollReveal>
 
@@ -815,17 +890,17 @@ export default function HomePage() {
                 <h1 className="mt-8 text-4xl font-extrabold tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-[5rem] lg:leading-[0.94]">
                   Free Online{" "}
                   <span className="bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                    PDF &amp; Image
-                  </span>{" "}
-                  Tools
+                    PDF Tools
+                  </span>
                 </h1>
               </ScrollReveal>
 
               <ScrollReveal delay={160}>
                 <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-500 sm:text-[1.2rem]">
-                  Merge PDFs, compress PDFs, convert images, resize photos, add
-                  watermarks, and finish everyday file tasks privately in your
+                  Merge PDF, compress PDF, convert PDF to Word, split PDF pages,
+                  and edit PDF files — all free, private, and processing in your
                   browser. No signup, no server upload, no software install.
+                  Image conversion tools included.
                 </p>
               </ScrollReveal>
 
@@ -866,9 +941,9 @@ export default function HomePage() {
                   </div>
                   <div className="mt-6 space-y-3">
                     {[
-                      { name: "Image Compressor", meta: "Reduce file size instantly" },
-                      { name: "PDF Merge", meta: "Combine pages in one click" },
-                      { name: "Background Remover", meta: "Clean cutout in browser" },
+                      { name: "PDF Merge", meta: "Combine PDFs in one click" },
+                      { name: "PDF Compressor", meta: "Reduce PDF size instantly" },
+                      { name: "PDF to Word", meta: "Convert PDF to editable doc" },
                     ].map((item) => (
                       <div
                         key={item.name}
@@ -942,10 +1017,10 @@ export default function HomePage() {
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                  Popular Tools
+                  Popular PDF Tools
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  Start with the most popular free online tools
+                  Start with the most popular free PDF tools online
                 </h2>
               </div>
               {/* <p className="max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
@@ -956,12 +1031,102 @@ export default function HomePage() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {tools.slice(0, 9).map((tool, i) => (
+            {featuredTools.map((tool, i) => (
               <ScrollReveal key={tool.href} delay={i * 60} distance={20}>
                 <ToolCard {...tool} />
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-5">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
+                About These PDF Tools
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                The complete free PDF toolkit — no upload, no signup
+              </h2>
+              <p className="mt-4 mx-auto max-w-3xl text-base leading-8 text-slate-500">
+                Everything you need to merge PDF, compress PDF, convert PDF to Word, split PDF pages, and edit PDF files online — all running privately in your browser.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            <ScrollReveal>
+              <div className="space-y-6 text-[15px] leading-8 text-slate-600">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Merge PDF files online free</h3>
+                  <p>
+                    The <Link href="/pdf-merge" className="font-semibold text-brand-700 hover:underline">PDF Merge tool</Link> lets you combine multiple PDF files into one document in seconds. Upload your files, drag to reorder pages, and download the merged PDF instantly. No upload to any server — everything runs in your browser. Ideal for combining invoices, certificates, resumes, and scanned documents into a single PDF for job applications, college admissions, or office submissions.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Compress PDF online — reduce PDF file size</h3>
+                  <p>
+                    Need to reduce a PDF that is too large for email or a portal upload? The <Link href="/pdf-compress" className="font-semibold text-brand-700 hover:underline">PDF Compressor</Link> optimizes your file without damaging text or layout. It works on invoices, reports, application forms, and scanned files. For specific upload limits, try <Link href="/compress-pdf-to-100kb" className="font-semibold text-brand-700 hover:underline">Compress PDF to 100KB</Link> or <Link href="/compress-pdf-for-govt-exam" className="font-semibold text-brand-700 hover:underline">Compress PDF for Govt Exam</Link>.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Convert PDF to Word, Excel, JPG, and more</h3>
+                  <p>
+                    Our <Link href="/pdf-to-word" className="font-semibold text-brand-700 hover:underline">PDF to Word converter</Link> extracts text into an editable document. The <Link href="/pdf-to-excel" className="font-semibold text-brand-700 hover:underline">PDF to Excel</Link> tool pulls table data into spreadsheets. Convert <Link href="/pdf-to-jpg" className="font-semibold text-brand-700 hover:underline">PDF to JPG</Link> for sharing individual pages as images, or use <Link href="/jpg-to-pdf" className="font-semibold text-brand-700 hover:underline">JPG to PDF</Link> to turn photos into a printable document. Every conversion tool is free and requires no signup.
+                  </p>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={80}>
+              <div className="space-y-6 text-[15px] leading-8 text-slate-600">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Split PDF — extract pages and ranges</h3>
+                  <p>
+                    The <Link href="/pdf-split" className="font-semibold text-brand-700 hover:underline">PDF Split tool</Link> lets you break a large PDF into individual pages or custom page ranges. Extract just the pages you need from a contract, report, or textbook. Splitting before compressing or merging gives you finer control over your final document — all in a private, browser-based flow.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Edit PDF online — highlight, sign, and annotate</h3>
+                  <p>
+                    Use the <Link href="/pdf-highlight" className="font-semibold text-brand-700 hover:underline">PDF Highlight tool</Link> to mark up contracts, lecture notes, and reports directly in your browser. The <Link href="/pdf-sign" className="font-semibold text-brand-700 hover:underline">PDF Sign tool</Link> lets you add a digital signature to any document without printing. Need to protect sensitive data? The <Link href="/pdf-redaction" className="font-semibold text-brand-700 hover:underline">PDF Redaction tool</Link> permanently removes private information before sharing.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3">Convert images to PDF and PDF to images</h3>
+                  <p>
+                    The <Link href="/image-to-pdf" className="font-semibold text-brand-700 hover:underline">Image to PDF converter</Link> combines JPG, PNG, or WebP photos into a single PDF document — perfect for receipts, forms, and photo albums. Going the other direction, the <Link href="/pdf-to-image" className="font-semibold text-brand-700 hover:underline">PDF to Image tool</Link> exports every page as a high-quality JPG or PNG for sharing on social media or embedding in presentations.
+                  </p>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+
+          <ScrollReveal delay={120}>
+            <div className="mt-12 rounded-3xl border border-brand-100 bg-brand-50 p-8">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Why use thepdftools instead of Smallpdf or iLovePDF?</h3>
+              <div className="grid gap-6 sm:grid-cols-3 text-sm leading-7 text-slate-600">
+                <div>
+                  <p className="font-semibold text-slate-800 mb-1">No file upload required</p>
+                  <p>Unlike most online PDF tools, the core tools on thepdftools process your files locally in your browser. Your PDFs never leave your device, which makes them safer for sensitive documents like contracts, tax filings, and medical records.</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-800 mb-1">No signup, no paywalls</p>
+                  <p>Tools like Smallpdf and iLovePDF limit free usage and push paid plans. Every tool on thepdftools.site is free to use without creating an account, hitting a daily limit, or seeing a paywall after your first file.</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-800 mb-1">Fast and focused</p>
+                  <p>Each PDF tool page is built around a single job: merge, compress, split, convert, or edit. No clutter, no upsells, no forced app downloads. Open the tool, process your file, and move on — typically in under 30 seconds.</p>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/smallpdf-vs-thepdftools" className="rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100">Smallpdf vs thepdftools</Link>
+                <Link href="/ilovepdf-alternative" className="rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100">iLovePDF alternative</Link>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -1055,13 +1220,13 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="mb-12 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                Browse Everything
+                All Free PDF &amp; Image Tools
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                All tools in one organized grid
+                Complete free PDF tools collection — convert, edit, compress &amp; merge
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-500 sm:text-base">
-                Explore every tool by category and jump straight to the task you need.
+                Every free PDF tool and image tool organized by task. PDF converter, PDF editor, PDF compressor, image converter, and more — all free, no upload required.
               </p>
             </div>
           </ScrollReveal>
@@ -1096,13 +1261,13 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="mb-12 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary-700">
-                Explore by Intent
+                PDF Tools by Category
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Popular paths for image and PDF work
+                Free PDF tools organized by task — merge, compress, convert &amp; edit
               </h2>
               <p className="mt-3 mx-auto max-w-3xl text-sm leading-relaxed text-slate-500 sm:text-base">
-                Jump into the category you need most often and move through related tools faster.
+                Browse PDF converter tools, PDF editing tools, and image tools by the specific task you need to complete.
               </p>
             </div>
           </ScrollReveal>
@@ -1135,11 +1300,7 @@ export default function HomePage() {
 
           <ScrollReveal delay={160}>
             <div className="mt-8 rounded-3xl border border-brand-100 bg-brand-50 p-6 text-sm leading-7 text-slate-600">
-              Use free online PDF tools to merge PDF files, split PDF pages,
-              compress PDFs, convert PDF to image, and create PDFs from images.
-              Use free online image tools to compress images, resize photos,
-              convert JPG to PNG, convert PNG to JPG, remove backgrounds, and
-              add watermarks without uploading files.
+              Use free online PDF tools to <Link href="/pdf-merge" className="font-semibold text-brand-700 hover:underline">merge PDF files</Link>, <Link href="/pdf-split" className="font-semibold text-brand-700 hover:underline">split PDF pages</Link>, <Link href="/pdf-compress" className="font-semibold text-brand-700 hover:underline">compress PDFs online</Link>, <Link href="/pdf-to-word" className="font-semibold text-brand-700 hover:underline">convert PDF to Word</Link>, <Link href="/pdf-to-jpg" className="font-semibold text-brand-700 hover:underline">convert PDF to JPG</Link>, <Link href="/jpg-to-pdf" className="font-semibold text-brand-700 hover:underline">convert JPG to PDF</Link>, and <Link href="/pdf-to-excel" className="font-semibold text-brand-700 hover:underline">convert PDF to Excel</Link>. Also use free image tools to <Link href="/image-compressor" className="font-semibold text-brand-700 hover:underline">compress images</Link>, <Link href="/jpg-to-png" className="font-semibold text-brand-700 hover:underline">convert JPG to PNG</Link>, <Link href="/png-to-jpg" className="font-semibold text-brand-700 hover:underline">convert PNG to JPG</Link>, and <Link href="/background-remover" className="font-semibold text-brand-700 hover:underline">remove image backgrounds</Link> — all without uploading files to any server.
             </div>
           </ScrollReveal>
         </div>
@@ -1262,11 +1423,12 @@ export default function HomePage() {
 
           <div className="mt-12 grid gap-4 lg:grid-cols-2">
             {[
-              { q: "Are these online PDF and image tools free?", a: "Yes. The tools are free to use with no hidden fees, no account, and no signup required." },
-              { q: "Are my files uploaded to a server?", a: "No. The main PDF and image tools process files locally in your browser whenever possible, so your files stay on your device." },
-              { q: "Can I use these tools on mobile?", a: "Yes. The tools are responsive and work on desktop, tablet, and phone browsers." },
-              { q: "Which file formats are supported?", a: "Common formats include PDF, JPG, PNG, WebP, HEIC, SVG, CSV, JSON, Word, Excel, PowerPoint, and Markdown, depending on the tool." },
-              { q: "Which tools should I try first?", a: "Start with Image Compressor, PDF Merge, PDF Compressor, Image Watermark, HEIC to JPG, PDF to Excel, or Background Remover." },
+              { q: "Are these free PDF tools really free?", a: "Yes. All PDF tools on thepdftools.site are 100% free with no hidden fees, no account, and no signup required. There are no watermarks added to your files." },
+              { q: "How do I merge PDF files online?", a: "Use the free PDF Merge tool: upload your PDFs, drag to reorder pages if needed, then click merge. Your combined PDF downloads instantly — no upload to any server." },
+              { q: "How do I compress a PDF without losing quality?", a: "Open the PDF Compressor, upload your PDF, and download the compressed result. The tool reduces file size by optimizing internal structure while keeping text and images readable." },
+              { q: "Can I convert PDF to Word online for free?", a: "Yes. Use the PDF to Word converter to turn your PDF into an editable Word document — free, with no server upload and no signup required." },
+              { q: "Are my PDF files uploaded to a server?", a: "No. The main PDF and image tools run entirely in your browser. Your files stay on your device and are never sent to any server, keeping your documents private." },
+              { q: "How do I convert JPG to PDF online?", a: "Use the JPG to PDF tool: upload your JPG, PNG, or WebP images, arrange the order, and download a clean PDF. You can combine multiple images into one PDF document." },
             ].map((item, i) => (
               <ScrollReveal key={item.q} delay={i * 50} distance={10}>
                 <details className="group rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm">

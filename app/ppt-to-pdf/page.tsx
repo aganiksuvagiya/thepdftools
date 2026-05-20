@@ -9,9 +9,9 @@ const PptToPdfClient = dynamic(() => import("./PptToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PPT To PDF Online Free No Upload",
+  title: "PPT to PDF Converter Free — Convert PowerPoint to PDF Online",
   description:
-    "Use PPT To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PowerPoint presentations to PDF online free — turn PPTX files into shareable PDF documents instantly. No upload to server, no signup.",
   keywords: [
     "ppt to pdf",
     "powerpoint to pdf",
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     "presentation to pdf",
   ],
   openGraph: {
-    title: "PPT To PDF Online Free No Upload",
+    title: "PPT to PDF Converter Free — Convert PowerPoint to PDF Online",
     description:
-    "Use PPT To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PowerPoint presentations to PDF online free — turn PPTX files into shareable PDF documents instantly. No upload to server, no signup.",
     url: "https://thepdftools.site/ppt-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

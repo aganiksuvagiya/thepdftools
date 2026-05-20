@@ -11,7 +11,7 @@ const VideoToGifClient = dynamic(() => import("./VideoToGifClient"), {
 export const metadata: Metadata = {
   title: "Video To Gif Online Free No Upload",
   description:
-    "Use Video To Gif online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert video to GIF online free — turn MP4, WebM, or MOV clips into animated GIFs. Customize FPS, size, and duration. No upload to server, no signup required.",
   keywords: [
     "video to gif",
     "mp4 to gif",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Video To Gif Online Free No Upload",
     description:
-    "Use Video To Gif online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert video to GIF online free — turn MP4, WebM, or MOV clips into animated GIFs. Customize FPS, size, and duration. No upload to server, no signup required.",
     url: "https://thepdftools.site/video-to-gif",
     images: [
       {

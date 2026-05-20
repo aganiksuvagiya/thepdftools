@@ -11,7 +11,7 @@ const WordCounterClient = dynamic(() => import("./WordCounterClient"), {
 export const metadata: Metadata = {
   title: "Word Counter Online Free No Upload",
   description:
-    "Use Word Counter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Count words, characters, sentences, and paragraphs online free — paste your text and get instant word count, reading time, and speaking time estimates.",
   keywords: [
     "word counter",
     "character counter",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Word Counter Online Free No Upload",
     description:
-    "Use Word Counter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Count words, characters, sentences, and paragraphs online free — paste your text and get instant word count, reading time, and speaking time estimates.",
     url: "https://thepdftools.site/word-counter",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

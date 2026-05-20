@@ -11,7 +11,7 @@ const ImageToWebpClient = dynamic(() => import("./ImageToWebpClient"), {
 export const metadata: Metadata = {
   title: "Image To WebP Online Free No Upload",
   description:
-    "Use Image To WebP online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert images to WebP format online free — reduce file size while keeping quality. Supports JPG, PNG, and BMP to WebP conversion. No upload, no signup required.",
   keywords: [
     "image to webp",
     "jpg to webp",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image To WebP Online Free No Upload",
     description:
-    "Use Image To WebP online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert images to WebP format online free — reduce file size while keeping quality. Supports JPG, PNG, and BMP to WebP conversion. No upload, no signup required.",
     url: "https://thepdftools.site/image-to-webp",
     images: [
       {

@@ -11,7 +11,7 @@ const TextToPdfClient = dynamic(() => import("./TextToPdfClient"), {
 export const metadata: Metadata = {
   title: "Text To PDF Online Free No Upload",
   description:
-    "Use Text To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert text to PDF online free — paste plain text and download a clean PDF document. Choose font, page size, and margins. No upload, no signup required.",
   keywords: [
     "text to pdf",
     "convert text to pdf",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Text To PDF Online Free No Upload",
     description:
-    "Use Text To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert text to PDF online free — paste plain text and download a clean PDF document. Choose font, page size, and margins. No upload, no signup required.",
     url: "https://thepdftools.site/text-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

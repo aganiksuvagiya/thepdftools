@@ -9,9 +9,9 @@ const PdfToImageClient = dynamic(() => import("./PdfToImageClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF To Image Online Free No Upload",
+  title: "PDF to Image Converter Free — Convert PDF Pages to JPG or PNG",
   description:
-    "Use PDF To Image online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to image online free — export any PDF page as JPG or PNG. Select specific pages, choose format, and download instantly. No signup, no upload required.",
   keywords: [
     "pdf to image",
     "pdf to jpg",
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     "pdf page to image",
   ],
   openGraph: {
-    title: "PDF To Image Online Free No Upload",
+    title: "PDF to Image Converter Free — Convert PDF Pages to JPG or PNG",
     description:
-    "Use PDF To Image online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to image online free — export any PDF page as JPG or PNG. Select specific pages, choose format, and download instantly. No signup, no upload required.",
     url: "https://thepdftools.site/pdf-to-image",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

@@ -11,7 +11,7 @@ const InvoiceGeneratorClient = dynamic(() => import("./InvoiceGeneratorClient"),
 export const metadata: Metadata = {
   title: "Invoice Generator Online Free No Upload",
   description:
-    "Use Invoice Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Create and download free PDF invoices online — add items, taxes, discounts, and your business details. Professional invoice generator with no signup required.",
   keywords: [
     "invoice generator",
     "free invoice generator",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Invoice Generator Online Free No Upload",
     description:
-    "Use Invoice Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Create and download free PDF invoices online — add items, taxes, discounts, and your business details. Professional invoice generator with no signup required.",
     url: "https://thepdftools.site/invoice-generator",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

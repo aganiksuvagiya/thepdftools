@@ -11,7 +11,7 @@ const MarkdownToPdfClient = dynamic(() => import("./MarkdownToPdfClient"), {
 export const metadata: Metadata = {
   title: "Markdown To PDF Online Free No Upload",
   description:
-    "Use Markdown To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Markdown to PDF online free — paste your Markdown content and download a formatted PDF. Live preview, customizable fonts and page sizes. No upload, no signup.",
   keywords: [
     "markdown to pdf",
     "convert markdown to pdf",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Markdown To PDF Online Free No Upload",
     description:
-    "Use Markdown To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert Markdown to PDF online free — paste your Markdown content and download a formatted PDF. Live preview, customizable fonts and page sizes. No upload, no signup.",
     url: "https://thepdftools.site/markdown-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

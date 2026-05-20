@@ -11,7 +11,7 @@ const CsvToJsonClient = dynamic(() => import("./CsvToJsonClient"), {
 export const metadata: Metadata = {
   title: "CSV To JSON Online Free No Upload",
   description:
-    "Use CSV To JSON online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert CSV to JSON online free — paste CSV data and download formatted JSON instantly. Supports custom delimiters, headers, and pretty printing. No signup required.",
   keywords: [
     "csv to json",
     "csv to json converter",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CSV To JSON Online Free No Upload",
     description:
-    "Use CSV To JSON online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert CSV to JSON online free — paste CSV data and download formatted JSON instantly. Supports custom delimiters, headers, and pretty printing. No signup required.",
     url: "https://thepdftools.site/csv-to-json",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

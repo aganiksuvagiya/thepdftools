@@ -11,7 +11,7 @@ const ImageRotateClient = dynamic(() => import("./ImageRotateClient"), {
 export const metadata: Metadata = {
   title: "Image Rotate Online Free No Upload",
   description:
-    "Use Image Rotate online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Rotate and flip images online free — rotate by 90°, 180°, or custom angle. Flip horizontally or vertically. Supports JPG, PNG, WebP. No upload, no signup required.",
   keywords: [
     "image rotate",
     "rotate image online",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image Rotate Online Free No Upload",
     description:
-    "Use Image Rotate online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Rotate and flip images online free — rotate by 90°, 180°, or custom angle. Flip horizontally or vertically. Supports JPG, PNG, WebP. No upload, no signup required.",
     url: "https://thepdftools.site/image-rotate",
     images: [
       {

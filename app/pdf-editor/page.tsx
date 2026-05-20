@@ -9,9 +9,9 @@ const PdfEditorClient = dynamic(() => import("./PdfEditorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF Editor Online Free No Upload",
+  title: "PDF Editor Online Free — Highlight, Sign, Annotate & Fill PDF",
   description:
-    "Use PDF Editor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Edit PDF files online for free — highlight text, add signatures, fill forms, and annotate PDF documents directly in your browser. No upload, no signup required.",
   keywords: [
     "pdf editor",
     "edit pdf online",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "add text to pdf",
   ],
   openGraph: {
-    title: "PDF Editor Online Free No Upload",
+    title: "PDF Editor Online Free — Highlight, Sign, Annotate & Fill PDF",
     description:
-    "Use PDF Editor online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Edit PDF files online for free — highlight text, add signatures, fill forms, and annotate PDF documents directly in your browser. No upload, no signup required.",
     url: "https://thepdftools.site/pdf-editor",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

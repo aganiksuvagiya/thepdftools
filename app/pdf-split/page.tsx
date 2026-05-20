@@ -9,25 +9,25 @@ const PdfSplitClient = dynamic(() => import("./PdfSplitClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF Split Online Free No Upload",
+  title: "Split PDF Online Free — Extract Pages & Page Ranges",
   description:
-    "Use PDF Split online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Split PDF files online for free — extract specific pages, page ranges, or individual pages from any PDF. No upload to server, no signup, works in your browser instantly.",
   keywords: [
-    "pdf split",
-    "split pdf online",
-    "extract pdf pages",
+    "split pdf online free",
+    "split pdf",
     "pdf splitter",
-    "free pdf split",
-    "split pdf online free no upload",
-    "extract pages from pdf online",
-    "separate pdf pages no signup",
+    "extract pages from pdf online free",
+    "split pdf pages",
     "pdf page extractor free",
-    "separate pdf pages",
+    "separate pdf pages online",
+    "split pdf online free no upload",
+    "extract pdf pages no signup",
+    "pdf split no upload",
   ],
   openGraph: {
-    title: "PDF Split Online Free No Upload",
+    title: "Split PDF Online Free — Extract Pages & Page Ranges",
     description:
-    "Use PDF Split online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Split PDF files online for free — extract specific pages or page ranges from any PDF. No upload to server, no signup, instant download.",
     url: "https://thepdftools.site/pdf-split",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

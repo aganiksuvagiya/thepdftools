@@ -11,7 +11,7 @@ const ImageWatermarkClient = dynamic(() => import("./ImageWatermarkClient"), {
 export const metadata: Metadata = {
   title: "Image Watermark Online Free No Upload",
   description:
-    "Use Image Watermark online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Add watermark to images online free — customize font, size, opacity, color, and position. Tile across the entire image if needed. No upload to server, no signup.",
   keywords: [
     "add watermark to image online free",
     "convert jpg to watermark online",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image Watermark Online Free No Upload",
     description:
-    "Use Image Watermark online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Add watermark to images online free — customize font, size, opacity, color, and position. Tile across the entire image if needed. No upload to server, no signup.",
     url: "https://thepdftools.site/image-watermark",
     images: [
       {

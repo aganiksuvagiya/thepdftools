@@ -11,7 +11,7 @@ const ScreenshotToPdfClient = dynamic(() => import("./ScreenshotToPdfClient"), {
 export const metadata: Metadata = {
   title: "Screenshot To PDF Online Free No Upload",
   description:
-    "Use Screenshot To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert screenshots to PDF online free — combine multiple screenshots or images into a single PDF document. Reorder pages, customize layout. No upload, no signup.",
   keywords: [
     "screenshot to pdf",
     "image to pdf",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Screenshot To PDF Online Free No Upload",
     description:
-    "Use Screenshot To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert screenshots to PDF online free — combine multiple screenshots or images into a single PDF document. Reorder pages, customize layout. No upload, no signup.",
     url: "https://thepdftools.site/screenshot-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

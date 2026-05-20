@@ -11,7 +11,7 @@ const ImageToPdfClient = dynamic(() => import("./ImageToPdfClient"), {
 export const metadata: Metadata = {
   title: "Image To PDF Online Free No Upload",
   description:
-    "Use Image To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert images to PDF online free — turn JPG, PNG, or WebP photos into a single PDF document. Combine multiple images into one PDF. No upload, no signup required.",
   keywords: [
     "image to pdf",
     "jpg to pdf",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image To PDF Online Free No Upload",
     description:
-    "Use Image To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert images to PDF online free — turn JPG, PNG, or WebP photos into a single PDF document. Combine multiple images into one PDF. No upload, no signup required.",
     url: "https://thepdftools.site/image-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

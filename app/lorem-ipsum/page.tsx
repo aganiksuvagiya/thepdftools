@@ -11,7 +11,7 @@ const LoremIpsumClient = dynamic(() => import("./LoremIpsumClient"), {
 export const metadata: Metadata = {
   title: "Lorem Ipsum Online Free No Upload",
   description:
-    "Use Lorem Ipsum online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Generate Lorem Ipsum placeholder text online free — create paragraphs, sentences, or words of dummy text for design and development. Customizable output, no signup.",
   keywords: [
     "lorem ipsum generator",
     "placeholder text",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Lorem Ipsum Online Free No Upload",
     description:
-    "Use Lorem Ipsum online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Generate Lorem Ipsum placeholder text online free — create paragraphs, sentences, or words of dummy text for design and development. Customizable output, no signup.",
     url: "https://thepdftools.site/lorem-ipsum",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

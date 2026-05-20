@@ -9,9 +9,9 @@ const HtmlToPdfClient = dynamic(() => import("./HtmlToPdfClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "HTML To PDF Online Free No Upload",
+  title: "HTML to PDF Converter Free — Convert Webpage to PDF Online",
   description:
-    "Use HTML To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert HTML to PDF online free — paste HTML code or a URL and download a clean PDF document. No upload, no signup, runs in your browser.",
   keywords: [
     "html to pdf",
     "convert html to pdf",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
     "html to pdf online free",
   ],
   openGraph: {
-    title: "HTML To PDF Online Free No Upload",
+    title: "HTML to PDF Converter Free — Convert Webpage to PDF Online",
     description:
-    "Use HTML To PDF online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert HTML to PDF online free — paste HTML code or a URL and download a clean PDF document. No upload, no signup, runs in your browser.",
     url: "https://thepdftools.site/html-to-pdf",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

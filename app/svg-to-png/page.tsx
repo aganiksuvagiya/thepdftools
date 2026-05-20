@@ -11,7 +11,7 @@ const SvgToPngClient = dynamic(() => import("./SvgToPngClient"), {
 export const metadata: Metadata = {
   title: "SVG To PNG Online Free No Upload",
   description:
-    "Use SVG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert SVG to PNG online free — export vector SVG files as PNG images at 1x to 4x scale. Choose transparent or white background. No upload, no signup required.",
   keywords: [
     "svg to png",
     "convert svg to png",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SVG To PNG Online Free No Upload",
     description:
-    "Use SVG To PNG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert SVG to PNG online free — export vector SVG files as PNG images at 1x to 4x scale. Choose transparent or white background. No upload, no signup required.",
     url: "https://thepdftools.site/svg-to-png",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

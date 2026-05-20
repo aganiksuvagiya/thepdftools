@@ -11,7 +11,7 @@ const JsonFormatterClient = dynamic(() => import("./JsonFormatterClient"), {
 export const metadata: Metadata = {
   title: "JSON Formatter Online Free No Upload",
   description:
-    "Use JSON Formatter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Format and validate JSON online free — pretty print, minify, and check JSON data for errors. View stats and find exact error positions. No signup required.",
   keywords: [
     "json formatter",
     "json validator",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "JSON Formatter Online Free No Upload",
     description:
-    "Use JSON Formatter online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Format and validate JSON online free — pretty print, minify, and check JSON data for errors. View stats and find exact error positions. No signup required.",
     url: "https://thepdftools.site/json-formatter",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

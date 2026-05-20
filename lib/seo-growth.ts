@@ -275,6 +275,376 @@ export const seoTools: SeoTool[] = [
       { q: "Which tools should I use next?", a: "Use Image Compressor, Image Cropper, Image to WebP, or JPG to PNG depending on the final format you need." },
     ],
   },
+  {
+    slug: "pdf-split",
+    name: "PDF Splitter",
+    category: "PDF Tools",
+    primaryKeyword: "split pdf online free",
+    secondaryKeywords: [
+      "split pdf pages online no upload",
+      "extract pages from pdf free",
+      "pdf splitter no signup",
+    ],
+    promise:
+      "Extract individual pages or custom page ranges from any PDF — great for pulling out chapters, invoices, and contract sections without downloading extra software.",
+    bestFor: ["Contracts", "Reports", "Textbooks", "Scanned documents"],
+    related: ["pdf-merge", "pdf-compress", "pdf-to-word", "pdf-to-image"],
+    faq: [
+      {
+        q: "Can I split a PDF online for free?",
+        a: "Yes. The PDF Splitter is completely free with no signup, no watermark, and no file upload to a server.",
+      },
+      {
+        q: "Can I extract specific pages from a PDF?",
+        a: "Yes. Enter the page numbers or ranges you want, and the tool exports only those pages as a new PDF.",
+      },
+      {
+        q: "Is there a file size limit for splitting PDFs?",
+        a: "The tool handles most standard PDF sizes directly in the browser. Very large files may take a moment depending on your device's memory.",
+      },
+      {
+        q: "Should I split before or after compressing?",
+        a: "Split first when you only need certain pages — it is faster to compress a smaller file. Then compress the extracted pages if you need a smaller output.",
+      },
+      {
+        q: "What should I do after splitting?",
+        a: "Use PDF Compress to reduce the size, PDF to Word to extract text, or PDF Merge to recombine pages in a new order.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-to-jpg",
+    name: "PDF to JPG Converter",
+    category: "PDF Tools",
+    primaryKeyword: "convert pdf to jpg online free",
+    secondaryKeywords: [
+      "pdf to jpg no upload",
+      "pdf to image free online",
+      "save pdf pages as jpg",
+    ],
+    promise:
+      "Export any PDF page as a high-quality JPG image for sharing on social media, embedding in presentations, or creating document previews.",
+    bestFor: ["Social sharing", "Presentations", "Thumbnails", "Document previews"],
+    related: ["jpg-to-pdf", "pdf-to-image", "pdf-compress", "image-compressor"],
+    faq: [
+      {
+        q: "Can I convert PDF to JPG for free?",
+        a: "Yes. The PDF to JPG converter is free with no signup and no upload required — conversion happens in your browser.",
+      },
+      {
+        q: "Can I convert multiple PDF pages to JPG?",
+        a: "Yes. Select which pages to export, and each page is saved as a separate JPG image file.",
+      },
+      {
+        q: "What is the best resolution for PDF to JPG?",
+        a: "For screen use, standard resolution is fine. For print or high-quality previews, choose the highest output resolution available in the tool.",
+      },
+      {
+        q: "What is the difference between PDF to JPG and PDF to image?",
+        a: "PDF to JPG outputs compressed JPG files, ideal for photos. PDF to image can output both JPG and PNG — use PNG for text-heavy pages where sharpness matters.",
+      },
+      {
+        q: "What tool should I use after converting?",
+        a: "Use Image Compressor to reduce the JPG file size, or Image Resizer to adjust dimensions for specific platform requirements.",
+      },
+    ],
+  },
+  {
+    slug: "jpg-to-pdf",
+    name: "JPG to PDF Converter",
+    category: "PDF Tools",
+    primaryKeyword: "convert jpg to pdf online free",
+    secondaryKeywords: [
+      "jpg to pdf no upload",
+      "image to pdf free online",
+      "combine photos into pdf",
+    ],
+    promise:
+      "Turn JPG, PNG, or WebP photos into a single PDF document — ideal for receipts, forms, scanned notes, and multi-image submissions.",
+    bestFor: ["Receipts", "Forms", "Scanned notes", "Photo submissions"],
+    related: ["pdf-to-jpg", "image-to-pdf", "pdf-merge", "pdf-compress"],
+    faq: [
+      {
+        q: "Can I convert JPG to PDF for free?",
+        a: "Yes. Upload your JPG, PNG, or WebP images and download a PDF instantly — no signup, no watermark, no server upload.",
+      },
+      {
+        q: "Can I combine multiple JPG images into one PDF?",
+        a: "Yes. Add multiple images, arrange them in the order you want, and the tool creates one combined PDF document.",
+      },
+      {
+        q: "Does JPG to PDF reduce image quality?",
+        a: "The tool preserves image quality at a level suitable for most document sharing. For the smallest output size, compress your images first before converting.",
+      },
+      {
+        q: "What formats are accepted besides JPG?",
+        a: "The tool also accepts PNG and WebP images. All common photo formats are supported.",
+      },
+      {
+        q: "What should I do after creating the PDF?",
+        a: "Use PDF Compress to reduce the file size before emailing, or PDF Merge to combine it with other PDF documents.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-to-excel",
+    name: "PDF to Excel Converter",
+    category: "PDF Tools",
+    primaryKeyword: "convert pdf to excel online free",
+    secondaryKeywords: [
+      "pdf to excel no upload",
+      "extract table from pdf free",
+      "pdf to spreadsheet online",
+    ],
+    promise:
+      "Extract tables and data from PDF files into editable Excel spreadsheets — great for invoices, financial reports, and data analysis without retyping.",
+    bestFor: ["Invoices", "Financial reports", "Data tables", "Bank statements"],
+    related: ["pdf-to-word", "pdf-compress", "pdf-split", "pdf-merge"],
+    faq: [
+      {
+        q: "Can I convert PDF to Excel online for free?",
+        a: "Yes. The PDF to Excel converter is free with no signup. Upload your PDF and download an XLSX spreadsheet.",
+      },
+      {
+        q: "What types of PDFs work best?",
+        a: "PDFs with clear table structures — invoices, bank statements, financial reports — give the best extraction results. Scanned PDFs may need OCR first.",
+      },
+      {
+        q: "Does the tool extract multiple tables?",
+        a: "Yes. If the PDF contains multiple tables across several pages, the tool will attempt to extract all of them into the spreadsheet.",
+      },
+      {
+        q: "What if my PDF is a scan?",
+        a: "Run the scanned PDF through the Scanned PDF to Searchable PDF tool first, then convert to Excel for better results.",
+      },
+      {
+        q: "Which tools are related?",
+        a: "PDF to Word is useful for text extraction. PDF Split helps isolate the pages with the table. PDF Compress reduces the file before sharing.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-sign",
+    name: "PDF Sign Tool",
+    category: "PDF Tools",
+    primaryKeyword: "sign pdf online free",
+    secondaryKeywords: [
+      "pdf signature online no upload",
+      "add signature to pdf free",
+      "digital signature pdf no signup",
+    ],
+    promise:
+      "Add a drawn or typed digital signature to any PDF document directly in your browser — no printing, no scanning, no software installation.",
+    bestFor: ["Contracts", "Agreements", "Authorization letters", "Forms"],
+    related: ["pdf-merge", "pdf-compress", "pdf-protect", "pdf-highlight"],
+    faq: [
+      {
+        q: "Can I sign a PDF online for free?",
+        a: "Yes. Draw or type your signature, place it on the PDF, and download the signed document — no signup, no upload to a server.",
+      },
+      {
+        q: "Is a browser-based PDF signature legally valid?",
+        a: "For many informal agreements, yes. For legally binding contracts that require certified e-signatures, check the requirements in your jurisdiction.",
+      },
+      {
+        q: "Can I add my signature image to a PDF?",
+        a: "Yes. You can draw a signature in the tool or upload a signature image to place on the PDF.",
+      },
+      {
+        q: "Will the signed PDF look different from the original?",
+        a: "Only the signature element is added. All other content — text, images, and layout — remains unchanged.",
+      },
+      {
+        q: "What should I do after signing?",
+        a: "Use PDF Compress to reduce file size before emailing, or PDF Protect to add a password to the signed document.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-highlight",
+    name: "PDF Highlighter",
+    category: "PDF Tools",
+    primaryKeyword: "highlight pdf online free",
+    secondaryKeywords: [
+      "annotate pdf online no upload",
+      "mark up pdf browser",
+      "highlight text in pdf free",
+    ],
+    promise:
+      "Highlight text, add comments, and annotate PDF documents directly in your browser — ideal for reviewing contracts, study notes, and reports.",
+    bestFor: ["Contracts", "Study notes", "Research papers", "Work reports"],
+    related: ["pdf-sign", "pdf-compress", "pdf-merge", "pdf-redaction"],
+    faq: [
+      {
+        q: "Can I highlight a PDF online for free?",
+        a: "Yes. Open the PDF Highlight tool, select the text or area to highlight, choose a color, and download the annotated PDF — no signup required.",
+      },
+      {
+        q: "Can I add notes or comments to a PDF?",
+        a: "Yes. The tool supports text highlights and annotation marks for reviewing and marking up documents.",
+      },
+      {
+        q: "Does highlighting change the original PDF content?",
+        a: "No. Highlighting only adds a visual layer. The underlying text, layout, and images in the PDF remain exactly as they were.",
+      },
+      {
+        q: "Can I highlight on mobile?",
+        a: "Yes. The tool works on mobile, tablet, and desktop browsers with a responsive interface.",
+      },
+      {
+        q: "What tools should I use after highlighting?",
+        a: "PDF Compress reduces file size for sharing. PDF Merge combines the annotated file with others. PDF Sign adds a signature to finalize the document.",
+      },
+    ],
+  },
+  {
+    slug: "word-to-pdf",
+    name: "Word to PDF Converter",
+    category: "PDF Tools",
+    primaryKeyword: "convert word to pdf online free",
+    secondaryKeywords: [
+      "word to pdf no upload",
+      "docx to pdf free online",
+      "word document to pdf no signup",
+    ],
+    promise:
+      "Convert Word documents to PDF format for sharing, printing, and archiving — preserving your layout, fonts, and formatting exactly as designed.",
+    bestFor: ["Resumes", "Reports", "Contracts", "Academic submissions"],
+    related: ["pdf-to-word", "pdf-compress", "pdf-merge", "pdf-sign"],
+    faq: [
+      {
+        q: "Can I convert Word to PDF online for free?",
+        a: "Yes. Upload your DOCX file and download a PDF instantly — no signup, no watermark, and no server upload required.",
+      },
+      {
+        q: "Will my Word formatting be preserved in the PDF?",
+        a: "Yes. Fonts, headings, tables, images, and page layout are preserved during the conversion to PDF.",
+      },
+      {
+        q: "Can I convert DOCX and older DOC files?",
+        a: "The tool primarily supports DOCX format. For older DOC files, save as DOCX in Microsoft Word or Google Docs first.",
+      },
+      {
+        q: "Why convert Word to PDF before sharing?",
+        a: "PDF is a universal format that looks the same on any device or operating system, which prevents formatting issues when the recipient opens the file.",
+      },
+      {
+        q: "What should I do after converting?",
+        a: "Use PDF Compress to reduce the file size for email, PDF Sign to add a signature, or PDF Merge to combine it with other documents.",
+      },
+    ],
+  },
+  {
+    slug: "image-to-pdf",
+    name: "Image to PDF Converter",
+    category: "PDF Tools",
+    primaryKeyword: "convert image to pdf online free",
+    secondaryKeywords: [
+      "jpg png to pdf free",
+      "combine images into pdf online",
+      "photos to pdf no upload",
+    ],
+    promise:
+      "Convert JPG, PNG, or WebP images into a single PDF document for forms, receipts, assignments, and multi-image submissions — all in your browser.",
+    bestFor: ["Receipts", "Assignment submissions", "Photo albums", "Scanned forms"],
+    related: ["jpg-to-pdf", "pdf-compress", "pdf-merge", "image-compressor"],
+    faq: [
+      {
+        q: "Can I convert images to PDF online for free?",
+        a: "Yes. Add your images, arrange the order, and download a PDF — no signup, no upload to a server.",
+      },
+      {
+        q: "Can I combine multiple images into one PDF?",
+        a: "Yes. This is one of the most common use cases. Upload multiple JPG or PNG files and the tool combines them into a single PDF.",
+      },
+      {
+        q: "What image formats are supported?",
+        a: "JPG, PNG, and WebP are all supported. HEIC photos from iPhone can be converted to JPG first using the HEIC to JPG tool.",
+      },
+      {
+        q: "Will the image quality be affected?",
+        a: "Image quality is preserved at a high level suitable for document sharing. Compress your images first if you need the smallest possible PDF.",
+      },
+      {
+        q: "What should I do after creating the PDF?",
+        a: "Use PDF Compress to reduce file size, PDF Merge to combine with other PDFs, or PDF Sign to add a signature.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-unlock",
+    name: "PDF Unlock Tool",
+    category: "PDF Tools",
+    primaryKeyword: "unlock pdf online free",
+    secondaryKeywords: [
+      "remove pdf password online free",
+      "pdf unlocker no upload",
+      "unlock protected pdf no signup",
+    ],
+    promise:
+      "Remove PDF restrictions and passwords from your own documents so you can print, copy, and edit them freely — all in your browser.",
+    bestFor: ["Own documents", "Archived files", "Scanned reports", "Legacy PDFs"],
+    related: ["pdf-compress", "pdf-merge", "pdf-protect", "pdf-sign"],
+    faq: [
+      {
+        q: "Can I unlock a PDF online for free?",
+        a: "Yes. Upload your PDF and the tool removes restrictions — free, no signup, and no upload to any server.",
+      },
+      {
+        q: "Is it legal to unlock a PDF?",
+        a: "Yes, when it is your own document. Never attempt to unlock PDFs you do not own or have permission to access.",
+      },
+      {
+        q: "What restrictions does it remove?",
+        a: "The tool removes common restrictions such as printing, copying text, and editing. Owner password protection is addressed, but user-password encrypted files may require the password.",
+      },
+      {
+        q: "Will unlocking affect the content?",
+        a: "No. Only the restriction layer is removed. The text, images, and layout of the PDF remain exactly the same.",
+      },
+      {
+        q: "What should I do after unlocking?",
+        a: "You can now print, copy, or edit the PDF. Use PDF Compress to reduce size, or PDF Merge to combine it with other documents.",
+      },
+    ],
+  },
+  {
+    slug: "png-to-jpg",
+    name: "PNG to JPG Converter",
+    category: "Image Tools",
+    primaryKeyword: "convert png to jpg online free",
+    secondaryKeywords: [
+      "png to jpg no upload",
+      "png to jpeg converter free",
+      "change png to jpg browser",
+    ],
+    promise:
+      "Convert PNG images to JPG format with adjustable quality — smaller file sizes, universal compatibility, and white background fill for transparent PNGs.",
+    bestFor: ["Product photos", "Web images", "Email attachments", "Social media"],
+    related: ["jpg-to-png", "image-compressor", "image-to-webp", "image-resizer"],
+    faq: [
+      {
+        q: "Can I convert PNG to JPG online for free?",
+        a: "Yes. Upload your PNG and download a JPG instantly — no signup, no upload to a server, no watermark.",
+      },
+      {
+        q: "What happens to transparent backgrounds when converting PNG to JPG?",
+        a: "JPG does not support transparency, so the tool fills the transparent areas with a white background by default.",
+      },
+      {
+        q: "Why convert PNG to JPG?",
+        a: "JPG files are typically much smaller than PNG, which makes them better for email attachments, website loading speed, and platform uploads that prefer JPG.",
+      },
+      {
+        q: "What quality setting should I use?",
+        a: "Use 80-90% for a good balance of quality and file size. Lower settings create smaller files but may reduce sharpness.",
+      },
+      {
+        q: "What should I do after converting?",
+        a: "Use Image Compressor to reduce the JPG size further, or Image Resizer to adjust dimensions for specific platforms.",
+      },
+    ],
+  },
 ];
 
 export function getSeoTool(slug: string) {

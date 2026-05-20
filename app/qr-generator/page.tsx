@@ -11,7 +11,7 @@ const QrGeneratorClient = dynamic(() => import("./QrGeneratorClient"), {
 export const metadata: Metadata = {
   title: "QR Generator Online Free No Upload",
   description:
-    "Use QR Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Generate QR codes online for free — create QR codes for URLs, text, email, or any data. Customize size and colors, download as PNG. No signup required.",
   keywords: [
     "qr code generator",
     "create qr code online",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "QR Generator Online Free No Upload",
     description:
-    "Use QR Generator online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Generate QR codes online for free — create QR codes for URLs, text, email, or any data. Customize size and colors, download as PNG. No signup required.",
     url: "https://thepdftools.site/qr-generator",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

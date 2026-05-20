@@ -11,7 +11,7 @@ const ImageUpscalerClient = dynamic(() => import("./ImageUpscalerClient"), {
 export const metadata: Metadata = {
   title: "Image Upscaler Online Free No Upload",
   description:
-    "Use Image Upscaler online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Upscale images online free — increase image resolution to 2x, 3x, or 4x without quality loss. Works in your browser with no upload required, no signup.",
   keywords: [
     "image upscaler",
     "upscale image online",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image Upscaler Online Free No Upload",
     description:
-    "Use Image Upscaler online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Upscale images online free — increase image resolution to 2x, 3x, or 4x without quality loss. Works in your browser with no upload required, no signup.",
     url: "https://thepdftools.site/image-upscaler",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

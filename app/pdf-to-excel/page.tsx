@@ -9,29 +9,27 @@ const PdfToExcelClient = dynamic(() => import("./PdfToExcelClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF To Excel Online Free No Upload",
+  title: "PDF to Excel Converter Free — Extract Tables from PDF to XLSX",
   description:
-    "Use PDF To Excel online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to Excel online free — extract tables, data, and numbers from any PDF into an editable Excel spreadsheet (XLSX). No upload required, no signup, instant download.",
   keywords: [
     "pdf to excel",
     "convert pdf to excel",
+    "pdf to excel online free",
     "pdf to xlsx",
     "pdf to spreadsheet",
+    "extract table from pdf to excel",
     "pdf to excel converter free",
-    "pdf to excel online free no upload",
-    "pdf to xlsx converter no signup",
-    "extract tables from pdf to excel",
+    "pdf to excel no upload",
     "convert pdf table to excel online",
-    "extract table from pdf",
-    "pdf table extractor",
-    "pdf data extraction",
-    "pdf to excel online",
+    "pdf data extraction free",
+    "pdf to excel no signup",
     "free pdf to xlsx converter",
   ],
   openGraph: {
-    title: "PDF To Excel Online Free No Upload",
+    title: "PDF to Excel Converter Free — Extract Tables from PDF to XLSX",
     description:
-    "Use PDF To Excel online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert PDF to Excel online free — extract tables and data from any PDF into an editable XLSX spreadsheet. No upload required, no signup.",
     url: "https://thepdftools.site/pdf-to-excel",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

@@ -11,7 +11,7 @@ const ImageCropperClient = dynamic(() => import("./ImageCropperClient"), {
 export const metadata: Metadata = {
   title: "Image Cropper Online Free No Upload",
   description:
-    "Use Image Cropper online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Crop images online for free — trim, cut, and resize photos to exact dimensions. Set aspect ratios for social media, profile photos, and print. No upload, no signup.",
   keywords: [
     "image cropper",
     "crop image online",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Image Cropper Online Free No Upload",
     description:
-    "Use Image Cropper online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Crop images online for free — trim, cut, and resize photos to exact dimensions. Set aspect ratios for social media, profile photos, and print. No upload, no signup.",
     url: "https://thepdftools.site/image-cropper",
     images: [
       {

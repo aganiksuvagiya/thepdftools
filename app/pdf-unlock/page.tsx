@@ -9,9 +9,9 @@ const PdfUnlockClient = dynamic(() => import("./PdfUnlockClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "PDF Unlock Online Free No Upload",
+  title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
   description:
-    "Use PDF Unlock online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Unlock PDF files online for free — remove printing, copying, and editing restrictions from your own PDF documents. No upload, no signup, instant result.",
   keywords: [
     "pdf unlock",
     "remove pdf password",
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     "free pdf unlocker",
   ],
   openGraph: {
-    title: "PDF Unlock Online Free No Upload",
+    title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
     description:
-    "Use PDF Unlock online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Unlock PDF files online for free — remove printing, copying, and editing restrictions from your own PDF documents. No upload, no signup, instant result.",
     url: "https://thepdftools.site/pdf-unlock",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
   },

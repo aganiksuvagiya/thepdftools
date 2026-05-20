@@ -9,9 +9,9 @@ const HeicToJpgClient = dynamic(() => import("./HeicToJpgClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "HEIC To JPG Online Free No Upload",
+  title: "HEIC to JPG Converter Free — Convert iPhone Photos Online",
   description:
-    "Use HEIC To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert HEIC photos to JPG online free — turn iPhone HEIC images into universally compatible JPG files. Batch convert multiple photos. No upload, no signup required.",
   keywords: [
     "heic to jpg",
     "convert heic to jpg",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     "open heic on windows",
   ],
   openGraph: {
-    title: "HEIC To JPG Online Free No Upload",
+    title: "HEIC to JPG Converter Free — Convert iPhone Photos Online",
     description:
-    "Use HEIC To JPG online free with no upload required. Fast browser-based tool for secure file processing on desktop and mobile.",
+    "Convert HEIC photos to JPG online free — turn iPhone HEIC images into universally compatible JPG files. Batch convert multiple photos. No upload, no signup required.",
     url: "https://thepdftools.site/heic-to-jpg",
     images: [{ url: "https://thepdftools.site/opengraph-image" }],
     type: "website",
