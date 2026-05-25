@@ -38,7 +38,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/pdf-page-numbers", changeFrequency: "weekly", priority: 0.88 },
     { path: "/pdf-redaction", changeFrequency: "weekly", priority: 0.88 },
     { path: "/pdf-compare", changeFrequency: "weekly", priority: 0.87 },
-    { path: "/scanned-pdf-to-searchable-pdf", changeFrequency: "weekly", priority: 0.91 },
+    {
+      path: "/scanned-pdf-to-searchable-pdf",
+      changeFrequency: "weekly",
+      priority: 0.91,
+    },
     { path: "/excel-to-pdf", changeFrequency: "weekly", priority: 0.88 },
     { path: "/html-to-pdf", changeFrequency: "weekly", priority: 0.87 },
     { path: "/markdown-to-pdf", changeFrequency: "weekly", priority: 0.86 },
@@ -46,9 +50,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/screenshot-to-pdf", changeFrequency: "weekly", priority: 0.86 },
 
     // PDF compression landing pages (long-tail, high-intent)
-    { path: "/compress-pdf-to-100kb", changeFrequency: "weekly", priority: 0.9 },
-    { path: "/compress-pdf-for-govt-exam", changeFrequency: "weekly", priority: 0.9 },
-    { path: "/reduce-pdf-size-online-free", changeFrequency: "weekly", priority: 0.91 },
+    {
+      path: "/compress-pdf-to-100kb",
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      path: "/compress-pdf-for-govt-exam",
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      path: "/reduce-pdf-size-online-free",
+      changeFrequency: "weekly",
+      priority: 0.91,
+    },
 
     // Core image tools
     { path: "/image-compressor", changeFrequency: "weekly", priority: 0.92 },
@@ -66,16 +82,44 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/video-to-gif", changeFrequency: "weekly", priority: 0.85 },
 
     // Image variant landing pages
-    { path: "/convert-jpeg-to-png-online-free", changeFrequency: "weekly", priority: 0.87 },
-    { path: "/jpg-to-png-no-upload", changeFrequency: "weekly", priority: 0.86 },
-    { path: "/jpg-to-png-for-logos", changeFrequency: "weekly", priority: 0.84 },
-    { path: "/convert-png-to-jpg-online-free", changeFrequency: "weekly", priority: 0.87 },
-    { path: "/png-to-jpg-for-photos", changeFrequency: "weekly", priority: 0.84 },
-    { path: "/png-to-jpg-white-background", changeFrequency: "weekly", priority: 0.83 },
+    {
+      path: "/convert-jpeg-to-png-online-free",
+      changeFrequency: "weekly",
+      priority: 0.87,
+    },
+    {
+      path: "/jpg-to-png-no-upload",
+      changeFrequency: "weekly",
+      priority: 0.86,
+    },
+    {
+      path: "/jpg-to-png-for-logos",
+      changeFrequency: "weekly",
+      priority: 0.84,
+    },
+    {
+      path: "/convert-png-to-jpg-online-free",
+      changeFrequency: "weekly",
+      priority: 0.87,
+    },
+    {
+      path: "/png-to-jpg-for-photos",
+      changeFrequency: "weekly",
+      priority: 0.84,
+    },
+    {
+      path: "/png-to-jpg-white-background",
+      changeFrequency: "weekly",
+      priority: 0.83,
+    },
 
     // Document & productivity tools
     { path: "/invoice-generator", changeFrequency: "weekly", priority: 0.88 },
-    { path: "/ai-invoice-extractor", changeFrequency: "weekly", priority: 0.87 },
+    {
+      path: "/ai-invoice-extractor",
+      changeFrequency: "weekly",
+      priority: 0.87,
+    },
     { path: "/signature-generator", changeFrequency: "weekly", priority: 0.86 },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.82 },
     { path: "/barcode-generator", changeFrequency: "weekly", priority: 0.82 },
@@ -92,8 +136,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/tailwind-colors", changeFrequency: "weekly", priority: 0.7 },
 
     // Comparison & alternative pages
-    { path: "/smallpdf-vs-thepdftools", changeFrequency: "monthly", priority: 0.85 },
-    { path: "/ilovepdf-alternative", changeFrequency: "monthly", priority: 0.85 },
+    {
+      path: "/smallpdf-vs-thepdftools",
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      path: "/ilovepdf-alternative",
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
 
     // Blog
     { path: "/blog", changeFrequency: "weekly", priority: 0.85 },
@@ -102,45 +154,116 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.82,
     })),
-    { path: "/blog/add-watermark-to-image-online-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/compress-pdf-for-email-online", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/convert-ppt-to-pdf-online-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/how-to-compress-images-for-web", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/jpg-vs-png-vs-webp-which-format", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/how-to-merge-pdf-files-online", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/remove-image-background-with-ai", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/optimize-images-for-seo", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/convert-word-to-pdf-free", changeFrequency: "monthly", priority: 0.75 },
-    { path: "/blog/best-free-online-tools-for-students-2026", changeFrequency: "monthly", priority: 0.8 },
-    { path: "/blog/best-free-pdf-tools-india", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/free-image-tools-for-designers-uk", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/free-online-tools-small-business", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/compress-images-for-website-speed", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/convert-heic-to-jpg-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/convert-pdf-to-excel-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/convert-video-to-gif-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/free-invoice-generator-freelancers", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/compress-pdf-files-free", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/best-free-pdf-tools-online", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/how-to-merge-pdf-without-upload", changeFrequency: "monthly", priority: 0.78 },
-    { path: "/blog/is-online-pdf-safe", changeFrequency: "monthly", priority: 0.78 },
+    {
+      path: "/blog/add-watermark-to-image-online-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/compress-pdf-for-email-online",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/convert-ppt-to-pdf-online-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/how-to-compress-images-for-web",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/jpg-vs-png-vs-webp-which-format",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/how-to-merge-pdf-files-online",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/remove-image-background-with-ai",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/optimize-images-for-seo",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/convert-word-to-pdf-free",
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      path: "/blog/best-free-online-tools-for-students-2026",
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      path: "/blog/best-free-pdf-tools-india",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/free-image-tools-for-designers-uk",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/free-online-tools-small-business",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/compress-images-for-website-speed",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/convert-heic-to-jpg-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/convert-pdf-to-excel-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/convert-video-to-gif-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/free-invoice-generator-freelancers",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
+    {
+      path: "/blog/compress-pdf-files-free",
+      changeFrequency: "monthly",
+      priority: 0.78,
+    },
     // Static pages
     { path: "/about", changeFrequency: "monthly", priority: 0.6 },
     { path: "/privacy", changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  return routes
-    .map((route) => {
-      const blogPost = route.path.startsWith("/blog/")
-        ? growthBlogPosts.find((post) => `/blog/${post.slug}` === route.path)
-        : undefined;
+  return routes.map((route) => {
+    const blogPost = route.path.startsWith("/blog/")
+      ? growthBlogPosts.find((post) => `/blog/${post.slug}` === route.path)
+      : undefined;
 
-      return {
-        url: `${baseUrl}${route.path}`,
-        lastModified: blogPost ? new Date(blogPost.date) : siteUpdatedAt,
-        changeFrequency: route.changeFrequency,
-        priority: route.priority,
-      };
-    })
-    ;
+    return {
+      url: `${baseUrl}${route.path}`,
+      lastModified: blogPost ? new Date(blogPost.date) : siteUpdatedAt,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+    };
+  });
 }
