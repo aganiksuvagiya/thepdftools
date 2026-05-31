@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -87,11 +88,49 @@ const jsonLd = {
         "Merge multiple PDF files into one document for free online. Perfect for resumes, certificates, forms, assignments, and office files.",
     },
     
-    {
+          {
+        "@type": "HowTo",
+        name: "How to Merge PDF Files Online",
+        description: "Combine multiple PDF files into one document for free in your browser.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the PDF Merge tool",
+            text: "Go to https://thepdftools.site/pdf-merge and open the free PDF merger.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Upload your PDFs",
+            text: "Upload two or more PDF files by clicking the upload area or dragging files onto the tool.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Reorder the files",
+            text: "Drag the file cards to set the order in which they will appear in the merged document.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Merge the PDFs",
+            text: "Click the Merge PDF button to combine all uploaded files into one PDF.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 5,
+            name: "Download the merged PDF",
+            text: "Click Download to save your merged PDF document.",
+          }
+        ],
+      },
+      {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "PDF Merge", "item": "https://thepdftools.site/pdf-merge" },
+        { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF Merge", "item": "https://thepdftools.site/pdf-merge" },
       ],
     },
   ],
@@ -105,6 +144,11 @@ export default function PdfMergePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "Merge PDF" },
+        ]} />
         {/* HERO CARD */}
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />

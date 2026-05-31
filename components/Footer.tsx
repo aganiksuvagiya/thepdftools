@@ -2,20 +2,37 @@ import Link from "next/link";
 import Image from "next/image";
 import AdsterraZone from "@/components/AdsterraZone";
 
-const allTools = [
-  { href: "/image-compressor", label: "Image Compressor" },
+const pdfToolLinks = [
+  { href: "/pdf-merge", label: "Merge PDF" },
+  { href: "/pdf-split", label: "Split PDF" },
+  { href: "/pdf-compress", label: "Compress PDF" },
+  { href: "/pdf-to-word", label: "PDF to Word" },
+  { href: "/pdf-to-jpg", label: "PDF to JPG" },
+  { href: "/pdf-sign", label: "Sign PDF" },
+  { href: "/pdf-editor", label: "PDF Editor" },
+  { href: "/pdf-protect", label: "Protect PDF" },
+];
+
+const imageToolLinks = [
+  { href: "/image-compressor", label: "Compress Image" },
   { href: "/jpg-to-png", label: "JPG to PNG" },
   { href: "/png-to-jpg", label: "PNG to JPG" },
-  { href: "/image-to-webp", label: "Image to WebP" },
-  { href: "/image-cropper", label: "Image Cropper" },
-  { href: "/image-resizer", label: "Image Resizer" },
-  { href: "/image-watermark", label: "Image Watermark" },
-  { href: "/image-rotate", label: "Rotate & Flip" },
-  { href: "/background-remover", label: "BG Remover" },
-  { href: "/pdf-merge", label: "PDF Merge" },
-  { href: "/word-to-pdf", label: "Word to PDF" },
-  { href: "/excel-to-pdf", label: "Excel to PDF" },
-  { href: "/html-to-pdf", label: "HTML to PDF" },
+  { href: "/image-resizer", label: "Resize Image" },
+  { href: "/background-remover", label: "Remove Background" },
+  { href: "/image-cropper", label: "Crop Image" },
+  { href: "/heic-to-jpg", label: "HEIC to JPG" },
+  { href: "/svg-to-png", label: "SVG to PNG" },
+];
+
+const moreToolLinks = [
+  { href: "/json-formatter", label: "JSON Formatter" },
+  { href: "/csv-to-json", label: "CSV to JSON" },
+  { href: "/base64", label: "Base64 Encoder" },
+  { href: "/qr-generator", label: "QR Code Generator" },
+  { href: "/invoice-generator", label: "Invoice Generator" },
+  { href: "/word-counter", label: "Word Counter" },
+  { href: "/barcode-generator", label: "Barcode Generator" },
+  { href: "/lorem-ipsum", label: "Lorem Ipsum" },
 ];
 
 const popularSearchLinks = [
@@ -25,6 +42,15 @@ const popularSearchLinks = [
   { href: "/convert-jpeg-to-png-online-free", label: "Convert JPEG to PNG" },
   { href: "/jpg-to-png-no-upload", label: "JPG to PNG No Upload" },
   { href: "/jpg-to-png-for-logos", label: "JPG to PNG for Logos" },
+];
+
+const categoryLinks = [
+  { href: "/pdf-tools", label: "PDF Tools" },
+  { href: "/image-tools", label: "Image Tools" },
+  { href: "/developer-tools", label: "Developer Tools" },
+  { href: "/generators", label: "Generators" },
+  { href: "/document-tools", label: "Document Tools" },
+  { href: "/utility-tools", label: "Utility Tools" },
 ];
 
 export default function Footer() {
@@ -68,9 +94,22 @@ export default function Footer() {
           </div>
         ) : null}
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-5">
+        {/* Category quick links */}
+        <div className="mb-10 flex flex-wrap gap-2">
+          {categoryLinks.map((cat) => (
+            <Link
+              key={cat.href}
+              href={cat.href}
+              className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[12.5px] font-medium text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-700"
+            >
+              {cat.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-6">
           {/* Brand */}
-          <div className="col-span-2 sm:col-span-1">
+          <div className="col-span-2 sm:col-span-2">
             <Link href="/" className="inline-flex items-center gap-1.5">
               <Image
                 src="/logo.svg"
@@ -82,48 +121,59 @@ export default function Footer() {
               />
               <span className="text-sm font-bold text-slate-900"></span>
             </Link>
-            <p className="mt-1 max-w-[200px] text-[13px] leading-relaxed text-slate-500">
-              Free browser-based tools. Your files never leave your device.
+            <p className="mt-2 max-w-[220px] text-[13px] leading-relaxed text-slate-500">
+              Free browser-based tools for PDF, images, and developers. Your files never leave your device.
             </p>
-          </div>
-
-          {/* Tools col 1 */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Image tools</h4>
-            <ul className="mt-3 space-y-2">
-              {allTools.slice(0, 5).map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tools col 2 */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">More tools</h4>
-            <ul className="mt-3 space-y-2">
-              {allTools.slice(5).map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Info */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Resources</h4>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-4 space-y-1.5">
               <li><Link href="/blog" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Blog</Link></li>
               <li><Link href="/about" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">About</Link></li>
               <li><Link href="/privacy" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Privacy Policy</Link></li>
-              <li className="text-[13px] text-slate-500">Free forever</li>
             </ul>
           </div>
 
-          <div className="col-span-2 sm:col-span-1">
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Popular searches</h4>
+          {/* PDF Tools */}
+          <div>
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">
+              <Link href="/pdf-tools" className="hover:text-brand-700 transition-colors">PDF Tools</Link>
+            </h4>
+            <ul className="mt-3 space-y-2">
+              {pdfToolLinks.map((t) => (
+                <li key={t.href}>
+                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Image Tools */}
+          <div>
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">
+              <Link href="/image-tools" className="hover:text-brand-700 transition-colors">Image Tools</Link>
+            </h4>
+            <ul className="mt-3 space-y-2">
+              {imageToolLinks.map((t) => (
+                <li key={t.href}>
+                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* More Tools */}
+          <div>
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">More Tools</h4>
+            <ul className="mt-3 space-y-2">
+              {moreToolLinks.map((t) => (
+                <li key={t.href}>
+                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Popular searches */}
+          <div>
+            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Popular Searches</h4>
             <ul className="mt-3 space-y-2">
               {popularSearchLinks.map((link) => (
                 <li key={link.href}>
@@ -138,7 +188,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col justify-between gap-2 border-t border-slate-200 pt-6 text-[12px] text-slate-400 sm:flex-row">
           <span>&copy; {new Date().getFullYear()} thepdftools. All rights reserved.</span>
-          <span>100% client-side processing</span>
+          <span>100% client-side processing · No sign-up · No watermarks</span>
         </div>
       </div>
     </footer>

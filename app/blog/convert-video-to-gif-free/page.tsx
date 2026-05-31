@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-video-to-gif-free`;
@@ -260,7 +261,8 @@ export default function ConvertVideoToGifFree() {
                 Converting video to GIF does not have to be complicated. With the right settings&mdash;short duration, reasonable FPS, and a sensible output width&mdash;you can create sharp, lightweight GIFs that work everywhere. Try our free <Link href="/video-to-gif" className={toolLink}>Video to GIF converter</Link> and make your first GIF in seconds. No signup, no watermark, and everything stays in your browser.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

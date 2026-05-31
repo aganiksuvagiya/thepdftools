@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const PdfCompressClient = dynamic(() => import("./PdfCompressClient"), {
   loading: () => (
@@ -13,9 +14,9 @@ const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-compress`;
 
 export const metadata: Metadata = {
-  title: "Compress PDF Online Free - Reduce PDF Size No Upload",
+  title: "Compress PDF Online Free — Reduce PDF File Size Instantly",
   description:
-    "Compress PDF online free and reduce PDF file size fast with no upload required. Private browser-based PDF compressor with no signup.",
+    "Compress PDF online free and reduce file size by up to 80% in seconds. No upload, no signup, no watermark. Works on Windows, Mac, iPhone and Android.",
   keywords: [
     "compress pdf online free",
     "compress pdf without losing quality online free",
@@ -110,7 +111,44 @@ const jsonLd = {
         "Free browser-based PDF compressor no upload tool to reduce PDF file size online without losing quality.",
     },
     
-    {
+          {
+        "@type": "HowTo",
+        name: "How to Compress a PDF Online",
+        description: "Reduce PDF file size for free in your browser — no upload, no signup.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the PDF Compressor",
+            text: "Go to https://thepdftools.site/pdf-compress and open the free PDF Compressor tool.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Upload your PDF",
+            text: "Click the upload area or drag and drop your PDF file onto the tool.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Choose compression level",
+            text: "Select Medium for everyday documents, Maximum for strict size limits, or Low for presentations.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Compress the PDF",
+            text: "Click the Compress button and wait a few seconds for the tool to reduce the file size.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 5,
+            name: "Download the result",
+            text: "Click Download to save the compressed PDF to your device.",
+          }
+        ],
+      },
+      {
       "@type": "BreadcrumbList",
       itemListElement: [
         {
@@ -122,6 +160,12 @@ const jsonLd = {
         {
           "@type": "ListItem",
           position: 2,
+          name: "PDF Tools",
+          item: "https://thepdftools.site/pdf-tools",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
           name: "Compress PDF Online Free",
           item: PAGE_URL,
         },
@@ -139,6 +183,11 @@ export default function PdfCompressPage() {
       />
 
       <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "Compress PDF" },
+        ]} />
         <section className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="grid gap-8 p-6 sm:p-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
             <div>
@@ -338,7 +387,7 @@ export default function PdfCompressPage() {
               Read these guides if you want extra help with compression settings, email limits, and related PDF workflows.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/blog/how-to-compress-pdf-without-losing-quality" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF Without Losing Quality</Link>
+              <Link href="/blog/compress-pdf-files-free" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF Without Losing Quality</Link>
               <Link href="/blog/compress-pdf-for-email-online" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF for Email</Link>
               <Link href="/blog/compress-pdf-files-free" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Reduce PDF Size Free</Link>
             </div>

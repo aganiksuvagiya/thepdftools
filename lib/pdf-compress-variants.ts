@@ -155,6 +155,62 @@ export const PDF_COMPRESS_VARIANTS = [
       },
     ],
   },
+  {
+    slug: "compress-pdf-to-200kb",
+    title: "Compress PDF to 200KB Online Free",
+    shortTitle: "Compress PDF to 200KB",
+    description:
+      "Compress PDF to 200KB online free for email attachments, college portals, and document sharing. Fast, private, browser-based — no upload, no signup.",
+    badge: "200KB target",
+    primaryKeyword: "compress pdf to 200kb",
+    hero:
+      "Reduce PDF file size toward 200KB for email attachments, online portals, and document submissions. Free, private, and runs in your browser.",
+    sections: [
+      {
+        heading: "When do you need to compress PDF to 200KB?",
+        body: [
+          "Many college admission portals, job application forms, scholarship submissions, and HR systems set a 200KB limit for uploaded documents. PDF files from scanners, design software, or email chains often exceed this limit without any obvious reason — embedded fonts, high-resolution images, and revision history all add invisible weight.",
+          "The solution is a targeted compression pass. Rather than using the strongest compression blindly, start with medium compression, check the result, and increase only if necessary.",
+        ],
+      },
+      {
+        heading: "How to compress a PDF to under 200KB",
+        body: [
+          "Upload the PDF to the compressor above and run a medium-strength compression pass. After downloading, check the file size in your file manager. If it is already under 200KB, you are done.",
+          "If the file is still above 200KB, try a higher compression level. For scanned documents with images, this can reduce size by 60–80% while keeping text readable. For text-only PDFs, the reduction may be smaller — in that case, consider removing blank or unnecessary pages using the PDF Split tool first.",
+        ],
+      },
+      {
+        heading: "Tips for reaching the 200KB limit",
+        body: [
+          "Scanned documents: use grayscale scanning at 150 DPI before creating the PDF, then compress. Color scans at 300 DPI are typically 5–10× larger than needed for submission purposes.",
+          "Multi-page documents: if only specific pages need to be submitted, use the PDF Split tool to extract just those pages before compressing — a 3-page extracted document compresses far more effectively than a 20-page original.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "Can I compress a PDF to exactly 200KB?",
+        a: "The compressor reduces file size as much as possible based on the compression level you choose. You may need to try different levels to get close to 200KB.",
+      },
+      {
+        q: "What is the difference between 100KB and 200KB compression targets?",
+        a: "The target is the same — reducing file size. For 200KB you have more room, so medium compression is usually enough. For 100KB you may need maximum compression or to remove pages.",
+      },
+      {
+        q: "Does compressing to 200KB reduce quality?",
+        a: "At medium compression, text stays sharp and images remain readable. Quality only noticeably drops at maximum compression settings.",
+      },
+      {
+        q: "Is this tool free?",
+        a: "Yes. The tool is completely free with no signup, no watermark, and no upload to any server.",
+      },
+      {
+        q: "Does it work on mobile?",
+        a: "Yes. The browser-based workflow works on modern desktop and mobile browsers.",
+      },
+    ],
+  },
 ] as const;
 
 export type PdfCompressVariant =

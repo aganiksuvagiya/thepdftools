@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const PdfSignClient = dynamic(() => import("./PdfSignClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -51,7 +52,18 @@ export default function PdfSignPage() {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "PDF Sign", item: PAGE_URL },
+          {
+          "@type": "ListItem",
+          position: 2,
+          name: "PDF Tools",
+          item: "https://thepdftools.site/pdf-tools",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "PDF Sign",
+          item: PAGE_URL,
+        },
         ],
       },
     ],
@@ -61,6 +73,11 @@ export default function PdfSignPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "Sign PDF" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -131,9 +148,9 @@ export default function PdfSignPage() {
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related Guides</h2>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/blog/sign-pdf-online-free-no-signup" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Sign PDF Online Free</Link>
-              <Link href="/blog/edit-pdf-online-free-no-signup-guide" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Edit PDF Online Free</Link>
-              <Link href="/blog/how-to-highlight-pdf-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Highlight PDF Online</Link>
+              <Link href="/blog/compress-pdf-for-email-online" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Sign PDF Online Free</Link>
+              <Link href="/blog/best-free-pdf-tools-india" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Edit PDF Online Free</Link>
+              <Link href="/blog/how-to-merge-pdf-files-online" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Highlight PDF Online</Link>
             </div>
           </div>
 

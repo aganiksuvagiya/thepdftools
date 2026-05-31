@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ToolCard from "@/components/ToolCard";
 import ScrollReveal from "@/components/ScrollReveal";
-import { growthBlogPosts } from "@/lib/seo-growth";
+const staticBlogPosts = [
+  { slug: "how-to-merge-pdf-files-online", title: "How to Merge PDF Files Online", description: "Step-by-step guide to combining PDFs for free in your browser.", date: "2025-04-10", readTime: "4 min read", tags: ["PDF", "Merge"] },
+  { slug: "compress-pdf-files-free", title: "Compress PDF Files Free", description: "Reduce PDF file size without losing quality using free online tools.", date: "2025-04-08", readTime: "3 min read", tags: ["PDF", "Compress"] },
+  { slug: "compress-pdf-for-email-online", title: "Compress PDF for Email Online", description: "Make PDFs small enough for email attachments with no signup.", date: "2025-04-06", readTime: "3 min read", tags: ["PDF", "Email"] },
+  { slug: "convert-word-to-pdf-free", title: "Convert Word to PDF Free", description: "Convert DOCX files to PDF online without Microsoft Office.", date: "2025-03-28", readTime: "4 min read", tags: ["PDF", "Word"] },
+  { slug: "jpg-vs-png-vs-webp-which-format", title: "JPG vs PNG vs WebP: Which Format Should You Use?", description: "A practical comparison of image formats for web and print.", date: "2025-03-20", readTime: "5 min read", tags: ["Image", "Guide"] },
+  { slug: "how-to-compress-images-for-web", title: "How to Compress Images for the Web", description: "Optimize image file sizes for faster page load speeds.", date: "2025-03-15", readTime: "4 min read", tags: ["Image", "Web"] },
+];
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -92,6 +99,14 @@ const homeJsonLd = [
     inLanguage: "en",
     description:
       "Free online PDF tools to merge, compress, convert, split, and edit PDF files. No upload, no signup required.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
     publisher: {
       "@type": "Organization",
       name: "thepdftools",
@@ -221,16 +236,13 @@ const homeJsonLd = [
     "@type": "Blog",
     name: "thepdftools Guides",
     url: `${SITE_URL}/blog`,
-    blogPost: [...growthBlogPosts]
-      .sort((a, b) => b.date.localeCompare(a.date))
-      .slice(0, 6)
-      .map((post) => ({
-        "@type": "BlogPosting",
-        headline: post.title,
-        description: post.description,
-        url: `${SITE_URL}/blog/${post.slug}`,
-        datePublished: post.date,
-      })),
+    blogPost: staticBlogPosts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.description,
+      url: `${SITE_URL}/blog/${post.slug}`,
+      datePublished: post.date,
+    })),
   },
 ];
 
@@ -685,57 +697,50 @@ const stats = [
   { value: "<1s", label: "Processing time" },
 ];
 
-const seoGroups = [
+const newTools = [
   {
-    title: "Popular PDF Tools",
-    description:
-      "Work with PDFs online using fast tools to merge PDF files, split PDF pages, compress PDFs, convert PDF to Word, convert PDF to JPG, edit PDF online, unlock PDFs, and build PDFs from images — all free, no upload.",
-    links: [
-      { href: "/pdf-merge", label: "Merge PDF" },
-      { href: "/pdf-compress", label: "Compress PDF" },
-      { href: "/pdf-split", label: "Split PDF" },
-      { href: "/pdf-to-word", label: "PDF to Word" },
-      { href: "/pdf-to-jpg", label: "PDF to JPG" },
-      { href: "/jpg-to-pdf", label: "JPG to PDF" },
-      { href: "/pdf-to-excel", label: "PDF to Excel" },
-      { href: "/pdf-highlight", label: "PDF Editor (Highlight)" },
-      { href: "/pdf-sign", label: "Sign PDF" },
-      { href: "/pdf-unlock", label: "Unlock PDF" },
-      { href: "/image-to-pdf", label: "Image to PDF" },
-      { href: "/word-to-pdf", label: "Word to PDF" },
-      { href: "/ppt-to-pdf", label: "PPT to PDF" },
-      { href: "/pdf-to-image", label: "PDF to Image" },
-    ],
+    href: "/password-generator",
+    title: "Password Generator",
+    description: "Generate strong, cryptographically secure passwords. Customize length, uppercase, numbers, and symbols.",
+    badge: "New",
+    color: "rose" as const,
+    icon: <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>,
   },
   {
-    title: "Popular Image Tools",
-    description:
-      "Use browser-based image tools to compress images, resize photos, crop screenshots, remove backgrounds, convert JPG to PNG, convert PNG to JPG, add watermarks, and convert to WebP — all free.",
-    links: [
-      { href: "/image-compressor", label: "Image Compressor" },
-      { href: "/jpg-to-png", label: "JPG to PNG" },
-      { href: "/png-to-jpg", label: "PNG to JPG" },
-      { href: "/image-resizer", label: "Image Resizer" },
-      { href: "/background-remover", label: "Background Remover" },
-      { href: "/image-cropper", label: "Image Cropper" },
-      { href: "/image-watermark", label: "Image Watermark" },
-      { href: "/heic-to-jpg", label: "HEIC to JPG" },
-    ],
+    href: "/regex-tester",
+    title: "Regex Tester",
+    description: "Test regular expressions in real time with match highlighting. Supports g, i, m, s flags.",
+    badge: "New",
+    color: "violet" as const,
+    icon: <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" /></svg>,
   },
   {
-    title: "Free Alternative Pages",
-    description:
-      "Compare lightweight no-signup PDF workflows against larger PDF suites when you only need a fast browser-based tool.",
-    links: [
-      { href: "/smallpdf-vs-thepdftools", label: "Smallpdf vs thepdftools" },
-      { href: "/ilovepdf-alternative", label: "iLovePDF Alternative" },
-      { href: "/blog/smallpdf-alternatives-free", label: "Smallpdf Alternatives Free" },
-      { href: "/blog/free-pdf-tools-no-signup", label: "Free PDF Tools No Signup" },
-    ],
+    href: "/timestamp-converter",
+    title: "Timestamp Converter",
+    description: "Convert Unix epoch timestamps to human-readable dates or dates to Unix timestamps instantly.",
+    badge: "New",
+    color: "amber" as const,
+    icon: <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  },
+  {
+    href: "/url-encoder",
+    title: "URL Encoder",
+    description: "Encode and decode URLs using percent-encoding. Supports full URL and query string parameters.",
+    badge: "New",
+    color: "teal" as const,
+    icon: <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>,
+  },
+  {
+    href: "/text-case-converter",
+    title: "Text Case Converter",
+    description: "Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and more.",
+    badge: "New",
+    color: "indigo" as const,
+    icon: <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" /></svg>,
   },
 ];
 
-const toolLookup = Object.fromEntries(tools.map((tool) => [tool.href, tool]));
+const toolLookup = Object.fromEntries([...tools, ...newTools].map((tool) => [tool.href, tool]));
 
 const featuredPdfHrefs = [
   "/pdf-merge",
@@ -807,9 +812,14 @@ const toolCategories = [
     title: "Developer & Utility Tools",
     hrefs: [
       "/qr-generator",
+      "/password-generator",
       "/json-formatter",
+      "/regex-tester",
       "/csv-to-json",
       "/base64",
+      "/url-encoder",
+      "/timestamp-converter",
+      "/text-case-converter",
       "/word-counter",
       "/lorem-ipsum",
       "/color-picker",
@@ -823,9 +833,7 @@ const toolCategories = [
     .filter(Boolean),
 }));
 
-const latestGuides = [...growthBlogPosts]
-  .sort((a, b) => b.date.localeCompare(a.date))
-  .slice(0, 6);
+const latestGuides = staticBlogPosts;
 
 const popularSearchPages = [
   {
@@ -866,6 +874,117 @@ const popularSearchPages = [
   },
 ];
 
+const categoryHubCards = [
+  {
+    href: "/pdf-tools",
+    label: "PDF Tools",
+    count: "30+",
+    color: "bg-violet-50 text-violet-700 border-violet-100",
+    icon: "M7 3h7l5 5v13H5V3h2zm1 8h8M8 15h8M8 19h5",
+  },
+  {
+    href: "/image-tools",
+    label: "Image Tools",
+    count: "18+",
+    color: "bg-rose-50 text-rose-700 border-rose-100",
+    icon: "M4 16l4.5-4.5a2 2 0 012.8 0L16 16m-1-1l1.5-1.5a2 2 0 012.8 0L20 15m-14 5h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2zm3-11h.01",
+  },
+  {
+    href: "/developer-tools",
+    label: "Dev Tools",
+    count: "7+",
+    color: "bg-blue-50 text-blue-700 border-blue-100",
+    icon: "M8 8l-4 4 4 4M16 8l4 4-4 4M14 4l-4 16",
+  },
+  {
+    href: "/generators",
+    label: "Generators",
+    count: "6+",
+    color: "bg-amber-50 text-amber-700 border-amber-100",
+    icon: "M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3z",
+  },
+  {
+    href: "/document-tools",
+    label: "Documents",
+    count: "11+",
+    color: "bg-teal-50 text-teal-700 border-teal-100",
+    icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+  },
+  {
+    href: "/utility-tools",
+    label: "Utilities",
+    count: "5+",
+    color: "bg-orange-50 text-orange-700 border-orange-100",
+    icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z",
+  },
+];
+
+const trustPoints = [
+  {
+    title: "Private by default",
+    desc: "Core PDF and image tools process locally in your browser whenever possible.",
+  },
+  {
+    title: "No signup needed",
+    desc: "Open a tool, drop your file, and download the result without creating an account.",
+  },
+  {
+    title: "Built for real tasks",
+    desc: "Merge, compress, convert, sign, and optimize files with focused workflows.",
+  },
+];
+
+const howItWorksSteps = [
+  {
+    n: "01",
+    title: "Pick a tool",
+    desc: "Choose the exact task you want to finish, from PDF conversion to quick image cleanup.",
+    color: "bg-brand-100 text-brand-700",
+    icon: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",
+  },
+  {
+    n: "02",
+    title: "Add your file",
+    desc: "Drag, drop, or browse. The interface stays simple and centered on the job you need done.",
+    color: "bg-secondary-100 text-secondary-700",
+    icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5",
+  },
+  {
+    n: "03",
+    title: "Download the result",
+    desc: "Get the processed file immediately and move on without extra steps or tool switching.",
+    color: "bg-tertiary-100 text-tertiary-700",
+    icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3",
+  },
+];
+
+const faqItems = [
+  {
+    q: "Are these free PDF tools really free?",
+    a: "Yes. All PDF tools on thepdftools.site are 100% free with no hidden fees, no account, and no signup required. There are no watermarks added to your files.",
+  },
+  {
+    q: "How do I merge PDF files online?",
+    a: "Use the free PDF Merge tool: upload your PDFs, drag to reorder pages if needed, then click merge. Your combined PDF downloads instantly with no server upload.",
+  },
+  {
+    q: "How do I compress a PDF without losing quality?",
+    a: "Open the PDF Compressor, upload your PDF, and download the compressed result. The tool reduces file size while keeping text and images readable.",
+  },
+  {
+    q: "Can I convert PDF to Word online for free?",
+    a: "Yes. Use the PDF to Word converter to turn your PDF into an editable Word document with no signup required.",
+  },
+  {
+    q: "Are my PDF files uploaded to a server?",
+    a: "No. The main PDF and image tools run entirely in your browser, so your files stay on your device.",
+  },
+  {
+    q: "How do I convert JPG to PDF online?",
+    a: "Use the JPG to PDF tool: upload your JPG, PNG, or WebP images, arrange the order, and download a clean PDF.",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="flex flex-col bg-[#fcfcfd]">
@@ -874,11 +993,11 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
       />
 
-      <section className="relative overflow-hidden border-b border-slate-200 bg-[linear-gradient(180deg,_#ffffff_0%,_#f8fafc_100%)] pt-16 pb-14 sm:pt-24 sm:pb-20">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-[linear-gradient(180deg,_#ffffff_0%,_#f8fafc_100%)] pt-12 pb-10 sm:pt-16 sm:pb-14">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_73%_42%,rgba(79,70,229,0.14),transparent_18%),radial-gradient(circle_at_65%_60%,rgba(147,51,234,0.12),transparent_24%)]" />
 
         <div className="mx-auto max-w-6xl px-5">
-          <div className="grid gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
+          <div className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
             <div className="max-w-[640px]">
               <ScrollReveal>
                 <div className="inline-flex rounded-full bg-brand-100 px-5 py-2 text-[13px] font-bold uppercase tracking-[0.14em] text-brand-700">
@@ -887,7 +1006,7 @@ export default function HomePage() {
               </ScrollReveal>
 
               <ScrollReveal delay={80}>
-                <h1 className="mt-8 text-4xl font-extrabold tracking-[-0.05em] text-slate-950 sm:text-6xl lg:text-[5rem] lg:leading-[0.94]">
+                <h1 className="mt-6 text-4xl font-extrabold tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-[4.5rem] lg:leading-[0.95]">
                   Free Online{" "}
                   <span className="bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
                     PDF Tools
@@ -896,25 +1015,24 @@ export default function HomePage() {
               </ScrollReveal>
 
               <ScrollReveal delay={160}>
-                <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-500 sm:text-[1.2rem]">
-                  Merge PDF, compress PDF, convert PDF to Word, split PDF pages,
-                  and edit PDF files — all free, private, and processing in your
-                  browser. No signup, no server upload, no software install.
-                  Image conversion tools included.
+                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-500 sm:text-[1.05rem]">
+                  Merge, compress, split, convert, and edit PDF files online for
+                  free. Most tools run directly in your browser, so your files
+                  stay private and your workflow stays fast.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal delay={240}>
-                <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                   <a
                     href="#featured-tools"
-                    className="inline-flex items-center justify-center rounded-full bg-brand-800 px-8 py-4 text-sm font-semibold text-white shadow-[0_20px_45px_-24px_rgba(15,23,42,0.6)] transition-transform duration-200 hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center rounded-full bg-brand-800 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_20px_45px_-24px_rgba(15,23,42,0.6)] transition-transform duration-200 hover:-translate-y-0.5"
                   >
                     Start with popular tools
                   </a>
                   <a
                     href="#all-tools"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-4 text-sm font-semibold text-slate-900 transition-colors hover:text-brand-700"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold text-slate-900 transition-colors hover:text-brand-700"
                   >
                     Browse everything
                     <span aria-hidden="true">→</span>
@@ -925,10 +1043,10 @@ export default function HomePage() {
             </div>
 
             <ScrollReveal delay={140}>
-              <div className="relative mx-auto flex min-h-[630px] w-full max-w-[560px] items-center justify-center">
-                <div className="hero-glow-pulse absolute inset-x-10 top-20 h-72 rounded-full bg-secondary-200/45 blur-3xl" />
+              <div className="relative mx-auto flex min-h-[500px] w-full max-w-[520px] items-center justify-center sm:min-h-[540px]">
+                <div className="hero-glow-pulse absolute inset-x-10 top-16 h-60 rounded-full bg-secondary-200/45 blur-3xl" />
 
-                <div className="hero-float absolute right-0 top-0 w-[300px] rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur">
+                <div className="hero-float absolute right-0 top-0 w-[280px] rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur sm:w-[300px]">
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2">
                       <span className="h-3 w-3 rounded-full bg-red-400" />
@@ -939,7 +1057,7 @@ export default function HomePage() {
                       Quick actions
                     </div>
                   </div>
-                  <div className="mt-6 space-y-3">
+                  <div className="mt-5 space-y-3">
                     {[
                       { name: "PDF Merge", meta: "Combine PDFs in one click" },
                       { name: "PDF Compressor", meta: "Reduce PDF size instantly" },
@@ -960,17 +1078,17 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="hero-float-delayed absolute left-2 top-[56%] z-10 flex w-[270px] items-center gap-4 rounded-[1.75rem] border border-white/80 bg-white/90 p-5 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-tertiary-100 text-tertiary-600">
+                <div className="hero-float-delayed absolute left-2 top-[54%] z-10 flex w-[250px] items-center gap-3 rounded-[1.75rem] border border-white/80 bg-white/90 p-4 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur sm:w-[270px]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-100 text-tertiary-600">
                     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m5.25 2.25a8.25 8.25 0 1 1-16.5 0 8.25 8.25 0 0 1 16.5 0Z" />
                     </svg>
                   </div>
                   <div>
-                    <div className="text-lg font-semibold text-slate-900">
-                      Enhancement ready
+                    <div className="text-base font-semibold text-slate-900">
+                      Privacy-first workflow
                     </div>
-                    <div className="mt-1 text-sm text-slate-500">
+                    <div className="mt-1 text-xs text-slate-500 sm:text-sm">
                       Processed locally in your browser
                     </div>
                   </div>
@@ -978,13 +1096,13 @@ export default function HomePage() {
 
                
 
-                <div className="hero-float-late absolute bottom-5 right-0 rounded-[1.75rem] border border-white/80 bg-white/90 px-5 py-4 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur">
+                <div className="hero-float-late absolute bottom-4 right-0 rounded-[1.75rem] border border-white/80 bg-white/90 px-4 py-3 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur">
                   <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
                     Active tools
                   </div>
                   <div className="mt-2 flex items-center gap-3">
-                    <div className="text-3xl font-black tracking-[-0.05em] text-slate-900">
-                      20+
+                    <div className="text-2xl font-black tracking-[-0.05em] text-slate-900">
+                      30+
                     </div>
                     <div className="text-sm text-slate-500">
                       ready for daily work
@@ -997,7 +1115,7 @@ export default function HomePage() {
           </div>
 
           <ScrollReveal delay={360}>
-            <div className="mt-14 grid grid-cols-2 gap-4 rounded-[2rem] border border-slate-200 bg-white/95 p-6 shadow-sm sm:grid-cols-4">
+            <div className="mt-10 grid grid-cols-2 gap-4 rounded-[2rem] border border-slate-200 bg-white/95 p-5 shadow-sm sm:grid-cols-4">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-2xl font-extrabold text-slate-900">{stat.value}</div>
@@ -1011,7 +1129,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="featured-tools" className="py-20">
+      <section className="border-b border-slate-100 bg-white py-10 sm:py-12">
+        <div className="mx-auto max-w-6xl px-5">
+          <ScrollReveal>
+            <div className="mb-8 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
+                Browse by Category
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Pick a tool category
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+                Start with PDFs, images, documents, generators, or quick utilities.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {categoryHubCards.map((cat, index) => (
+              <ScrollReveal key={cat.href} delay={index * 40} distance={14}>
+                <Link
+                  href={cat.href}
+                  className={`group flex h-full flex-col items-center rounded-[1.5rem] border p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${cat.color}`}
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d={cat.icon} />
+                    </svg>
+                  </div>
+
+                  <div className="mt-4">
+                    <h3 className="text-lg font-bold">{cat.label}</h3>
+                    <p className="mt-1.5 text-sm font-medium opacity-75">
+                      {cat.count} tools
+                    </p>
+                  </div>
+                </Link>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="featured-tools" className="py-16">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -1023,10 +1183,10 @@ export default function HomePage() {
                   Start with the most popular free PDF tools online
                 </h2>
               </div>
-              {/* <p className="max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-                These are the highest-intent tools across image compression,
-                PDF merging, resizing, and AI background cleanup.
-              </p> */}
+              <p className="max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+                These are the tools people use most for document uploads,
+                office work, applications, sharing, and day-to-day PDF tasks.
+              </p>
             </div>
           </ScrollReveal>
 
@@ -1037,185 +1197,84 @@ export default function HomePage() {
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-5">
-          <ScrollReveal>
-            <div className="text-center mb-12">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                About These PDF Tools
-              </p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                The complete free PDF toolkit — no upload, no signup
-              </h2>
-              <p className="mt-4 mx-auto max-w-3xl text-base leading-8 text-slate-500">
-                Everything you need to merge PDF, compress PDF, convert PDF to Word, split PDF pages, and edit PDF files online — all running privately in your browser.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            <ScrollReveal>
-              <div className="space-y-6 text-[15px] leading-8 text-slate-600">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Merge PDF files online free</h3>
-                  <p>
-                    The <Link href="/pdf-merge" className="font-semibold text-brand-700 hover:underline">PDF Merge tool</Link> lets you combine multiple PDF files into one document in seconds. Upload your files, drag to reorder pages, and download the merged PDF instantly. No upload to any server — everything runs in your browser. Ideal for combining invoices, certificates, resumes, and scanned documents into a single PDF for job applications, college admissions, or office submissions.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Compress PDF online — reduce PDF file size</h3>
-                  <p>
-                    Need to reduce a PDF that is too large for email or a portal upload? The <Link href="/pdf-compress" className="font-semibold text-brand-700 hover:underline">PDF Compressor</Link> optimizes your file without damaging text or layout. It works on invoices, reports, application forms, and scanned files. For specific upload limits, try <Link href="/compress-pdf-to-100kb" className="font-semibold text-brand-700 hover:underline">Compress PDF to 100KB</Link> or <Link href="/compress-pdf-for-govt-exam" className="font-semibold text-brand-700 hover:underline">Compress PDF for Govt Exam</Link>.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Convert PDF to Word, Excel, JPG, and more</h3>
-                  <p>
-                    Our <Link href="/pdf-to-word" className="font-semibold text-brand-700 hover:underline">PDF to Word converter</Link> extracts text into an editable document. The <Link href="/pdf-to-excel" className="font-semibold text-brand-700 hover:underline">PDF to Excel</Link> tool pulls table data into spreadsheets. Convert <Link href="/pdf-to-jpg" className="font-semibold text-brand-700 hover:underline">PDF to JPG</Link> for sharing individual pages as images, or use <Link href="/jpg-to-pdf" className="font-semibold text-brand-700 hover:underline">JPG to PDF</Link> to turn photos into a printable document. Every conversion tool is free and requires no signup.
-                  </p>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={80}>
-              <div className="space-y-6 text-[15px] leading-8 text-slate-600">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Split PDF — extract pages and ranges</h3>
-                  <p>
-                    The <Link href="/pdf-split" className="font-semibold text-brand-700 hover:underline">PDF Split tool</Link> lets you break a large PDF into individual pages or custom page ranges. Extract just the pages you need from a contract, report, or textbook. Splitting before compressing or merging gives you finer control over your final document — all in a private, browser-based flow.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Edit PDF online — highlight, sign, and annotate</h3>
-                  <p>
-                    Use the <Link href="/pdf-highlight" className="font-semibold text-brand-700 hover:underline">PDF Highlight tool</Link> to mark up contracts, lecture notes, and reports directly in your browser. The <Link href="/pdf-sign" className="font-semibold text-brand-700 hover:underline">PDF Sign tool</Link> lets you add a digital signature to any document without printing. Need to protect sensitive data? The <Link href="/pdf-redaction" className="font-semibold text-brand-700 hover:underline">PDF Redaction tool</Link> permanently removes private information before sharing.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">Convert images to PDF and PDF to images</h3>
-                  <p>
-                    The <Link href="/image-to-pdf" className="font-semibold text-brand-700 hover:underline">Image to PDF converter</Link> combines JPG, PNG, or WebP photos into a single PDF document — perfect for receipts, forms, and photo albums. Going the other direction, the <Link href="/pdf-to-image" className="font-semibold text-brand-700 hover:underline">PDF to Image tool</Link> exports every page as a high-quality JPG or PNG for sharing on social media or embedding in presentations.
-                  </p>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
 
           <ScrollReveal delay={120}>
-            <div className="mt-12 rounded-3xl border border-brand-100 bg-brand-50 p-8">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">Why use thepdftools instead of Smallpdf or iLovePDF?</h3>
-              <div className="grid gap-6 sm:grid-cols-3 text-sm leading-7 text-slate-600">
-                <div>
-                  <p className="font-semibold text-slate-800 mb-1">No file upload required</p>
-                  <p>Unlike most online PDF tools, the core tools on thepdftools process your files locally in your browser. Your PDFs never leave your device, which makes them safer for sensitive documents like contracts, tax filings, and medical records.</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-800 mb-1">No signup, no paywalls</p>
-                  <p>Tools like Smallpdf and iLovePDF limit free usage and push paid plans. Every tool on thepdftools.site is free to use without creating an account, hitting a daily limit, or seeing a paywall after your first file.</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-800 mb-1">Fast and focused</p>
-                  <p>Each PDF tool page is built around a single job: merge, compress, split, convert, or edit. No clutter, no upsells, no forced app downloads. Open the tool, process your file, and move on — typically in under 30 seconds.</p>
-                </div>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/smallpdf-vs-thepdftools" className="rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100">Smallpdf vs thepdftools</Link>
-                <Link href="/ilovepdf-alternative" className="rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100">iLovePDF alternative</Link>
-              </div>
+            <div className="mt-10 flex flex-wrap gap-3">
+              {popularSearchPages.map((page) => (
+                <Link
+                  key={page.href}
+                  href={page.href}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+                >
+                  {page.title}
+                </Link>
+              ))}
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      <section className="py-20 bg-slate-950 text-white">
+      <section className="py-16 bg-slate-950 text-white">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-tertiary-300">
-                  Why This Feels Better
+                  How It Works
                 </p>
                 <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-                  Less waiting, less clutter, less risk
+                  Simple tools that stay out of your way
                 </h2>
                 <p className="mt-5 text-base leading-8 text-slate-300">
-                  Most online tools slow you down with uploads, ads, and extra
-                  steps. Here, the flow is straightforward: pick a tool, process
-                  your file, and move on.
+                  Open the tool you need, upload your file, and download the
+                  result. No account walls, no complicated workflow, and no
+                  unnecessary steps between you and the finished file.
                 </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
-                {[
-                  {
-                    title: "Private by default",
-                    desc: "Main tools process locally in your browser whenever possible.",
-                  },
-                  {
-                    title: "Made for speed",
-                    desc: "Simple flows, instant actions, and lightweight interfaces.",
-                  },
-                  {
-                    title: "Useful coverage",
-                    desc: "Images, PDFs, quick utilities, and creator-friendly tasks in one place.",
-                  },
-                ].map((item) => (
+                {howItWorksSteps.map((step) => (
                   <div
-                    key={item.title}
+                    key={step.n}
                     className="rounded-3xl border border-white/10 bg-white/5 p-6"
                   >
-                    <div className="text-lg font-semibold">{item.title}</div>
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${step.color}`}>
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d={step.icon} />
+                      </svg>
+                    </div>
+                    <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                      {step.n}
+                    </div>
+                    <div className="mt-2 text-lg font-semibold">{step.title}</div>
                     <div className="mt-3 text-sm leading-6 text-slate-300">
-                      {item.desc}
+                      {step.desc}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </ScrollReveal>
-        </div>
-      </section>
 
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-5">
-          <ScrollReveal>
-            <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                How It Works
-              </p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Three simple steps
-              </h2>
+          <ScrollReveal delay={120}>
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              {trustPoints.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-3xl border border-white/10 bg-white/5 p-6"
+                >
+                  <div className="text-lg font-semibold text-white">{item.title}</div>
+                  <div className="mt-3 text-sm leading-6 text-slate-300">
+                    {item.desc}
+                  </div>
+                </div>
+              ))}
             </div>
           </ScrollReveal>
-
-          <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-3">
-            {[
-              { n: "01", title: "Pick a tool", desc: "Choose the exact task you want to finish, from image work to PDF handling.", color: "bg-brand-100 text-brand-700", icon: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" },
-              { n: "02", title: "Add your file", desc: "Drag, drop, or browse. The interface stays simple and focused on the task.", color: "bg-secondary-100 text-secondary-700", icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" },
-              { n: "03", title: "Download the result", desc: "Get the processed file immediately and move on with your work.", color: "bg-tertiary-100 text-tertiary-700", icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" },
-            ].map((step, i) => (
-              <ScrollReveal key={step.n} delay={i * 120}>
-                <div className="rounded-3xl border border-slate-100 bg-[#f8fafc] p-7 text-center shadow-sm">
-                  <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl ${step.color}`}>
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d={step.icon} />
-                    </svg>
-                  </div>
-                  <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">{step.n}</div>
-                  <h3 className="mt-2 text-lg font-semibold text-slate-900">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">{step.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
         </div>
       </section>
 
-      <section id="all-tools" className="py-20 bg-[#f8fafc]">
+      <section id="all-tools" className="py-16 bg-[#f8fafc]">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
             <div className="mb-12 text-center">
@@ -1226,7 +1285,9 @@ export default function HomePage() {
                 Complete free PDF tools collection — convert, edit, compress &amp; merge
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-500 sm:text-base">
-                Every free PDF tool and image tool organized by task. PDF converter, PDF editor, PDF compressor, image converter, and more — all free, no upload required.
+                Browse every PDF and image tool by use case. Find converters,
+                editors, compressors, utility tools, and quick file workflows in
+                one place.
               </p>
             </div>
           </ScrollReveal>
@@ -1256,57 +1317,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-5">
-          <ScrollReveal>
-            <div className="mb-12 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary-700">
-                PDF Tools by Category
-              </p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Free PDF tools organized by task — merge, compress, convert &amp; edit
-              </h2>
-              <p className="mt-3 mx-auto max-w-3xl text-sm leading-relaxed text-slate-500 sm:text-base">
-                Browse PDF converter tools, PDF editing tools, and image tools by the specific task you need to complete.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {seoGroups.map((group, index) => (
-              <ScrollReveal key={group.title} delay={index * 80}>
-                <div className="rounded-2xl border border-gray-100 bg-[#f8f9fc] p-6">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    {group.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                    {group.description}
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {group.links.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-brand-300 hover:text-brand-700"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          <ScrollReveal delay={160}>
-            <div className="mt-8 rounded-3xl border border-brand-100 bg-brand-50 p-6 text-sm leading-7 text-slate-600">
-              Use free online PDF tools to <Link href="/pdf-merge" className="font-semibold text-brand-700 hover:underline">merge PDF files</Link>, <Link href="/pdf-split" className="font-semibold text-brand-700 hover:underline">split PDF pages</Link>, <Link href="/pdf-compress" className="font-semibold text-brand-700 hover:underline">compress PDFs online</Link>, <Link href="/pdf-to-word" className="font-semibold text-brand-700 hover:underline">convert PDF to Word</Link>, <Link href="/pdf-to-jpg" className="font-semibold text-brand-700 hover:underline">convert PDF to JPG</Link>, <Link href="/jpg-to-pdf" className="font-semibold text-brand-700 hover:underline">convert JPG to PDF</Link>, and <Link href="/pdf-to-excel" className="font-semibold text-brand-700 hover:underline">convert PDF to Excel</Link>. Also use free image tools to <Link href="/image-compressor" className="font-semibold text-brand-700 hover:underline">compress images</Link>, <Link href="/jpg-to-png" className="font-semibold text-brand-700 hover:underline">convert JPG to PNG</Link>, <Link href="/png-to-jpg" className="font-semibold text-brand-700 hover:underline">convert PNG to JPG</Link>, and <Link href="/background-remover" className="font-semibold text-brand-700 hover:underline">remove image backgrounds</Link> — all without uploading files to any server.
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <section className="py-20 bg-[#f8fafc]">
+      <section className="py-16 bg-[#f8fafc]">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
             <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -1315,12 +1326,11 @@ export default function HomePage() {
                   Latest Guides
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  Fresh blog posts for high-intent search topics
+                  Guides that support the main tools
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
-                  Browse step-by-step guides around PDF conversion, image optimization,
-                  WebP, QR codes, and file privacy. These pages help users find the
-                  right workflow and strengthen internal linking across the site.
+                  Read quick guides for file conversion, compression, privacy,
+                  and image workflows when you need help choosing the right tool.
                 </p>
               </div>
               <Link
@@ -1340,7 +1350,7 @@ export default function HomePage() {
                   className="group block rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
                 >
                   <div className="flex flex-wrap gap-2">
-                    {post.tags.slice(0, 2).map((tag) => (
+                    {(post as any).tags?.slice(0, 2).map((tag: string) => (
                       <span
                         key={tag}
                         className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
@@ -1367,20 +1377,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
             <div className="mb-12 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
-                Popular Searches
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary-700">
+                Quick Links
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Search-intent pages built for long-tail traffic
+                High-intent pages for common upload limits and edge cases
               </h2>
               <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base">
-                These focused landing pages are designed around specific file
-                jobs people actually search for, which helps search engines
-                discover more entry points across the same core tools.
+                Jump straight to focused workflows for size-restricted uploads,
+                application forms, portal limits, and specific conversion needs.
               </p>
             </div>
           </ScrollReveal>
@@ -1408,7 +1417,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#f8fafc]">
+      <section className="py-16 bg-[#f8fafc]">
         <div className="mx-auto max-w-5xl px-5">
           <ScrollReveal>
             <div className="text-center">
@@ -1422,14 +1431,7 @@ export default function HomePage() {
           </ScrollReveal>
 
           <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            {[
-              { q: "Are these free PDF tools really free?", a: "Yes. All PDF tools on thepdftools.site are 100% free with no hidden fees, no account, and no signup required. There are no watermarks added to your files." },
-              { q: "How do I merge PDF files online?", a: "Use the free PDF Merge tool: upload your PDFs, drag to reorder pages if needed, then click merge. Your combined PDF downloads instantly — no upload to any server." },
-              { q: "How do I compress a PDF without losing quality?", a: "Open the PDF Compressor, upload your PDF, and download the compressed result. The tool reduces file size by optimizing internal structure while keeping text and images readable." },
-              { q: "Can I convert PDF to Word online for free?", a: "Yes. Use the PDF to Word converter to turn your PDF into an editable Word document — free, with no server upload and no signup required." },
-              { q: "Are my PDF files uploaded to a server?", a: "No. The main PDF and image tools run entirely in your browser. Your files stay on your device and are never sent to any server, keeping your documents private." },
-              { q: "How do I convert JPG to PDF online?", a: "Use the JPG to PDF tool: upload your JPG, PNG, or WebP images, arrange the order, and download a clean PDF. You can combine multiple images into one PDF document." },
-            ].map((item, i) => (
+            {faqItems.map((item, i) => (
               <ScrollReveal key={item.q} delay={i * 50} distance={10}>
                 <details className="group rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm">
                   <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition-colors [&::-webkit-details-marker]:hidden">
@@ -1447,7 +1449,7 @@ export default function HomePage() {
       </section>
 
       <ScrollReveal>
-        <section className="py-16 bg-white">
+        <section className="py-12 bg-white">
           <div className="mx-auto max-w-6xl px-5">
             <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white ">
               <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-14">

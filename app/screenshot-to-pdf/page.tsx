@@ -55,7 +55,8 @@ export default function ScreenshotToPdfPage() {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Screenshot to PDF", "item": "https://thepdftools.site/screenshot-to-pdf" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Screenshot to PDF", "item": "https://thepdftools.site/screenshot-to-pdf" },
         ],
       },
     ],

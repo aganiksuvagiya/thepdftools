@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSeoTool, SITE_URL, type SeoTool } from "@/lib/seo-growth";
+import { getSeoTool, type SeoTool } from "@/lib/seo-growth";
 
 const linkClass =
   "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700";
@@ -7,52 +7,9 @@ const linkClass =
 export default function ToolSeoGrowth({ slug }: { slug: string }) {
   const tool = getSeoTool(slug) ?? createFallbackTool(slug);
 
-  const faqJsonLd = tool.faq.length
-    ? {
-        "@type": "FAQPage",
-        mainEntity: tool.faq.map((item) => ({
-          "@type": "Question",
-          name: item.q,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.a,
-          },
-        })),
-      }
-    : null;
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        name: `${tool.name} - ${tool.primaryKeyword}`,
-        url: `${SITE_URL}/${tool.slug}`,
-        description: tool.promise,
-        mainEntity: { "@id": `${SITE_URL}/${tool.slug}#software` },
-      },
-      {
-        "@type": "SoftwareApplication",
-        "@id": `${SITE_URL}/${tool.slug}#software`,
-        name: tool.name,
-        url: `${SITE_URL}/${tool.slug}`,
-        applicationCategory: "UtilitiesApplication",
-        operatingSystem: "Any",
-        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        keywords: [tool.primaryKeyword, ...tool.secondaryKeywords],
-        description: tool.promise,
-      },
-      ...(faqJsonLd ? [faqJsonLd] : []),
-    ],
-  };
 
   return (
     <section className="mt-14 space-y-8" aria-labelledby={`${slug}-seo-guide`}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
       <div className="rounded-[1.5rem] border border-brand-100 bg-white p-6 shadow-sm sm:p-8">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-700">
           No Upload Required - 100% Privacy - Instant Processing

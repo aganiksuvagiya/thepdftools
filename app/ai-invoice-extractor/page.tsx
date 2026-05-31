@@ -46,7 +46,14 @@ export default function AiInvoiceExtractorPage() {
         description:
           "Extract invoice number, dates, amounts, tax, vendor, customer, and raw invoice text from PDFs directly in your browser.",
       },
-      
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" },
+          { "@type": "ListItem", position: 3, name: "AI Invoice Extractor", item: PAGE_URL },
+        ],
+      },
     ],
   };
 

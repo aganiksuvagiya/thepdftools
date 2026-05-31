@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const PdfToWordClient = dynamic(() => import("./PdfToWordClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -55,11 +56,43 @@ export default function PdfToWordPage() {
           "Convert PDF files to editable Word documents for free online. Extract text and download as .doc — runs entirely in your browser.",
       },
       
+            {
+        "@type": "HowTo",
+        name: "How to Convert PDF to Word Online",
+        description: "Convert a PDF file to an editable Word document for free.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the PDF to Word converter",
+            text: "Go to https://thepdftools.site/pdf-to-word and open the free converter.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Upload your PDF",
+            text: "Click the upload area or drag and drop your PDF file.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Convert the PDF",
+            text: "Click Convert to Word to start extracting the text content from the PDF.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Download the Word file",
+            text: "Click Download to save the converted DOCX file to your device.",
+          }
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF to Word", "item": "https://thepdftools.site/pdf-to-word" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF to Word", "item": "https://thepdftools.site/pdf-to-word" },
         ],
       },
     ],
@@ -72,6 +105,11 @@ export default function PdfToWordPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "PDF to Word" },
+        ]} />
         {/* HERO CARD */}
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />

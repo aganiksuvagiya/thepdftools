@@ -44,11 +44,43 @@ const jsonLd = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       description: "Fill PDF form fields online for free — text fields, checkboxes, dropdowns, radio buttons. Download the filled PDF instantly.",
     },
-    {
+    
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Can I fill any PDF form with this tool?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. The tool detects fillable form fields in your PDF and lets you type into them directly. It also supports flat PDFs where you can add text annotations." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I save a partially filled form?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Download the PDF at any point — the filled form data is embedded in the file." },
+          },
+          {
+            "@type": "Question",
+            name: "Does filling a PDF form require a signup?",
+            acceptedAnswer: { "@type": "Answer", text: "No. The form filler is completely free with no account required. Open your PDF and start filling immediately." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I fill checkboxes and radio buttons?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Interactive PDF forms with checkboxes, radio buttons, dropdowns, and signature fields are all supported." },
+          },
+          {
+            "@type": "Question",
+            name: "Is my form data private?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. All form filling happens in your browser. Your form data and PDF content are never sent to any server." },
+          }
+        ],
+      },
+      {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Form Filler", item: "https://thepdftools.site/pdf-form-filler" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "PDF Form Filler", item: "https://thepdftools.site/pdf-form-filler" },
       ],
     },
   ],
@@ -104,6 +136,27 @@ export default function PdfFormFillerPage() {
               <Link href="/pdf-sign" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Sign</Link>
               <Link href="/pdf-protect" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Protect</Link>
               <Link href="/pdf-compress" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Compress</Link>
+            </div>
+          </div>
+          
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "Can I fill any PDF form with this tool?", a: "Yes. The tool detects fillable form fields in your PDF and lets you type into them directly. It also supports flat PDFs where you can add text annotations." },
+                { q: "Can I save a partially filled form?", a: "Yes. Download the PDF at any point — the filled form data is embedded in the file." },
+                { q: "Does filling a PDF form require a signup?", a: "No. The form filler is completely free with no account required. Open your PDF and start filling immediately." },
+                { q: "Can I fill checkboxes and radio buttons?", a: "Yes. Interactive PDF forms with checkboxes, radio buttons, dropdowns, and signature fields are all supported." },
+                { q: "Is my form data private?", a: "Yes. All form filling happens in your browser. Your form data and PDF content are never sent to any server." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
           <ToolSeoGrowth slug="pdf-form-filler" />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/free-invoice-generator-freelancers`;
@@ -265,7 +266,8 @@ export default function FreeInvoiceGeneratorFreelancers() {
                 A professional invoice is one of the simplest things you can do to run a better freelance business. It takes minutes to create, builds client trust, and keeps your finances organized. Start with our free <Link href="/invoice-generator" className={toolLink}>Invoice Generator</Link> and send your first polished PDF invoice today.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

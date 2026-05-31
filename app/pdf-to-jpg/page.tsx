@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const PdfToJpgClient = dynamic(() => import("./PdfToJpgClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -33,6 +34,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://thepdftools.site/pdf-to-jpg" },
 };
 
+const faqItems = [
+  { q: "Can I convert all pages of a PDF to JPG?", a: "Yes. The tool converts every page of your PDF to a separate JPG image. You can download them individually or as a ZIP." },
+  { q: "What quality are the output JPG images?", a: "Output images are generated at high quality. You can adjust the resolution/quality setting to balance file size and sharpness." },
+  { q: "Is the PDF to JPG conversion free?", a: "Yes. Completely free with no signup, no watermarks, and no upload to any server." },
+  { q: "Does converting PDF to JPG work for scanned PDFs?", a: "Yes. Scanned PDFs are image-based, so each page is simply exported as a JPG at the specified resolution." },
+  { q: "Can I convert specific pages only?", a: "Yes. The tool lets you select specific page ranges to convert rather than the entire document." },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -46,10 +55,27 @@ const jsonLd = {
       description: "Convert PDF pages to high-quality JPG images online for free. No upload required — runs entirely in your browser.",
     },
     {
+      "@type": "HowTo",
+      name: "How to Convert PDF to JPG Online",
+      description: "Export PDF pages as JPG images for free in your browser.",
+      step: [
+        { "@type": "HowToStep", position: 1, name: "Open the PDF to JPG tool", text: "Go to thepdftools.site/pdf-to-jpg and open the free converter." },
+        { "@type": "HowToStep", position: 2, name: "Upload your PDF", text: "Click the upload area or drag and drop your PDF file." },
+        { "@type": "HowToStep", position: 3, name: "Choose pages and quality", text: "Select specific pages or convert all pages. Adjust image quality as needed." },
+        { "@type": "HowToStep", position: 4, name: "Convert to JPG", text: "Click Convert to generate JPG images from each PDF page." },
+        { "@type": "HowToStep", position: 5, name: "Download the images", text: "Download individual JPG files or all pages as a ZIP archive." },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+    },
+    {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF to JPG", item: "https://thepdftools.site/pdf-to-jpg" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "PDF to JPG", item: "https://thepdftools.site/pdf-to-jpg" },
       ],
     },
   ],
@@ -60,6 +86,11 @@ export default function PdfToJpgPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "PDF to JPG" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.08),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.07),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -105,6 +136,20 @@ export default function PdfToJpgPage() {
               <Link href="/pdf-to-image" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF to Image</Link>
               <Link href="/pdf-compress" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Compress</Link>
               <Link href="/image-compressor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Compressor</Link>
+            </div>
+          </div>
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {faqItems.map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
           <ToolSeoGrowth slug="pdf-to-jpg" />

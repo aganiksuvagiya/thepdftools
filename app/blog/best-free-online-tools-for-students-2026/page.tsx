@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 export const metadata: Metadata = {
   title: "15 Best Free Online Tools Every Student Needs in 2026",
@@ -169,7 +170,8 @@ export default function BlogPost() {
           <p>
             Bookmark <a href="/" className="text-brand-600 hover:underline">thepdftools.site</a> and start using these tools right now. No signup, no download, no credit card. Just open a tool and start working. Share it with your classmates — because everyone deserves access to free, private, and fast online tools.
           </p>
-        </article>
+        <BlogFooterLinks />
+      </article>
 
         {/* Related tools */}
         <div className="mt-12 pt-8 border-t border-gray-100">

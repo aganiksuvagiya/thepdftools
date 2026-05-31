@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-compress-images-for-web`;
@@ -238,7 +239,8 @@ export default function HowToCompressImagesForWeb() {
                 Image compression is one of the easiest wins in web performance. A few minutes of optimization can cut page load time in half, improve your Core Web Vitals scores, and save real money on hosting bandwidth. Start with our free <Link href="/image-compressor" className={toolLink}>Image Compressor</Link> and see the difference for yourself.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

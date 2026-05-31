@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-merge-pdf-files-online`;
@@ -293,7 +294,8 @@ export default function HowToMergePdfFilesOnline() {
                 Try PDF Merge Free
               </Link>
             </div>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* SIDEBAR */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

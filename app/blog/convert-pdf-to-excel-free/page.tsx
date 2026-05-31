@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-pdf-to-excel-free`;
@@ -282,7 +283,8 @@ export default function ConvertPdfToExcelFree() {
                 Converting PDF to Excel does not have to be painful. Whether you are extracting financial data from bank statements, pulling numbers from invoices, or analyzing research tables, our free <Link href="/pdf-to-excel" className={toolLink}>PDF to Excel converter</Link> handles it in seconds&mdash;right in your browser, with no file uploads and no account required. Give it a try and stop retyping data by hand.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

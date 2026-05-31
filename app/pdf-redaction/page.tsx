@@ -46,7 +46,14 @@ export default function PdfRedactionPage() {
         description:
           "Black out sensitive information in PDF files and download a flattened redacted PDF.",
       },
-      
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "PDF Redaction", item: PAGE_URL },
+        ],
+      },
     ],
   };
 

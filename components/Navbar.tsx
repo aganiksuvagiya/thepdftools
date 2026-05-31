@@ -135,9 +135,19 @@ const utilitySections: DropdownSection[] = [
   {
     title: "Generators",
     items: [
+      { href: "/password-generator", label: "Password Generator", icon: "lock", bg: "bg-rose-100", fg: "text-rose-700" },
       { href: "/signature-generator", label: "Signature Generator", icon: "sign", bg: "bg-violet-100", fg: "text-violet-700" },
       { href: "/barcode-generator", label: "Barcode Generator", icon: "barcode", bg: "bg-teal-100", fg: "text-teal-700" },
       { href: "/favicon-generator", label: "Favicon Generator", icon: "favicon", bg: "bg-amber-100", fg: "text-amber-700" },
+    ],
+  },
+  {
+    title: "Developer Tools",
+    items: [
+      { href: "/url-encoder", label: "URL Encoder", icon: "code", bg: "bg-zinc-100", fg: "text-zinc-700" },
+      { href: "/regex-tester", label: "Regex Tester", icon: "braces", bg: "bg-slate-100", fg: "text-slate-700" },
+      { href: "/timestamp-converter", label: "Timestamp Converter", icon: "text", bg: "bg-sky-100", fg: "text-sky-700" },
+      { href: "/text-case-converter", label: "Text Case Converter", icon: "paragraph", bg: "bg-lime-100", fg: "text-lime-700" },
     ],
   },
 ];
@@ -434,7 +444,7 @@ export default function Navbar() {
                 </button>
                 {pdfOpen && (
                   <div className="absolute left-0 top-full pt-3">
-                    <DropdownPanel sections={pdfSections} pathname={pathname} onClose={() => setPdfOpen(false)} viewAllHref="/" />
+                    <DropdownPanel sections={pdfSections} pathname={pathname} onClose={() => setPdfOpen(false)} viewAllHref="/pdf-tools" />
                   </div>
                 )}
               </div>
@@ -464,7 +474,7 @@ export default function Navbar() {
                 </button>
                 {imageOpen && (
                   <div className="absolute left-0 top-full pt-3">
-                    <DropdownPanel sections={imageSections} pathname={pathname} onClose={() => setImageOpen(false)} viewAllHref="/" />
+                    <DropdownPanel sections={imageSections} pathname={pathname} onClose={() => setImageOpen(false)} viewAllHref="/image-tools" />
                   </div>
                 )}
               </div>
@@ -494,7 +504,7 @@ export default function Navbar() {
                 </button>
                 {utilityOpen && (
                   <div className="absolute left-0 top-full pt-3">
-                    <DropdownPanel sections={utilitySections} pathname={pathname} onClose={() => setUtilityOpen(false)} viewAllHref="/" />
+                    <DropdownPanel sections={utilitySections} pathname={pathname} onClose={() => setUtilityOpen(false)} viewAllHref="/utility-tools" />
                   </div>
                 )}
               </div>
@@ -608,7 +618,33 @@ export default function Navbar() {
             </div>
 
             <div>
-              <p className="mb-3 text-[10.5px] font-bold uppercase tracking-[0.15em] text-slate-400">Main Menu</p>
+              <p className="mb-3 text-[10.5px] font-bold uppercase tracking-[0.15em] text-slate-400">Categories</p>
+              <div className="grid grid-cols-2 gap-1">
+                {[
+                  { href: "/pdf-tools", label: "All PDF Tools" },
+                  { href: "/image-tools", label: "All Image Tools" },
+                  { href: "/developer-tools", label: "Developer Tools" },
+                  { href: "/generators", label: "Generators" },
+                  { href: "/document-tools", label: "Document Tools" },
+                  { href: "/utility-tools", label: "Utility Tools" },
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={clsx(
+                      "rounded-xl px-3 py-2.5 text-[13.5px] font-medium transition-colors",
+                      pathname === link.href ? "bg-slate-50 text-brand-700" : "text-slate-700 hover:bg-slate-50 hover:text-slate-900",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-3 text-[10.5px] font-bold uppercase tracking-[0.15em] text-slate-400">Popular Tools</p>
               <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
                 {primaryLinks.map((link) => (
                   <Link

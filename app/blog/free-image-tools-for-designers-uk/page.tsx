@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 export const metadata: Metadata = {
   title: "10 Free Image Tools Every UK Designer Needs in 2026",
@@ -195,7 +196,8 @@ export default function BlogPost() {
           <p>
             Bookmark the site, share it with your design colleagues, and add it to your agency&apos;s resource list. These tools are free today and will remain free — because great design tools should be accessible to everyone.
           </p>
-        </article>
+        <BlogFooterLinks />
+      </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-slate-900">

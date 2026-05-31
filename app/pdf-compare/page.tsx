@@ -47,6 +47,44 @@ export default function PdfComparePage() {
           "Compare two PDF versions, detect changed pages, and review added or removed text directly in your browser.",
       },
       
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "How does the PDF Compare tool work?",
+            acceptedAnswer: { "@type": "Answer", text: "Upload two PDF files — the original and the revised version. The tool analyzes both page by page and highlights pages where differences were detected." },
+          },
+          {
+            "@type": "Question",
+            name: "What types of differences are detected?",
+            acceptedAnswer: { "@type": "Answer", text: "The tool detects visual differences between corresponding pages — added text, removed text, image changes, and layout modifications." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I compare specific pages?",
+            acceptedAnswer: { "@type": "Answer", text: "The tool compares documents page by page. Upload PDFs with matching page counts for best results." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the PDF comparison accurate?",
+            acceptedAnswer: { "@type": "Answer", text: "The tool provides a visual comparison. For legal or contractual documents, always review differences manually before making decisions." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the PDF Compare tool free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Free with no signup and no upload to any server." },
+          }
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "PDF Compare", item: PAGE_URL },
+        ],
+      },
     ],
   };
 
@@ -119,7 +157,28 @@ export default function PdfComparePage() {
             </Link>
           </div>
         </div>
-      </div>
+      
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "How does the PDF Compare tool work?", a: "Upload two PDF files — the original and the revised version. The tool analyzes both page by page and highlights pages where differences were detected." },
+                { q: "What types of differences are detected?", a: "The tool detects visual differences between corresponding pages — added text, removed text, image changes, and layout modifications." },
+                { q: "Can I compare specific pages?", a: "The tool compares documents page by page. Upload PDFs with matching page counts for best results." },
+                { q: "Is the PDF comparison accurate?", a: "The tool provides a visual comparison. For legal or contractual documents, always review differences manually before making decisions." },
+                { q: "Is the PDF Compare tool free?", a: "Yes. Free with no signup and no upload to any server." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+          </div>
     </div>
   );
 }

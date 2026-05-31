@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 export const metadata: Metadata = {
   title: "Free Online Tools for Small Businesses – Save Money in 2026",
@@ -205,7 +206,8 @@ export default function BlogPost() {
           <p>
             Your small business deserves enterprise-level tools without the enterprise-level price tag. Start using them today — completely free, no strings attached.
           </p>
-        </article>
+        <BlogFooterLinks />
+      </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-slate-900">

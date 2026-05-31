@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const JsonFormatterClient = dynamic(() => import("./JsonFormatterClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -50,11 +51,49 @@ export default function JsonFormatterPage() {
         description:
           "Format, minify, and validate JSON instantly in your browser. No upload, no server, completely private.",
       },
+            {
+        "@type": "HowTo",
+        name: "How to Format JSON Online",
+        description: "Beautify and validate JSON data for free in your browser.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the JSON Formatter",
+            text: "Go to https://thepdftools.site/json-formatter and open the free JSON formatter.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Paste your JSON",
+            text: "Paste your raw or minified JSON data into the input area.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Format the JSON",
+            text: "Click Format or press the shortcut to beautify and indent the JSON with proper formatting.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Validate the result",
+            text: "The tool highlights any syntax errors in the JSON structure.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 5,
+            name: "Copy the formatted JSON",
+            text: "Click Copy to copy the formatted JSON to your clipboard.",
+          }
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
+          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
         ],
       },
       

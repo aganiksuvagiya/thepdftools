@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-heic-to-jpg-free`;
@@ -284,7 +285,8 @@ export default function ConvertHeicToJpgFree() {
                 HEIC is a great format for saving storage on your iPhone, but its lack of universal compatibility makes conversion to JPG a necessity. Whether you need to share photos over email, upload them to a website, or simply open them on a Windows PC, our free <Link href="/heic-to-jpg" className={toolLink}>HEIC to JPG converter</Link> handles it in seconds&mdash;right in your browser, with zero uploads and zero cost.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

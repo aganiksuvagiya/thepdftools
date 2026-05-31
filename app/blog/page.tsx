@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { growthBlogPosts } from "@/lib/seo-growth";
 
 export const metadata: Metadata = {
   title: "Blog — Tips, Guides & Tutorials for Image & PDF Tools",
@@ -19,14 +18,6 @@ export const metadata: Metadata = {
 };
 
 const posts = [
-  ...growthBlogPosts.map((post) => ({
-    slug: post.slug,
-    title: post.title,
-    excerpt: post.description,
-    date: post.date,
-    readTime: post.readTime,
-    tags: post.tags,
-  })),
   {
     slug: "add-watermark-to-image-online-free",
     title: "How to Add Watermark to Image Online Free - No Upload",
@@ -259,7 +250,7 @@ export default function BlogPage() {
               className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-brand-200"
             >
               <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
@@ -285,6 +276,36 @@ export default function BlogPage() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Tool Categories CTA */}
+        <div className="mt-16 rounded-[2rem] border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Try the Free Tools</h2>
+            <p className="mt-2 text-slate-500">Every tool runs in your browser — no sign-up, no upload, no watermarks.</p>
+          </div>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { href: "/pdf-tools", label: "PDF Tools", desc: "Merge, split, compress & convert PDFs", count: "30+" },
+              { href: "/image-tools", label: "Image Tools", desc: "Compress, resize, convert & edit images", count: "18+" },
+              { href: "/developer-tools", label: "Developer Tools", desc: "JSON, Base64, URL encoder & more", count: "7+" },
+              { href: "/generators", label: "Generators", desc: "QR codes, invoices, lorem ipsum", count: "6+" },
+              { href: "/document-tools", label: "Document Tools", desc: "Word to PDF, Excel to PDF & more", count: "11+" },
+              { href: "/utility-tools", label: "Utility Tools", desc: "Word counter, color tools & more", count: "5+" },
+            ].map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="group flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4 transition-all hover:border-brand-200 hover:bg-white hover:shadow-sm"
+              >
+                <div>
+                  <p className="text-[14px] font-semibold text-slate-900 group-hover:text-brand-700">{cat.label}</p>
+                  <p className="mt-0.5 text-[12px] text-slate-500">{cat.desc}</p>
+                </div>
+                <span className="ml-3 shrink-0 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 shadow-sm border border-slate-100">{cat.count}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>

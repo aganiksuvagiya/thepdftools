@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 export const metadata: Metadata = {
   title: "How to Compress Images for Faster Website Speed – Complete Guide",
@@ -243,7 +244,8 @@ export default function BlogPost() {
           <p>
             Use our free <a href="/image-compressor" className="text-brand-600 hover:text-brand-700 underline font-medium">Image Compressor</a> to reduce file sizes, <a href="/image-to-webp" className="text-brand-600 hover:text-brand-700 underline font-medium">Image to WebP converter</a> to switch to modern formats, and <a href="/image-resizer" className="text-brand-600 hover:text-brand-700 underline font-medium">Image Resizer</a> to set correct dimensions. All three tools are free, require no signup, and process files directly in your browser for maximum privacy and speed.
           </p>
-        </article>
+        <BlogFooterLinks />
+      </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-slate-900">

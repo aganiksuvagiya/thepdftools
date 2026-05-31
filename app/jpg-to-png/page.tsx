@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/Breadcrumb";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
@@ -9,9 +10,9 @@ const JpgToPngClient = dynamic(() => import("./JpgToPngClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "JPG to PNG Converter Online Free - No Upload",
+  title: "JPG to PNG Converter Online Free — Convert JPEG to PNG Instantly",
   description:
-    "Convert JPG to PNG online free with no upload required. Fast browser-based JPG to PNG converter with no signup.",
+    "Convert JPG to PNG online free — instant, lossless conversion in your browser. No upload, no signup, supports transparent PNG output.",
   keywords: [
     "jpg to png",
     "jpeg to png converter",
@@ -58,11 +59,43 @@ export default function JpgToPngPage() {
           "Convert JPG and JPEG images to PNG format free online. No upload required — conversion happens in your browser.",
       },
       
+            {
+        "@type": "HowTo",
+        name: "How to Convert JPG to PNG Online",
+        description: "Convert a JPEG image to PNG format for free in your browser.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the JPG to PNG converter",
+            text: "Go to https://thepdftools.site/jpg-to-png and open the free converter.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Upload your JPG file",
+            text: "Click the upload area or drag and drop your JPEG or JPG image.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Convert to PNG",
+            text: "Click Convert to PNG to process the image in your browser.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Download the PNG",
+            text: "Click Download to save the converted PNG file to your device.",
+          }
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "JPG to PNG", "item": "https://thepdftools.site/jpg-to-png" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "JPG to PNG", "item": "https://thepdftools.site/jpg-to-png" },
         ],
       },
     ],
@@ -75,6 +108,11 @@ export default function JpgToPngPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Image Tools", href: "/image-tools" },
+          { label: "JPG to PNG" },
+        ]} />
         {/* HERO CARD */}
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 export const metadata: Metadata = {
   title: "Best Free PDF Tools in India 2026 – No Signup Required",
@@ -195,7 +196,8 @@ export default function BlogPost() {
           <p>
             All tools work instantly, require no signup, and respect your privacy. Try them now and see the difference.
           </p>
-        </article>
+        <BlogFooterLinks />
+      </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-slate-900">

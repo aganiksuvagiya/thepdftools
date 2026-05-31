@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const SignatureClient = dynamic(() => import("./SignatureClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
@@ -25,7 +26,38 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebApplication", name: "Free Online Signature Generator", url: "https://thepdftools.site/signature-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
-    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Signature Generator", item: "https://thepdftools.site/signature-generator" }] },
+    
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Can I use the generated signature on documents?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Download the signature as a PNG with transparent background and insert it into PDFs, Word documents, or emails." },
+          },
+          {
+            "@type": "Question",
+            name: "What types of signatures can I create?",
+            acceptedAnswer: { "@type": "Answer", text: "Draw a freehand signature with your mouse or touchscreen, type your name and choose a handwriting font, or upload an existing signature image." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the signature legally binding?",
+            acceptedAnswer: { "@type": "Answer", text: "A digital signature image is a visual representation but not a legally binding e-signature in most jurisdictions. For legally binding e-signatures, use a qualified electronic signature service." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I sign a PDF with this signature?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. After generating your signature, use the PDF Sign tool on this site to place it directly on a PDF document." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the signature generator free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Free with no signup and no watermarks on the output." },
+          }
+        ],
+      },
+      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" }, { "@type": "ListItem", position: 3, name: "Signature Generator", item: "https://thepdftools.site/signature-generator" }]},
   ],
 };
 
@@ -34,6 +66,11 @@ export default function SignaturePage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Generators", href: "/generators" },
+          { label: "Signature Generator" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.08),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(236,72,153,0.06),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -71,6 +108,27 @@ export default function SignaturePage() {
               <Link href="/pdf-editor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Editor</Link>
               <Link href="/image-watermark" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Watermark</Link>
               <Link href="/qr-generator" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">QR Generator</Link>
+            </div>
+          </div>
+          
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "Can I use the generated signature on documents?", a: "Yes. Download the signature as a PNG with transparent background and insert it into PDFs, Word documents, or emails." },
+                { q: "What types of signatures can I create?", a: "Draw a freehand signature with your mouse or touchscreen, type your name and choose a handwriting font, or upload an existing signature image." },
+                { q: "Is the signature legally binding?", a: "A digital signature image is a visual representation but not a legally binding e-signature in most jurisdictions. For legally binding e-signatures, use a qualified electronic signature service." },
+                { q: "Can I sign a PDF with this signature?", a: "Yes. After generating your signature, use the PDF Sign tool on this site to place it directly on a PDF document." },
+                { q: "Is the signature generator free?", a: "Yes. Free with no signup and no watermarks on the output." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
           <ToolSeoGrowth slug="signature-generator" />

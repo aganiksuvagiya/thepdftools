@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/compress-pdf-files-free`;
@@ -272,7 +273,8 @@ export default function CompressPdfFilesFree() {
                 A smaller PDF is easier to send, faster to open, and cheaper to store. Whether you are dealing with a single contract or a batch of scanned documents, compressing your PDFs should be a standard part of your workflow. Start with our free <Link href="/pdf-compress" className={toolLink}>PDF Compressor</Link> and shrink your files in seconds.
               </p>
             </section>
-          </article>
+          <BlogFooterLinks />
+      </article>
 
           {/* Sidebar */}
           <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumb from "@/components/Breadcrumb";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
@@ -9,9 +10,9 @@ const ImageCompressorClient = dynamic(() => import("./ImageCompressorClient"), {
 });
 
 export const metadata: Metadata = {
-  title: "Compress Images Online Free - JPG, PNG, WebP No Upload",
+  title: "Compress Image Online Free — Reduce Image File Size Instantly",
   description:
-    "Compress images online free with no upload required. Reduce JPG, PNG, and WebP file size fast in your browser with no signup needed.",
+    "Compress JPG, PNG, and WebP images online free — reduce file size by up to 90% without visible quality loss. No upload, no signup. Works on any device.",
   keywords: [
     "image compressor",
     "compress image online",
@@ -60,11 +61,49 @@ export default function ImageCompressorPage() {
         description:
           "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality.",
       },
+            {
+        "@type": "HowTo",
+        name: "How to Compress an Image Online",
+        description: "Reduce image file size without visible quality loss — free, in your browser.",
+        step: [
+          {
+            "@type": "HowToStep",
+            position: 1,
+            name: "Open the Image Compressor",
+            text: "Go to https://thepdftools.site/image-compressor and open the free image compression tool.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 2,
+            name: "Upload your image",
+            text: "Click the upload area or drag and drop your JPG, PNG, or WebP image.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 3,
+            name: "Adjust quality settings",
+            text: "Use the quality slider to balance file size and image quality. 80% quality is recommended for web use.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 4,
+            name: "Compress the image",
+            text: "Click Compress to process the image. The tool shows file size before and after.",
+          },
+          {
+            "@type": "HowToStep",
+            position: 5,
+            name: "Download the compressed image",
+            text: "Click Download to save the optimized image to your device.",
+          }
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Image Compressor", "item": "https://thepdftools.site/image-compressor" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Compressor", "item": "https://thepdftools.site/image-compressor" },
         ],
       },
     ],
@@ -77,6 +116,11 @@ export default function ImageCompressorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Image Tools", href: "/image-tools" },
+          { label: "Compress Image" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">

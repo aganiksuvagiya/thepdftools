@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const FaviconClient = dynamic(() => import("./FaviconClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
@@ -25,7 +26,38 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebApplication", name: "Free Favicon Generator", url: "https://thepdftools.site/favicon-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
-    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Favicon Generator", item: "https://thepdftools.site/favicon-generator" }] },
+    
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What sizes does the favicon generator create?",
+            acceptedAnswer: { "@type": "Answer", text: "The tool generates favicons in all standard sizes: 16×16, 32×32, 48×48, 64×64, 128×128, and 256×256 pixels, plus Apple touch icon sizes." },
+          },
+          {
+            "@type": "Question",
+            name: "What image formats can I upload?",
+            acceptedAnswer: { "@type": "Answer", text: "PNG, JPG, WebP, and SVG files are supported as input. PNG with transparency gives the best results for favicons." },
+          },
+          {
+            "@type": "Question",
+            name: "How do I add a favicon to my website?",
+            acceptedAnswer: { "@type": "Answer", text: "Download the generated favicon files, upload them to your website root, and add a link tag in your HTML: <link rel=\"icon\" href=\"/favicon.ico\">." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the favicon generator free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Completely free with no signup and no limits." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I generate a favicon from a logo?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Upload your logo image and the tool crops and resizes it to generate favicon files in all required sizes." },
+          }
+        ],
+      },
+      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://thepdftools.site/developer-tools" }, { "@type": "ListItem", position: 3, name: "Favicon Generator", item: "https://thepdftools.site/favicon-generator" }]},
   ],
 };
 
@@ -34,6 +66,11 @@ export default function FaviconPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "Developer Tools", href: "/developer-tools" },
+          { label: "Favicon Generator" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.08),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.06),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -71,6 +108,27 @@ export default function FaviconPage() {
               <Link href="/image-compressor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Compressor</Link>
               <Link href="/svg-to-png" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">SVG to PNG</Link>
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Background Remover</Link>
+            </div>
+          </div>
+          
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "What sizes does the favicon generator create?", a: "The tool generates favicons in all standard sizes: 16×16, 32×32, 48×48, 64×64, 128×128, and 256×256 pixels, plus Apple touch icon sizes." },
+                { q: "What image formats can I upload?", a: "PNG, JPG, WebP, and SVG files are supported as input. PNG with transparency gives the best results for favicons." },
+                { q: "How do I add a favicon to my website?", a: "Download the generated favicon files, upload them to your website root, and add a link tag in your HTML: <link rel=\"icon\" href=\"/favicon.ico\">." },
+                { q: "Is the favicon generator free?", a: "Yes. Completely free with no signup and no limits." },
+                { q: "Can I generate a favicon from a logo?", a: "Yes. Upload your logo image and the tool crops and resizes it to generate favicon files in all required sizes." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
             </div>
           </div>
           <ToolSeoGrowth slug="favicon-generator" />

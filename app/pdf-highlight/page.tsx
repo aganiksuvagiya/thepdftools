@@ -43,6 +43,45 @@ export default function PdfHighlightPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Highlight important text and sections in PDF files and export the annotated file.",
       },
+      
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Can I highlight text in any PDF?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. The tool works on text-based PDFs. Scanned PDFs require OCR first to make the text selectable before highlighting." },
+          },
+          {
+            "@type": "Question",
+            name: "Does highlighting modify the original PDF file?",
+            acceptedAnswer: { "@type": "Answer", text: "No. Your original file is not modified. The tool creates a new annotated PDF with highlights applied on top of the original content." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I choose highlight colors?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Multiple highlight colors are available including yellow, green, blue, pink, and orange." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the PDF highlight tool free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Completely free with no signup and no upload to any server." },
+          },
+          {
+            "@type": "Question",
+            name: "Does it work on mobile?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. The PDF highlighter works on iPhone, Android, and tablet browsers." },
+          }
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "PDF Highlight", item: PAGE_URL },
+        ],
+      },
     ],
   };
 
@@ -79,13 +118,13 @@ export default function PdfHighlightPage() {
         <div className="mt-14 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Related Guides</h2>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/blog/how-to-highlight-pdf-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+            <Link href="/blog/how-to-merge-pdf-files-online" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
               How to Highlight PDF
             </Link>
-            <Link href="/blog/edit-pdf-online-free-no-signup-guide" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+            <Link href="/blog/best-free-pdf-tools-india" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
               Edit PDF Online Free
             </Link>
-            <Link href="/blog/sign-pdf-online-free-no-signup" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+            <Link href="/blog/compress-pdf-for-email-online" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
               Sign PDF Online Free
             </Link>
           </div>
@@ -105,7 +144,28 @@ export default function PdfHighlightPage() {
             </Link>
           </div>
         </div>
-      </div>
+      
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "Can I highlight text in any PDF?", a: "Yes. The tool works on text-based PDFs. Scanned PDFs require OCR first to make the text selectable before highlighting." },
+                { q: "Does highlighting modify the original PDF file?", a: "No. Your original file is not modified. The tool creates a new annotated PDF with highlights applied on top of the original content." },
+                { q: "Can I choose highlight colors?", a: "Yes. Multiple highlight colors are available including yellow, green, blue, pink, and orange." },
+                { q: "Is the PDF highlight tool free?", a: "Yes. Completely free with no signup and no upload to any server." },
+                { q: "Does it work on mobile?", a: "Yes. The PDF highlighter works on iPhone, Android, and tablet browsers." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+          </div>
     </div>
   );
 }

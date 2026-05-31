@@ -47,6 +47,44 @@ export default function SearchablePdfPage() {
           "Convert scanned PDFs into searchable PDFs using OCR entirely in your browser.",
       },
       
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is OCR and how does it work?",
+            acceptedAnswer: { "@type": "Answer", text: "OCR (Optical Character Recognition) reads image-based text from scanned PDFs and converts it into actual searchable, selectable text content." },
+          },
+          {
+            "@type": "Question",
+            name: "Can I copy text from the output PDF?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. After OCR processing, the text in the PDF becomes selectable and searchable — you can copy text, search with Ctrl+F, and the content is indexable by search engines." },
+          },
+          {
+            "@type": "Question",
+            name: "What languages does the OCR support?",
+            acceptedAnswer: { "@type": "Answer", text: "The OCR engine supports English and many other major languages. Results are best for clearly scanned documents with good contrast." },
+          },
+          {
+            "@type": "Question",
+            name: "How accurate is the OCR?",
+            acceptedAnswer: { "@type": "Answer", text: "Accuracy depends on scan quality. Well-lit, high-resolution (300 DPI+) scans produce very accurate results. Blurry or low-contrast scans may have more errors." },
+          },
+          {
+            "@type": "Question",
+            name: "Is the OCR tool free?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. Completely free with no signup and no upload to any server." },
+          }
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Scanned PDF to Searchable PDF", item: PAGE_URL },
+        ],
+      },
     ],
   };
 
@@ -120,7 +158,28 @@ export default function SearchablePdfPage() {
             </Link>
           </div>
         </div>
-      </div>
+      
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <div className="divide-y divide-slate-100">
+              {[
+                { q: "What is OCR and how does it work?", a: "OCR (Optical Character Recognition) reads image-based text from scanned PDFs and converts it into actual searchable, selectable text content." },
+                { q: "Can I copy text from the output PDF?", a: "Yes. After OCR processing, the text in the PDF becomes selectable and searchable — you can copy text, search with Ctrl+F, and the content is indexable by search engines." },
+                { q: "What languages does the OCR support?", a: "The OCR engine supports English and many other major languages. Results are best for clearly scanned documents with good contrast." },
+                { q: "How accurate is the OCR?", a: "Accuracy depends on scan quality. Well-lit, high-resolution (300 DPI+) scans produce very accurate results. Blurry or low-contrast scans may have more errors." },
+                { q: "Is the OCR tool free?", a: "Yes. Completely free with no signup and no upload to any server." }
+              ].map((item) => (
+                <details key={item.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-[15px] font-semibold text-slate-900 hover:text-brand-700 [&::-webkit-details-marker]:hidden">
+                    <span>{item.q}</span>
+                    <span className="text-xl leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+          </div>
     </div>
   );
 }
