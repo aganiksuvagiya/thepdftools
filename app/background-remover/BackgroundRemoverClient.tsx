@@ -4,8 +4,9 @@ import { useState, useCallback, useRef } from "react";
 import DropZone from "@/components/DropZone";
 
 type Status = "idle" | "processing" | "done" | "error";
-type BgType = "transparent" | "color" | "image";
+type BgType = "transparent" | "color" | "gradient" | "image";
 type OutputFormat = "png" | "webp";
+type GradientDir = "diagonal" | "to right" | "to bottom";
 
 interface ImageItem {
   id: string;
@@ -17,45 +18,62 @@ interface ImageItem {
   error: string;
 }
 
-async function buildFinalCanvas(
-  resultUrl: string,
-  bgType: BgType,
-  bgColor: string,
-  bgImageUrl: string | null,
-  cropToSubject: boolean,
-  smoothEdges: boolean
-): Promise<HTMLCanvasElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d")!;
+interface CanvasOptions {
+  bgType: BgType;
+  bgColor: string;
+  bgImageUrl: string | null;
+  gradientColor1: string;
+  gradientColor2: string;
+  gradientDir: GradientDir;
+  cropToSubject: boolean;
+  smoothEdges: boolean;
+  flipH: boolean;
+  flipV: boolean;
+  brightness: number;
+  contrast: number;
+  shadowEnabled: boolean;
+  shadowBlur: number;
+  shadowOpacity: number;
+  shadowColor: string;
+  borderEnabled: boolean;
+  borderWidth: number;
+  borderColor: string;
+  alphaThreshold: number;
+}
 
-      const drawResult = () => {
-        if (smoothEdges) ctx.filter = "blur(0.6px)";
-        ctx.drawImage(img, 0, 0);
-        ctx.filter = "none";
-        resolve(cropToSubject ? cropCanvas(canvas) : canvas);
-      };
+const COLOR_PRESETS = [
+  "#ffffff", "#f1f5f9", "#e2e8f0", "#94a3b8",
+  "#1e293b", "#000000", "#ef4444", "#f97316",
+  "#eab308", "#22c55e", "#3b82f6", "#8b5cf6",
+];
 
-      if (bgType === "color") {
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        drawResult();
-      } else if (bgType === "image" && bgImageUrl) {
-        const bgImg = new Image();
-        bgImg.onload = () => { ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height); drawResult(); };
-        bgImg.onerror = reject;
-        bgImg.src = bgImageUrl;
-      } else {
-        drawResult();
-      }
-    };
-    img.onerror = reject;
-    img.src = resultUrl;
-  });
+function applyAlphaThreshold(img: HTMLImageElement, threshold: number): HTMLCanvasElement {
+  const c = document.createElement("canvas");
+  c.width = img.width;
+  c.height = img.height;
+  const ctx = c.getContext("2d")!;
+  ctx.drawImage(img, 0, 0);
+  if (threshold <= 0) return c;
+  const imageData = ctx.getImageData(0, 0, c.width, c.height);
+  const { data } = imageData;
+  const thresh = Math.round(threshold * 2.55);
+  for (let i = 3; i < data.length; i += 4) {
+    if (data[i] < thresh) data[i] = 0;
+  }
+  ctx.putImageData(imageData, 0, 0);
+  return c;
+}
+
+function createTintedCanvas(img: HTMLImageElement | HTMLCanvasElement, color: string): HTMLCanvasElement {
+  const c = document.createElement("canvas");
+  c.width = img.width;
+  c.height = img.height;
+  const ctx = c.getContext("2d")!;
+  ctx.drawImage(img, 0, 0);
+  ctx.globalCompositeOperation = "source-in";
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, c.width, c.height);
+  return c;
 }
 
 function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
@@ -80,17 +98,158 @@ function cropCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
   return out;
 }
 
-export default function BackgroundRemoverClient() {
-  // No preload - model loads on first use
+async function cleanBlobAlpha(blob: Blob, threshold: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = img.width;
+      c.height = img.height;
+      const ctx = c.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
+      if (threshold > 0) {
+        const imageData = ctx.getImageData(0, 0, c.width, c.height);
+        const { data } = imageData;
+        const thresh = Math.round(threshold * 2.55);
+        for (let i = 3; i < data.length; i += 4) {
+          if (data[i] < thresh) data[i] = 0;
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+      c.toBlob((b) => {
+        if (!b) { reject(new Error("toBlob failed")); return; }
+        resolve(URL.createObjectURL(b));
+      }, "image/png");
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(blob);
+  });
+}
 
+async function buildFinalCanvas(resultUrl: string, opts: CanvasOptions): Promise<HTMLCanvasElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      // Apply alpha threshold cleanup before any compositing
+      const src = applyAlphaThreshold(img, opts.alphaThreshold);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d")!;
+
+      const drawBg = () => {
+        if (opts.bgType === "color") {
+          ctx.fillStyle = opts.bgColor;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        } else if (opts.bgType === "gradient") {
+          const x2 = opts.gradientDir !== "to bottom" ? canvas.width : 0;
+          const y2 = opts.gradientDir !== "to right" ? canvas.height : 0;
+          const grad = ctx.createLinearGradient(0, 0, x2, y2);
+          grad.addColorStop(0, opts.gradientColor1);
+          grad.addColorStop(1, opts.gradientColor2);
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+      };
+
+      const drawSubject = () => {
+        // Offscreen composite: border + subject (with flip + filters)
+        const comp = document.createElement("canvas");
+        comp.width = canvas.width;
+        comp.height = canvas.height;
+        const cc = comp.getContext("2d")!;
+
+        cc.save();
+        if (opts.flipH || opts.flipV) {
+          cc.translate(opts.flipH ? comp.width : 0, opts.flipV ? comp.height : 0);
+          cc.scale(opts.flipH ? -1 : 1, opts.flipV ? -1 : 1);
+        }
+
+        // Border: draw tinted copies offset in a circle
+        if (opts.borderEnabled && opts.borderWidth > 0) {
+          const tinted = createTintedCanvas(src, opts.borderColor);
+          for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            cc.drawImage(tinted, Math.cos(angle) * opts.borderWidth, Math.sin(angle) * opts.borderWidth);
+          }
+        }
+
+        // Subject with filters
+        const filters: string[] = [];
+        if (opts.smoothEdges) filters.push("blur(0.6px)");
+        if (opts.brightness !== 100) filters.push(`brightness(${opts.brightness}%)`);
+        if (opts.contrast !== 100) filters.push(`contrast(${opts.contrast}%)`);
+        if (filters.length) cc.filter = filters.join(" ");
+        cc.drawImage(src, 0, 0);
+        cc.restore();
+
+        // Draw composite onto main canvas, with optional shadow
+        if (opts.shadowEnabled) {
+          const opHex = Math.round(opts.shadowOpacity * 2.55).toString(16).padStart(2, "0");
+          ctx.shadowColor = `${opts.shadowColor}${opHex}`;
+          ctx.shadowBlur = opts.shadowBlur;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = Math.round(opts.shadowBlur * 0.35);
+        }
+        ctx.drawImage(comp, 0, 0);
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+      };
+
+      const finish = () => resolve(opts.cropToSubject ? cropCanvas(canvas) : canvas);
+
+      if (opts.bgType === "image" && opts.bgImageUrl) {
+        const bgImg = new Image();
+        bgImg.onload = () => { ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height); drawSubject(); finish(); };
+        bgImg.onerror = reject;
+        bgImg.src = opts.bgImageUrl;
+      } else {
+        drawBg();
+        drawSubject();
+        finish();
+      }
+    };
+    img.onerror = reject;
+    img.src = resultUrl;
+  });
+}
+
+export default function BackgroundRemoverClient() {
   const [items, setItems] = useState<ImageItem[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Background
   const [bgType, setBgType] = useState<BgType>("transparent");
   const [bgColor, setBgColor] = useState("#ffffff");
   const [bgImageUrl, setBgImageUrl] = useState<string | null>(null);
+  const [gradientColor1, setGradientColor1] = useState("#6366f1");
+  const [gradientColor2, setGradientColor2] = useState("#06b6d4");
+  const [gradientDir, setGradientDir] = useState<GradientDir>("diagonal");
+
+  // Effects
+  const [shadowEnabled, setShadowEnabled] = useState(false);
+  const [shadowBlur, setShadowBlur] = useState(20);
+  const [shadowOpacity, setShadowOpacity] = useState(50);
+  const [shadowColor, setShadowColor] = useState("#000000");
+  const [borderEnabled, setBorderEnabled] = useState(false);
+  const [borderWidth, setBorderWidth] = useState(6);
+  const [borderColor, setBorderColor] = useState("#ffffff");
+
+  // Adjustments
+  const [flipH, setFlipH] = useState(false);
+  const [flipV, setFlipV] = useState(false);
+  const [brightness, setBrightness] = useState(100);
+  const [contrast, setContrast] = useState(100);
+  const [alphaThreshold, setAlphaThreshold] = useState(10);
+
+  // Output
   const [outputFormat, setOutputFormat] = useState<OutputFormat>("png");
   const [cropToSubject, setCropToSubject] = useState(false);
   const [smoothEdges, setSmoothEdges] = useState(false);
+
+  // UI
   const [sliderPos, setSliderPos] = useState(50);
   const [zoom, setZoom] = useState(1);
   const [copyDone, setCopyDone] = useState(false);
@@ -99,6 +258,17 @@ export default function BackgroundRemoverClient() {
   const selectedItem = items.find((i) => i.id === selectedId) ?? null;
   const doneCount = items.filter((i) => i.status === "done").length;
   const idleCount = items.filter((i) => i.status === "idle").length;
+  const isProcessing = items.some((i) => i.status === "processing");
+
+  const canvasOpts = (): CanvasOptions => ({
+    bgType, bgColor, bgImageUrl,
+    gradientColor1, gradientColor2, gradientDir,
+    cropToSubject, smoothEdges,
+    flipH, flipV, brightness, contrast,
+    shadowEnabled, shadowBlur, shadowOpacity, shadowColor,
+    borderEnabled, borderWidth, borderColor,
+    alphaThreshold,
+  });
 
   const handleFiles = useCallback((files: File[]) => {
     const newItems: ImageItem[] = files.map((file) => ({
@@ -119,6 +289,7 @@ export default function BackgroundRemoverClient() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
       const blob = await removeBackground(file, {
+        model: "medium",
         output: { format: "image/png", quality: 1 },
         progress: (key: string, current: number, total: number) => {
           const pct = total > 0 ? Math.round((current / total) * 100) : 0;
@@ -126,21 +297,19 @@ export default function BackgroundRemoverClient() {
           setItems((prev) => prev.map((i) => i.id === id ? { ...i, progressLabel: label } : i));
         },
       });
-      const url = URL.createObjectURL(blob);
-      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "done", progressLabel: "", resultUrl: url } : i));
+
+      // Apply alpha cleanup to the raw result so preview is also clean
+      const cleanedUrl = await cleanBlobAlpha(blob, alphaThreshold);
+      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "done", progressLabel: "", resultUrl: cleanedUrl } : i));
     } catch (err: unknown) {
-      console.error("BG Removal Error:", err);
       const msg = err instanceof Error ? err.message : "Unknown error";
       setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "error", error: `Failed: ${msg.slice(0, 100)}` } : i));
     }
   };
 
-  const processAll = () => {
-    items.filter((i) => i.status === "idle").forEach((i) => processItem(i.id, i.file));
-  };
+  const processAll = () => items.filter((i) => i.status === "idle").forEach((i) => processItem(i.id, i.file));
 
-  const getCanvas = (item: ImageItem) =>
-    buildFinalCanvas(item.resultUrl!, bgType, bgColor, bgImageUrl, cropToSubject, smoothEdges);
+  const getCanvas = (item: ImageItem) => buildFinalCanvas(item.resultUrl!, canvasOpts());
 
   const handleDownload = async (item: ImageItem) => {
     const canvas = await getCanvas(item);
@@ -151,9 +320,7 @@ export default function BackgroundRemoverClient() {
   };
 
   const handleDownloadAll = async () => {
-    for (const item of items.filter((i) => i.status === "done")) {
-      await handleDownload(item);
-    }
+    for (const item of items.filter((i) => i.status === "done")) await handleDownload(item);
   };
 
   const handleCopy = async (item: ImageItem) => {
@@ -174,99 +341,204 @@ export default function BackgroundRemoverClient() {
     });
   };
 
-  const comparisonBg =
-    bgType === "color"
-      ? { background: bgColor }
-      : bgType === "image" && bgImageUrl
-      ? { backgroundImage: `url(${bgImageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }
-      : { backgroundImage: "repeating-conic-gradient(#e5e7eb 0% 25%, white 0% 50%)", backgroundSize: "20px 20px" };
+  const gradientCss =
+    gradientDir === "to right" ? `linear-gradient(90deg, ${gradientColor1}, ${gradientColor2})`
+    : gradientDir === "to bottom" ? `linear-gradient(180deg, ${gradientColor1}, ${gradientColor2})`
+    : `linear-gradient(135deg, ${gradientColor1}, ${gradientColor2})`;
 
-  return (
-    <div className="card space-y-6">
-      {/* Settings */}
-      <div className="space-y-3">
+  const comparisonBg =
+    bgType === "color" ? { background: bgColor }
+    : bgType === "gradient" ? { background: gradientCss }
+    : bgType === "image" && bgImageUrl ? { backgroundImage: `url(${bgImageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }
+    : { backgroundImage: "repeating-conic-gradient(#e5e7eb 0% 25%, white 0% 50%)", backgroundSize: "20px 20px" };
+
+  const previewFilter = [
+    `brightness(${brightness}%)`,
+    `contrast(${contrast}%)`,
+    shadowEnabled ? `drop-shadow(0 ${Math.round(shadowBlur * 0.35)}px ${shadowBlur}px ${shadowColor}${Math.round(shadowOpacity * 2.55).toString(16).padStart(2, "0")})` : "",
+    borderEnabled ? `drop-shadow(0 0 ${borderWidth}px ${borderColor}) drop-shadow(0 0 ${borderWidth}px ${borderColor})` : "",
+  ].filter(Boolean).join(" ");
+
+  const ToggleBtn = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+        active ? "bg-brand-50 text-brand-700 border-brand-300" : "bg-white text-gray-500 border-gray-200 hover:border-gray-300"
+      }`}
+    >
+      <div className={`h-3 w-3 rounded-full border-2 transition-colors ${active ? "bg-brand-600 border-brand-600" : "border-gray-300"}`} />
+      {label}
+    </button>
+  );
+
+  // Settings panel — shown after result
+  const SettingsPanel = () => (
+    <div className="space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-4">
+
+      {/* Background */}
+      <div className="space-y-2">
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Background</p>
         <div className="flex flex-wrap gap-2">
-          {(["transparent", "color", "image"] as BgType[]).map((type) => (
-            <button
-              key={type}
-              onClick={() => setBgType(type)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                bgType === type ? "bg-brand-600 text-white border-brand-600" : "bg-white text-gray-600 border-gray-200 hover:border-brand-400"
-              }`}
-            >
+          {(["transparent", "color", "gradient", "image"] as BgType[]).map((type) => (
+            <button key={type} onClick={() => setBgType(type)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${bgType === type ? "bg-brand-600 text-white border-brand-600" : "bg-white text-gray-600 border-gray-200 hover:border-brand-400"}`}>
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
           ))}
-          {bgType === "color" && (
-            <div className="flex items-center gap-2 ml-1">
-              <input
-                type="color"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="h-8 w-14 cursor-pointer rounded border border-gray-200"
-              />
+        </div>
+        {bgType === "color" && (
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="h-7 w-12 cursor-pointer rounded border border-gray-200" />
               <span className="text-xs text-gray-400">{bgColor}</span>
             </div>
-          )}
-          {bgType === "image" && (
-            <div className="flex items-center gap-2 ml-1">
-              <button
-                onClick={() => bgImageInputRef.current?.click()}
-                className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 hover:border-brand-400 transition-colors"
-              >
-                {bgImageUrl ? "Change Image" : "Upload Image"}
-              </button>
-              {bgImageUrl && <img src={bgImageUrl} alt="background remover preview color" className="h-7 w-10 object-cover rounded" />}
-              <input ref={bgImageInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) setBgImageUrl(URL.createObjectURL(f)); }} />
+            <div className="flex flex-wrap gap-1.5">
+              {COLOR_PRESETS.map((c) => (
+                <button key={c} onClick={() => setBgColor(c)} title={c}
+                  className={`h-6 w-6 rounded border-2 transition-all ${bgColor === c ? "border-brand-500 scale-110" : "border-gray-200 hover:border-gray-400"}`}
+                  style={{ backgroundColor: c }} />
+              ))}
             </div>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-gray-500">Format:</span>
-            {(["png", "webp"] as OutputFormat[]).map((fmt) => (
-              <button
-                key={fmt}
-                onClick={() => setOutputFormat(fmt)}
-                className={`px-2.5 py-1 rounded text-xs font-medium border transition-colors ${
-                  outputFormat === fmt ? "bg-brand-600 text-white border-brand-600" : "bg-white text-gray-600 border-gray-200 hover:border-brand-400"
-                }`}
-              >
-                {fmt.toUpperCase()}
-              </button>
-            ))}
           </div>
-          {[
-            { label: "Crop to Subject", value: cropToSubject, set: setCropToSubject },
-            { label: "Smooth Edges", value: smoothEdges, set: setSmoothEdges },
-          ].map(({ label, value, set }) => (
-            <button
-              key={label}
-              onClick={() => set(!value)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                value ? "bg-brand-50 text-brand-700 border-brand-300" : "bg-white text-gray-500 border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <div className={`h-3 w-3 rounded-full border-2 transition-colors ${value ? "bg-brand-600 border-brand-600" : "border-gray-300"}`} />
-              {label}
+        )}
+        {bgType === "gradient" && (
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              <input type="color" value={gradientColor1} onChange={(e) => setGradientColor1(e.target.value)} className="h-7 w-10 cursor-pointer rounded border border-gray-200" />
+              <span className="text-xs text-gray-400">→</span>
+              <input type="color" value={gradientColor2} onChange={(e) => setGradientColor2(e.target.value)} className="h-7 w-10 cursor-pointer rounded border border-gray-200" />
+              <div className="flex gap-1">
+                {([["diagonal", "↘"], ["to right", "→"], ["to bottom", "↓"]] as [GradientDir, string][]).map(([dir, icon]) => (
+                  <button key={dir} onClick={() => setGradientDir(dir)} title={dir}
+                    className={`h-7 w-7 flex items-center justify-center rounded border text-sm transition-colors ${gradientDir === dir ? "bg-brand-600 text-white border-brand-600" : "bg-white text-gray-600 border-gray-200 hover:border-brand-400"}`}>
+                    {icon}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="h-5 w-full rounded border border-gray-100" style={{ background: gradientCss }} />
+          </div>
+        )}
+        {bgType === "image" && (
+          <div className="flex items-center gap-2">
+            <button onClick={() => bgImageInputRef.current?.click()} className="text-xs px-3 py-1.5 rounded-lg border border-gray-200 bg-white hover:border-brand-400 transition-colors">
+              {bgImageUrl ? "Change Image" : "Upload Image"}
             </button>
-          ))}
+            {bgImageUrl && <img src={bgImageUrl} alt="bg" className="h-7 w-10 object-cover rounded" />}
+            <input ref={bgImageInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) setBgImageUrl(URL.createObjectURL(f)); }} />
+          </div>
+        )}
+      </div>
+
+      <hr className="border-gray-200" />
+
+      {/* Effects */}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Effects</p>
+        <div className="flex flex-wrap gap-2">
+          <ToggleBtn label="Drop Shadow" active={shadowEnabled} onClick={() => setShadowEnabled(!shadowEnabled)} />
+          <ToggleBtn label="Border" active={borderEnabled} onClick={() => setBorderEnabled(!borderEnabled)} />
+        </div>
+        {shadowEnabled && (
+          <div className="rounded-lg border border-gray-200 bg-white p-3 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-16">Color</span>
+              <input type="color" value={shadowColor} onChange={(e) => setShadowColor(e.target.value)} className="h-6 w-10 cursor-pointer rounded border border-gray-200" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-16">Blur</span>
+              <input type="range" min="0" max="60" value={shadowBlur} onChange={(e) => setShadowBlur(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+              <span className="text-xs text-gray-400 w-6 text-right">{shadowBlur}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-16">Opacity</span>
+              <input type="range" min="0" max="100" value={shadowOpacity} onChange={(e) => setShadowOpacity(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+              <span className="text-xs text-gray-400 w-6 text-right">{shadowOpacity}%</span>
+            </div>
+          </div>
+        )}
+        {borderEnabled && (
+          <div className="rounded-lg border border-gray-200 bg-white p-3 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-16">Color</span>
+              <input type="color" value={borderColor} onChange={(e) => setBorderColor(e.target.value)} className="h-6 w-10 cursor-pointer rounded border border-gray-200" />
+              <div className="flex gap-1 ml-1">
+                {["#ffffff", "#000000", "#ef4444", "#3b82f6", "#22c55e", "#f97316"].map((c) => (
+                  <button key={c} onClick={() => setBorderColor(c)} className={`h-5 w-5 rounded border-2 ${borderColor === c ? "border-brand-500" : "border-gray-200"}`} style={{ backgroundColor: c }} />
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-16">Width</span>
+              <input type="range" min="1" max="30" value={borderWidth} onChange={(e) => setBorderWidth(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+              <span className="text-xs text-gray-400 w-8 text-right">{borderWidth}px</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <hr className="border-gray-200" />
+
+      {/* Adjustments */}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Adjustments</p>
+        <div className="flex flex-wrap gap-2">
+          <ToggleBtn label="Flip H" active={flipH} onClick={() => setFlipH(!flipH)} />
+          <ToggleBtn label="Flip V" active={flipV} onClick={() => setFlipV(!flipV)} />
+          <ToggleBtn label="Crop to Subject" active={cropToSubject} onClick={() => setCropToSubject(!cropToSubject)} />
+          <ToggleBtn label="Smooth Edges" active={smoothEdges} onClick={() => setSmoothEdges(!smoothEdges)} />
+        </div>
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 w-20">Brightness</span>
+            <input type="range" min="50" max="150" value={brightness} onChange={(e) => setBrightness(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+            <span className="text-xs text-gray-400 w-8 text-right">{brightness}%</span>
+            {brightness !== 100 && <button onClick={() => setBrightness(100)} className="text-xs text-gray-400 hover:text-gray-600">↺</button>}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 w-20">Contrast</span>
+            <input type="range" min="50" max="150" value={contrast} onChange={(e) => setContrast(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+            <span className="text-xs text-gray-400 w-8 text-right">{contrast}%</span>
+            {contrast !== 100 && <button onClick={() => setContrast(100)} className="text-xs text-gray-400 hover:text-gray-600">↺</button>}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 w-20">Edge Cleanup</span>
+            <input type="range" min="0" max="50" value={alphaThreshold} onChange={(e) => setAlphaThreshold(Number(e.target.value))} className="flex-1 h-1.5 accent-brand-600" />
+            <span className="text-xs text-gray-400 w-8 text-right">{alphaThreshold}</span>
+            {alphaThreshold !== 10 && <button onClick={() => setAlphaThreshold(10)} className="text-xs text-gray-400 hover:text-gray-600">↺</button>}
+          </div>
         </div>
       </div>
 
-      <hr className="border-gray-100" />
+      <hr className="border-gray-200" />
 
-      {/* Drop zone */}
-      <DropZone
-        onFilesAccepted={handleFiles}
-        accept={{ "image/*": [".jpg", ".jpeg", ".png", ".webp"] }}
-        label="Drop images here"
-        sublabel="JPG, PNG, WebP · Multiple files supported"
-      />
+      {/* Format */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-500">Format:</span>
+        {(["png", "webp"] as OutputFormat[]).map((fmt) => (
+          <button key={fmt} onClick={() => setOutputFormat(fmt)}
+            className={`px-2.5 py-1 rounded text-xs font-medium border transition-colors ${outputFormat === fmt ? "bg-brand-600 text-white border-brand-600" : "bg-white text-gray-600 border-gray-200 hover:border-brand-400"}`}>
+            {fmt.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 
-      {/* Image queue */}
+  return (
+    <div className="card space-y-5">
+
+      {/* ── DROP ZONE ── */}
+      {!isProcessing && (
+        <DropZone
+          onFilesAccepted={handleFiles}
+          accept={{ "image/*": [".jpg", ".jpeg", ".png", ".webp"] }}
+          label="Drop images here"
+          sublabel="JPG, PNG, WebP · Multiple files supported"
+        />
+      )}
+
+      {/* ── IMAGE QUEUE ── */}
       {items.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -306,10 +578,7 @@ export default function BackgroundRemoverClient() {
                   )}
                   {item.status === "processing" && (
                     <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 shadow">
-                      <div
-                        className="h-2.5 w-2.5 rounded-full border-2 border-white border-t-transparent"
-                        style={{ willChange: "transform", transform: "translateZ(0)", animation: "spin 0.85s linear infinite", animationPlayState: "running" }}
-                      />
+                      <div className="h-2.5 w-2.5 rounded-full border-2 border-white border-t-transparent" style={{ willChange: "transform", transform: "translateZ(0)", animation: "spin 0.85s linear infinite", animationPlayState: "running" }} />
                     </span>
                   )}
                   {item.status === "error" && (
@@ -328,7 +597,7 @@ export default function BackgroundRemoverClient() {
         </div>
       )}
 
-      {/* Selected item actions */}
+      {/* ── SELECTED ITEM ACTIONS ── */}
       {selectedItem && (
         <div className="space-y-4 border-t border-gray-100 pt-4">
           {selectedItem.status === "idle" && (
@@ -341,8 +610,8 @@ export default function BackgroundRemoverClient() {
             <div className="rounded-xl overflow-hidden">
               <style>{`
                 @keyframes dot-bounce {
-                  0%, 100% { transform: translateY(0);   opacity: 0.35; }
-                  50%       { transform: translateY(-5px); opacity: 1; }
+                  0%, 100% { transform: translateY(0); opacity: 0.35; }
+                  50% { transform: translateY(-5px); opacity: 1; }
                 }
               `}</style>
               <div className="flex items-center justify-center py-16 rounded-xl bg-gray-50">
@@ -361,14 +630,15 @@ export default function BackgroundRemoverClient() {
           {selectedItem.status === "error" && (
             <div className="rounded-xl bg-red-50 p-4 text-center space-y-2">
               <p className="text-sm text-red-600">{selectedItem.error}</p>
-              <button onClick={() => processItem(selectedItem.id, selectedItem.file)} className="btn-primary text-sm">
-                Retry
-              </button>
+              <button onClick={() => processItem(selectedItem.id, selectedItem.file)} className="btn-primary text-sm">Retry</button>
             </div>
           )}
 
           {selectedItem.status === "done" && selectedItem.resultUrl && (
             <>
+              {/* ── SETTINGS (shown after result) ── */}
+              <SettingsPanel />
+
               {/* Before / After comparison slider */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -381,32 +651,25 @@ export default function BackgroundRemoverClient() {
                   </div>
                 </div>
 
-                <div
-                  className="relative overflow-hidden rounded-xl border border-gray-100 select-none bg-white"
-                  style={{ height: "280px" }}
-                >
-                  {/* BEFORE: original image on white/neutral bg */}
+                <div className="relative overflow-hidden rounded-xl border border-gray-100 select-none bg-white" style={{ height: "280px" }}>
+                  {/* BEFORE */}
                   <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={selectedItem.previewUrl}
-                      alt="original image before background removal"
-                      className="max-h-full max-w-full object-contain"
-                      style={{ transform: `scale(${zoom})`, transformOrigin: "center" }}
-                    />
+                    <img src={selectedItem.previewUrl} alt="original" className="max-h-full max-w-full object-contain" style={{ transform: `scale(${zoom})`, transformOrigin: "center" }} />
                   </div>
-                  {/* AFTER: clipped to left, with selected background */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)`, ...comparisonBg }}
-                  >
+                  {/* AFTER */}
+                  <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)`, ...comparisonBg }}>
                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={selectedItem.resultUrl}
-                        alt="transparent background result no upload"
+                        alt="result"
                         className="max-h-full max-w-full object-contain"
-                        style={{ transform: `scale(${zoom})`, transformOrigin: "center" }}
+                        style={{
+                          transform: `scale(${zoom}) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
+                          transformOrigin: "center",
+                          filter: previewFilter || undefined,
+                        }}
                       />
                     </div>
                   </div>
@@ -418,18 +681,9 @@ export default function BackgroundRemoverClient() {
                       </svg>
                     </div>
                   </div>
-                  {/* Labels */}
                   <span className="absolute bottom-2 left-2 z-10 text-xs font-semibold text-white bg-black bg-opacity-40 px-1.5 py-0.5 rounded pointer-events-none">Before</span>
                   <span className="absolute bottom-2 right-2 z-10 text-xs font-semibold text-white bg-black bg-opacity-40 px-1.5 py-0.5 rounded pointer-events-none">After</span>
-                  {/* Invisible range input for drag */}
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={sliderPos}
-                    onChange={(e) => setSliderPos(Number(e.target.value))}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20"
-                  />
+                  <input type="range" min="0" max="100" value={sliderPos} onChange={(e) => setSliderPos(Number(e.target.value))} className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" />
                 </div>
               </div>
 
@@ -460,7 +714,7 @@ export default function BackgroundRemoverClient() {
               </div>
 
               <button
-                onClick={() => { setItems((prev) => prev.map((i) => i.id === selectedItem.id ? { ...i, status: "idle", resultUrl: null } : i)); }}
+                onClick={() => setItems((prev) => prev.map((i) => i.id === selectedItem.id ? { ...i, status: "idle", resultUrl: null } : i))}
                 className="w-full text-center text-sm text-gray-400 hover:text-gray-600 transition-colors"
               >
                 Process another image
