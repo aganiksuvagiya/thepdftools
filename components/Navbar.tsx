@@ -114,6 +114,7 @@ const imageSections: DropdownSection[] = [
     items: [
       { href: "/qr-generator", label: "QR Generator", icon: "qr", bg: "bg-teal-100", fg: "text-teal-700" },
       { href: "/invoice-generator", label: "Invoice Generator", icon: "invoice", bg: "bg-green-100", fg: "text-green-700" },
+      { href: "/resume-builder", label: "Resume Builder", icon: "invoice", bg: "bg-cyan-100", fg: "text-cyan-700" },
     ],
   },
 ];

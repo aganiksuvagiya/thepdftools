@@ -645,6 +645,43 @@ export const seoTools: SeoTool[] = [
       },
     ],
   },
+  {
+    slug: "resume-builder",
+    name: "Resume Builder",
+    category: "Utilities",
+    primaryKeyword: "resume builder online free",
+    secondaryKeywords: [
+      "free resume builder no signup",
+      "create resume online private",
+      "cv builder for students",
+    ],
+    promise:
+      "Build a clean, ATS-friendly resume with your experience, education, and skills, then download a polished PDF instantly without creating an account.",
+    bestFor: ["Job seekers", "Students & freshers", "Career changers", "Freelancers"],
+    related: ["invoice-generator", "signature-generator", "text-to-pdf"],
+    faq: [
+      {
+        q: "Is the resume builder completely free?",
+        a: "Yes, 100% free with no limitations. There are no watermarks, no hidden fees, and no cap on how many resumes you can create or download.",
+      },
+      {
+        q: "Is my resume data safe and private?",
+        a: "Absolutely. The entire resume is generated locally in your browser. None of your personal details, work history, or education information is sent to any server.",
+      },
+      {
+        q: "Can I add multiple jobs and education entries?",
+        a: "Yes. You can add as many work experience and education entries as you need using the \"Add Experience\" and \"Add Education\" buttons, and remove any you don't need.",
+      },
+      {
+        q: "What format is the resume downloaded in?",
+        a: "Your resume is downloaded as a clean, single or multi-page PDF file that's ready to attach to job applications or print.",
+      },
+      {
+        q: "Do I need to sign up or create an account?",
+        a: "No. Just open the tool, fill in your details, and click generate. No account, email verification, or subscription is required.",
+      },
+    ],
+  },
 ];
 
 export function getSeoTool(slug: string) {

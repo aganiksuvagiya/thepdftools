@@ -41,6 +41,7 @@ const generatorTools = [
     group: "Document Generators",
     tools: [
       { href: "/invoice-generator", label: "Invoice Generator", desc: "Create professional invoices and export as PDF." },
+      { href: "/resume-builder", label: "Resume Builder", desc: "Build a professional resume and download it as a PDF." },
       { href: "/ai-invoice-extractor", label: "AI Invoice Extractor", desc: "Extract data from invoice PDFs automatically using AI." },
       { href: "/signature-generator", label: "Signature Generator", desc: "Create a digital handwritten signature online." },
     ],

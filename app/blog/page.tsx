@@ -19,6 +19,51 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "create-resume-online-free",
+    title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
+    excerpt:
+      "Build a professional, ATS-friendly resume online for free and download it as a PDF. Templates, formatting tips, and a step-by-step walkthrough.",
+    date: "2026-06-14",
+    readTime: "11 min read",
+    tags: ["Career", "Resume Builder"],
+  },
+  {
+    slug: "how-to-sign-pdf-online-free",
+    title: "How to Sign a PDF Online for Free (eSignature Guide 2026)",
+    excerpt:
+      "Add a legally usable electronic signature to any PDF for free — type, draw, or upload your signature and download instantly.",
+    date: "2026-06-14",
+    readTime: "10 min read",
+    tags: ["PDF Tools", "eSignature"],
+  },
+  {
+    slug: "extract-text-from-scanned-pdf-ocr",
+    title: "How to Extract Text from Scanned PDFs with OCR (Free Guide)",
+    excerpt:
+      "Turn scanned PDFs and image-based documents into searchable, selectable text using free OCR — how it works and how to use it.",
+    date: "2026-06-14",
+    readTime: "11 min read",
+    tags: ["PDF Tools", "OCR"],
+  },
+  {
+    slug: "how-to-create-qr-code-online-free",
+    title: "How to Create a QR Code Online for Free (Full Guide 2026)",
+    excerpt:
+      "Generate a free, high-resolution QR code for a URL, Wi-Fi network, contact card, or text — with custom colors and logos.",
+    date: "2026-06-14",
+    readTime: "10 min read",
+    tags: ["Generators", "QR Codes"],
+  },
+  {
+    slug: "password-protect-and-unlock-pdf",
+    title: "How to Password Protect & Unlock a PDF Online for Free",
+    excerpt:
+      "Add a password to keep a PDF private, or remove a password from a PDF you own — free, private, and right in your browser.",
+    date: "2026-06-14",
+    readTime: "10 min read",
+    tags: ["PDF Tools", "Security"],
+  },
+  {
     slug: "add-watermark-to-image-online-free",
     title: "How to Add Watermark to Image Online Free - No Upload",
     excerpt:

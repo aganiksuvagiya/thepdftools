@@ -1,0 +1,80 @@
+# thepdftools
+
+> Free online PDF, image, and document tools that run entirely in the browser — no upload to a server, no signup, and no file size limits for most tools. Built with privacy-first, client-side processing.
+
+## PDF Tools
+- [PDF Merge](https://thepdftools.site/pdf-merge): Combine multiple PDF files into one
+- [PDF Compress](https://thepdftools.site/pdf-compress): Reduce PDF file size
+- [PDF Split](https://thepdftools.site/pdf-split): Split a PDF into separate files or pages
+- [PDF to Word](https://thepdftools.site/pdf-to-word): Convert PDF to editable Word document
+- [Word to PDF](https://thepdftools.site/word-to-pdf): Convert Word document to PDF
+- [PDF to Excel](https://thepdftools.site/pdf-to-excel): Convert PDF tables to Excel spreadsheet
+- [Excel to PDF](https://thepdftools.site/excel-to-pdf): Convert Excel spreadsheet to PDF
+- [PDF to JPG](https://thepdftools.site/pdf-to-jpg): Convert PDF pages to JPG images
+- [JPG to PDF](https://thepdftools.site/jpg-to-pdf): Convert JPG images to a PDF file
+- [Image to PDF](https://thepdftools.site/image-to-pdf): Convert any image to PDF
+- [PDF to Image](https://thepdftools.site/pdf-to-image): Convert PDF pages to images
+- [PDF to PPT](https://thepdftools.site/pdf-to-ppt): Convert PDF to PowerPoint presentation
+- [PPT to PDF](https://thepdftools.site/ppt-to-pdf): Convert PowerPoint to PDF
+- [HTML to PDF](https://thepdftools.site/html-to-pdf): Convert HTML or web pages to PDF
+- [Markdown to PDF](https://thepdftools.site/markdown-to-pdf): Convert Markdown files to PDF
+- [Text to PDF](https://thepdftools.site/text-to-pdf): Convert plain text to PDF
+- [Screenshot to PDF](https://thepdftools.site/screenshot-to-pdf): Convert screenshots/images to PDF
+- [PDF Editor](https://thepdftools.site/pdf-editor): Edit text and content in a PDF
+- [PDF Sign](https://thepdftools.site/pdf-sign): Add a digital signature to a PDF
+- [PDF Highlight](https://thepdftools.site/pdf-highlight): Highlight and annotate PDF text
+- [PDF Watermark](https://thepdftools.site/pdf-watermark): Add a watermark to PDF pages
+- [PDF Rotate](https://thepdftools.site/pdf-rotate): Rotate PDF pages
+- [PDF Page Numbers](https://thepdftools.site/pdf-page-numbers): Add page numbers to a PDF
+- [PDF Protect](https://thepdftools.site/pdf-protect): Add a password to a PDF
+- [PDF Unlock](https://thepdftools.site/pdf-unlock): Remove a password from a PDF
+- [PDF Redaction](https://thepdftools.site/pdf-redaction): Permanently black out sensitive PDF content
+- [PDF Compare](https://thepdftools.site/pdf-compare): Compare two PDF files for differences
+- [PDF Form Filler](https://thepdftools.site/pdf-form-filler): Fill out PDF forms online
+- [PDF OCR](https://thepdftools.site/pdf-ocr): Extract text from scanned PDFs
+- [Scanned PDF to Searchable PDF](https://thepdftools.site/scanned-pdf-to-searchable-pdf): Make scanned PDFs searchable with OCR
+- [AI Invoice Extractor](https://thepdftools.site/ai-invoice-extractor): Extract structured data from invoice PDFs using AI
+
+## Image Tools
+- [Background Remover](https://thepdftools.site/background-remover): Remove image backgrounds with AI
+- [Image Compressor](https://thepdftools.site/image-compressor): Reduce image file size
+- [Image Resizer](https://thepdftools.site/image-resizer): Resize images to custom dimensions
+- [Image Cropper](https://thepdftools.site/image-cropper): Crop images online
+- [Image Upscaler](https://thepdftools.site/image-upscaler): Upscale and enhance image resolution with AI
+- [Image Rotate](https://thepdftools.site/image-rotate): Rotate and flip images
+- [Image Watermark](https://thepdftools.site/image-watermark): Add a watermark to images
+- [Image to WebP](https://thepdftools.site/image-to-webp): Convert images to WebP format
+- [JPG to PNG](https://thepdftools.site/jpg-to-png): Convert JPG to PNG
+- [PNG to JPG](https://thepdftools.site/png-to-jpg): Convert PNG to JPG
+- [HEIC to JPG](https://thepdftools.site/heic-to-jpg): Convert iPhone HEIC photos to JPG
+- [SVG to PNG](https://thepdftools.site/svg-to-png): Convert SVG to PNG
+- [Video to GIF](https://thepdftools.site/video-to-gif): Convert video clips to GIF
+
+## Generators
+- [QR Code Generator](https://thepdftools.site/qr-generator): Create QR codes
+- [Barcode Generator](https://thepdftools.site/barcode-generator): Create barcodes
+- [Invoice Generator](https://thepdftools.site/invoice-generator): Create and download invoices
+- [Resume Builder](https://thepdftools.site/resume-builder): Build a professional resume and download as PDF
+- [Signature Generator](https://thepdftools.site/signature-generator): Create a digital signature
+- [Favicon Generator](https://thepdftools.site/favicon-generator): Generate favicons from an image
+- [Password Generator](https://thepdftools.site/password-generator): Generate strong random passwords
+- [Color Picker](https://thepdftools.site/color-picker): Pick and copy colors
+- [Color Gradient Generator](https://thepdftools.site/color-gradient): Create CSS gradients
+
+## Developer Tools
+- [JSON Formatter](https://thepdftools.site/json-formatter): Format and validate JSON
+- [CSV to JSON](https://thepdftools.site/csv-to-json): Convert CSV files to JSON
+- [Base64 Encoder/Decoder](https://thepdftools.site/base64): Encode and decode Base64
+- [URL Encoder/Decoder](https://thepdftools.site/url-encoder): Encode and decode URLs
+- [Regex Tester](https://thepdftools.site/regex-tester): Test regular expressions
+- [Timestamp Converter](https://thepdftools.site/timestamp-converter): Convert Unix timestamps and dates
+
+## Utility Tools
+- [Word Counter](https://thepdftools.site/word-counter): Count words and characters in text
+- [Text Case Converter](https://thepdftools.site/text-case-converter): Convert text between cases
+- [Lorem Ipsum Generator](https://thepdftools.site/lorem-ipsum): Generate placeholder text
+- [Tailwind Colors](https://thepdftools.site/tailwind-colors): Browse Tailwind CSS color palette
+
+## About
+- [About thepdftools](https://thepdftools.site/about): Information about the site and its tools
+- [Blog](https://thepdftools.site/blog): Guides and articles on PDF and image tools

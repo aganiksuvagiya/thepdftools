@@ -84,6 +84,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Document & productivity tools
     { path: "/invoice-generator", changeFrequency: "weekly", priority: 0.88, date: "2026-05-19" },
+    { path: "/resume-builder", changeFrequency: "weekly", priority: 0.88, date: "2026-06-14" },
     { path: "/ai-invoice-extractor", changeFrequency: "weekly", priority: 0.87, date: "2026-05-19" },
     { path: "/signature-generator", changeFrequency: "weekly", priority: 0.86, date: "2026-05-19" },
     { path: "/qr-generator", changeFrequency: "weekly", priority: 0.82, date: "2026-05-19" },
@@ -113,6 +114,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog
     { path: "/blog", changeFrequency: "weekly", priority: 0.85, date: "2026-05-30" },
+    { path: "/blog/create-resume-online-free", changeFrequency: "monthly", priority: 0.78, date: "2026-06-14" },
+    { path: "/blog/how-to-sign-pdf-online-free", changeFrequency: "monthly", priority: 0.78, date: "2026-06-14" },
+    { path: "/blog/extract-text-from-scanned-pdf-ocr", changeFrequency: "monthly", priority: 0.78, date: "2026-06-14" },
+    { path: "/blog/how-to-create-qr-code-online-free", changeFrequency: "monthly", priority: 0.78, date: "2026-06-14" },
+    { path: "/blog/password-protect-and-unlock-pdf", changeFrequency: "monthly", priority: 0.78, date: "2026-06-14" },
     { path: "/blog/add-watermark-to-image-online-free", changeFrequency: "monthly", priority: 0.78, date: "2026-05-30" },
     { path: "/blog/compress-pdf-for-email-online", changeFrequency: "monthly", priority: 0.78, date: "2026-05-30" },
     { path: "/blog/convert-ppt-to-pdf-online-free", changeFrequency: "monthly", priority: 0.78, date: "2026-05-30" },
