@@ -283,19 +283,25 @@ export default function WordCounterPage() {
           </div>
         </section>
 
-        <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_320px]">
+        <section className="mt-8 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Quick AI Answer</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Featured Snippet</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
-              To count words in a PDF, upload a text-based PDF, extract the
-              readable text layer, and total the words and characters across all
-              pages. If the file is scanned, use OCR first or the result may be
-              incomplete.
+              A PDF word counter counts the words, characters, and pages inside a
+              PDF file without copying text into another app. It works best on
+              text-based PDFs. If the document is scanned or image-based, OCR is
+              usually required before the word count becomes accurate.
             </p>
           </div>
 
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Best For</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Quick Answer</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Upload the PDF, extract its text layer, and review the total words,
+              characters, and page count. This is faster and more reliable than
+              manual copy-paste counting, especially for long reports, essays,
+              contracts, and research files.
+            </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {[
                 "Academic PDFs",
@@ -314,6 +320,131 @@ export default function WordCounterPage() {
               ))}
             </div>
           </aside>
+        </section>
+
+        <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Real-World Use Cases
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {[
+              "Check whether a PDF essay stays within a submission word limit before uploading it.",
+              "Measure client reports before review so teams know how much content they need to read.",
+              "Compare contract versions and spot whether one draft has become much longer than another.",
+              "Estimate reading time for policy manuals, onboarding packs, and staff documentation.",
+              "Audit research papers before journal submission or internal review.",
+              "Review RFP responses and proposals when document length affects scoring or effort.",
+              "Verify whether exported PDF brochures contain the expected amount of body copy.",
+              "Measure grant applications or compliance documentation before final handoff.",
+              "Check scanned archival PDFs after OCR to confirm the extracted text is complete enough to trust.",
+              "Count characters in PDF files when a portal or publishing workflow has strict text-length limits.",
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm leading-7 text-slate-600">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Common Mistakes
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {[
+              "Trusting a word count from a scanned PDF before checking whether the file has a real text layer.",
+              "Copying text manually from the PDF and assuming headers, footers, tables, and hidden sections were all captured.",
+              "Ignoring extraction previews even when the PDF contains broken characters or missing lines.",
+              "Using a generic text counter instead of a PDF-specific workflow for long multi-page documents.",
+              "Assuming a visible page always contains machine-readable text.",
+              "Skipping OCR on image-based PDFs and then wondering why the total looks too low.",
+              "Comparing two PDF counts without making sure both files were exported from the latest version.",
+              "Relying only on total words when character count or page-level review is also required.",
+              "Counting a locked, damaged, or partial PDF and treating the first result as final.",
+              "Forgetting to recheck the count after editing or converting the document.",
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm leading-7 text-slate-600">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Expert Tips
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {[
+              "Use text-based exports whenever possible because native PDFs are far easier to count accurately than scanned copies.",
+              "Check the extracted text preview before trusting the final number on any important document.",
+              "Run OCR first on historical scans, phone-captured PDFs, and image-heavy records.",
+              "Review page-level summaries to spot blank, broken, or undercounted pages quickly.",
+              "Count both words and characters when a submission portal could enforce either limit.",
+              "Recalculate after edits so the latest version is the one you actually submit or review.",
+              "Use PDF to Word when you need to revise content after measuring the document length.",
+              "Keep OCR and counting in the same workflow for scanned contracts, forms, and reports.",
+              "Check unusual fonts or symbol-heavy PDFs carefully because extraction quality can vary.",
+              "Use related PDF tools after counting so you can edit, highlight, convert, or validate the same file without starting over.",
+            ].map((item) => (
+              <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm leading-7 text-slate-600">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Why Some PDFs Show Incorrect Word Counts
+          </h2>
+          <div className="mt-4 space-y-5 text-[15px] leading-8 text-slate-600">
+            <p>
+              Some PDFs look like normal documents but do not contain selectable
+              text. That usually happens with scanned PDFs, photographed pages,
+              or image-based exports where each page is stored as an image rather
+              than real text. In those cases, a word counter can only measure the
+              text layer that exists, which may be empty or incomplete.
+            </p>
+            <p>
+              OCR solves that problem by recognizing the words inside those page
+              images and rebuilding a searchable text layer. If your count looks
+              too low or the preview shows little to no extracted text, the right
+              next step is to{" "}
+              <Link
+                href="/pdf-ocr"
+                className="font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4"
+              >
+                run OCR on a scanned PDF
+              </Link>
+              . Once OCR finishes, the document becomes much easier to measure
+              accurately.
+            </p>
+            <p>
+              OCR also improves downstream workflows. You can{" "}
+              <Link
+                href="/pdf-to-word"
+                className="font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4"
+              >
+                convert PDF to Word for editing
+              </Link>
+              ,{" "}
+              <Link
+                href="/pdf-editor"
+                className="font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4"
+              >
+                edit the PDF after counting words
+              </Link>
+              , or{" "}
+              <Link
+                href="/pdf-highlight"
+                className="font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4"
+              >
+                highlight important PDF sections
+              </Link>
+              {" "}once the text is searchable and easier to review.
+            </p>
+          </div>
         </section>
 
         <div className="mt-14 space-y-8">
@@ -510,26 +641,27 @@ export default function WordCounterPage() {
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               PDF Word Count vs Manual Counting
             </h2>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <h3 className="text-base font-semibold text-slate-900">Manual counting workflow</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
-                  Open the PDF, select text, copy it into another app, hope no
-                  section was skipped, and then count it with a generic text tool.
-                  This can work for short files, but it breaks down quickly on long
-                  documents, multi-page PDFs, tables, headers, scans, and mixed
-                  layouts.
-                </p>
+            <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200">
+              <div className="grid grid-cols-3 bg-slate-50 text-sm font-semibold text-slate-900">
+                <div className="border-r border-slate-200 px-4 py-3">Factor</div>
+                <div className="border-r border-slate-200 px-4 py-3">Manual Counting</div>
+                <div className="px-4 py-3">PDF Word Counter</div>
               </div>
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <h3 className="text-base font-semibold text-slate-900">Dedicated PDF word count workflow</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
-                  Upload the document, extract text from the PDF directly, review
-                  the page-level output, and see instantly whether OCR is needed.
-                  This is faster, closer to the source file, and more useful for
-                  real submission, review, and editing workflows.
-                </p>
-              </div>
+              {[
+                ["Speed", "Slow on long files", "Fast across multi-page PDFs"],
+                ["Accuracy", "Easy to miss text during copy-paste", "Reads the PDF text layer directly"],
+                ["Scanned PDFs", "Usually fails without extra work", "Flags OCR needs before trusting totals"],
+                ["Page visibility", "No page-level review built in", "Can show page summaries and previews"],
+                ["Best use", "Short simple documents only", "Essays, reports, contracts, manuals, research"],
+              ].map((row) => (
+                <div key={row[0]} className="grid grid-cols-3 border-t border-slate-200 text-sm text-slate-600">
+                  <div className="border-r border-slate-200 px-4 py-3 font-medium text-slate-900">
+                    {row[0]}
+                  </div>
+                  <div className="border-r border-slate-200 px-4 py-3">{row[1]}</div>
+                  <div className="px-4 py-3">{row[2]}</div>
+                </div>
+              ))}
             </div>
             <p className="mt-5 text-[15px] leading-8 text-slate-600">
               This comparison also explains why the page is still sitting around
@@ -621,6 +753,34 @@ export default function WordCounterPage() {
               counting characters in PDF files, and keep the metadata tightly
               aligned to the target terms instead of generic text-counter queries.
             </p>
+          </section>
+
+          <section className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              Trust &amp; Security
+            </h2>
+            <div className="mt-4 space-y-5 text-[15px] leading-8 text-slate-600">
+              <p>
+                Word count checks often happen on academic, business, legal, and
+                internal documents where accuracy matters. This page is built to
+                help you validate the count instead of blindly trusting a number.
+                Previewing extracted text, checking page-level output, and
+                identifying OCR issues all make the result more dependable.
+              </p>
+              <p>
+                If the document needs more work after counting, you can move
+                directly into the next step without leaving the PDF workflow.
+                That might mean using OCR, converting to Word, editing the file,
+                highlighting important sections, or opening the main PDF hub to{" "}
+                <Link
+                  href="/pdf-tools"
+                  className="font-semibold text-brand-700 underline decoration-brand-200 underline-offset-4"
+                >
+                  explore all PDF tools
+                </Link>
+                .
+              </p>
+            </div>
           </section>
 
           <section className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
