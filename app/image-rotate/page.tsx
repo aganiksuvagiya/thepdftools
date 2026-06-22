@@ -185,6 +185,217 @@ export default function ImageRotatePage() {
             </div>
           </div>
 
+          <div className="rounded-[1.75rem] border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-secondary-50 p-8 shadow-sm">
+            <div className="max-w-4xl">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">Featured Snippet</div>
+              <h2 className="mt-3 text-2xl font-semibold text-slate-900">Rotate Image Online Free</h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                Rotate image online free by uploading your file, choosing a 90 degree, 180 degree, or custom angle, previewing the corrected orientation, and downloading the result instantly. This is the fastest way to fix sideways photos, scanned documents, social media uploads, and product images before you <Link href="/image-compressor" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">compress image after rotating</Link>, <Link href="/image-cropper" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">crop image after rotation</Link>, or <Link href="/png-to-jpg" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">convert PNG to JPG</Link>.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">Quick Answer</h2>
+              <ol className="mt-4 list-inside list-decimal space-y-2 text-sm leading-7 text-slate-600">
+                <li>Upload your JPG, PNG, or WebP image into the rotate tool.</li>
+                <li>Choose a quick 90 degree turn or enter a custom angle to straighten the image.</li>
+                <li>Preview the new orientation and make any flip or alignment adjustments.</li>
+                <li>Download the final file, then <Link href="/jpg-to-png" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">convert JPG back to PNG</Link> or <Link href="/image-tools" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">explore all image tools</Link> if you need another edit.</li>
+              </ol>
+            </div>
+            <div className="rounded-[1.75rem] border border-slate-200 bg-slate-50 p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">Best Next Steps</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                <li>Use <Link href="/png-to-jpg" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">convert PNG to JPG</Link> when you want a lighter photo export.</li>
+                <li>Use <Link href="/image-compressor" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">compress image after rotating</Link> for faster uploads and better page speed.</li>
+                <li>Use <Link href="/image-cropper" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">crop image after rotation</Link> to remove empty corners or improve framing.</li>
+                <li>Use <Link href="/image-tools" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">explore all image tools</Link> if rotation is one step in a bigger workflow.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Image Rotation Comparison Table</h2>
+            <div className="mt-5 overflow-x-auto">
+              <table className="min-w-full divide-y divide-slate-200 text-left text-sm text-slate-600">
+                <thead>
+                  <tr className="text-slate-900">
+                    <th className="px-4 py-3 font-semibold">Method</th>
+                    <th className="px-4 py-3 font-semibold">Ease of Use</th>
+                    <th className="px-4 py-3 font-semibold">Speed</th>
+                    <th className="px-4 py-3 font-semibold">Installation Required</th>
+                    <th className="px-4 py-3 font-semibold">Best For</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  <tr>
+                    <td className="px-4 py-3 font-medium text-slate-900">Rotate Image Online</td>
+                    <td className="px-4 py-3">Very easy</td>
+                    <td className="px-4 py-3">Instant</td>
+                    <td className="px-4 py-3">No</td>
+                    <td className="px-4 py-3">Fast fixes for product photos, uploads, and everyday edits</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium text-slate-900">Rotate in Photoshop</td>
+                    <td className="px-4 py-3">Moderate</td>
+                    <td className="px-4 py-3">Fast after setup</td>
+                    <td className="px-4 py-3">Yes</td>
+                    <td className="px-4 py-3">Advanced design workflows and layered editing</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium text-slate-900">Rotate on Mobile</td>
+                    <td className="px-4 py-3">Easy</td>
+                    <td className="px-4 py-3">Fast</td>
+                    <td className="px-4 py-3">No extra installation in most cases</td>
+                    <td className="px-4 py-3">Quick photo corrections directly on a phone</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium text-slate-900">Rotate with Windows Photos</td>
+                    <td className="px-4 py-3">Easy</td>
+                    <td className="px-4 py-3">Fast</td>
+                    <td className="px-4 py-3">No</td>
+                    <td className="px-4 py-3">Basic desktop edits for local image files</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">Why Images Rotate Incorrectly</h2>
+              <div className="mt-4 space-y-4 text-sm leading-7 text-slate-600">
+                <p>
+                  Images often rotate incorrectly because many devices save EXIF data instead of permanently rotating the pixels. That EXIF orientation tag tells apps how the image should be displayed, but not every browser, website, or editor reads it the same way.
+                </p>
+                <p>
+                  Mobile camera orientation also affects how photos are stored. If you capture a picture in portrait mode, landscape mode, or at an odd angle, the device may rely on metadata to describe the correct view rather than rewriting the image data itself.
+                </p>
+                <p>
+                  Social media uploads and website uploads can strip or ignore metadata, which is why a photo that looks correct on your phone may suddenly appear sideways online. Metadata issues are especially common when images are edited, exported, converted, or passed through multiple apps before publishing.
+                </p>
+              </div>
+            </div>
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">When Should You Rotate an Image?</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                <li>Rotate product photography so listings look consistent across catalogs and marketplaces.</li>
+                <li>Rotate blog images when screenshots, diagrams, or header graphics appear sideways.</li>
+                <li>Rotate social media visuals before posting so reels, stories, and feed images display cleanly.</li>
+                <li>Rotate documents when scanned pages, forms, or photographed notes are hard to read.</li>
+                <li>Rotate marketing materials so banners, flyers, and campaign graphics align correctly before publishing.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Real World Use Cases</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+              {[
+                { title: "Product photos", text: "Align storefront images so products appear upright and consistent." },
+                { title: "Instagram posts", text: "Correct portrait and square assets before publishing to social feeds." },
+                { title: "Website banners", text: "Level hero images and promotional graphics for cleaner layouts." },
+                { title: "Portfolio images", text: "Present case study visuals and gallery shots in the intended orientation." },
+                { title: "Scanned documents", text: "Make photographed forms and paper scans easier to read and share." },
+                { title: "School assignments", text: "Fix notebook photos, diagrams, and submitted screenshots quickly." },
+                { title: "PDF screenshots", text: "Correct exported pages or clipped PDF images before reuse in slides." },
+                { title: "Social media uploads", text: "Avoid sideways uploads caused by metadata or mobile orientation." },
+                { title: "Ecommerce listings", text: "Keep catalog thumbnails uniform across product grids and ads." },
+                { title: "Business documents", text: "Straighten receipts, reports, and internal reference images for teams." },
+              ].map((item) => (
+                <div key={item.title} className="rounded-2xl bg-slate-50 p-5">
+                  <h3 className="text-sm font-medium text-slate-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">Common Mistakes</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                <li>Trusting only the phone gallery preview without checking the file after upload.</li>
+                <li>Rotating by a custom angle when a simple 90 degree turn is the cleaner fix.</li>
+                <li>Ignoring EXIF and metadata problems that can reintroduce orientation issues later.</li>
+                <li>Forgetting to preview the final image before downloading.</li>
+                <li>Publishing rotated images without removing empty corners afterward.</li>
+                <li>Mirroring images that contain readable text or logos.</li>
+                <li>Rotating first in one app, then exporting through another app that strips metadata differently.</li>
+                <li>Skipping compression when the rotated image is meant for websites or email.</li>
+                <li>Using the wrong format when transparency or photo file size matters.</li>
+                <li>Not testing the final image in the destination platform such as a CMS, marketplace, or social app.</li>
+              </ul>
+            </div>
+            <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-xl font-semibold text-slate-900">Expert Tips</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                <li>Rotate before cropping, resizing, or compressing so every later edit uses the correct frame.</li>
+                <li>Use 90 degree steps whenever possible for the cleanest orientation correction.</li>
+                <li>Use custom-angle rotation for horizon lines, screenshots, and scanned paperwork that need fine alignment.</li>
+                <li>Preview the image at full size to catch subtle tilt before downloading.</li>
+                <li>Crop after rotation to remove blank corners created by straightening.</li>
+                <li>Choose JPG for lightweight photos and PNG when you need crisp graphics or transparency support.</li>
+                <li>Keep a copy of the original if you are testing multiple orientations for design layouts.</li>
+                <li>Check text direction after using horizontal flip on selfies, labels, or signs.</li>
+                <li>After rotation, <Link href="/image-compressor" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">compress image after rotating</Link> to improve upload speed.</li>
+                <li>Build a faster workflow by chaining rotation with <Link href="/image-cropper" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">crop image after rotation</Link> and format conversion when needed.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">People Also Ask</h2>
+            <div className="mt-5 space-y-4">
+              {[
+                { q: "How do I rotate an image online for free?", a: "Upload the image, choose a 90 degree or custom angle rotation, preview the result, and download the corrected file." },
+                { q: "Why does my image upload sideways?", a: "This usually happens when the original file relies on EXIF orientation data and the upload destination ignores or strips that metadata." },
+                { q: "Can I rotate a JPG, PNG, or WebP image online?", a: "Yes. The tool supports common image formats including JPG, PNG, and WebP." },
+                { q: "Does rotating an image reduce quality?", a: "Standard 90 degree rotations are typically clean, while custom-angle adjustments may need light cropping but still preserve strong visual quality." },
+                { q: "Should I rotate before cropping an image?", a: "Yes. Rotating first gives you the right frame, then cropping helps remove empty edges and improve composition." },
+                { q: "Can I fix a sideways phone photo online?", a: "Yes. Sideways mobile photos are one of the most common use cases for online image rotation tools." },
+                { q: "What is the best way to rotate product photos?", a: "Use a browser-based rotation tool first, then crop and optimize the file so every listing stays consistent." },
+                { q: "Can I rotate an image without installing software?", a: "Yes. Browser-based rotation tools let you correct image orientation without downloading desktop apps." },
+                { q: "Why do screenshots sometimes need rotation?", a: "Screenshots taken from tablets, scanned pages, or exported documents can inherit awkward orientation and need quick adjustment." },
+                { q: "Can I rotate and flip an image together?", a: "Yes. You can combine rotation with horizontal or vertical flip for mirror corrections and layout needs." },
+                { q: "What should I do after rotating an image?", a: "Common next steps are cropping empty corners, compressing the file, or converting it into a different format." },
+                { q: "When should I convert PNG to JPG after rotating?", a: "Convert PNG to JPG after rotating when you want smaller file sizes for photos, websites, or marketplaces." },
+                { q: "Can social media apps change image orientation?", a: "Yes. Social platforms sometimes handle metadata differently, which can make correctly viewed photos appear rotated after upload." },
+                { q: "Is rotating images useful for scanned documents?", a: "Yes. Rotating scanned pages makes forms, notes, and business paperwork much easier to read and share." },
+                { q: "How can I avoid image rotation problems in the future?", a: "Rotate the actual image before uploading and test the final file in the destination platform instead of relying only on metadata." },
+              ].map((item) => (
+                <div key={item.q} className="rounded-2xl bg-slate-50 p-5">
+                  <h3 className="text-sm font-medium text-slate-900">{item.q}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-600">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Trust &amp; Security</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-4">
+              <div className="rounded-2xl bg-slate-50 p-5">
+                <h3 className="text-sm font-medium text-slate-900">Browser-based processing</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">Rotation happens in your browser, which keeps the workflow fast and avoids unnecessary transfers.</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-5">
+                <h3 className="text-sm font-medium text-slate-900">Privacy</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">Personal photos, product shots, documents, and internal assets stay on your device during editing.</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-5">
+                <h3 className="text-sm font-medium text-slate-900">No software installation</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">You can fix orientation without installing desktop tools, signing up, or switching devices mid-task.</p>
+              </div>
+              <div className="rounded-2xl bg-slate-50 p-5">
+                <h3 className="text-sm font-medium text-slate-900">Fast workflow</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">After rotation, you can <Link href="/png-to-jpg" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">convert PNG to JPG</Link>, <Link href="/jpg-to-png" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">convert JPG back to PNG</Link>, or <Link href="/image-tools" className="font-medium text-brand-700 underline decoration-brand-200 underline-offset-4 transition-colors hover:text-brand-800">explore all image tools</Link> in one flow.</p>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ */}
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Frequently Asked Questions</h2>
