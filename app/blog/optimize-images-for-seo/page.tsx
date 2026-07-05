@@ -1,53 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/optimize-images-for-seo`;
 
-export const metadata: Metadata = {
-  title: "Image Optimization for SEO — Complete Guide for 2026",
-  description:
-    "Boost your search rankings with properly optimized images. Learn about compression, alt text, lazy loading, next-gen formats like WebP, and how images affect Core Web Vitals.",
-  keywords: [
-    "image optimization for SEO",
-    "image SEO guide 2026",
-    "compress images for Google",
-    "WebP format SEO",
-    "Core Web Vitals images",
-    "image alt text best practices",
-    "lazy loading images",
-    "LCP optimization",
-    "image file size SEO",
-    "next-gen image formats",
-  ],
-  openGraph: {
-    title: "Image Optimization for SEO — Complete Guide for 2026",
-    description:
-      "Boost your search rankings with properly optimized images. Covers compression, alt text, lazy loading, WebP, and Core Web Vitals.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-03-18T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "Image Optimization for SEO — Complete Guide for 2026",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Image Optimization for SEO — Complete Guide for 2026",
-    description:
-      "A complete guide to optimizing images for search engines, page speed, and Core Web Vitals in 2026.",
-  },
-  alternates: {
-    canonical: POST_URL,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("optimize-images-for-seo");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -390,7 +352,7 @@ export default function OptimizeImagesForSEO() {
               </div>
             </section>
 
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="optimize-images-for-seo" />
       </article>
 
           {/* SIDEBAR */}

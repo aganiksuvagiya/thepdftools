@@ -1,51 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/jpg-vs-png-vs-webp-which-format`;
 
-export const metadata: Metadata = {
-  title: "JPG vs PNG vs WebP — Which Image Format Should You Use?",
-  description:
-    "A practical comparison of JPG, PNG, and WebP image formats. Learn when to use each format, how they differ in quality, file size, and transparency, and how to convert between them for free.",
-  keywords: [
-    "jpg vs png vs webp",
-    "image format comparison",
-    "best image format for web",
-    "webp vs jpg",
-    "png vs jpg",
-    "when to use webp",
-    "image format guide",
-    "convert image format",
-  ],
-  openGraph: {
-    title: "JPG vs PNG vs WebP — Which Image Format Should You Use?",
-    description:
-      "A practical comparison of JPG, PNG, and WebP image formats. Learn when to use each and how to convert between them for free.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-03-28T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "JPG vs PNG vs WebP — Which Image Format Should You Use?",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "JPG vs PNG vs WebP — Which Image Format Should You Use?",
-    description:
-      "A practical comparison of JPG, PNG, and WebP. Learn when to use each format and how to convert between them.",
-  },
-  alternates: {
-    canonical: POST_URL,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("jpg-vs-png-vs-webp-which-format");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -362,7 +326,7 @@ export default function JpgVsPngVsWebp() {
                 Try JPG to PNG Converter
               </Link>
             </div>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="jpg-vs-png-vs-webp-which-format" />
       </article>
 
           {/* SIDEBAR */}

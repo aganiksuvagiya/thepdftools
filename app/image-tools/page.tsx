@@ -52,8 +52,8 @@ const imageTools = [
       { href: "/image-to-webp", label: "Image to WebP", desc: "Convert JPG/PNG to modern WebP format." },
       { href: "/svg-to-png", label: "SVG to PNG", desc: "Rasterize SVG vector files to PNG." },
       { href: "/heic-to-jpg", label: "HEIC to JPG", desc: "Convert iPhone HEIC photos to JPG." },
-      { href: "/convert-jpeg-to-png-online-free", label: "JPEG to PNG Free", desc: "Fast JPEG to PNG with no upload." },
-      { href: "/convert-png-to-jpg-online-free", label: "PNG to JPG Free", desc: "Fast PNG to JPG with no upload." },
+      { href: "/jpg-to-png-no-upload", label: "JPG to PNG No Upload", desc: "Fast JPEG to PNG with browser-only processing." },
+      { href: "/png-to-jpg-for-photos", label: "PNG to JPG for Photos", desc: "Smaller JPG exports for email, uploads, and sharing." },
     ],
   },
   {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildPageMetadata } from "@/lib/seo-page";
 
 const PngToJpgClient = dynamic(() => import("./PngToJpgClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -135,27 +136,13 @@ const relatedTools = [
   },
 ] as const;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
+  url: "https://thepdftools.site/png-to-jpg",
   keywords: [...semanticKeywords, ...longTailKeywords],
-  openGraph: {
-    title: pageTitle,
-    description: pageDescription,
-    url: "https://thepdftools.site/png-to-jpg",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "PNG to JPG Converter Free Online",
-      },
-    ],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/png-to-jpg",
-  },
-};
+  imageAlt: "PNG to JPG Converter Free Online",
+});
 
 export default function PngToJpgPage() {
   const jsonLd = {
@@ -250,6 +237,11 @@ export default function PngToJpgPage() {
                   Free Online
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
 
               <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
                 Convert PNG to JPG online free in seconds. Reduce file size, replace

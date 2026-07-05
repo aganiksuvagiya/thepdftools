@@ -1,9 +1,14 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { MetadataRoute } from "next";
+import { blogCategories, blogPostsSorted, getCategoryUrl } from "@/lib/blog";
 
 const BASE_URL = "https://thepdftools.site";
 const APP_DIR = path.join(process.cwd(), "app");
+const EXCLUDED_ROUTES = new Set([
+  "/convert-jpeg-to-png-online-free",
+  "/convert-png-to-jpg-online-free",
+]);
 
 export const revalidate = 3600;
 
@@ -23,6 +28,7 @@ const EXACT_RULES: Record<string, RouteRule> = {
   "/document-tools": { changeFrequency: "weekly", priority: 0.95 },
   "/utility-tools": { changeFrequency: "weekly", priority: 0.94 },
   "/blog": { changeFrequency: "weekly", priority: 0.85 },
+  "/site-map": { changeFrequency: "weekly", priority: 0.83 },
   "/smallpdf-vs-thepdftools": { changeFrequency: "monthly", priority: 0.85 },
   "/ilovepdf-alternative": { changeFrequency: "monthly", priority: 0.85 },
   "/about": { changeFrequency: "monthly", priority: 0.6 },
@@ -86,8 +92,10 @@ const DEVELOPER_ROUTE_PATTERNS = new Set([
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pageFiles = await collectPageFiles(APP_DIR);
 
-  const entries = await Promise.all(
-    pageFiles.map(async (filePath) => {
+  const pageEntries = await Promise.all(
+    pageFiles
+      .filter((filePath) => !EXCLUDED_ROUTES.has(toRoutePath(filePath)))
+      .map(async (filePath) => {
       const routePath = toRoutePath(filePath);
       const routeDir = path.dirname(filePath);
       const lastModified = await getLatestModifiedAt(routeDir);
@@ -101,6 +109,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     })
   );
+
+  const blogEntries: MetadataRoute.Sitemap = blogPostsSorted.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(`${post.updatedAt}T00:00:00Z`),
+    changeFrequency: "monthly",
+    priority: 0.82,
+  }));
+
+  const categoryEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/blog/category`,
+      lastModified: new Date(`${blogPostsSorted[0]?.updatedAt ?? "2026-01-01"}T00:00:00Z`),
+      changeFrequency: "weekly",
+      priority: 0.74,
+    },
+    ...blogCategories.map((category) => ({
+      url: getCategoryUrl(category.name),
+      lastModified: new Date(
+        `${blogPostsSorted.find((post) => post.category === category.name)?.updatedAt ?? "2026-01-01"}T00:00:00Z`
+      ),
+      changeFrequency: "weekly" as const,
+      priority: 0.72,
+    })),
+  ];
+
+  const entries = dedupeByUrl([
+    ...pageEntries,
+    ...blogEntries,
+    ...categoryEntries,
+  ]);
 
   return entries.sort((a, b) => {
     if (a.url === `${BASE_URL}`) return -1;
@@ -131,7 +169,7 @@ async function collectPageFiles(dir: string): Promise<string[]> {
 }
 
 function shouldSkipDirectory(name: string) {
-  return name.startsWith("_") || name.startsWith("@");
+  return name.startsWith("_") || name.startsWith("@") || (name.startsWith("[") && name.endsWith("]"));
 }
 
 function toRoutePath(filePath: string) {
@@ -227,4 +265,14 @@ function isDeveloperRoute(routePath: string) {
     routePath.includes("tailwind") ||
     routePath.includes("color-")
   );
+}
+
+function dedupeByUrl(entries: MetadataRoute.Sitemap) {
+  const unique = new Map<string, MetadataRoute.Sitemap[number]>();
+
+  for (const entry of entries) {
+    unique.set(entry.url, entry);
+  }
+
+  return Array.from(unique.values());
 }

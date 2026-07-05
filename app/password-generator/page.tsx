@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PasswordGeneratorClient = dynamic(() => import("./PasswordGeneratorClient"), {
   ssr: false,
@@ -11,10 +14,11 @@ const PasswordGeneratorClient = dynamic(() => import("./PasswordGeneratorClient"
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/password-generator`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Password Generator — Free Strong Password Generator Online",
   description:
     "Generate strong, secure random passwords online for free. Customize length, include uppercase, lowercase, numbers, and symbols. Copy instantly, no sign-up.",
+  url: PAGE_URL,
   keywords: [
     "password generator",
     "strong password generator",
@@ -25,15 +29,7 @@ export const metadata: Metadata = {
     "generate strong password",
     "random password online free",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Password Generator — Free Strong Password Generator Online",
-    description: "Generate strong random passwords instantly. Customize length and character types. Free, secure, no sign-up.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const faqItems = [
   { q: "Is this password generator secure?", a: "Yes. Passwords are generated using the Web Crypto API (crypto.getRandomValues), which is cryptographically secure. Nothing is sent to any server." },
@@ -71,6 +67,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Password Generator", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -89,6 +87,11 @@ export default function PasswordGeneratorPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Password Generator
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Generate strong, cryptographically secure random passwords. Customize length, character types, and copy instantly. Nothing is sent to any server.
           </p>
@@ -134,7 +137,7 @@ export default function PasswordGeneratorPage() {
             {[
               { href: "/qr-generator", label: "QR Code Generator" },
               { href: "/barcode-generator", label: "Barcode Generator" },
-              { href: "/uuid-generator", label: "UUID Generator" },
+              { href: "/signature-generator", label: "Signature Generator" },
               { href: "/generators", label: "All Generators →" },
             ].map((t) => (
               <Link key={t.href} href={t.href} className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">
@@ -143,6 +146,16 @@ export default function PasswordGeneratorPage() {
             ))}
           </div>
         </section>
+
+        <ToolSeoGrowth slug="password-generator" />
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues", label: "MDN: Web Crypto `getRandomValues()`" },
+            { href: "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html", label: "OWASP: password security guidance" },
+            { href: "https://pages.nist.gov/800-63-4/sp800-63b.html", label: "NIST SP 800-63B digital identity guidelines" },
+          ]}
+        />
       </main>
     </div>
   );

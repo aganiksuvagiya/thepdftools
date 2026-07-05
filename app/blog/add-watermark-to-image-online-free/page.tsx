@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/add-watermark-to-image-online-free`;
 
-export const metadata: Metadata = {
-  title: "How to Add Watermark to Image Online Free - No Upload",
-  description:
-    "Learn how to add a text watermark to JPG, PNG, and WebP images online for free. No upload, no signup, no watermark from us. Step-by-step guide included.",
-  keywords: [
-    "add watermark to image online free",
-    "watermark image online",
-    "add text watermark to photo",
-    "watermark jpg online free",
-    "watermark png online",
-    "image watermark no upload",
-    "photo watermark no signup",
-  ],
-  openGraph: {
-    title: "How to Add Watermark to Image Online Free - No Upload",
-    description:
-      "Add a text watermark to JPG, PNG, and WebP images online for free. No upload, no signup, no watermark from us.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Add watermark to image online free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Add Watermark to Image Online Free - No Upload",
-    description: "Add text watermarks to photos online for free. No upload, no signup.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("add-watermark-to-image-online-free");
+}
+
 
 const toolLink = "font-medium text-brand-600 underline decoration-brand-200 hover:text-brand-700 hover:decoration-brand-400 transition-colors";
 
@@ -176,7 +151,7 @@ export default function AddWatermarkToImageOnlineFree() {
               </p>
             </div>
           </div>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="add-watermark-to-image-online-free" includeBreadcrumbSchema={false} />
       </article>
       </div>
     </div>

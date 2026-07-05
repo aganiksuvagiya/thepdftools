@@ -437,7 +437,7 @@ export default function Navbar() {
                     setUtilityOpen(false);
                   }}
                   className={clsx(
-                    "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
                     pdfOpen ? "text-slate-900" : "text-slate-600 hover:text-slate-900",
                   )}
                 >
@@ -467,7 +467,7 @@ export default function Navbar() {
                     setUtilityOpen(false);
                   }}
                   className={clsx(
-                    "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
                     imageOpen ? "text-slate-900" : "text-slate-600 hover:text-slate-900",
                   )}
                 >
@@ -497,7 +497,7 @@ export default function Navbar() {
                     setImageOpen(false);
                   }}
                   className={clsx(
-                    "flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
+                    "flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-2 text-[13.5px] font-medium transition-colors",
                     utilityOpen ? "text-slate-900" : "text-slate-600 hover:text-slate-900",
                   )}
                 >
@@ -515,7 +515,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={clsx(
-                    "rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors xl:inline-flex",
+                    "hidden whitespace-nowrap rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors xl:inline-flex",
                     pathname === link.href ? "text-brand-600" : "text-slate-600 hover:text-slate-900",
                   )}
                 >

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/generators`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Online Generators — QR Code, Barcode, Password, Lorem Ipsum & More",
   description:
     "Free online generators: create QR codes, barcodes, strong passwords, lorem ipsum placeholder text, invoices, and more. Instant results, no sign-up required.",
+  url: PAGE_URL,
   keywords: [
     "free online generators",
     "qr code generator",
@@ -18,16 +20,7 @@ export const metadata: Metadata = {
     "online generator tools",
     "free qr code generator",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Free Online Generators — QR Code, Barcode, Password, Lorem Ipsum & More",
-    description:
-      "Free online generators: QR codes, barcodes, passwords, lorem ipsum, invoices, and more.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const generatorTools = [
   {
@@ -82,7 +75,11 @@ const jsonLd = {
       name: "Free Online Generators",
       url: PAGE_URL,
       description: "Free online generators: QR codes, barcodes, passwords, lorem ipsum, and invoices.",
+      author: { "@type": "Organization", name: "thepdftools Editorial Team" },
+      dateModified: "2026-07-05",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -127,6 +124,11 @@ export default function GeneratorsPage() {
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
             Free Online Generators
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Generate QR codes, barcodes, invoices, signatures, and placeholder text — all free, all instant, right in your browser. No software needed.
           </p>
@@ -215,6 +217,22 @@ export default function GeneratorsPage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">References</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developers.google.com/search/docs/appearance/structured-data/logo" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Logo and structured data guidance
+              </a>
+            </li>
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: Web Crypto secure random values
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
     </div>

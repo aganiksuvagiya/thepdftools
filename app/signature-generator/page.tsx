@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SignatureClient = dynamic(() => import("./SignatureClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
@@ -135,20 +137,12 @@ const relatedTools = [
   },
 ] as const;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
+  url: "https://thepdftools.site/signature-generator",
   keywords: [...semanticKeywords, ...longTailKeywords],
-  openGraph: {
-    title: pageTitle,
-    description: pageDescription,
-    url: "https://thepdftools.site/signature-generator",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/signature-generator",
-  },
-};
+});
 
 export default function SignaturePage() {
   const jsonLd = {
@@ -210,6 +204,8 @@ export default function SignaturePage() {
         ],
         description: pageDescription,
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -242,6 +238,11 @@ export default function SignaturePage() {
                   Generator
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
 
               <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
                 Create a free online signature in seconds. Draw your signature
@@ -1059,6 +1060,14 @@ export default function SignaturePage() {
               ))}
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events", label: "MDN: pointer events for drawing signatures" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/SVG", label: "MDN: SVG basics for scalable signature export" },
+            ]}
+          />
         </div>
       </div>
     </div>

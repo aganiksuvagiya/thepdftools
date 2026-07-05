@@ -1,353 +1,192 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BLOG_URL, SITE_URL, blogCategories, blogPostsSorted, getCategoryUrl } from "@/lib/blog";
 
-export const metadata: Metadata = {
-  title: "Blog — Tips, Guides & Tutorials for Image & PDF Tools",
-  description:
-    "Learn how to compress images, convert formats, merge PDFs, and more. Free tips, guides, and tutorials for everyday image and PDF tasks.",
-  alternates: {
-    canonical: "https://thepdftools.site/blog",
-  },
-  openGraph: {
-    title: "Blog — Tips, Guides & Tutorials | thepdftools",
-    description:
-      "Learn how to compress images, convert formats, merge PDFs, and more. Free tips, guides, and tutorials.",
-    url: "https://thepdftools.site/blog",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-};
+export const revalidate = 86400;
 
-const posts = [
-  {
-    slug: "create-resume-online-free",
-    title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
-    excerpt:
-      "Build a professional, ATS-friendly resume online for free and download it as a PDF. Templates, formatting tips, and a step-by-step walkthrough.",
-    date: "2026-06-14",
-    readTime: "11 min read",
-    tags: ["Career", "Resume Builder"],
-  },
-  {
-    slug: "how-to-sign-pdf-online-free",
-    title: "How to Sign a PDF Online for Free (eSignature Guide 2026)",
-    excerpt:
-      "Add a legally usable electronic signature to any PDF for free — type, draw, or upload your signature and download instantly.",
-    date: "2026-06-14",
-    readTime: "10 min read",
-    tags: ["PDF Tools", "eSignature"],
-  },
-  {
-    slug: "extract-text-from-scanned-pdf-ocr",
-    title: "How to Extract Text from Scanned PDFs with OCR (Free Guide)",
-    excerpt:
-      "Turn scanned PDFs and image-based documents into searchable, selectable text using free OCR — how it works and how to use it.",
-    date: "2026-06-14",
-    readTime: "11 min read",
-    tags: ["PDF Tools", "OCR"],
-  },
-  {
-    slug: "how-to-create-qr-code-online-free",
-    title: "How to Create a QR Code Online for Free (Full Guide 2026)",
-    excerpt:
-      "Generate a free, high-resolution QR code for a URL, Wi-Fi network, contact card, or text — with custom colors and logos.",
-    date: "2026-06-14",
-    readTime: "10 min read",
-    tags: ["Generators", "QR Codes"],
-  },
-  {
-    slug: "password-protect-and-unlock-pdf",
-    title: "How to Password Protect & Unlock a PDF Online for Free",
-    excerpt:
-      "Add a password to keep a PDF private, or remove a password from a PDF you own — free, private, and right in your browser.",
-    date: "2026-06-14",
-    readTime: "10 min read",
-    tags: ["PDF Tools", "Security"],
-  },
-  {
-    slug: "add-watermark-to-image-online-free",
-    title: "How to Add Watermark to Image Online Free - No Upload",
-    excerpt:
-      "Add a text watermark to JPG, PNG, and WebP images online for free. No upload, no signup, and no extra watermark from us.",
-    date: "2026-04-14",
-    readTime: "5 min read",
-    tags: ["Image Editing", "Watermark"],
-  },
-  {
-    slug: "compress-pdf-for-email-online",
-    title: "How to Compress PDF for Email Online Free",
-    excerpt:
-      "Reduce PDF file size for Gmail, Outlook, portals, and forms. Free PDF compression with no upload, no signup, and no watermark.",
-    date: "2026-04-14",
-    readTime: "5 min read",
-    tags: ["PDF Tools", "Compression"],
-  },
-  {
-    slug: "convert-ppt-to-pdf-online-free",
-    title: "How to Convert PPT to PDF Online Free - No Signup",
-    excerpt:
-      "Convert PowerPoint PPTX presentations to PDF online for free. No upload, no signup, and no watermark.",
-    date: "2026-04-14",
-    readTime: "4 min read",
-    tags: ["PDF Conversion", "PowerPoint"],
-  },
-  {
-    slug: "convert-heic-to-jpg-free",
-    title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
-    excerpt:
-      "Learn how to convert iPhone HEIC photos to JPG format for free. Works on Windows, Mac, and mobile — no file uploads, everything runs in your browser.",
-    date: "2026-04-07",
-    readTime: "6 min read",
-    tags: ["Image Conversion", "HEIC to JPG"],
-  },
-  {
-    slug: "convert-pdf-to-excel-free",
-    title: "How to Convert PDF to Excel Online — Extract Tables from PDF",
-    excerpt:
-      "Extract tables and data from PDF files into Excel spreadsheets for free. No upload required — convert PDF to XLSX instantly in your browser.",
-    date: "2026-04-07",
-    readTime: "5 min read",
-    tags: ["PDF Tools", "Data Extraction"],
-  },
-  {
-    slug: "convert-video-to-gif-free",
-    title: "How to Convert Video to GIF Online — Free MP4 to GIF Converter",
-    excerpt:
-      "Convert MP4, WebM, and MOV videos to animated GIFs for free. Customize FPS, size, and duration — no upload, runs in your browser.",
-    date: "2026-04-07",
-    readTime: "5 min read",
-    tags: ["Video Tools", "GIF"],
-  },
-  {
-    slug: "free-invoice-generator-freelancers",
-    title: "Free Invoice Generator for Freelancers & Small Business",
-    excerpt:
-      "Create professional PDF invoices for free online. Add items, taxes, discounts, and download instantly — no signup, no watermarks.",
-    date: "2026-04-07",
-    readTime: "6 min read",
-    tags: ["Business", "Invoicing"],
-  },
-  {
-    slug: "compress-pdf-files-free",
-    title: "How to Compress PDF Files Online — Reduce PDF Size for Free",
-    excerpt:
-      "Reduce PDF file size for free without losing quality. Compress PDFs for email, sharing, and storage — everything runs in your browser.",
-    date: "2026-04-07",
-    readTime: "5 min read",
-    tags: ["PDF Tools", "Compression"],
-  },
-  {
-    slug: "best-free-online-tools-for-students-2026",
-    title: "15 Best Free Online Tools Every Student Needs in 2026",
-    excerpt:
-      "Discover the best free online tools for students worldwide — compress images, merge PDFs, convert files, generate QR codes, and more. No signup, works on any device.",
-    date: "2026-04-07",
-    readTime: "12 min read",
-    tags: ["Productivity", "Students"],
-  },
-  {
-    slug: "best-free-pdf-tools-india",
-    title: "Best Free PDF Tools in India 2026 – No Signup Required",
-    excerpt:
-      "Free PDF and image tools for Indian students, businesses, and professionals. Works on Jio network, mobile friendly, no signup required.",
-    date: "2026-04-05",
-    readTime: "10 min read",
-    tags: ["PDF Tools", "India"],
-  },
-  {
-    slug: "free-image-tools-for-designers-uk",
-    title: "10 Free Image Tools Every UK Designer Needs in 2026",
-    excerpt:
-      "The ultimate list of free online image tools for UK designers. Compress, crop, resize, remove backgrounds, and convert formats without Photoshop.",
-    date: "2026-04-04",
-    readTime: "9 min read",
-    tags: ["Image Tools", "Design"],
-  },
-  {
-    slug: "free-online-tools-small-business",
-    title: "Free Online Tools for Small Businesses – Save Money in 2026",
-    excerpt:
-      "Stop paying for Adobe and Microsoft subscriptions. Free online tools for PDFs, images, QR codes, and more — built for small businesses.",
-    date: "2026-04-03",
-    readTime: "10 min read",
-    tags: ["Business", "Productivity"],
-  },
-  {
-    slug: "compress-images-for-website-speed",
-    title: "How to Compress Images for Faster Website Speed – Complete Guide",
-    excerpt:
-      "The definitive guide to image compression for web performance. Covers formats, compression ratios, Core Web Vitals, lazy loading, and CDN optimization.",
-    date: "2026-04-02",
-    readTime: "12 min read",
-    tags: ["Web Performance", "Image Compression"],
-  },
-  {
-    slug: "how-to-compress-images-for-web",
-    title: "How to Compress Images for Web Without Losing Quality",
-    excerpt:
-      "Learn the best practices for compressing JPG, PNG, and WebP images to improve page speed and Core Web Vitals scores without sacrificing visual quality.",
-    date: "2026-04-01",
-    readTime: "5 min read",
-    tags: ["Image Compression", "Web Performance"],
-  },
-  {
-    slug: "jpg-vs-png-vs-webp-which-format",
-    title: "JPG vs PNG vs WebP — Which Image Format Should You Use?",
-    excerpt:
-      "A complete guide to choosing the right image format. Understand the differences between JPG, PNG, and WebP for photography, graphics, and web use.",
-    date: "2026-03-28",
-    readTime: "7 min read",
-    tags: ["Image Formats", "Web Development"],
-  },
-  {
-    slug: "how-to-merge-pdf-files-online",
-    title: "How to Merge PDF Files Online for Free — Step by Step Guide",
-    excerpt:
-      "Combine multiple PDF documents into one file without installing software. Learn how to merge contracts, invoices, and reports securely in your browser.",
-    date: "2026-03-25",
-    readTime: "4 min read",
-    tags: ["PDF Tools", "Productivity"],
-  },
-  {
-    slug: "remove-image-background-with-ai",
-    title: "How to Remove Image Backgrounds with AI — Free Online Tool",
-    excerpt:
-      "Remove backgrounds from product photos, headshots, and logos instantly using AI. No Photoshop needed — works directly in your browser for free.",
-    date: "2026-03-22",
-    readTime: "4 min read",
-    tags: ["AI Tools", "Image Editing"],
-  },
-  {
-    slug: "optimize-images-for-seo",
-    title: "Image Optimization for SEO — Complete Guide for 2026",
-    excerpt:
-      "Boost your search rankings with properly optimized images. Learn about compression, alt text, lazy loading, next-gen formats, and Core Web Vitals.",
-    date: "2026-03-18",
-    readTime: "8 min read",
-    tags: ["SEO", "Web Performance"],
-  },
-  {
-    slug: "convert-word-to-pdf-free",
-    title: "How to Convert Word Documents to PDF for Free Online",
-    excerpt:
-      "Convert DOC and DOCX files to PDF format without Microsoft Office. Keep formatting intact and share universally readable documents.",
-    date: "2026-03-15",
-    readTime: "3 min read",
-    tags: ["PDF Tools", "Document Conversion"],
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Blog - Tips, Guides & Tutorials for Image & PDF Tools",
+    description: "Learn how to compress images, convert formats, merge PDFs, improve website speed, and finish common document tasks with step-by-step guides.",
+    keywords: [
+      "thepdftools blog",
+      "PDF tutorials",
+      "image optimization guides",
+      "blog for PDF tools",
+      "file conversion tutorials",
+      "SEO image guides",
+    ],
+    alternates: {
+      canonical: BLOG_URL,
+      languages: {
+        "en-US": BLOG_URL,
+        "x-default": BLOG_URL,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: "Blog - Tips, Guides & Tutorials | thepdftools",
+      description: "Step-by-step tutorials for image compression, PDF workflows, file conversion, and search-friendly web optimization.",
+      url: BLOG_URL,
+      type: "website",
+      siteName: "thepdftools",
+      images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "thepdftools blog" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Blog - Tips, Guides & Tutorials | thepdftools",
+      description: "Step-by-step tutorials for image compression, PDF workflows, file conversion, and web optimization.",
+      images: [`${SITE_URL}/opengraph-image`],
+    },
+  };
+}
 
 export default function BlogPage() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    name: "thepdftools Blog",
-    url: "https://thepdftools.site/blog",
-    description:
-      "Tips, guides, and tutorials for image compression, PDF editing, format conversion, and web optimization.",
-    blogPost: posts.map((post) => ({
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: post.excerpt,
-      datePublished: post.date,
-      url: `https://thepdftools.site/blog/${post.slug}`,
-      author: {
+    "@graph": [
+      {
+        "@type": "Blog",
+        name: "thepdftools Blog",
+        url: BLOG_URL,
+        description: "Tips, guides, and tutorials for image compression, PDF editing, file conversion, and technical SEO improvements.",
+        blogPost: blogPostsSorted.map((post) => ({
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          datePublished: `${post.publishedAt}T00:00:00Z`,
+          dateModified: `${post.updatedAt}T00:00:00Z`,
+          url: `${BLOG_URL}/${post.slug}`,
+          articleSection: post.category,
+          author: {
+            "@type": "Organization",
+            name: "thepdftools",
+          },
+        })),
+      },
+      {
         "@type": "Organization",
         name: "thepdftools",
+        url: SITE_URL,
       },
-    })),
+      {
+        "@type": "WebSite",
+        url: SITE_URL,
+        name: "thepdftools",
+      },
+    ],
   };
+
+  const featuredPosts = blogPostsSorted.slice(0, 6);
 
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Hero */}
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-14">
             <div className="mx-auto max-w-3xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100">
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-                Tips &amp; Tutorials
+                Guides that connect directly to tools
               </div>
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-[3.6rem] lg:leading-[1.02]">
                 Blog
                 <span className="block bg-gradient-to-r from-brand-600 via-secondary-600 to-tertiary-500 bg-clip-text text-transparent">
-                  Guides &amp; Tutorials
+                  Guides, Tutorials & Resources
                 </span>
               </h1>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Learn how to compress images, convert formats, merge PDFs, and optimize for the web. Free tips and step-by-step guides.
+                Browse crawlable archives for PDF workflows, image optimization, conversions, business templates, and practical search-friendly content.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Posts Grid */}
+        <div className="mt-10 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">Category Archives</h2>
+              <p className="mt-1 text-sm text-slate-500">Each archive groups related posts and creates more internal discovery paths.</p>
+            </div>
+            <Link href="/blog/category" className="text-sm font-medium text-brand-600 transition-colors hover:text-brand-700">
+              View all categories
+            </Link>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {blogCategories.map((category) => (
+              <Link
+                key={category.slug}
+                href={getCategoryUrl(category.name)}
+                className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+              >
+                {category.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
+          {featuredPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-brand-200"
+              className="group rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
             >
               <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
-                  >
+                {post.tags.map((tag) => (
+                  <span key={tag} className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100">
                     {tag}
                   </span>
                 ))}
               </div>
-              <h2 className="mt-4 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
-                {post.title}
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                {post.excerpt}
-              </p>
+              <h2 className="mt-4 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">{post.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">{post.excerpt}</p>
               <div className="mt-4 flex items-center gap-3 text-xs text-slate-400">
-                <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
                 <span>{post.readTime}</span>
-              </div>
-              <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-brand-600 transition-colors group-hover:text-brand-700">
-                Read more
-                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Tool Categories CTA */}
-        <div className="mt-16 rounded-[2rem] border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Try the Free Tools</h2>
-            <p className="mt-2 text-slate-500">Every tool runs in your browser — no sign-up, no upload, no watermarks.</p>
+        <div className="mt-10 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">All Articles</h2>
+              <p className="mt-1 text-sm text-slate-500">Every post stays reachable from the archive, category pages, and related links on each article.</p>
+            </div>
+            <Link href="/" className="text-sm font-medium text-brand-600 transition-colors hover:text-brand-700">
+              Back to homepage
+            </Link>
           </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { href: "/pdf-tools", label: "PDF Tools", desc: "Merge, split, compress & convert PDFs", count: "30+" },
-              { href: "/image-tools", label: "Image Tools", desc: "Compress, resize, convert & edit images", count: "18+" },
-              { href: "/developer-tools", label: "Developer Tools", desc: "JSON, Base64, URL encoder & more", count: "7+" },
-              { href: "/generators", label: "Generators", desc: "QR codes, invoices, lorem ipsum", count: "6+" },
-              { href: "/document-tools", label: "Document Tools", desc: "Word to PDF, Excel to PDF & more", count: "11+" },
-              { href: "/utility-tools", label: "Utility Tools", desc: "Word counter, color tools & more", count: "5+" },
-            ].map((cat) => (
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            {blogPostsSorted.map((post) => (
               <Link
-                key={cat.href}
-                href={cat.href}
-                className="group flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4 transition-all hover:border-brand-200 hover:bg-white hover:shadow-sm"
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5 transition-colors hover:border-brand-300 hover:bg-white"
               >
-                <div>
-                  <p className="text-[14px] font-semibold text-slate-900 group-hover:text-brand-700">{cat.label}</p>
-                  <p className="mt-0.5 text-[12px] text-slate-500">{cat.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
+                    {post.category}
+                  </span>
+                  {post.tags.map((tag) => (
+                    <span key={tag} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <span className="ml-3 shrink-0 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-semibold text-slate-500 shadow-sm border border-slate-100">{cat.count}</span>
+                <h3 className="mt-4 text-xl font-bold text-slate-900">{post.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600">{post.excerpt}</p>
+                <p className="mt-4 text-xs text-slate-500">
+                  {new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · {post.readTime}
+                </p>
               </Link>
             ))}
           </div>

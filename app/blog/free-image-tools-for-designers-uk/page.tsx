@@ -1,31 +1,11 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-export const metadata: Metadata = {
-  title: "10 Free Image Tools Every UK Designer Needs in 2026",
-  description:
-    "Discover the best free online image tools for UK designers and creative professionals. Compress, resize, crop, remove backgrounds, and convert images — no software required.",
-  keywords: [
-    "free image tools uk",
-    "online design tools free",
-    "image compressor uk",
-    "background remover free",
-    "image resizer online uk",
-    "free design tools 2026",
-    "uk designer tools",
-    "image editing free online",
-  ],
-  openGraph: {
-    title: "10 Free Image Tools Every UK Designer Needs in 2026",
-    description:
-      "The ultimate list of free online image tools for UK designers. Compress, crop, resize, remove backgrounds, and convert formats without Photoshop.",
-    url: "https://thepdftools.site/blog/free-image-tools-for-designers-uk",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/blog/free-image-tools-for-designers-uk",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("free-image-tools-for-designers-uk");
+}
+
 
 export default function BlogPost() {
   const jsonLd = {
@@ -196,7 +176,7 @@ export default function BlogPost() {
           <p>
             Bookmark the site, share it with your design colleagues, and add it to your agency&apos;s resource list. These tools are free today and will remain free — because great design tools should be accessible to everyone.
           </p>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="free-image-tools-for-designers-uk" />
       </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">

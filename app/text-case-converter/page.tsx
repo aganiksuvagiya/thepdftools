@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const TextCaseClient = dynamic(() => import("./TextCaseClient"), {
   ssr: false,
@@ -11,10 +14,11 @@ const TextCaseClient = dynamic(() => import("./TextCaseClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/text-case-converter`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Text Case Converter — Uppercase, Lowercase, Title Case, camelCase Online Free",
   description:
     "Free online text case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case and more. Instant, no sign-up.",
+  url: PAGE_URL,
   keywords: [
     "text case converter",
     "uppercase to lowercase",
@@ -25,15 +29,7 @@ export const metadata: Metadata = {
     "text converter online",
     "change text case online free",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Text Case Converter — Uppercase, Lowercase, camelCase & More",
-    description: "Convert text between 10 different cases instantly. Free, no sign-up.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const faqItems = [
   { q: "What is Title Case?", a: "Title Case capitalizes the first letter of every word: 'Hello World Example'. Used for headings, titles, and names." },
@@ -71,6 +67,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Text Case Converter", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -89,6 +87,11 @@ export default function TextCaseConverterPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Text Case Converter
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Convert text between 10 different cases instantly — UPPERCASE, lowercase, Title Case, camelCase, PascalCase, snake_case, kebab-case, and more. Click any result to copy.
           </p>
@@ -126,6 +129,16 @@ export default function TextCaseConverterPage() {
             ))}
           </div>
         </section>
+
+        <ToolSeoGrowth slug="text-case-converter" />
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Glossary/Camel_case", label: "MDN: camelCase glossary" },
+            { href: "https://developer.mozilla.org/en-US/docs/Glossary/Snake_case", label: "MDN: snake_case glossary" },
+            { href: "https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case", label: "MDN: kebab-case glossary" },
+          ]}
+        />
       </main>
     </div>
   );

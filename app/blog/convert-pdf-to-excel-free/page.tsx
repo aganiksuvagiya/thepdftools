@@ -1,41 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-pdf-to-excel-free`;
 
-export const metadata: Metadata = {
-  title: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free",
-  description:
-    "Learn how to convert PDF to Excel online for free. Extract tables, reports, invoices, and bank statements from PDF to XLSX with our free browser-based PDF to Excel converter.",
-  keywords: [
-    "pdf to excel",
-    "convert pdf to excel",
-    "pdf to xlsx",
-    "extract table from pdf",
-    "pdf to spreadsheet",
-    "pdf to excel converter free",
-    "pdf table extraction",
-    "pdf to excel online",
-  ],
-  openGraph: {
-    title: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free",
-    description:
-      "Learn how to convert PDF to Excel online for free. Extract tables, reports, and invoices from PDF to XLSX with our free browser-based converter.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-07T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Convert PDF to Excel Online — Extract Tables from PDF for Free",
-    description: "Learn how to convert PDF to Excel online for free. Extract tables from PDF to XLSX with our free browser-based converter.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("convert-pdf-to-excel-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -283,7 +257,7 @@ export default function ConvertPdfToExcelFree() {
                 Converting PDF to Excel does not have to be painful. Whether you are extracting financial data from bank statements, pulling numbers from invoices, or analyzing research tables, our free <Link href="/pdf-to-excel" className={toolLink}>PDF to Excel converter</Link> handles it in seconds&mdash;right in your browser, with no file uploads and no account required. Give it a try and stop retyping data by hand.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="convert-pdf-to-excel-free" />
       </article>
 
           {/* Sidebar */}

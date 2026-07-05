@@ -1,26 +1,22 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const FaviconClient = dynamic(() => import("./FaviconClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Favicon Generator — Convert Image to Favicon ICO & PNG",
   description: "Generate favicons from any image online for free. Create 16x16, 32x32, 48x48, 64x64, 180x180 PNG favicon files. Download all sizes as ZIP. No signup required.",
+  url: "https://thepdftools.site/favicon-generator",
   keywords: ["favicon generator online free", "favicon creator", "image to favicon", "favicon png generator", "apple touch icon generator", "website favicon maker", "favicon ico generator"],
-  openGraph: {
-    title: "Free Favicon Generator — Convert Image to Favicon ICO & PNG",
-    description: "Create favicons from any image. All sizes (16–512px) with rounded corners. Download as ZIP. Free, no signup.",
-    url: "https://thepdftools.site/favicon-generator",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/favicon-generator" },
-};
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -58,6 +54,8 @@ const jsonLd = {
         ],
       },
       { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://thepdftools.site/developer-tools" }, { "@type": "ListItem", position: 3, name: "Favicon Generator", item: "https://thepdftools.site/favicon-generator" }]},
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
   ],
 };
 
@@ -83,6 +81,11 @@ export default function FaviconPage() {
                 Generate favicons
                 <span className="block bg-gradient-to-r from-amber-500 via-brand-600 to-purple-500 bg-clip-text text-transparent">from any image</span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">Upload your logo, set rounded corners and padding, and download all favicon sizes at once. Includes 16×16 to 512×512 and Apple Touch Icon — free, no signup.</p>
             </div>
             <div className="mt-8"><FaviconClient /></div>
@@ -132,6 +135,13 @@ export default function FaviconPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="favicon-generator" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Glossary/Favicon", label: "MDN: favicon glossary" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel#icon", label: "MDN: `rel=\"icon\"` reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest", label: "MDN: web app manifest icons" },
+            ]}
+          />
         </div>
       </div>
     </div>

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/utility-tools`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Utility Tools Online — Word Counter, Unit Converter, Diff Checker & More",
   description:
     "Free online utility tools: count words, check text differences, convert colors, and more. No sign-up. Works in your browser on any device.",
+  url: PAGE_URL,
   keywords: [
     "free utility tools online",
     "word counter online",
@@ -17,16 +19,7 @@ export const metadata: Metadata = {
     "online utility tools",
     "free web tools",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Free Utility Tools Online — Word Counter, Unit Converter, Diff Checker & More",
-    description:
-      "Free online utility tools: word counter, diff checker, color converter, and more. No sign-up required.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const utilityTools = [
   {
@@ -74,7 +67,11 @@ const jsonLd = {
       name: "Free Utility Tools Online",
       url: PAGE_URL,
       description: "Free browser-based utility tools: word counter, diff checker, color tools, and more.",
+      author: { "@type": "Organization", name: "thepdftools Editorial Team" },
+      dateModified: "2026-07-05",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -119,6 +116,11 @@ export default function UtilityToolsPage() {
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
             Free Online Utility Tools
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Word counters, color tools, gradient generators, and more productivity utilities — all free, running entirely in your browser with no account needed.
           </p>
@@ -207,6 +209,22 @@ export default function UtilityToolsPage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">References</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/gradient" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: CSS gradient reference
+              </a>
+            </li>
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: CSS color value reference
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
     </div>

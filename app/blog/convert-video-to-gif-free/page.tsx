@@ -1,41 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-video-to-gif-free`;
 
-export const metadata: Metadata = {
-  title: "How to Convert Video to GIF Online — Free MP4 to GIF Converter",
-  description:
-    "Learn how to convert video to GIF online for free. Step-by-step guide covering MP4 to GIF conversion, best FPS and size settings, and tips for smaller, sharper GIFs.",
-  keywords: [
-    "video to gif",
-    "mp4 to gif",
-    "convert video to gif",
-    "make gif from video",
-    "gif maker online free",
-    "video to gif converter",
-    "free gif converter",
-    "mp4 to gif online",
-  ],
-  openGraph: {
-    title: "How to Convert Video to GIF Online — Free MP4 to GIF Converter",
-    description:
-      "Learn how to convert video to GIF online for free. Step-by-step guide with best settings for social media, presentations, and messaging.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-07T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Convert Video to GIF Online — Free MP4 to GIF Converter" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Convert Video to GIF Online — Free MP4 to GIF Converter",
-    description: "Convert any video to GIF for free in your browser. No upload, no signup. Includes best settings for every use case.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("convert-video-to-gif-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -261,7 +235,7 @@ export default function ConvertVideoToGifFree() {
                 Converting video to GIF does not have to be complicated. With the right settings&mdash;short duration, reasonable FPS, and a sensible output width&mdash;you can create sharp, lightweight GIFs that work everywhere. Try our free <Link href="/video-to-gif" className={toolLink}>Video to GIF converter</Link> and make your first GIF in seconds. No signup, no watermark, and everything stays in your browser.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="convert-video-to-gif-free" />
       </article>
 
           {/* Sidebar */}

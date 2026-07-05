@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const UrlEncoderClient = dynamic(() => import("./UrlEncoderClient"), {
   ssr: false,
@@ -11,10 +14,11 @@ const UrlEncoderClient = dynamic(() => import("./UrlEncoderClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/url-encoder`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "URL Encoder / Decoder Online Free — Encode & Decode URLs",
   description:
     "Free online URL encoder and decoder. Encode special characters in URLs using percent-encoding, or decode encoded URLs back to readable text. Instant, no sign-up.",
+  url: PAGE_URL,
   keywords: [
     "url encoder",
     "url decoder",
@@ -26,15 +30,7 @@ export const metadata: Metadata = {
     "url encoder decoder",
     "urlencode online",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "URL Encoder / Decoder Online Free",
-    description: "Encode and decode URLs online for free. Instant percent-encoding, no sign-up.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const faqItems = [
   { q: "What is URL encoding?", a: "URL encoding (percent-encoding) converts special characters into a format that can be safely included in a URL. For example, a space becomes %20 and & becomes %26." },
@@ -71,6 +67,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "URL Encoder", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -89,6 +87,11 @@ export default function UrlEncoderPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             URL Encoder / Decoder
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Encode special characters in URLs using percent-encoding, or decode encoded URLs back to readable text. Supports full URL and query string parameter encoding.
           </p>
@@ -127,6 +130,16 @@ export default function UrlEncoderPage() {
             ))}
           </div>
         </section>
+
+        <ToolSeoGrowth slug="url-encoder" />
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding", label: "MDN: percent-encoding glossary" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent", label: "MDN: `encodeURIComponent()`" },
+            { href: "https://url.spec.whatwg.org/", label: "WHATWG URL Standard" },
+          ]}
+        />
       </main>
     </div>
   );

@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/password-protect-and-unlock-pdf`;
 
-export const metadata: Metadata = {
-  title: "How to Password Protect & Unlock a PDF Online for Free",
-  description:
-    "Learn how to add a password to a PDF to keep it private, and how to remove a password from a PDF you own. Covers PDF encryption basics, owner vs. user passwords, and step-by-step instructions using a free browser-based tool.",
-  keywords: [
-    "password protect pdf",
-    "unlock pdf online free",
-    "remove pdf password",
-    "encrypt pdf free",
-    "add password to pdf",
-    "pdf security",
-    "lock pdf file",
-  ],
-  openGraph: {
-    title: "How to Password Protect & Unlock a PDF Online for Free",
-    description:
-      "Learn how to add a password to a PDF to keep it private, and how to remove a password from a PDF you own — free and in your browser.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-06-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Password Protect & Unlock a PDF" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Password Protect & Unlock a PDF Online for Free",
-    description: "Add or remove a password from a PDF for free, right in your browser.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("password-protect-and-unlock-pdf");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -295,7 +270,7 @@ export default function PasswordProtectAndUnlockPdf() {
                 A password is a simple, effective way to keep a PDF private as it travels by email, cloud storage, or messaging apps. With our free <Link href="/pdf-protect" className={toolLink}>Password Protect</Link> and <Link href="/pdf-unlock" className={toolLink}>Unlock PDF</Link> tools, you can lock or unlock any document directly in your browser — no uploads, no accounts, and no limits.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="password-protect-and-unlock-pdf" includeBreadcrumbSchema={false} includeFaqSchema={false} />
       </article>
 
           {/* Sidebar */}

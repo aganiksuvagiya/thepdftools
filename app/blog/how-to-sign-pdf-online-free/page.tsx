@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-sign-pdf-online-free`;
 
-export const metadata: Metadata = {
-  title: "How to Sign a PDF Online for Free (eSignature Guide 2026)",
-  description:
-    "Add a legally usable electronic signature to any PDF for free — type, draw, or upload your signature, place it anywhere on the document, and download the signed file instantly. No account required.",
-  keywords: [
-    "sign pdf online free",
-    "esignature free",
-    "electronic signature pdf",
-    "add signature to pdf",
-    "sign document online",
-    "free pdf signature tool",
-    "digital signature pdf",
-  ],
-  openGraph: {
-    title: "How to Sign a PDF Online for Free (eSignature Guide 2026)",
-    description:
-      "Add a legally usable electronic signature to any PDF for free — type, draw, or upload your signature, place it anywhere, and download instantly.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-06-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Sign a PDF Online for Free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Sign a PDF Online for Free (eSignature Guide 2026)",
-    description: "Add a legally usable electronic signature to any PDF for free — no account required.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("how-to-sign-pdf-online-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -302,7 +277,7 @@ export default function HowToSignPdfOnlineFree() {
                 Electronic signatures have made print-sign-scan workflows almost entirely unnecessary for everyday documents. With our free <Link href="/pdf-sign" className={toolLink}>PDF signing tool</Link>, you can draw, type, or upload your signature, place it precisely, and download a finished PDF — all in your browser, with nothing uploaded to a server and no account required.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="how-to-sign-pdf-online-free" includeBreadcrumbSchema={false} includeFaqSchema={false} />
       </article>
 
           {/* Sidebar */}

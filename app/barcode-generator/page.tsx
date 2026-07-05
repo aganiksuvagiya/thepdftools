@@ -1,26 +1,22 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const BarcodeClient = dynamic(() => import("./BarcodeClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Barcode Generator Online — Code 128, EAN-13, QR & More",
   description: "Generate barcodes online for free. Supports Code 128, EAN-13, EAN-8, UPC-A, Code 39, ITF-14. Download as PNG or SVG. No signup required.",
+  url: "https://thepdftools.site/barcode-generator",
   keywords: ["barcode generator online free", "ean-13 barcode generator", "code 128 barcode generator", "barcode maker online", "free barcode creator", "upc barcode generator", "barcode generator download"],
-  openGraph: {
-    title: "Free Barcode Generator Online — Code 128, EAN-13, QR & More",
-    description: "Generate barcodes online free. Code 128, EAN-13, EAN-8, UPC-A, Code 39. Download PNG or SVG instantly.",
-    url: "https://thepdftools.site/barcode-generator",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/barcode-generator" },
-};
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -58,6 +54,8 @@ const jsonLd = {
         ],
       },
       { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" }, { "@type": "ListItem", position: 3, name: "Barcode Generator", item: "https://thepdftools.site/barcode-generator" }]},
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
   ],
 };
 
@@ -83,6 +81,11 @@ export default function BarcodePage() {
                 Generate barcodes
                 <span className="block bg-gradient-to-r from-teal-600 via-brand-600 to-indigo-500 bg-clip-text text-transparent">instantly online</span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">Create Code 128, EAN-13, EAN-8, UPC-A, Code 39, ITF-14 barcodes in seconds. Customize colors and size. Download PNG or SVG — free, no signup.</p>
             </div>
             <div className="mt-8"><BarcodeClient /></div>
@@ -131,6 +134,13 @@ export default function BarcodePage() {
             </div>
           </div>
           <ToolSeoGrowth slug="barcode-generator" />
+          <SeoReferences
+            links={[
+              { href: "https://www.gs1.org/standards/barcodes", label: "GS1 barcode standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/SVG", label: "MDN: SVG basics for barcode export" },
+              { href: "https://www.gs1.org/standards/id-keys/gtin", label: "GS1 GTIN and retail barcode guidance" },
+            ]}
+          />
         </div>
       </div>
     </div>

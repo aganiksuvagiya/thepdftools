@@ -1,51 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/remove-image-background-with-ai`;
 
-export const metadata: Metadata = {
-  title: "How to Remove Image Backgrounds with AI — Free Online Tool",
-  description:
-    "Remove backgrounds from product photos, headshots, and logos instantly using AI — no Photoshop needed. Learn how browser-based AI background removal works and get tips for the best results.",
-  keywords: [
-    "remove image background",
-    "AI background remover",
-    "remove background from photo",
-    "free background remover",
-    "transparent background",
-    "product photo background removal",
-    "browser-based background remover",
-    "no upload background remover",
-  ],
-  openGraph: {
-    title: "How to Remove Image Backgrounds with AI — Free Online Tool",
-    description:
-      "Remove backgrounds from product photos, headshots, and logos instantly using AI. No Photoshop needed — works directly in your browser for free.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-03-22T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "How to Remove Image Backgrounds with AI — Free Online Tool",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Remove Image Backgrounds with AI — Free Online Tool",
-    description:
-      "Remove backgrounds from photos instantly with a free AI tool that runs entirely in your browser. No uploads, no sign-ups.",
-  },
-  alternates: {
-    canonical: POST_URL,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("remove-image-background-with-ai");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -314,7 +278,7 @@ export default function RemoveImageBackgroundWithAI() {
                 Try Background Remover Free
               </Link>
             </div>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="remove-image-background-with-ai" />
       </article>
 
           {/* SIDEBAR */}

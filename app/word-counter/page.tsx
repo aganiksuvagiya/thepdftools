@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const WordCounterClient = dynamic(() => import("./WordCounterClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -135,20 +137,12 @@ const relatedTools = [
   },
 ] as const;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
+  url: "https://thepdftools.site/word-counter",
   keywords: [...semanticKeywords, ...longTailKeywords],
-  openGraph: {
-    title: pageTitle,
-    description: pageDescription,
-    url: "https://thepdftools.site/word-counter",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/word-counter",
-  },
-};
+});
 
 export default function WordCounterPage() {
   const jsonLd = {
@@ -210,6 +204,8 @@ export default function WordCounterPage() {
         description: pageDescription,
         url: "https://thepdftools.site/word-counter",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -242,6 +238,11 @@ export default function WordCounterPage() {
                   Count Words and Characters in PDF
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
                 Count words in PDF files online free. Measure PDF word count,
                 character count, page count, paragraphs, and reading time. If
@@ -879,6 +880,14 @@ export default function WordCounterPage() {
               ))}
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js project documentation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length", label: "MDN: character counting basics" },
+            ]}
+          />
         </div>
       </div>
     </div>

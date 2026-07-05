@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import AdsterraZone from "@/components/AdsterraZone";
+import { getLatestPosts } from "@/lib/blog";
 
 const pdfToolLinks = [
   { href: "/pdf-merge", label: "Merge PDF" },
@@ -39,7 +40,7 @@ const popularSearchLinks = [
   { href: "/compress-pdf-to-100kb", label: "Compress PDF to 100KB" },
   { href: "/compress-pdf-for-govt-exam", label: "Compress PDF for Govt Exam" },
   { href: "/reduce-pdf-size-online-free", label: "Reduce PDF Size Online Free" },
-  { href: "/convert-jpeg-to-png-online-free", label: "Convert JPEG to PNG" },
+  { href: "/jpg-to-png", label: "Convert JPEG to PNG" },
   { href: "/jpg-to-png-no-upload", label: "JPG to PNG No Upload" },
   { href: "/jpg-to-png-for-logos", label: "JPG to PNG for Logos" },
 ];
@@ -53,18 +54,84 @@ const categoryLinks = [
   { href: "/utility-tools", label: "Utility Tools" },
 ];
 
+const trustBadges = [
+  {
+    label: "100% client-side",
+    icon: (
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+    ),
+  },
+  {
+    label: "No sign-up",
+    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M15 9V6a3 3 0 00-5.907-.75M6.75 9h10.5A1.5 1.5 0 0118.75 10.5v7.5a1.5 1.5 0 01-1.5 1.5H6.75a1.5 1.5 0 01-1.5-1.5v-7.5A1.5 1.5 0 016.75 9z" />,
+  },
+  {
+    label: "No watermarks",
+    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />,
+  },
+];
+
+function TrustBadge({ icon, label }: { icon: React.ReactNode; label: string }) {
+  return (
+    <div className="flex items-center gap-2 text-[12.5px] font-medium text-slate-400">
+      <svg className="h-4 w-4 shrink-0 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        {icon}
+      </svg>
+      {label}
+    </div>
+  );
+}
+
+function FooterColumn({
+  title,
+  titleHref,
+  links,
+}: {
+  title: string;
+  titleHref?: string;
+  links: { href: string; label: string }[];
+}) {
+  return (
+    <div>
+      <h4 className="text-[11.5px] font-semibold uppercase tracking-wider text-slate-300">
+        {titleHref ? (
+          <Link href={titleHref} className="transition-colors hover:text-brand-400">
+            {title}
+          </Link>
+        ) : (
+          title
+        )}
+      </h4>
+      <ul className="mt-4 space-y-2.5">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              title={link.label}
+              className="line-clamp-2 text-[13px] leading-snug text-slate-400 transition-colors hover:text-brand-400"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Footer() {
   const shouldShowAds =
     process.env.NODE_ENV === "production" ||
     process.env.NEXT_PUBLIC_SHOW_ADS === "true";
+  const latestPosts = getLatestPosts(4);
 
   return (
-    <footer className="border-t border-slate-200 bg-[#f8fafc] text-slate-600">
+    <footer className="border-t border-slate-800 bg-slate-950 text-slate-400">
       <div className="mx-auto max-w-6xl px-5 py-14">
         {shouldShowAds ? (
           <div className="mb-10 flex flex-col items-center gap-4">
             {/* Footer Ad 1 – 728×90 leaderboard */}
-            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-800 bg-slate-900/60 p-3">
               <AdsterraZone
                 height={90}
                 optionsScript={`atOptions = {
@@ -78,7 +145,7 @@ export default function Footer() {
               />
             </div>
             {/* Footer Ad 2 – 468×60 banner */}
-            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-200/90 bg-white/90 p-3 shadow-sm">
+            <div className="w-full overflow-hidden mx-auto rounded-[1.75rem] border border-slate-800 bg-slate-900/60 p-3">
               <AdsterraZone
                 height={60}
                 optionsScript={`atOptions = {
@@ -95,21 +162,28 @@ export default function Footer() {
         ) : null}
 
         {/* Category quick links */}
-        <div className="mb-10 flex flex-wrap gap-2">
-          {categoryLinks.map((cat) => (
-            <Link
-              key={cat.href}
-              href={cat.href}
-              className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[12.5px] font-medium text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-700"
-            >
-              {cat.label}
-            </Link>
-          ))}
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-6 border-b border-slate-800 pb-10">
+          <div className="flex flex-wrap gap-2">
+            {categoryLinks.map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="rounded-full border border-slate-700 bg-slate-900 px-4 py-1.5 text-[12.5px] font-medium text-slate-300 transition-colors hover:border-brand-500/60 hover:text-brand-400"
+              >
+                {cat.label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            {trustBadges.map((badge) => (
+              <TrustBadge key={badge.label} icon={badge.icon} label={badge.label} />
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-6">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-7">
           {/* Brand */}
-          <div className="col-span-2 sm:col-span-2">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-1.5">
               <Image
                 src="/logo.svg"
@@ -119,76 +193,47 @@ export default function Footer() {
                 className="h-7 w-auto"
                 style={{ width: "auto", height: "28px" }}
               />
-              <span className="text-sm font-bold text-slate-900"></span>
             </Link>
-            <p className="mt-2 max-w-[220px] text-[13px] leading-relaxed text-slate-500">
+            <p className="mt-3 max-w-[260px] text-[13px] leading-relaxed text-slate-400">
               Free browser-based tools for PDF, images, and developers. Your files never leave your device.
             </p>
-            <ul className="mt-4 space-y-1.5">
-              <li><Link href="/blog" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Blog</Link></li>
-              <li><Link href="/about" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">About</Link></li>
-              <li><Link href="/privacy" className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">Privacy Policy</Link></li>
+            <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 sm:block sm:space-y-2.5">
+              <li><Link href="/blog" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">Blog</Link></li>
+              <li><Link href="/site-map" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">HTML Sitemap</Link></li>
+              <li><Link href="/about" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">About</Link></li>
+              <li><Link href="/privacy" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">Privacy Policy</Link></li>
             </ul>
+            <a
+              href="https://www.instagram.com/thepdftools.site"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-700 py-1.5 pl-1.5 pr-4 text-[12.5px] font-medium text-slate-300 transition-colors hover:border-brand-500/60 hover:text-brand-400"
+            >
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-800">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+                </svg>
+              </span>
+              Follow us on Instagram
+            </a>
           </div>
 
-          {/* PDF Tools */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">
-              <Link href="/pdf-tools" className="hover:text-brand-700 transition-colors">PDF Tools</Link>
-            </h4>
-            <ul className="mt-3 space-y-2">
-              {pdfToolLinks.map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Image Tools */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">
-              <Link href="/image-tools" className="hover:text-brand-700 transition-colors">Image Tools</Link>
-            </h4>
-            <ul className="mt-3 space-y-2">
-              {imageToolLinks.map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* More Tools */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">More Tools</h4>
-            <ul className="mt-3 space-y-2">
-              {moreToolLinks.map((t) => (
-                <li key={t.href}>
-                  <Link href={t.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">{t.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Popular searches */}
-          <div>
-            <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-700">Popular Searches</h4>
-            <ul className="mt-3 space-y-2">
-              {popularSearchLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-[13px] text-slate-500 transition-colors hover:text-brand-700">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterColumn title="PDF Tools" titleHref="/pdf-tools" links={pdfToolLinks} />
+          <FooterColumn title="Image Tools" titleHref="/image-tools" links={imageToolLinks} />
+          <FooterColumn title="More Tools" links={moreToolLinks} />
+          <FooterColumn title="Popular Searches" links={popularSearchLinks} />
+          <FooterColumn
+            title="Latest Blog"
+            titleHref="/blog"
+            links={latestPosts.map((post) => ({ href: `/blog/${post.slug}`, label: post.title }))}
+          />
         </div>
 
-        <div className="mt-12 flex flex-col justify-between gap-2 border-t border-slate-200 pt-6 text-[12px] text-slate-400 sm:flex-row">
+        <div className="mt-12 flex flex-col justify-between gap-2 border-t border-slate-800 pt-6 text-[12px] text-slate-500 sm:flex-row">
           <span>&copy; {new Date().getFullYear()} thepdftools. All rights reserved.</span>
-          <span>100% client-side processing · No sign-up · No watermarks</span>
+          <span>Made for people who just want their file fixed, fast.</span>
         </div>
       </div>
     </footer>

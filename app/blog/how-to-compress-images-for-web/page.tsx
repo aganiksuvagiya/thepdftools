@@ -1,41 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-compress-images-for-web`;
 
-export const metadata: Metadata = {
-  title: "How to Compress Images for Web Without Losing Quality",
-  description:
-    "Learn how to compress images for the web without sacrificing visual quality. Covers lossy vs lossless compression, ideal quality settings, WebP advantages, and a free browser-based tool.",
-  keywords: [
-    "compress images for web",
-    "image compression without losing quality",
-    "reduce image file size",
-    "web performance optimization",
-    "Core Web Vitals images",
-    "lossy vs lossless compression",
-    "WebP format",
-    "free image compressor",
-  ],
-  openGraph: {
-    title: "How to Compress Images for Web Without Losing Quality",
-    description:
-      "Learn how to compress images for the web without sacrificing visual quality. Covers lossy vs lossless, ideal settings, and a free browser-based tool.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-01T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Compress Images for Web Without Losing Quality" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Compress Images for Web Without Losing Quality",
-    description: "Learn how to compress images for the web without sacrificing visual quality. Free browser-based tool included.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("how-to-compress-images-for-web");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -239,7 +213,7 @@ export default function HowToCompressImagesForWeb() {
                 Image compression is one of the easiest wins in web performance. A few minutes of optimization can cut page load time in half, improve your Core Web Vitals scores, and save real money on hosting bandwidth. Start with our free <Link href="/image-compressor" className={toolLink}>Image Compressor</Link> and see the difference for yourself.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="how-to-compress-images-for-web" />
       </article>
 
           {/* Sidebar */}

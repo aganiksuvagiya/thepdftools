@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const CsvToJsonClient = dynamic(() => import("./CsvToJsonClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "CSV To JSON Online Free No Upload",
   description:
     "Convert CSV to JSON online free — paste CSV data and download formatted JSON instantly. Supports custom delimiters, headers, and pretty printing. No signup required.",
+  url: "https://thepdftools.site/csv-to-json",
   keywords: [
     "csv to json",
     "csv to json converter",
@@ -26,17 +29,7 @@ export const metadata: Metadata = {
     "csv to json formatter",
     "csv data converter",
   ],
-  openGraph: {
-    title: "CSV To JSON Online Free No Upload",
-    description:
-    "Convert CSV to JSON online free — paste CSV data and download formatted JSON instantly. Supports custom delimiters, headers, and pretty printing. No signup required.",
-    url: "https://thepdftools.site/csv-to-json",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/csv-to-json",
-  },
-};
+});
 
 export default function CsvToJsonPage() {
   const jsonLd = {
@@ -65,6 +58,8 @@ export default function CsvToJsonPage() {
         { "@type": "ListItem", "position": 3, "name": "CSV to JSON", "item": "https://thepdftools.site/csv-to-json" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -98,6 +93,11 @@ export default function CsvToJsonPage() {
                   JSON instantly
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Paste CSV data or upload a file and convert it to clean, formatted JSON
@@ -264,6 +264,13 @@ export default function CsvToJsonPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="csv-to-json" />
+          <SeoReferences
+            links={[
+              { href: "https://www.rfc-editor.org/rfc/rfc4180", label: "RFC 4180 CSV format specification" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON", label: "MDN: JSON reference" },
+              { href: "https://www.papaparse.com/docs", label: "Papa Parse documentation" },
+            ]}
+          />
         </div>
       </div>
     </div>

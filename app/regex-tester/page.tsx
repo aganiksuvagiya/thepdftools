@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const RegexClient = dynamic(() => import("./RegexClient"), {
   ssr: false,
@@ -11,10 +14,11 @@ const RegexClient = dynamic(() => import("./RegexClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/regex-tester`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Regex Tester Online Free — Test Regular Expressions in Real Time",
   description:
     "Free online regex tester. Test and debug regular expressions in real time with match highlighting, group capture, and flag support (g, i, m, s). No sign-up.",
+  url: PAGE_URL,
   keywords: [
     "regex tester",
     "regex tester online",
@@ -25,15 +29,7 @@ export const metadata: Metadata = {
     "regex debugger online",
     "regex matcher online",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Regex Tester Online Free — Test Regular Expressions in Real Time",
-    description: "Test regex patterns with real-time match highlighting. Free, no sign-up.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const faqItems = [
   { q: "What regex flags are supported?", a: "This tester supports the g (global), i (case insensitive), m (multiline), and s (dotAll) flags — the same flags supported by JavaScript's RegExp." },
@@ -70,6 +66,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Regex Tester", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -88,6 +86,11 @@ export default function RegexTesterPage() {
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Regex Tester
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Test and debug regular expressions in real time. Matches are highlighted as you type. Supports flags g, i, m, and s. No server required.
           </p>
@@ -126,6 +129,16 @@ export default function RegexTesterPage() {
             ))}
           </div>
         </section>
+
+        <ToolSeoGrowth slug="regex-tester" />
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions", label: "MDN: JavaScript regular expressions guide" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp", label: "MDN: `RegExp` reference" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Capturing_group", label: "MDN: capturing groups" },
+          ]}
+        />
       </main>
     </div>
   );

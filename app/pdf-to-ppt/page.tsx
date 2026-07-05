@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfToPptClient = dynamic(() => import("./PdfToPptClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -11,10 +14,11 @@ const PdfToPptClient = dynamic(() => import("./PdfToPptClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-to-ppt`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF to PowerPoint Online Free — Convert PDF to PPT, No Upload",
   description:
     "Convert PDF to PowerPoint online for free. Each PDF page becomes a PPT slide — no upload, no signup, runs entirely in your browser.",
+  url: PAGE_URL,
   keywords: [
     "pdf to ppt online free",
     "convert pdf to powerpoint free",
@@ -25,14 +29,7 @@ export const metadata: Metadata = {
     "pdf to presentation free",
     "pdf to powerpoint browser",
   ],
-  openGraph: {
-    title: "PDF to PowerPoint Online Free — Convert PDF to PPT, No Upload",
-    description: "Convert PDF to PowerPoint online for free. No upload, no signup.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+});
 
 export default function PdfToPptPage() {
   const jsonLd = {
@@ -48,6 +45,15 @@ export default function PdfToPptPage() {
         description: "Convert PDF files to PowerPoint PPTX online for free. Each PDF page becomes a slide. No upload required.",
       },
       
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          { "@type": "Question", name: "Can I edit the slides after conversion?", acceptedAnswer: { "@type": "Answer", text: "Each slide contains the PDF page as an image. You can add text boxes and shapes on top in PowerPoint, but the original PDF content is not directly editable as text." } },
+          { "@type": "Question", name: "What slide size is used?", acceptedAnswer: { "@type": "Answer", text: "Slides use widescreen 16:9 size, and each PDF page image is scaled to fit." } },
+          { "@type": "Question", name: "Does it work with large PDFs?", acceptedAnswer: { "@type": "Answer", text: "Yes, though large PDFs can take longer because each page is rendered as a high-resolution image in your browser." } },
+          { "@type": "Question", name: "Can I convert a password-protected PDF?", acceptedAnswer: { "@type": "Answer", text: "No. Remove the password first using the PDF Unlock tool, then convert it to PPT." } },
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -66,6 +72,8 @@ export default function PdfToPptPage() {
         },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -94,6 +102,11 @@ export default function PdfToPptPage() {
                   free &amp; no upload
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Turn any PDF into a PowerPoint presentation instantly. Each PDF page becomes a slide in your PPTX file — processed locally, no upload needed.
               </p>
@@ -152,6 +165,16 @@ export default function PdfToPptPage() {
               <Link href="/pdf-compress" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Compress</Link>
             </div>
           </div>
+
+          <ToolSeoGrowth slug="pdf-to-ppt" />
+
+          <SeoReferences
+            links={[
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js project documentation" },
+              { href: "https://gitbrent.github.io/PptxGenJS/docs/introduction/", label: "PptxGenJS documentation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API" },
+            ]}
+          />
         </div>
       </div>
     </div>

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfPageNumbersClient = dynamic(() => import("./PdfPageNumbersClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -11,10 +14,11 @@ const PdfPageNumbersClient = dynamic(() => import("./PdfPageNumbersClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-page-numbers`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Add Page Numbers to PDF Online Free — No Upload",
   description:
     "Add page numbers to your PDF online for free. Choose position, format, and starting number — runs entirely in your browser with no upload required.",
+  url: PAGE_URL,
   keywords: [
     "add page numbers to pdf online free",
     "number pdf pages",
@@ -25,14 +29,7 @@ export const metadata: Metadata = {
     "pdf footer page number",
     "number pages in pdf no upload",
   ],
-  openGraph: {
-    title: "Add Page Numbers to PDF Online Free — No Upload",
-    description: "Add page numbers to your PDF online for free. No upload, no signup.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+});
 
 export default function PdfPageNumbersPage() {
   const jsonLd = {
@@ -48,6 +45,15 @@ export default function PdfPageNumbersPage() {
         description: "Add page numbers to PDF files online for free. No upload required.",
       },
       
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          { "@type": "Question", name: "Can I add numbers to only some pages?", acceptedAnswer: { "@type": "Answer", text: "Currently the tool adds page numbers to all pages. You can split the PDF first, add numbers, then merge if needed." } },
+          { "@type": "Question", name: "Does it affect PDF quality?", acceptedAnswer: { "@type": "Answer", text: "No. Only a text footer or header is added. The original content, images, and formatting are untouched." } },
+          { "@type": "Question", name: "Can I remove page numbers later?", acceptedAnswer: { "@type": "Answer", text: "Page numbers added by this tool are embedded as PDF content. They are not separately removable without a PDF editor." } },
+          { "@type": "Question", name: "Does it work on scanned PDFs?", acceptedAnswer: { "@type": "Answer", text: "Yes. The page numbers are added as a text layer on top, so it works on scanned PDFs too." } },
+        ],
+      },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -66,6 +72,8 @@ export default function PdfPageNumbersPage() {
         },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -94,6 +102,11 @@ export default function PdfPageNumbersPage() {
                   free &amp; no upload
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Insert page numbers into any PDF instantly. Choose position, number format, and starting page — all processed locally in your browser.
               </p>
@@ -152,6 +165,14 @@ export default function PdfPageNumbersPage() {
               <Link href="/pdf-rotate" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Rotate</Link>
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-page-numbers" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js project documentation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_counter_styles/Using_CSS_counters", label: "MDN: numbering and counter concepts" },
+            ]}
+          />
         </div>
       </div>
     </div>

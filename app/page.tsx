@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ToolCard from "@/components/ToolCard";
 import ScrollReveal from "@/components/ScrollReveal";
-const staticBlogPosts = [
-  { slug: "how-to-merge-pdf-files-online", title: "How to Merge PDF Files Online", description: "Step-by-step guide to combining PDFs for free in your browser.", date: "2025-04-10", readTime: "4 min read", tags: ["PDF", "Merge"] },
-  { slug: "compress-pdf-files-free", title: "Compress PDF Files Free", description: "Reduce PDF file size without losing quality using free online tools.", date: "2025-04-08", readTime: "3 min read", tags: ["PDF", "Compress"] },
-  { slug: "compress-pdf-for-email-online", title: "Compress PDF for Email Online", description: "Make PDFs small enough for email attachments with no signup.", date: "2025-04-06", readTime: "3 min read", tags: ["PDF", "Email"] },
-  { slug: "convert-word-to-pdf-free", title: "Convert Word to PDF Free", description: "Convert DOCX files to PDF online without Microsoft Office.", date: "2025-03-28", readTime: "4 min read", tags: ["PDF", "Word"] },
-  { slug: "jpg-vs-png-vs-webp-which-format", title: "JPG vs PNG vs WebP: Which Format Should You Use?", description: "A practical comparison of image formats for web and print.", date: "2025-03-20", readTime: "5 min read", tags: ["Image", "Guide"] },
-  { slug: "how-to-compress-images-for-web", title: "How to Compress Images for the Web", description: "Optimize image file sizes for faster page load speeds.", date: "2025-03-15", readTime: "4 min read", tags: ["Image", "Web"] },
-];
+import { getLatestPosts } from "@/lib/blog";
+
+const staticBlogPosts = getLatestPosts(6).map((post) => ({
+  slug: post.slug,
+  title: post.title,
+  description: post.excerpt,
+  date: post.publishedAt,
+  readTime: post.readTime,
+  tags: post.tags,
+}));
 
 const SITE_URL = "https://thepdftools.site";
 
@@ -661,7 +663,8 @@ const tools = [
     color: "purple" as const,
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-2.625 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5c-.621 0-1.125-.504-1.125-1.125M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <rect x="3" y="5.25" width="18" height="13.5" rx="2.25" strokeWidth={1.8} />
+        <path fill="currentColor" stroke="none" d="M10 9.5l5 2.5-5 2.5v-5z" />
       </svg>
     ),},
   {
@@ -868,10 +871,10 @@ const popularSearchPages = [
       "General-purpose PDF compression page for email and sharing.",
   },
   {
-    href: "/convert-jpeg-to-png-online-free",
-    title: "Convert JPEG to PNG Online Free",
+    href: "/jpg-to-png",
+    title: "Convert JPEG to PNG",
     description:
-      "JPEG-focused image conversion page for editing and compatibility.",
+      "Primary JPG to PNG workflow for editing, graphics, and compatibility.",
   },
   {
     href: "/jpg-to-png-no-upload",

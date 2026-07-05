@@ -212,14 +212,14 @@ export default function JpgToPngPage() {
               asset preparation.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/convert-jpeg-to-png-online-free" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
-                Convert JPEG to PNG Online Free
-              </Link>
               <Link href="/jpg-to-png-no-upload" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
                 JPG to PNG No Upload
               </Link>
               <Link href="/jpg-to-png-for-logos" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
                 JPG to PNG for Logos
+              </Link>
+              <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">
+                Image to WebP
               </Link>
             </div>
           </div>

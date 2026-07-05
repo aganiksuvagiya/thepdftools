@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfFormFillerClient = dynamic(() => import("./PdfFormFillerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Form Filler Online Free — Fill PDF Forms Without Adobe",
   description:
     "Fill PDF forms online for free. Upload a PDF with form fields, type your answers, and download the filled PDF instantly. No Adobe, no signup, runs in your browser.",
+  url: "https://thepdftools.site/pdf-form-filler",
   keywords: [
     "pdf form filler online free",
     "fill pdf form online",
@@ -22,15 +25,7 @@ export const metadata: Metadata = {
     "fill and download pdf",
     "pdf form fill online free no signup",
   ],
-  openGraph: {
-    title: "PDF Form Filler Online Free — Fill PDF Forms Without Adobe",
-    description:
-      "Fill PDF form fields online for free. No Adobe needed. Upload, fill, download — runs in your browser.",
-    url: "https://thepdftools.site/pdf-form-filler",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/pdf-form-filler" },
-};
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -83,6 +78,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "PDF Form Filler", item: "https://thepdftools.site/pdf-form-filler" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -105,6 +102,11 @@ export default function PdfFormFillerPage() {
                   without Adobe
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload any PDF with interactive form fields — text boxes, checkboxes, dropdowns, radio buttons.
                 Fill them all in your browser and download the completed PDF instantly. No Adobe, no signup.
@@ -160,6 +162,13 @@ export default function PdfFormFillerPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="pdf-form-filler" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input", label: "MDN: form input reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select", label: "MDN: select field reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: browser file handling" },
+            ]}
+          />
         </div>
       </div>
     </div>

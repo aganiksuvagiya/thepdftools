@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/create-resume-online-free`;
 
-export const metadata: Metadata = {
-  title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
-  description:
-    "Build a professional, ATS-friendly resume online for free and download it as a PDF. Step-by-step guide covering templates, formatting, ATS optimization, and section-by-section writing tips for 2026.",
-  keywords: [
-    "create resume online free",
-    "resume builder free",
-    "ats friendly resume",
-    "free cv maker",
-    "resume templates",
-    "build resume pdf online",
-    "resume format 2026",
-  ],
-  openGraph: {
-    title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
-    description:
-      "Build a professional, ATS-friendly resume online for free and download it as a PDF. No signup, no watermark — runs entirely in your browser.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-06-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Create a Resume Online for Free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
-    description: "Build a professional, ATS-friendly resume online for free and download it as a PDF.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("create-resume-online-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -344,7 +319,7 @@ export default function CreateResumeOnlineFree() {
                 A great resume doesn&rsquo;t need to be expensive or complicated — it needs to be clear, consistent, and tailored to the role you want. With our free <Link href="/resume-builder" className={toolLink}>resume builder</Link>, you can experiment with five different layouts, customize section labels and accent colors, and download a polished, ATS-friendly PDF in minutes — all without creating an account or sending your information anywhere.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="create-resume-online-free" includeBreadcrumbSchema={false} includeFaqSchema={false} />
       </article>
 
           {/* Sidebar */}

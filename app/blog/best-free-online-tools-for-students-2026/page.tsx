@@ -1,29 +1,11 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-export const metadata: Metadata = {
-  title: "15 Best Free Online Tools Every Student Needs in 2026",
-  description:
-    "Discover the best free online tools for students — compress images, merge PDFs, convert files, generate QR codes, and more. No signup, 100% free, works in any browser.",
-  keywords: [
-    "free online tools for students",
-    "best free tools 2026",
-    "free pdf tools for students",
-    "free image tools online",
-    "student productivity tools free",
-    "online tools without signup",
-    "free file converter for school",
-  ],
-  openGraph: {
-    title: "15 Best Free Online Tools Every Student Needs in 2026",
-    description: "Free tools for students — compress, convert, merge, edit. No signup needed.",
-    url: "https://thepdftools.site/blog/best-free-online-tools-for-students-2026",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/blog/best-free-online-tools-for-students-2026",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("best-free-online-tools-for-students-2026");
+}
+
 
 export default function BlogPost() {
   const jsonLd = {
@@ -170,7 +152,7 @@ export default function BlogPost() {
           <p>
             Bookmark <a href="/" className="text-brand-600 hover:underline">thepdftools.site</a> and start using these tools right now. No signup, no download, no credit card. Just open a tool and start working. Share it with your classmates — because everyone deserves access to free, private, and fast online tools.
           </p>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="best-free-online-tools-for-students-2026" />
       </article>
 
         {/* Related tools */}

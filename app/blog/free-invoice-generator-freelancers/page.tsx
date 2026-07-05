@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/free-invoice-generator-freelancers`;
 
-export const metadata: Metadata = {
-  title: "Free Invoice Generator for Freelancers & Small Business — Create PDF Invoices Online",
-  description:
-    "Create professional PDF invoices for free with our online invoice generator. Perfect for freelancers and small businesses — no signup required. Includes invoice templates, best practices, and tips for getting paid faster.",
-  keywords: [
-    "free invoice generator",
-    "invoice generator online",
-    "create invoice free",
-    "invoice maker",
-    "pdf invoice generator",
-    "invoice template free",
-    "freelance invoice",
-  ],
-  openGraph: {
-    title: "Free Invoice Generator for Freelancers & Small Business — Create PDF Invoices Online",
-    description:
-      "Create professional PDF invoices for free with our online invoice generator. Perfect for freelancers and small businesses — no signup required.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-07T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Free Invoice Generator for Freelancers & Small Business" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Free Invoice Generator for Freelancers & Small Business — Create PDF Invoices Online",
-    description: "Create professional PDF invoices for free with our online invoice generator. No signup required.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("free-invoice-generator-freelancers");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -266,7 +241,7 @@ export default function FreeInvoiceGeneratorFreelancers() {
                 A professional invoice is one of the simplest things you can do to run a better freelance business. It takes minutes to create, builds client trust, and keeps your finances organized. Start with our free <Link href="/invoice-generator" className={toolLink}>Invoice Generator</Link> and send your first polished PDF invoice today.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="free-invoice-generator-freelancers" />
       </article>
 
           {/* Sidebar */}

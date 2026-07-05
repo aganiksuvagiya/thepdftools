@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-create-qr-code-online-free`;
 
-export const metadata: Metadata = {
-  title: "How to Create a QR Code Online for Free (Full Guide 2026)",
-  description:
-    "Generate a free, high-resolution QR code for a URL, Wi-Fi network, contact card, or text in seconds. Learn how QR codes work, how to customize colors and logos, and how to make sure yours always scans correctly.",
-  keywords: [
-    "create qr code online free",
-    "qr code generator free",
-    "free qr code maker",
-    "custom qr code generator",
-    "qr code for url",
-    "wifi qr code generator",
-    "qr code with logo",
-  ],
-  openGraph: {
-    title: "How to Create a QR Code Online for Free (Full Guide 2026)",
-    description:
-      "Generate a free, high-resolution QR code for a URL, Wi-Fi network, contact card, or text in seconds — with custom colors and logos.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-06-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Create a QR Code Online for Free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Create a QR Code Online for Free (Full Guide 2026)",
-    description: "Generate a free, high-resolution QR code for a URL, Wi-Fi, contact card, or text in seconds.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("how-to-create-qr-code-online-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -313,7 +288,7 @@ export default function HowToCreateQrCodeOnlineFree() {
                 A well-designed QR code is a tiny but powerful bridge between print and digital. With our free <Link href="/qr-generator" className={toolLink}>QR Code Generator</Link>, you can create a custom, branded, high-resolution code for any URL, Wi-Fi network, or contact card in seconds — no account, no expiration, and no limits on downloads.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="how-to-create-qr-code-online-free" includeBreadcrumbSchema={false} includeFaqSchema={false} />
       </article>
 
           {/* Sidebar */}

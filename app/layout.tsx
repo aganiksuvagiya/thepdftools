@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
+import ThirdPartyScripts from "@/components/ThirdPartyScripts";
 
 const SidePopupAd = dynamic(() => import("@/components/SidePopupAd"), {
   ssr: false,
@@ -168,25 +169,17 @@ export default function RootLayout({
   const shouldLoadAds =
     process.env.NODE_ENV === "production" ||
     process.env.NEXT_PUBLIC_SHOW_ADS === "true";
+  const shouldLoadAnalytics =
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === "true";
 
   return (
     <html lang="en">
       <body className="min-h-screen bg-[var(--surface)] text-slate-900 antialiased">
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-NWTNKWJ1JF"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-NWTNKWJ1JF');
-          `}
-        </Script>
+        <ThirdPartyScripts enableAnalytics={shouldLoadAnalytics} />
         {shouldLoadAds ? (
           <>
-<Script
+            <Script
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1726872213486410"
               crossOrigin="anonymous"
               strategy="afterInteractive"

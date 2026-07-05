@@ -1,31 +1,11 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-export const metadata: Metadata = {
-  title: "Free Online Tools for Small Businesses – Save Money in 2026",
-  description:
-    "Discover free online PDF and image tools that help small businesses save money. No subscriptions, no signup. Merge PDFs, compress images, generate QR codes, and more.",
-  keywords: [
-    "free tools for small business",
-    "free pdf tools business",
-    "save money online tools",
-    "free image editing business",
-    "small business tools 2026",
-    "free alternatives adobe",
-    "free pdf merger business",
-    "online tools no subscription",
-  ],
-  openGraph: {
-    title: "Free Online Tools for Small Businesses – Save Money in 2026",
-    description:
-      "Stop paying for Adobe and Microsoft subscriptions. Free online tools for PDFs, images, QR codes, and more — built for small businesses.",
-    url: "https://thepdftools.site/blog/free-online-tools-small-business",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/blog/free-online-tools-small-business",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("free-online-tools-small-business");
+}
+
 
 export default function BlogPost() {
   const jsonLd = {
@@ -206,7 +186,7 @@ export default function BlogPost() {
           <p>
             Your small business deserves enterprise-level tools without the enterprise-level price tag. Start using them today — completely free, no strings attached.
           </p>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="free-online-tools-small-business" />
       </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">

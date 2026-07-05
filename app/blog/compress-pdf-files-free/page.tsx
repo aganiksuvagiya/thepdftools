@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/compress-pdf-files-free`;
 
-export const metadata: Metadata = {
-  title: "How to Compress PDF Files Online — Reduce PDF Size for Free",
-  description:
-    "Learn how to compress PDF files online for free. Reduce PDF size for email, faster sharing, and storage savings with our free browser-based PDF compressor tool.",
-  keywords: [
-    "compress pdf",
-    "reduce pdf size",
-    "pdf compressor",
-    "compress pdf online free",
-    "shrink pdf file",
-    "make pdf smaller",
-    "pdf size reducer",
-  ],
-  openGraph: {
-    title: "How to Compress PDF Files Online — Reduce PDF Size for Free",
-    description:
-      "Learn how to compress PDF files online for free. Reduce PDF size for email, faster sharing, and storage savings with our free PDF compressor.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-07T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Compress PDF Files Online — Reduce PDF Size for Free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Compress PDF Files Online — Reduce PDF Size for Free",
-    description: "Learn how to compress PDF files online for free. Reduce PDF size for email, sharing, and storage savings.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("compress-pdf-files-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -273,7 +248,7 @@ export default function CompressPdfFilesFree() {
                 A smaller PDF is easier to send, faster to open, and cheaper to store. Whether you are dealing with a single contract or a batch of scanned documents, compressing your PDFs should be a standard part of your workflow. Start with our free <Link href="/pdf-compress" className={toolLink}>PDF Compressor</Link> and shrink your files in seconds.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="compress-pdf-files-free" includeBreadcrumbSchema={false} />
       </article>
 
           {/* Sidebar */}

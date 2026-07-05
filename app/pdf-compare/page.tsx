@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfCompareClient = dynamic(() => import("./PdfCompareClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -10,10 +13,11 @@ const PdfCompareClient = dynamic(() => import("./PdfCompareClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-compare`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Compare Two PDFs Online Free",
   description:
     "Compare two PDF files online for free. Detect changed pages, added lines, and removed text between PDF versions in your browser with no upload.",
+  url: PAGE_URL,
   keywords: [
     "compare two pdfs online",
     "pdf compare online free",
@@ -22,15 +26,7 @@ export const metadata: Metadata = {
     "pdf diff tool",
     "compare revised pdf",
   ],
-  openGraph: {
-    title: "Compare Two PDFs Online Free",
-    description:
-      "Upload two PDFs and find text differences page by page in your browser with no signup and no upload.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+});
 
 export default function PdfComparePage() {
   const jsonLd = {
@@ -85,6 +81,8 @@ export default function PdfComparePage() {
           { "@type": "ListItem", position: 3, name: "PDF Compare", item: PAGE_URL },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -108,6 +106,11 @@ export default function PdfComparePage() {
                   page changes, added lines, removed text
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload an original PDF and a revised PDF to see which pages changed and what text was added or removed. Runs locally in your browser.
               </p>
@@ -178,6 +181,14 @@ export default function PdfComparePage() {
               ))}
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-compare" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js project documentation" },
+              { href: "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics", label: "Google Search Central: JavaScript SEO basics" },
+            ]}
+          />
           </div>
     </div>
   );

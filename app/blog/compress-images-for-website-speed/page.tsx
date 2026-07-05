@@ -1,31 +1,11 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-export const metadata: Metadata = {
-  title: "How to Compress Images for Faster Website Speed – Complete Guide",
-  description:
-    "Learn how to compress images for faster website performance. A complete guide covering image formats, compression ratios, Core Web Vitals, lazy loading, CDN, and more.",
-  keywords: [
-    "compress images for website",
-    "image optimization speed",
-    "reduce image size web",
-    "core web vitals images",
-    "image compression guide",
-    "website speed optimization",
-    "pagespeed images",
-    "lighthouse image optimization",
-  ],
-  openGraph: {
-    title: "How to Compress Images for Faster Website Speed – Complete Guide",
-    description:
-      "The definitive guide to image compression for web performance. Covers formats, compression, Core Web Vitals, lazy loading, and CDN optimization.",
-    url: "https://thepdftools.site/blog/compress-images-for-website-speed",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/blog/compress-images-for-website-speed",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("compress-images-for-website-speed");
+}
+
 
 export default function BlogPost() {
   const jsonLd = {
@@ -244,7 +224,7 @@ export default function BlogPost() {
           <p>
             Use our free <a href="/image-compressor" className="text-brand-600 hover:text-brand-700 underline font-medium">Image Compressor</a> to reduce file sizes, <a href="/image-to-webp" className="text-brand-600 hover:text-brand-700 underline font-medium">Image to WebP converter</a> to switch to modern formats, and <a href="/image-resizer" className="text-brand-600 hover:text-brand-700 underline font-medium">Image Resizer</a> to set correct dimensions. All three tools are free, require no signup, and process files directly in your browser for maximum privacy and speed.
           </p>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="compress-images-for-website-speed" />
       </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">

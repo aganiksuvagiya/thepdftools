@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageCompressorClient = dynamic(
   () => import("../image-compressor/ImageCompressorClient"),
@@ -11,10 +14,11 @@ const ImageCompressorClient = dynamic(
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/compress-image-to-100kb`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Compress Image to 100KB Online Free — Reduce Image Size",
   description:
     "Compress image to under 100KB online free. Reduce JPG, PNG, and WebP file size for form uploads, email attachments, and ID submissions. No signup, no upload.",
+  url: PAGE_URL,
   keywords: [
     "compress image to 100kb",
     "reduce image size to 100kb",
@@ -25,15 +29,7 @@ export const metadata: Metadata = {
     "jpg to 100kb online free",
     "reduce image file size to 100kb",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Compress Image to 100KB Online Free",
-    description: "Reduce JPG, PNG, and WebP images to under 100KB for form uploads and email. Free, no signup.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const faqItems = [
   { q: "Can I compress an image to exactly 100KB?", a: "The compressor reduces file size based on quality settings. Adjust the quality slider to get close to 100KB. Lower quality = smaller file. Check the output size before downloading." },
@@ -80,6 +76,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Compress Image to 100KB", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -101,6 +99,11 @@ export default function CompressImageTo100kbPage() {
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Compress Image to 100KB Online Free
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Reduce JPG, PNG, or WebP images to under 100KB for government form uploads, job applications, college admissions, and email attachments. No upload to any server — runs entirely in your browser.
           </p>
@@ -189,6 +192,16 @@ export default function CompressImageTo100kbPage() {
             ))}
           </div>
         </section>
+
+        <ToolSeoGrowth slug="compress-image-to-100kb" />
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: image format types" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: browser file handling" },
+            { href: "https://web.dev/learn/images/", label: "web.dev: image optimization fundamentals" },
+          ]}
+        />
       </main>
     </div>
   );

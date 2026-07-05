@@ -1,39 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-ppt-to-pdf-online-free`;
 
-export const metadata: Metadata = {
-  title: "How to Convert PPT to PDF Online Free - No Signup",
-  description:
-    "Learn how to convert PowerPoint PPTX presentations to PDF online for free. No upload, no signup, no watermark. Step-by-step guide included.",
-  keywords: [
-    "convert ppt to pdf online free",
-    "pptx to pdf converter",
-    "powerpoint to pdf free",
-    "ppt to pdf no upload",
-    "pptx to pdf no signup",
-    "presentation to pdf online",
-  ],
-  openGraph: {
-    title: "How to Convert PPT to PDF Online Free - No Signup",
-    description:
-      "Convert PowerPoint PPTX presentations to PDF online for free. No upload, no signup, no watermark.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Convert PPT to PDF online free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Convert PPT to PDF Online Free - No Signup",
-    description: "Convert PPTX presentations to PDF online for free with no signup.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("convert-ppt-to-pdf-online-free");
+}
+
 
 const toolLink = "font-medium text-brand-600 underline decoration-brand-200 hover:text-brand-700 hover:decoration-brand-400 transition-colors";
 
@@ -150,7 +126,7 @@ export default function ConvertPptToPdfOnlineFree() {
               </p>
             </div>
           </div>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="convert-ppt-to-pdf-online-free" includeBreadcrumbSchema={false} />
       </article>
       </div>
     </div>

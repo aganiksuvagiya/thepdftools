@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/extract-text-from-scanned-pdf-ocr`;
 
-export const metadata: Metadata = {
-  title: "How to Extract Text from Scanned PDFs with OCR (Free Guide)",
-  description:
-    "Turn scanned PDFs and image-based documents into searchable, selectable, copy-pasteable text using free OCR tools. Learn how OCR works, when you need it, and how to make a scanned PDF searchable in minutes.",
-  keywords: [
-    "extract text from pdf ocr",
-    "scanned pdf to text",
-    "ocr pdf free",
-    "make scanned pdf searchable",
-    "pdf text recognition",
-    "image to text pdf",
-    "convert scanned document to text",
-  ],
-  openGraph: {
-    title: "How to Extract Text from Scanned PDFs with OCR (Free Guide)",
-    description:
-      "Turn scanned PDFs and image-based documents into searchable, selectable, copy-pasteable text using free OCR tools.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-06-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Extract Text from Scanned PDFs with OCR" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Extract Text from Scanned PDFs with OCR (Free Guide)",
-    description: "Turn scanned PDFs into searchable, selectable text using free OCR tools.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("extract-text-from-scanned-pdf-ocr");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -303,7 +278,7 @@ export default function ExtractTextFromScannedPdfOcr() {
                 A scanned PDF doesn&rsquo;t have to stay a dead-end image file. With free, browser-based <Link href="/pdf-ocr" className={toolLink}>OCR</Link>, you can turn any scanned document into a searchable, selectable, accessible PDF in minutes — no software installation, no per-page fees, and no file ever leaving your device.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="extract-text-from-scanned-pdf-ocr" includeBreadcrumbSchema={false} includeFaqSchema={false} />
       </article>
 
           {/* Sidebar */}

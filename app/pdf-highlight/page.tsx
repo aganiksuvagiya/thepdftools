@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfHighlightClient = dynamic(() => import("./PdfHighlightClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -10,10 +13,11 @@ const PdfHighlightClient = dynamic(() => import("./PdfHighlightClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-highlight`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Highlight Online Free - Highlight Text in PDF",
   description:
     "Highlight important text, clauses, and sections in a PDF online for free. Mark PDF pages in your browser and export a highlighted PDF with no upload or signup.",
+  url: PAGE_URL,
   keywords: [
     "pdf highlighter online free",
     "highlight pdf online",
@@ -21,14 +25,7 @@ export const metadata: Metadata = {
     "pdf marker online",
     "annotate pdf highlight",
   ],
-  openGraph: {
-    title: "PDF Highlight Online Free - Highlight Text in PDF",
-    description: "Highlight key lines and sections in a PDF directly in your browser and export the marked file.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+});
 
 export default function PdfHighlightPage() {
   const jsonLd = {
@@ -82,6 +79,8 @@ export default function PdfHighlightPage() {
           { "@type": "ListItem", position: 3, name: "PDF Highlight", item: PAGE_URL },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -105,6 +104,11 @@ export default function PdfHighlightPage() {
                   mark key lines before you share
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Mark contracts, totals, notes, or sections in a PDF directly in your browser. Export a highlighted PDF with no upload and no signup.
               </p>
@@ -165,6 +169,14 @@ export default function PdfHighlightPage() {
               ))}
             </div>
           </div>
+          <ToolSeoGrowth slug="pdf-highlight" />
+          <SeoReferences
+            links={[
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js project documentation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+            ]}
+          />
           </div>
     </div>
   );

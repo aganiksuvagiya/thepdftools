@@ -1,31 +1,11 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-export const metadata: Metadata = {
-  title: "Best Free PDF Tools in India 2026 – No Signup Required",
-  description:
-    "Discover the best free PDF and image tools for Indian students, businesses, and professionals. No signup, works on Jio network, mobile friendly, and completely free.",
-  keywords: [
-    "free pdf tools india",
-    "best online tools india",
-    "merge pdf free india",
-    "compress image india",
-    "pdf tools no signup india",
-    "free pdf converter india",
-    "compress pdf online india",
-    "image compressor india",
-  ],
-  openGraph: {
-    title: "Best Free PDF Tools in India 2026 – No Signup Required",
-    description:
-      "Free PDF and image tools that work perfectly in India. No signup, low bandwidth, mobile friendly. Ideal for students, businesses, and government form handling.",
-    url: "https://thepdftools.site/blog/best-free-pdf-tools-india",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/blog/best-free-pdf-tools-india",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("best-free-pdf-tools-india");
+}
+
 
 export default function BlogPost() {
   const jsonLd = {
@@ -196,7 +176,7 @@ export default function BlogPost() {
           <p>
             All tools work instantly, require no signup, and respect your privacy. Try them now and see the difference.
           </p>
-        <BlogFooterLinks />
+        <BlogFooterLinks slug="best-free-pdf-tools-india" />
       </article>
 
         <div className="mt-12 pt-8 border-t border-gray-100">

@@ -1,51 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/how-to-merge-pdf-files-online`;
 
-export const metadata: Metadata = {
-  title: "How to Merge PDF Files Online for Free — Step by Step Guide",
-  description:
-    "Learn how to merge multiple PDF files into one document for free using our browser-based tool. No signup, no uploads to servers. Step-by-step guide with tips for organizing, reordering, and combining PDFs.",
-  keywords: [
-    "merge pdf files online",
-    "combine pdf free",
-    "merge pdf no signup",
-    "join pdf files",
-    "pdf combiner online",
-    "merge pdf browser",
-    "free pdf merger",
-    "how to merge pdfs",
-  ],
-  openGraph: {
-    title: "How to Merge PDF Files Online for Free — Step by Step Guide",
-    description:
-      "Learn how to merge multiple PDF files into one document for free. No signup, no server uploads. Step-by-step guide included.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-03-25T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "How to Merge PDF Files Online for Free",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Merge PDF Files Online for Free — Step by Step Guide",
-    description:
-      "Merge multiple PDF files into one document for free. Browser-based, no signup required.",
-  },
-  alternates: {
-    canonical: POST_URL,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("how-to-merge-pdf-files-online");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -294,7 +258,7 @@ export default function HowToMergePdfFilesOnline() {
                 Try PDF Merge Free
               </Link>
             </div>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="how-to-merge-pdf-files-online" />
       </article>
 
           {/* SIDEBAR */}

@@ -1,40 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-heic-to-jpg-free`;
 
-export const metadata: Metadata = {
-  title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
-  description:
-    "Learn how to convert HEIC to JPG for free on iPhone, Mac, Windows, and Android. No file uploads needed — everything runs in your browser. Covers HEIC vs JPG differences, step-by-step instructions, and pro tips.",
-  keywords: [
-    "heic to jpg",
-    "convert heic to jpg",
-    "heic to jpeg converter",
-    "iphone heic to jpg",
-    "open heic files on windows",
-    "heic format",
-    "apple heic converter",
-  ],
-  openGraph: {
-    title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
-    description:
-      "Convert HEIC to JPG for free on any device. No file uploads — runs entirely in your browser. Step-by-step guide with a free tool included.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-07T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "How to Convert HEIC to JPG on Any Device — Free & No Upload" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Convert HEIC to JPG on Any Device — Free & No Upload",
-    description: "Convert HEIC to JPG for free on any device. No uploads needed — everything runs in your browser.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("convert-heic-to-jpg-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -285,7 +260,7 @@ export default function ConvertHeicToJpgFree() {
                 HEIC is a great format for saving storage on your iPhone, but its lack of universal compatibility makes conversion to JPG a necessity. Whether you need to share photos over email, upload them to a website, or simply open them on a Windows PC, our free <Link href="/heic-to-jpg" className={toolLink}>HEIC to JPG converter</Link> handles it in seconds&mdash;right in your browser, with zero uploads and zero cost.
               </p>
             </section>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="convert-heic-to-jpg-free" includeBreadcrumbSchema={false} />
       </article>
 
           {/* Sidebar */}

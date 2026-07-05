@@ -1,51 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-word-to-pdf-free`;
 
-export const metadata: Metadata = {
-  title: "How to Convert Word Documents to PDF for Free Online",
-  description:
-    "Convert DOC and DOCX files to PDF format without installing Microsoft Office. Learn how to preserve formatting, when to use PDF vs Word, and explore free browser-based conversion tools.",
-  keywords: [
-    "convert Word to PDF",
-    "DOCX to PDF",
-    "free Word to PDF converter",
-    "Word to PDF online",
-    "convert document to PDF",
-    "DOC to PDF without Office",
-    "PDF converter free",
-    "browser-based Word to PDF",
-  ],
-  openGraph: {
-    title: "How to Convert Word Documents to PDF for Free Online",
-    description:
-      "Convert DOC and DOCX files to PDF without Microsoft Office. Keep formatting intact and share universally readable documents.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-03-15T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "How to Convert Word Documents to PDF for Free Online",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Convert Word Documents to PDF for Free Online",
-    description:
-      "Free browser-based tool to convert Word documents to PDF. No uploads, no sign-ups, no software to install.",
-  },
-  alternates: {
-    canonical: POST_URL,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("convert-word-to-pdf-free");
+}
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -333,7 +297,7 @@ export default function ConvertWordToPdfFree() {
               </div>
             </section>
 
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="convert-word-to-pdf-free" />
       </article>
 
           {/* SIDEBAR */}

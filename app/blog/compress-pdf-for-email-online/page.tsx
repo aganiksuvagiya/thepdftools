@@ -1,41 +1,15 @@
 import type { Metadata } from "next";
+import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SITE_URL = "https://thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/compress-pdf-for-email-online`;
 
-export const metadata: Metadata = {
-  title: "How to Compress PDF for Email Online Free",
-  description:
-    "Learn how to compress a PDF for email online for free. Reduce PDF file size under Gmail, Outlook, and portal attachment limits with no upload, no signup.",
-  keywords: [
-    "compress pdf for email",
-    "reduce pdf size for email",
-    "compress pdf under 25mb",
-    "make pdf smaller for email",
-    "pdf compressor online free no upload",
-    "compress pdf no signup",
-    "pdf too large for email",
-    "reduce pdf file size gmail",
-  ],
-  openGraph: {
-    title: "How to Compress PDF for Email Online Free",
-    description:
-      "Reduce PDF file size for Gmail, Outlook, and upload forms. Free online PDF compression with no upload and no signup.",
-    url: POST_URL,
-    type: "article",
-    publishedTime: "2026-04-14T00:00:00Z",
-    authors: ["thepdftools"],
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Compress PDF for email online free" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "How to Compress PDF for Email Online Free",
-    description: "Reduce PDF size for email with a free browser-based PDF compressor.",
-  },
-  alternates: { canonical: POST_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildBlogMetadata("compress-pdf-for-email-online");
+}
+
 
 const toolLink = "font-medium text-brand-600 underline decoration-brand-200 hover:text-brand-700 hover:decoration-brand-400 transition-colors";
 
@@ -193,7 +167,7 @@ export default function CompressPdfForEmailOnline() {
               <p className="mt-2">Use the <Link href="/pdf-compress" className={toolLink}>free online PDF Compressor</Link> — no upload, no signup, instant download.</p>
             </div>
           </div>
-          <BlogFooterLinks />
+          <BlogFooterLinks slug="compress-pdf-for-email-online" includeBreadcrumbSchema={false} includeFaqSchema={false} />
         </article>
       </div>
     </div>

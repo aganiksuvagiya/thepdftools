@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/document-tools`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Document Converter Tools — Word to PDF, Excel to PDF, HTML to PDF & More",
   description:
     "Free online document converter tools: convert Word to PDF, Excel to PDF, Markdown to PDF, HTML to PDF, and more. No software installation required.",
+  url: PAGE_URL,
   keywords: [
     "free document converter online",
     "word to pdf",
@@ -18,16 +20,7 @@ export const metadata: Metadata = {
     "convert documents online free",
     "text to pdf",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Free Document Converter Tools — Word to PDF, Excel to PDF, HTML to PDF & More",
-    description:
-      "Free online document converters: Word to PDF, Excel to PDF, HTML to PDF, Markdown to PDF, and more.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+});
 
 const documentTools = [
   {
@@ -84,7 +77,11 @@ const jsonLd = {
       name: "Free Document Converter Tools Online",
       url: PAGE_URL,
       description: "Free browser-based document converter tools: Word to PDF, Excel to PDF, HTML to PDF, and more.",
+      author: { "@type": "Organization", name: "thepdftools Editorial Team" },
+      dateModified: "2026-07-05",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -129,6 +126,11 @@ export default function DocumentToolsPage() {
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
             Free Document Converter Tools
           </h1>
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>thepdftools Editorial Team</span>
+            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+          </div>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Convert Word, Excel, PowerPoint, HTML, and Markdown documents to PDF — and back. Free, browser-based, no sign-up required.
           </p>
@@ -217,6 +219,22 @@ export default function DocumentToolsPage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">References</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: HTML document and link fundamentals
+              </a>
+            </li>
+            <li>
+              <a href="https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: JavaScript SEO basics
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
     </div>
