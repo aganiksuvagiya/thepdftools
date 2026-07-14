@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/utility-tools`;
@@ -91,6 +92,7 @@ const jsonLd = {
 };
 
 export default function UtilityToolsPage() {
+  const lastUpdated = getLastUpdated("app/utility-tools/page.tsx");
   const toolCount = utilityTools.reduce((acc, g) => acc + g.tools.length, 0);
 
   return (
@@ -119,7 +121,7 @@ export default function UtilityToolsPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Word counters, color tools, gradient generators, and more productivity utilities — all free, running entirely in your browser with no account needed.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/developer-tools`;
@@ -111,6 +112,7 @@ const jsonLd = {
 };
 
 export default function DeveloperToolsPage() {
+  const lastUpdated = getLastUpdated("app/developer-tools/page.tsx");
   const toolCount = devTools.reduce((acc, g) => acc + g.tools.length, 0);
 
   return (
@@ -139,7 +141,7 @@ export default function DeveloperToolsPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
             Format JSON, encode Base64, convert CSV to JSON, generate colors, and more — all free developer utilities that run in your browser with no sign-up required.

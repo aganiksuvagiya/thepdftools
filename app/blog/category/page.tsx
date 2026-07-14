@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_URL, blogCategories, getCategoryUrl, getPostsByCategory } from "@/lib/blog";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 export const revalidate = 86400;
 
@@ -28,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function BlogCategoryIndexPage() {
+  const lastUpdated = getLastUpdated("app/blog/category/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -67,7 +69,7 @@ export default function BlogCategoryIndexPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-3 max-w-3xl text-base leading-8 text-slate-600">
             Every article is grouped into a crawlable category archive so readers and search engines can reach related content quickly.

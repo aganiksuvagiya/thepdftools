@@ -4,6 +4,7 @@ import Link from "next/link";
 import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const PdfCompareClient = dynamic(() => import("./PdfCompareClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -29,6 +30,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function PdfComparePage() {
+  const lastUpdated = getLastUpdated("app/pdf-compare/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -109,7 +111,7 @@ export default function PdfComparePage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload an original PDF and a revised PDF to see which pages changed and what text was added or removed. Runs locally in your browser.

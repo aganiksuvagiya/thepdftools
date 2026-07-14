@@ -5,6 +5,7 @@ import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const CsvToJsonClient = dynamic(() => import("./CsvToJsonClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -32,6 +33,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function CsvToJsonPage() {
+  const lastUpdated = getLastUpdated("app/csv-to-json/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -96,7 +98,7 @@ export default function CsvToJsonPage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">

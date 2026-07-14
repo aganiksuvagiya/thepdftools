@@ -8,6 +8,7 @@ import {
   getPostsByCategory,
 } from "@/lib/blog";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 export const revalidate = 86400;
 
@@ -46,6 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function BlogCategoryPage({ params }: Props) {
+  const lastUpdated = getLastUpdated("app/blog/category/[category]/page.tsx");
   const category = blogCategories.find((item) => item.slug === params.category);
   if (!category) notFound();
 
@@ -104,7 +106,7 @@ export default function BlogCategoryPage({ params }: Props) {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-3 max-w-3xl text-base leading-8 text-slate-600">
             Explore guides, how-tos, and related resources in the {category.name.toLowerCase()} category.

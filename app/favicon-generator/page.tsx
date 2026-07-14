@@ -5,6 +5,7 @@ import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const FaviconClient = dynamic(() => import("./FaviconClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
@@ -60,6 +61,7 @@ const jsonLd = {
 };
 
 export default function FaviconPage() {
+  const lastUpdated = getLastUpdated("app/favicon-generator/page.tsx");
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -84,7 +86,7 @@ export default function FaviconPage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">Upload your logo, set rounded corners and padding, and download all favicon sizes at once. Includes 16×16 to 512×512 and Apple Touch Icon — free, no signup.</p>
             </div>

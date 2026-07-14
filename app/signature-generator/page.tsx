@@ -4,6 +4,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const SignatureClient = dynamic(() => import("./SignatureClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
@@ -145,6 +146,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function SignaturePage() {
+  const lastUpdated = getLastUpdated("app/signature-generator/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -241,7 +243,7 @@ export default function SignaturePage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
 
               <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">

@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const PasswordGeneratorClient = dynamic(() => import("./PasswordGeneratorClient"), {
   ssr: false,
@@ -73,6 +74,7 @@ const jsonLd = {
 };
 
 export default function PasswordGeneratorPage() {
+  const lastUpdated = getLastUpdated("app/password-generator/page.tsx");
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -90,7 +92,7 @@ export default function PasswordGeneratorPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Generate strong, cryptographically secure random passwords. Customize length, character types, and copy instantly. Nothing is sent to any server.

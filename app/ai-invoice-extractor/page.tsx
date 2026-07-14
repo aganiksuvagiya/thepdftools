@@ -4,6 +4,7 @@ import Link from "next/link";
 import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const InvoiceExtractorClient = dynamic(() => import("./InvoiceExtractorClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -48,6 +49,7 @@ const faqItems = [
 ];
 
 export default function AiInvoiceExtractorPage() {
+  const lastUpdated = getLastUpdated("app/ai-invoice-extractor/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -105,7 +107,7 @@ export default function AiInvoiceExtractorPage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
                 Upload an invoice PDF and pull key fields instantly. Works with text-based invoices and scanned invoices using OCR fallback.

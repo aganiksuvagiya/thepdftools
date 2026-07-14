@@ -4,6 +4,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const WordCounterClient = dynamic(() => import("./WordCounterClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -497,6 +498,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function WordCounterPage() {
+  const lastUpdated = getLastUpdated("app/word-counter/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -606,7 +608,7 @@ export default function WordCounterPage() {
               <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
                 <span>thepdftools Editorial Team</span>
                 <span className="h-1 w-1 rounded-full bg-slate-300" />
-                <time dateTime="2026-07-05">Updated July 5, 2026</time>
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
               <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
                 Count words in PDF files online free. Measure PDF word count,

@@ -5,6 +5,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const ImageCompressorClient = dynamic(
   () => import("../image-compressor/ImageCompressorClient"),
@@ -82,6 +83,7 @@ const jsonLd = {
 };
 
 export default function CompressImageTo100kbPage() {
+  const lastUpdated = getLastUpdated("app/compress-image-to-100kb/page.tsx");
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -102,7 +104,7 @@ export default function CompressImageTo100kbPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Reduce JPG, PNG, or WebP images to under 100KB for government form uploads, job applications, college admissions, and email attachments. No upload to any server — runs entirely in your browser.

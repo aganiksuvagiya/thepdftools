@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy — ThePDFTools",
@@ -16,6 +17,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function PrivacyPage() {
+  const lastUpdated = getLastUpdated("app/privacy/page.tsx");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -63,7 +65,7 @@ export default function PrivacyPage() {
           <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-400">
             <span>thepdftools Editorial Team</span>
             <span className="h-1 w-1 rounded-full bg-slate-300" />
-            <time dateTime="2026-07-05">Updated July 5, 2026</time>
+            <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
           </div>
 
           <div className="mt-8 space-y-7 text-sm leading-7 text-slate-600">
