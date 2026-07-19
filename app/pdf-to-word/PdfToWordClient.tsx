@@ -3,6 +3,20 @@
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
 
+async function loadTesseract() {
+  const cdnUrl = "https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.esm.min.js";
+  const module = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
+  return module.default;
+}
+
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function preserveSpacing(str: string): string {
+  return str.replace(/ {2,}/g, (m) => "&nbsp;".repeat(m.length - 1) + " ");
+}
+
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
   const k = 1024;
@@ -17,7 +31,6 @@ export default function PdfToWordClient() {
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [docUrl, setDocUrl] = useState<string | null>(null);
-  const [previewText, setPreviewText] = useState<string | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
 
@@ -25,7 +38,6 @@ export default function PdfToWordClient() {
     if (files.length > 0) {
       setFile(files[0]);
       setDocUrl(null);
-      setPreviewText(null);
       setError(null);
       setPageCount(0);
       setWordCount(0);
@@ -37,7 +49,6 @@ export default function PdfToWordClient() {
     setLoading(true);
     setError(null);
     setDocUrl(null);
-    setPreviewText(null);
 
     try {
       setProgress("Loading PDF library...");
@@ -62,39 +73,122 @@ export default function PdfToWordClient() {
         const textContent = await page.getTextContent();
 
         let lastY: number | null = null;
+        let lastX: number | null = null;
         let pageText = "";
 
         for (const item of textContent.items) {
           if (!("str" in item)) continue;
-          const textItem = item as { str: string; transform: number[] };
+          const textItem = item as { str: string; transform: number[]; width?: number };
           const y = textItem.transform[5];
+          const x = textItem.transform[4];
+          const fontSize = Math.abs(textItem.transform[0]) || Math.abs(textItem.transform[3]) || 10;
 
           if (lastY !== null && Math.abs(y - lastY) > 2) {
             pageText += "<br/>";
+            lastX = null;
+          } else if (lastX !== null) {
+            const gap = x - lastX;
+            const spaceWidth = Math.max(fontSize * 0.28, 1);
+            if (gap > spaceWidth) {
+              pageText += " ".repeat(Math.min(Math.round(gap / spaceWidth), 40));
+            }
           }
+
           if (textItem.str.trim() !== "") {
             pageText += textItem.str;
-          } else if (textItem.str === " ") {
+          } else if (textItem.str.length > 0) {
             pageText += " ";
           }
           lastY = y;
+          lastX = x + (textItem.width || 0);
         }
 
         pages.push(pageText);
         fullText += pageText.replace(/<br\/>/g, "\n") + "\n\n";
       }
 
-      const words = fullText.trim().split(/\s+/).filter((w) => w.length > 0).length;
-      setWordCount(words);
+      let words = fullText.trim().split(/\s+/).filter((w) => w.length > 0).length;
 
       if (words === 0) {
-        setError(
-          "No text could be extracted from this PDF. It may be a scanned document (image-based) or empty."
-        );
-        setLoading(false);
-        return;
+        setProgress("No embedded text found — running OCR...");
+        const ocrPages: string[] = [];
+        let ocrFullText = "";
+
+        const tesseract = await loadTesseract();
+        const worker = await tesseract.createWorker("eng", 1, {
+          logger: (m: { status: string; progress: number }) => {
+            if (m.status === "recognizing text") {
+              setProgress(`Running OCR... ${Math.round(m.progress * 100)}%`);
+            }
+          },
+        });
+
+        for (let i = 1; i <= totalPages; i++) {
+          setProgress(`OCR on page ${i} of ${totalPages}...`);
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 2.0 });
+
+          const canvas = document.createElement("canvas");
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext("2d")!;
+          await page.render({ canvasContext: ctx, viewport, canvas }).promise;
+
+          const { data } = await worker.recognize(canvas.toDataURL("image/png"));
+
+          let pageText: string;
+          const lines = (data as any).lines as
+            | { text: string; words?: { text: string; bbox: { x0: number; x1: number } }[] }[]
+            | undefined;
+
+          if (lines && lines.length > 0) {
+            pageText = lines
+              .map((line) => {
+                const words = line.words || [];
+                if (words.length === 0) return line.text.trim();
+
+                let lineStr = "";
+                let lastEndX: number | null = null;
+                for (const w of words) {
+                  const charWidth = w.text.length > 0 ? (w.bbox.x1 - w.bbox.x0) / w.text.length : 6;
+                  if (lastEndX !== null) {
+                    const gap = w.bbox.x0 - lastEndX;
+                    const spaceWidth = Math.max(charWidth * 0.9, 2);
+                    lineStr += " ".repeat(gap > spaceWidth ? Math.min(Math.round(gap / spaceWidth), 40) : 1);
+                  }
+                  lineStr += w.text;
+                  lastEndX = w.bbox.x1;
+                }
+                return lineStr;
+              })
+              .join("\n")
+              .trim();
+          } else {
+            pageText = data.text.trim();
+          }
+
+          ocrPages.push(pageText.replace(/\n/g, "<br/>"));
+          ocrFullText += pageText + "\n\n";
+        }
+
+        await worker.terminate();
+
+        words = ocrFullText.trim().split(/\s+/).filter((w) => w.length > 0).length;
+
+        if (words === 0) {
+          setError(
+            "No text could be extracted from this PDF. It may be a scanned document (image-based) or empty."
+          );
+          setLoading(false);
+          return;
+        }
+
+        pages.length = 0;
+        pages.push(...ocrPages);
+        fullText = ocrFullText;
       }
 
+      setWordCount(words);
       setProgress("Generating Word document...");
 
       const htmlContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -102,7 +196,7 @@ export default function PdfToWordClient() {
 <meta charset="utf-8">
 <style>
 body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; color: #333; margin: 1in; }
-p { margin: 0 0 6pt 0; }
+p { margin: 0 0 6pt 0; white-space: pre-wrap; }
 .page { margin-bottom: 12pt; }
 </style>
 </head>
@@ -112,7 +206,10 @@ ${pages
     (p, idx) =>
       `<div class="page"${idx < pages.length - 1 ? ' style="page-break-after:always"' : ""}>${p
         .split("<br/>")
-        .map((line) => `<p>${line || "&nbsp;"}</p>`)
+        .map((line) => {
+          const escaped = preserveSpacing(escapeHtml(line));
+          return `<p>${escaped || "&nbsp;"}</p>`;
+        })
         .join("\n")}</div>`
   )
   .join("\n")}
@@ -124,11 +221,6 @@ ${pages
       });
       const url = URL.createObjectURL(blob);
       setDocUrl(url);
-
-      // Build a plain text preview (first ~2000 chars)
-      const preview =
-        fullText.length > 2000 ? fullText.slice(0, 2000) + "..." : fullText;
-      setPreviewText(preview);
 
       setProgress("");
     } catch (err: any) {
@@ -156,7 +248,6 @@ ${pages
   const handleReset = () => {
     setFile(null);
     setDocUrl(null);
-    setPreviewText(null);
     setError(null);
     setProgress("");
     setPageCount(0);
@@ -269,16 +360,6 @@ ${pages
                   <span><strong>{wordCount.toLocaleString()}</strong> words</span>
                 </div>
               </div>
-
-              {/* Preview */}
-              {previewText && (
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-700">Text Preview</p>
-                  <div className="max-h-64 overflow-y-auto rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
-                    {previewText}
-                  </div>
-                </div>
-              )}
 
               {/* Download */}
               <button onClick={handleDownload} className="btn-secondary w-full">
