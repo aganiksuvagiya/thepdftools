@@ -36,13 +36,32 @@ const moreToolLinks = [
   { href: "/lorem-ipsum", label: "Lorem Ipsum" },
 ];
 
+const pdfPageToolLinks = [
+  { href: "/pdf-converter", label: "PDF Converter" },
+  { href: "/pdf-organize-pages", label: "Organize PDF Pages" },
+  { href: "/rearrange-pdf-pages", label: "Rearrange PDF Pages" },
+  { href: "/delete-pdf-pages", label: "Delete PDF Pages" },
+  { href: "/extract-pdf-pages", label: "Extract PDF Pages" },
+  { href: "/repair-pdf", label: "Repair PDF" },
+  { href: "/flatten-pdf", label: "Flatten PDF" },
+  { href: "/pdf-metadata-editor", label: "PDF Metadata Editor" },
+  { href: "/png-to-pdf", label: "PNG to PDF" },
+  { href: "/scan-to-pdf", label: "Scan to PDF" },
+];
+
 const popularSearchLinks = [
   { href: "/compress-pdf-to-100kb", label: "Compress PDF to 100KB" },
+  { href: "/compress-pdf-to-200kb", label: "Compress PDF to 200KB" },
   { href: "/compress-pdf-for-govt-exam", label: "Compress PDF for Govt Exam" },
   { href: "/reduce-pdf-size-online-free", label: "Reduce PDF Size Online Free" },
   { href: "/jpg-to-png", label: "Convert JPEG to PNG" },
   { href: "/jpg-to-png-no-upload", label: "JPG to PNG No Upload" },
   { href: "/jpg-to-png-for-logos", label: "JPG to PNG for Logos" },
+  { href: "/compress-image-to-100kb", label: "Compress Image to 100KB" },
+  { href: "/png-to-jpg-for-photos", label: "PNG to JPG for Photos" },
+  { href: "/png-to-jpg-white-background", label: "PNG to JPG White Background" },
+  { href: "/ilovepdf-alternative", label: "iLovePDF Alternative" },
+  { href: "/smallpdf-vs-thepdftools", label: "Smallpdf vs thepdftools" },
 ];
 
 const categoryLinks = [
@@ -181,7 +200,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-7">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-8">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-1.5">
@@ -221,6 +240,7 @@ export default function Footer() {
           </div>
 
           <FooterColumn title="PDF Tools" titleHref="/pdf-tools" links={pdfToolLinks} />
+          <FooterColumn title="PDF Page Tools" titleHref="/pdf-converter" links={pdfPageToolLinks} />
           <FooterColumn title="Image Tools" titleHref="/image-tools" links={imageToolLinks} />
           <FooterColumn title="More Tools" links={moreToolLinks} />
           <FooterColumn title="Popular Searches" links={popularSearchLinks} />

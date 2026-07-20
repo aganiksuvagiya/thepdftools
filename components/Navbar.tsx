@@ -12,6 +12,7 @@ type DropdownItem = {
   icon: string;
   bg: string;
   fg: string;
+  keywords?: string[];
 };
 
 type DropdownSection = {
@@ -41,6 +42,13 @@ const pdfSections: DropdownSection[] = [
       { href: "/pdf-protect", label: "PDF Protect", icon: "lock", bg: "bg-slate-100", fg: "text-slate-700" },
       { href: "/pdf-unlock", label: "PDF Unlock", icon: "unlock", bg: "bg-teal-100", fg: "text-teal-700" },
       { href: "/pdf-rotate", label: "PDF Rotate", icon: "rotate", bg: "bg-cyan-100", fg: "text-cyan-700" },
+      { href: "/pdf-organize-pages", label: "Organize PDF Pages", icon: "split", bg: "bg-violet-100", fg: "text-violet-700" },
+      { href: "/rearrange-pdf-pages", label: "Rearrange PDF Pages", icon: "split", bg: "bg-blue-100", fg: "text-blue-700" },
+      { href: "/delete-pdf-pages", label: "Delete PDF Pages", icon: "split", bg: "bg-rose-100", fg: "text-rose-700" },
+      { href: "/extract-pdf-pages", label: "Extract PDF Pages", icon: "split", bg: "bg-emerald-100", fg: "text-emerald-700" },
+      { href: "/repair-pdf", label: "Repair PDF", icon: "compress", bg: "bg-amber-100", fg: "text-amber-700" },
+      { href: "/flatten-pdf", label: "Flatten PDF", icon: "edit", bg: "bg-slate-100", fg: "text-slate-700" },
+      { href: "/pdf-metadata-editor", label: "PDF Metadata Editor", icon: "edit", bg: "bg-indigo-100", fg: "text-indigo-700" },
     ],
   },
   {
@@ -55,6 +63,9 @@ const pdfSections: DropdownSection[] = [
       { href: "/text-to-pdf", label: "Text to PDF", icon: "text", bg: "bg-amber-100", fg: "text-amber-700" },
       { href: "/markdown-to-pdf", label: "Markdown to PDF", icon: "markdown", bg: "bg-stone-100", fg: "text-stone-700" },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF", icon: "screen", bg: "bg-indigo-100", fg: "text-indigo-700" },
+      { href: "/png-to-pdf", label: "PNG to PDF", icon: "photo", bg: "bg-pink-100", fg: "text-pink-700" },
+      { href: "/scan-to-pdf", label: "Scan to PDF", icon: "scan", bg: "bg-teal-100", fg: "text-teal-700" },
+      { href: "/pdf-converter", label: "PDF Converter (all formats)", icon: "code", bg: "bg-violet-100", fg: "text-violet-700" },
     ],
   },
   {

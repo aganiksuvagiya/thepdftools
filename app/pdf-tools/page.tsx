@@ -38,6 +38,10 @@ const pdfTools = [
       { href: "/pdf-split", label: "Split PDF", desc: "Extract pages or split into separate files." },
       { href: "/pdf-rotate", label: "Rotate PDF", desc: "Rotate pages to the correct orientation." },
       { href: "/pdf-page-numbers", label: "Add Page Numbers", desc: "Stamp page numbers on every page." },
+      { href: "/pdf-organize-pages", label: "Organize PDF Pages", desc: "Reorder and delete pages, then export." },
+      { href: "/rearrange-pdf-pages", label: "Rearrange PDF Pages", desc: "Move pages into the order you need." },
+      { href: "/delete-pdf-pages", label: "Delete PDF Pages", desc: "Remove unwanted pages from a PDF." },
+      { href: "/extract-pdf-pages", label: "Extract PDF Pages", desc: "Pull specific pages into a new PDF." },
     ],
   },
   {
@@ -57,6 +61,7 @@ const pdfTools = [
       { href: "/pdf-to-jpg", label: "PDF to JPG", desc: "Convert PDF pages to JPG images." },
       { href: "/pdf-to-image", label: "PDF to Image", desc: "Export PDF pages as PNG or JPG." },
       { href: "/pdf-to-ppt", label: "PDF to PowerPoint", desc: "Convert PDF slides to editable PPT." },
+      { href: "/pdf-converter", label: "PDF Converter", desc: "Browse every PDF conversion tool in one place." },
     ],
   },
   {
@@ -71,6 +76,8 @@ const pdfTools = [
       { href: "/markdown-to-pdf", label: "Markdown to PDF", desc: "Render Markdown files as PDF." },
       { href: "/text-to-pdf", label: "Text to PDF", desc: "Convert plain text files to PDF." },
       { href: "/screenshot-to-pdf", label: "Screenshot to PDF", desc: "Save screenshots as a PDF file." },
+      { href: "/png-to-pdf", label: "PNG to PDF", desc: "Convert PNG images to a PDF document." },
+      { href: "/scan-to-pdf", label: "Scan to PDF", desc: "Turn phone photos of documents into PDF." },
     ],
   },
   {
@@ -81,6 +88,8 @@ const pdfTools = [
       { href: "/pdf-watermark", label: "Add Watermark", desc: "Stamp a watermark on PDF pages." },
       { href: "/pdf-redaction", label: "Redact PDF", desc: "Permanently hide sensitive content." },
       { href: "/pdf-form-filler", label: "Fill PDF Form", desc: "Fill out PDF forms in your browser." },
+      { href: "/flatten-pdf", label: "Flatten PDF", desc: "Merge form fields into static page content." },
+      { href: "/pdf-metadata-editor", label: "PDF Metadata Editor", desc: "Edit title, author, and keywords." },
     ],
   },
   {
@@ -97,6 +106,7 @@ const pdfTools = [
       { href: "/pdf-ocr", label: "PDF OCR", desc: "Make scanned PDFs searchable with OCR." },
       { href: "/scanned-pdf-to-searchable-pdf", label: "Scanned PDF to Searchable", desc: "Convert image PDFs to searchable text." },
       { href: "/pdf-compare", label: "Compare PDFs", desc: "Highlight differences between two PDFs." },
+      { href: "/repair-pdf", label: "Repair PDF", desc: "Rebuild a broken or corrupt PDF file." },
     ],
   },
 ];

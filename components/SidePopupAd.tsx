@@ -14,7 +14,7 @@ export default function SidePopupAd() {
 </html>`;
 
   return (
-    <div className="fixed right-0 top-1/2 z-50 -translate-y-1/2">
+    <div className="fixed right-0 top-1/2 z-30 hidden -translate-y-1/2 lg:block">
       <iframe
         key={pathname}
         srcDoc={srcdoc}
