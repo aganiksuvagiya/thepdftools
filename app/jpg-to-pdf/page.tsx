@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
+import { getLastUpdated } from "@/lib/last-updated";
 
 const ImageToPdfClient = dynamic(() => import("../image-to-pdf/ImageToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
-  title: "JPG to PDF Online Free — Convert JPG Images to PDF Instantly",
-  description:
-    "Convert JPG to PDF online for free. Upload multiple JPG images, arrange order, choose page size, and download a PDF instantly. No signup, no upload to server.",
+const SITE_URL = "https://thepdftools.site";
+const PAGE_URL = `${SITE_URL}/jpg-to-pdf`;
+
+const pageTitle = "JPG to PDF Online Free — Convert JPG Images to PDF Instantly";
+const pageDescription =
+  "Convert JPG images to PDF in your browser. Combine multiple photos, reorder them, choose page size and margins, and download. No signup, no upload to a server.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: pageTitle,
+  description: pageDescription,
+  url: PAGE_URL,
   keywords: [
     "jpg to pdf online free",
     "convert jpg to pdf",
@@ -20,67 +28,144 @@ export const metadata: Metadata = {
     "jpg to pdf no upload",
     "multiple jpg to pdf",
     "jpg images to pdf",
-    "free jpg to pdf converter",
-    "jpg to pdf without signup",
   ],
-  openGraph: {
-    title: "JPG to PDF Online Free — Convert JPG Images to PDF Instantly",
-    description:
-      "Convert JPG images to PDF online free. Multiple images, custom page size, instant download. No signup required.",
-    url: "https://thepdftools.site/jpg-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
+  imageAlt: "JPG to PDF converter combining photos into one document",
+});
+
+const howToSteps = [
+  {
+    name: "Upload your JPG images",
+    text: "Open the converter above and drop in one or more JPG files, or click to browse.",
   },
-  alternates: { canonical: "https://thepdftools.site/jpg-to-pdf" },
-};
+  {
+    name: "Reorder if needed",
+    text: "Hover over a thumbnail and use the up/down arrow buttons to change its position — there's no drag-and-drop reordering.",
+  },
+  {
+    name: "Choose layout options",
+    text: "Pick a page size (A4, Letter, or Fit to Image), orientation, and margin.",
+  },
+  {
+    name: "Convert to PDF",
+    text: "Click Convert to PDF. Each JPG becomes its own page, scaled and centered based on your settings.",
+  },
+  {
+    name: "Download",
+    text: "The finished PDF downloads automatically.",
+  },
+] as const;
 
 const faqItems = [
-  { q: "Can I convert multiple JPG images to one PDF?", a: "Yes. Upload multiple JPG or PNG images and the tool combines them into a single PDF document in the order you arrange them." },
-  { q: "What image formats are supported?", a: "JPG, JPEG, PNG, and WebP images can be converted to PDF. You can mix different formats in the same PDF." },
-  { q: "Can I choose PDF page size?", a: "Yes. Choose A4, Letter, or fit-to-image page size. You can also set portrait or landscape orientation." },
-  { q: "Is the JPG to PDF conversion free?", a: "Yes. The tool is completely free with no signup, no watermarks, and no upload to any server." },
-  { q: "Does converting JPG to PDF reduce image quality?", a: "No. The tool embeds images directly into the PDF at their original quality. No compression is applied to the images during conversion." },
-];
+  {
+    q: "Can I convert multiple JPG images to one PDF?",
+    a: "Yes. Upload several JPG images and the tool combines them into a single PDF, one image per page, in the order shown in the list.",
+  },
+  {
+    q: "Can I reorder my JPGs before converting?",
+    a: "Yes, but only through hover-revealed up/down arrow buttons on each thumbnail — there is no drag-and-drop reordering.",
+  },
+  {
+    q: "Does converting JPG to PDF reduce image quality?",
+    a: "Every image is re-encoded when it's embedded into the PDF, since the tool builds each page from a JPEG-format image regardless of source. For ordinary photos this isn't visibly noticeable, but it isn't a byte-for-byte lossless copy of your original file either.",
+  },
+  {
+    q: "Can I mix JPG and PNG images in the same PDF?",
+    a: "Yes. This converter accepts JPG, PNG, and WebP, so you can combine formats in a single batch even on this JPG-focused page.",
+  },
+  {
+    q: "Can I choose the PDF page size?",
+    a: "Yes. Choose A4, Letter, or Fit to Image, and set portrait or landscape orientation for A4/Letter.",
+  },
+  {
+    q: "What does \"Fit to Image\" do?",
+    a: "It creates a PDF page sized to match each image's own pixel dimensions (assuming 96 DPI), instead of placing the photo onto a standard A4 or Letter page.",
+  },
+  {
+    q: "Is the JPG to PDF conversion free?",
+    a: "Yes. The tool is free with no signup, no watermark, and no upload to any server.",
+  },
+  {
+    q: "Does this tool upload my photos to a server?",
+    a: "No. Images are assembled into a PDF locally in your browser using jsPDF.",
+  },
+  {
+    q: "Is there a limit to how many JPGs I can combine?",
+    a: "There's no fixed limit, but a very large batch of high-resolution photos depends on your device's available memory since everything runs in the browser.",
+  },
+  {
+    q: "Can I use this for scanned documents saved as JPG?",
+    a: "Yes. Photographed or scanned pages saved as JPG are a common use case — add them in order and convert to get one PDF instead of several separate image files.",
+  },
+] as const;
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
-      name: "Free JPG to PDF Converter",
-      url: "https://thepdftools.site/jpg-to-pdf",
+      "@type": "WebPage",
+      name: pageTitle,
+      url: PAGE_URL,
+      description: pageDescription,
+      inLanguage: "en-US",
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+      },
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "JPG to PDF",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
+      browserRequirements: "Requires JavaScript and a modern browser.",
+      isAccessibleForFree: true,
+      mainEntityOfPage: PAGE_URL,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-      description: "Convert JPG and PNG images to PDF online for free. No upload required — runs entirely in your browser.",
+      featureList: [
+        "Convert one or more JPG images into a single PDF entirely in the browser",
+        "Reorder images with up/down controls before converting",
+        "Choose A4, Letter, or Fit to Image page size, orientation, and margins",
+      ],
+      description: pageDescription,
+      url: PAGE_URL,
     },
     {
       "@type": "HowTo",
-      name: "How to Convert JPG to PDF Online",
-      description: "Convert JPG images to PDF for free in your browser.",
-      step: [
-        { "@type": "HowToStep", position: 1, name: "Open the JPG to PDF tool", text: "Go to thepdftools.site/jpg-to-pdf and open the free converter." },
-        { "@type": "HowToStep", position: 2, name: "Upload your images", text: "Upload one or more JPG, PNG, or WebP images by clicking the upload area or dragging files." },
-        { "@type": "HowToStep", position: 3, name: "Arrange and set options", text: "Drag to reorder images, choose page size (A4, Letter, or fit-to-image), and set orientation." },
-        { "@type": "HowToStep", position: 4, name: "Convert to PDF", text: "Click Convert to PDF to build the PDF document from your images." },
-        { "@type": "HowToStep", position: 5, name: "Download the PDF", text: "Click Download to save your PDF file." },
-      ],
+      name: "How to convert JPG to PDF online",
+      description: "A workflow for combining JPG images into a single PDF document.",
+      step: howToSteps.map((step, index) => ({
+        "@type": "HowToStep",
+        position: index + 1,
+        name: step.name,
+        text: step.text,
+      })),
     },
     {
       "@type": "FAQPage",
-      mainEntity: faqItems.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "JPG to PDF", item: "https://thepdftools.site/jpg-to-pdf" },
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: `${SITE_URL}/pdf-tools` },
+        { "@type": "ListItem", position: 3, name: "JPG to PDF", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
 export default function JpgToPdfPage() {
+  const lastUpdated = getLastUpdated("app/jpg-to-pdf/page.tsx");
+
   return (
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -104,9 +189,15 @@ export default function JpgToPdfPage() {
                   free online
                 </span>
               </h1>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-500">
+                <span>thepdftools Editorial Team</span>
+                <span className="h-1 w-1 rounded-full bg-slate-300" />
+                <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
+              </div>
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload one or multiple JPG images and convert them to a PDF instantly.
-                Arrange order, pick page size, and download — no signup, no upload to any server.
+                Upload one or multiple JPG images and convert them to a PDF
+                instantly. Reorder with the hover arrow controls, pick a page
+                size, and download — no signup, no upload to any server.
               </p>
             </div>
             <div className="mt-8">
@@ -129,6 +220,42 @@ export default function JpgToPdfPage() {
 
         <div className="mt-14 space-y-8">
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">What This Tool Actually Does</h2>
+            <div className="mt-4 space-y-4 text-sm leading-7 text-slate-600">
+              <p>
+                This converter builds a PDF from your JPG images using jsPDF,
+                entirely in your browser. Each image becomes one page.
+                Reordering happens through hover-revealed up/down arrows on
+                each thumbnail, not drag-and-drop. Every image is re-encoded
+                when it's placed into the PDF — for ordinary photos this has
+                no visible effect, but it isn't a byte-for-byte copy of the
+                original file.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">How to Convert JPG to PDF</h2>
+            <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
+              {howToSteps.map((step) => (
+                <li key={step.name}>
+                  <strong>{step.name}.</strong> {step.text}
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">Tool Limitations</h2>
+            <ul className="mt-4 list-inside list-disc space-y-2 text-sm leading-7 text-slate-600">
+              <li>Reordering is hover-and-click, not drag-and-drop.</li>
+              <li>Images are re-encoded during embedding — not a byte-for-byte lossless copy.</li>
+              <li>Fit to Image assumes 96 DPI when converting pixel dimensions to a physical page size.</li>
+              <li>No fixed batch limit, but very large batches depend on your device's memory.</li>
+            </ul>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">Related Tools</h2>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link href="/pdf-to-jpg" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF to JPG</Link>
@@ -137,8 +264,8 @@ export default function JpgToPdfPage() {
               <Link href="/image-compressor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Compressor</Link>
             </div>
           </div>
-          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">
               {faqItems.map((item) => (
                 <details key={item.q} className="group py-4">
@@ -151,7 +278,6 @@ export default function JpgToPdfPage() {
               ))}
             </div>
           </div>
-          <ToolSeoGrowth slug="jpg-to-pdf" />
         </div>
       </div>
     </div>
