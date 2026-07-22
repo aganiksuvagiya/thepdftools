@@ -47,7 +47,7 @@ export default function DropZone({
 
   return (
     <div
-      {...getRootProps()}
+      {...getRootProps({ "aria-label": label, role: "button" })}
       className={clsx(
         "group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition-all duration-300",
         isDragActive && !isDragReject && "border-brand-400 bg-brand-50 scale-[1.01]",
