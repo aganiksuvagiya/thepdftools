@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ResumeBuilderClient = dynamic(() => import("./ResumeBuilderClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Resume Builder Online Free No Upload",
   description:
     "Build a professional resume online for free — add your experience, education, and skills, then download as a clean PDF. No signup, no uploads, runs in your browser.",
+  url: "https://thepdftools.site/resume-builder",
   keywords: [
     "resume builder",
     "free resume builder",
@@ -27,17 +30,8 @@ export const metadata: Metadata = {
     "resume builder for students",
     "job application resume builder",
   ],
-  openGraph: {
-    title: "Resume Builder Online Free No Upload",
-    description:
-      "Build a professional resume online for free — add your experience, education, and skills, then download as a clean PDF. No signup, no uploads, runs in your browser.",
-    url: "https://thepdftools.site/resume-builder",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/resume-builder",
-  },
-};
+  imageAlt: "Resume Builder Online Free",
+});
 
 export default function ResumeBuilderPage() {
   const jsonLd = {
@@ -121,6 +115,8 @@ export default function ResumeBuilderPage() {
           { "@type": "ListItem", position: 3, name: "Resume Builder", item: "https://thepdftools.site/resume-builder" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -309,6 +305,13 @@ export default function ResumeBuilderPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="resume-builder" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form", label: "MDN: HTML form reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_printing", label: "MDN: CSS printing guide" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+            ]}
+          />
         </div>
       </div>
     </div>

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageToPdfClient = dynamic(() => import("../image-to-pdf/ImageToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Scan to PDF Online Free — Turn Photos of Documents into PDF",
   description:
     "Turn phone photos or scans of documents into a PDF online for free. Upload images, arrange page order, and download a PDF instantly. No signup, no upload to server.",
+  url: "https://thepdftools.site/scan-to-pdf",
   keywords: [
     "scan to pdf",
     "scan to pdf online free",
@@ -20,15 +23,8 @@ export const metadata: Metadata = {
     "photo to pdf converter",
     "document scan to pdf",
   ],
-  openGraph: {
-    title: "Scan to PDF Online Free — Turn Photos of Documents into PDF",
-    description:
-      "Turn phone photos or document scans into a PDF online free. No signup, no upload to server.",
-    url: "https://thepdftools.site/scan-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/scan-to-pdf" },
-};
+  imageAlt: "Scan to PDF Online Free",
+});
 
 const faqItems = [
   { q: "Can I turn phone camera photos into a PDF?", a: "Yes. Upload photos taken with your phone camera (JPG, PNG, or WebP) and the tool combines them into a single PDF in the order you set." },
@@ -61,6 +57,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Scan to PDF", item: "https://thepdftools.site/scan-to-pdf" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -134,6 +132,13 @@ export default function ScanToPdfPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="scan-to-pdf" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+            ]}
+          />
         </div>
       </div>
     </div>

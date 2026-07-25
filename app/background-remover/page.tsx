@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const BackgroundRemoverClient = dynamic(() => import("./BackgroundRemoverClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Remove Background From Image Online Free - AI No Upload",
   description:
     "Remove background from images online free with AI and no upload required. Create transparent PNGs in your browser with no signup.",
+  url: "https://thepdftools.site/background-remover",
   keywords: [
     "background remover",
     "remove background online",
@@ -24,17 +27,8 @@ export const metadata: Metadata = {
     "photo background remover",
     "ai remove background",
   ],
-  openGraph: {
-    title: "Remove Background From Image Online Free - AI No Upload",
-    description:
-    "Remove background from images online free with AI and no upload required. Create transparent PNGs in your browser with no signup.",
-    url: "https://thepdftools.site/background-remover",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/background-remover",
-  },
-};
+  imageAlt: "Remove image background online with AI",
+});
 
 export default function BackgroundRemoverPage() {
   const jsonLd = {
@@ -54,7 +48,8 @@ export default function BackgroundRemoverPage() {
         description:
           "Remove image backgrounds for free using AI. Upload your photo, click remove, and download the transparent PNG.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
             {
         "@type": "HowTo",
         name: "How to Remove Image Background Online",
@@ -294,6 +289,13 @@ export default function BackgroundRemoverPage() {
               <Link href="/jpg-to-png" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">JPG to PNG</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for client-side image editing" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image workflows and optimization" },
+              { href: "https://developers.google.com/search/docs/appearance/google-images", label: "Google Search Central: Image publishing guidance" },
+            ]}
+          />
           <ToolSeoGrowth slug="background-remover" />
         </div>
       </div>

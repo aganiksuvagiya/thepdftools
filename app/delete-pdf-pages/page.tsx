@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfOrganizeClient = dynamic(
   () => import("../pdf-organize-pages/PdfOrganizeClient"),
@@ -12,10 +14,11 @@ const PdfOrganizeClient = dynamic(
   }
 );
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Delete PDF Pages Online Free — Remove Unwanted Pages",
   description:
     "Delete PDF pages online for free — remove unwanted or blank pages and export a clean PDF. No upload to server, no signup, works instantly in your browser.",
+  url: "https://thepdftools.site/delete-pdf-pages",
   keywords: [
     "delete pdf pages",
     "delete pdf pages online free",
@@ -23,17 +26,8 @@ export const metadata: Metadata = {
     "delete page from pdf online",
     "remove blank pdf pages",
   ],
-  openGraph: {
-    title: "Delete PDF Pages Online Free — Remove Unwanted Pages",
-    description:
-      "Remove unwanted pages from a PDF and export instantly. No upload to server, no signup.",
-    url: "https://thepdftools.site/delete-pdf-pages",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/delete-pdf-pages",
-  },
-};
+  imageAlt: "Delete unwanted pages from PDF online",
+});
 
 export default function DeletePdfPagesPage() {
   const jsonLd = {
@@ -49,6 +43,8 @@ export default function DeletePdfPagesPage() {
         description:
           "Delete unwanted pages from a PDF online for free and export a clean document. No upload, no signup.",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -126,6 +122,13 @@ export default function DeletePdfPagesPage() {
               <Link href="/pdf-split" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Split</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF page deletion in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-based document workflows" },
+            ]}
+          />
           <ToolSeoGrowth slug="delete-pdf-pages" />
         </div>
       </div>

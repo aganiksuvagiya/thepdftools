@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ColorPickerClient = dynamic(() => import("./ColorPickerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free CSS Color Picker Online — HEX, RGB, HSL & CMYK Converter",
   description:
     "Free CSS color picker online for HEX, RGB, HSL, and CMYK conversion. Generate web color codes, copy CSS variables, and check contrast for accessible UI without signup.",
+  url: "https://thepdftools.site/color-picker",
   keywords: [
     "color picker online free",
     "hex color picker online",
@@ -27,17 +29,8 @@ export const metadata: Metadata = {
     "tailwind color picker",
     "css variable generator",
   ],
-  openGraph: {
-    title: "Free CSS Color Picker Online — HEX, RGB, HSL & CMYK Converter",
-    description:
-      "Free CSS color picker online for HEX, RGB, HSL, and CMYK conversion. Copy CSS variables, check contrast, and generate web-ready color codes in your browser.",
-    url: "https://thepdftools.site/color-picker",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/color-picker",
-  },
-};
+  imageAlt: "CSS color picker and converter online",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -65,6 +58,8 @@ const jsonLd = {
         { "@type": "ListItem", "position": 3, "name": "Color Picker", "item": "https://thepdftools.site/color-picker" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -186,6 +181,14 @@ export default function ColorPickerPage() {
 
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Use our free online color picker to convert between HEX, RGB, HSL, and CMYK color formats instantly. Whether you need to convert hex to rgb, rgb to hex, or find the perfect HSL value, this color converter handles it all in your browser. Save colors to your history, generate random colors for inspiration, and copy any value with one click. No signup required — ideal for web designers, developers, and digital artists.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: CSS color values</a></li>
+              <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">W3C WCAG: Contrast minimum</a></li>
+            </ul>
           </div>
 
           <div>

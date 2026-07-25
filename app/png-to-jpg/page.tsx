@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
-import { buildPageMetadata } from "@/lib/seo-page";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 import { getLastUpdated } from "@/lib/last-updated";
 
 const PngToJpgClient = dynamic(() => import("./PngToJpgClient"), {
@@ -206,6 +207,8 @@ export default function PngToJpgPage() {
         ],
         description: pageDescription,
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -738,6 +741,14 @@ export default function PngToJpgPage() {
               ))}
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image format guide" },
+            ]}
+          />
         </div>
       </div>
     </div>

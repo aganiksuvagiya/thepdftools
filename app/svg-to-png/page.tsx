@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SvgToPngClient = dynamic(() => import("./SvgToPngClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "SVG To PNG Online Free No Upload",
   description:
     "Convert SVG to PNG online free — export vector SVG files as PNG images at 1x to 4x scale. Choose transparent or white background. No upload, no signup required.",
+  url: "https://thepdftools.site/svg-to-png",
   keywords: [
     "svg to png",
     "convert svg to png",
@@ -26,17 +29,8 @@ export const metadata: Metadata = {
     "svg to png 4x",
     "free svg converter",
   ],
-  openGraph: {
-    title: "SVG To PNG Online Free No Upload",
-    description:
-    "Convert SVG to PNG online free — export vector SVG files as PNG images at 1x to 4x scale. Choose transparent or white background. No upload, no signup required.",
-    url: "https://thepdftools.site/svg-to-png",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/svg-to-png",
-  },
-};
+  imageAlt: "Convert SVG to PNG online at any resolution",
+});
 
 export default function SvgToPngPage() {
   const jsonLd = {
@@ -56,7 +50,8 @@ export default function SvgToPngPage() {
         description:
           "Convert SVG to PNG for free online. Choose scale (1x–4x), transparent or white background. Runs entirely in your browser.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -263,6 +258,13 @@ export default function SvgToPngPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/SVG", label: "MDN: SVG basics and support" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API raster rendering" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Choosing the right image format" },
+            ]}
+          />
           <ToolSeoGrowth slug="svg-to-png" />
         </div>
       </div>

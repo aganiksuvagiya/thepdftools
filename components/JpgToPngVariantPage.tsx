@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import { SITE_URL } from "@/lib/seo-growth";
+import {
+  buildOrganizationSchema,
+  buildPageMetadata,
+  buildWebsiteSchema,
+} from "@/lib/seo-page";
 import {
   JPG_TO_PNG_VARIANTS,
   type JpgToPngVariant,
@@ -21,39 +27,20 @@ export function buildJpgToPngVariantMetadata(
   const url = `${SITE_URL}/${variant.slug}`;
 
   return {
-    title: variant.title,
-    description: variant.description,
-    keywords: [
-      variant.primaryKeyword,
-      "jpg to png",
-      "jpeg to png converter",
-      "convert jpg to png online",
-      "jpg to png online free no upload",
-      "free image converter",
-    ],
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
+    ...buildPageMetadata({
       title: variant.title,
       description: variant.description,
       url,
-      type: "website",
-      images: [
-        {
-          url: `${SITE_URL}/opengraph-image`,
-          width: 1200,
-          height: 630,
-          alt: variant.title,
-        },
+      keywords: [
+        variant.primaryKeyword,
+        "jpg to png",
+        "jpeg to png converter",
+        "convert jpg to png online",
+        "jpg to png online free no upload",
+        "free image converter",
       ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: variant.title,
-      description: variant.description,
-      images: [`${SITE_URL}/opengraph-image`],
-    },
+      imageAlt: variant.title,
+    }),
   };
 }
 
@@ -123,6 +110,8 @@ export default function JpgToPngVariantPage({
           },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -249,6 +238,14 @@ export default function JpgToPngVariantPage({
               ))}
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image format guide" },
+            ]}
+          />
         </div>
       </div>
     </div>

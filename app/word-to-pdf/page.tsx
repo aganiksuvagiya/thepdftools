@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const WordToPdfClient = dynamic(() => import("./WordToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Word to PDF Converter Online Free - DOCX No Upload",
   description:
     "Convert Word to PDF online free with no upload required. Turn DOC and DOCX files into PDFs in your browser with no signup.",
+  url: "https://thepdftools.site/word-to-pdf",
   keywords: [
     "word to pdf",
     "docx to pdf",
@@ -27,17 +29,8 @@ export const metadata: Metadata = {
     "free word to pdf",
     "convert docx to pdf online",
   ],
-  openGraph: {
-    title: "Word to PDF Converter Online Free - DOCX No Upload",
-    description:
-    "Convert Word to PDF online free with no upload required. Turn DOC and DOCX files into PDFs in your browser with no signup.",
-    url: "https://thepdftools.site/word-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/word-to-pdf",
-  },
-};
+  imageAlt: "Word to PDF converter online",
+});
 
 export default function WordToPdfPage() {
   const jsonLd = {
@@ -96,6 +89,8 @@ export default function WordToPdfPage() {
           { "@type": "ListItem", position: 3, name: "Word to PDF", item: "https://thepdftools.site/word-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -247,6 +242,14 @@ export default function WordToPdfPage() {
             <p className="text-[15px] leading-8 text-slate-500">
               Converting Word documents to PDF is one of the most common document tasks in both professional and personal settings. Whether you need to convert a resume to PDF for a job application, share a contract in a format that cannot be easily edited, prepare a report for printing, or archive important documents in a universal format, our free online Word to PDF converter handles it all. Unlike other tools that require uploading your sensitive documents to remote servers, this converter processes everything locally in your browser using JavaScript, ensuring complete privacy and data security. PDF is the gold standard for document sharing because it preserves exact formatting across all devices and operating systems.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: File API overview</a></li>
+              <li><a href="https://developers.google.com/search/docs/crawling-indexing/internal-links" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Internal linking best practices</a></li>
+            </ul>
           </div>
 
           <div>

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const HeicToJpgClient = dynamic(() => import("./HeicToJpgClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "HEIC to JPG Converter Free — Convert iPhone Photos Online",
   description:
     "Convert HEIC photos to JPG online free — turn iPhone HEIC images into universally compatible JPG files. Batch convert multiple photos. No upload, no signup required.",
+  url: "https://thepdftools.site/heic-to-jpg",
   keywords: [
     "heic to jpg",
     "convert heic to jpg",
@@ -31,19 +34,8 @@ export const metadata: Metadata = {
     "heic file converter",
     "open heic on windows",
   ],
-  openGraph: {
-    title: "HEIC to JPG Converter Free — Convert iPhone Photos Online",
-    description:
-    "Convert HEIC photos to JPG online free — turn iPhone HEIC images into universally compatible JPG files. Batch convert multiple photos. No upload, no signup required.",
-    url: "https://thepdftools.site/heic-to-jpg",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-    type: "website",
-    siteName: "ThePDFTools",
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/heic-to-jpg",
-  },
-};
+  imageAlt: "Convert HEIC iPhone photos to JPG online",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -58,7 +50,8 @@ const jsonLd = {
       "description":
         "Convert HEIC and HEIF images to JPG format free online. Perfect for iPhone photos. Adjustable quality, batch conversion — runs entirely in your browser.",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -270,6 +263,13 @@ export default function HeicToJpgPage() {
               <Link href="/image-resizer" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Resizer</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image file format overview" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Modern image formats and compression" },
+              { href: "https://support.apple.com/guide/iphone/set-up-camera-basics-iph263472f78/ios", label: "Apple Support: Camera formats on iPhone" },
+            ]}
+          />
           <ToolSeoGrowth slug="heic-to-jpg" />
         </div>
       </div>

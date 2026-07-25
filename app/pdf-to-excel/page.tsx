@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfToExcelClient = dynamic(() => import("./PdfToExcelClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Excel Converter Free — Extract Tables from PDF to XLSX",
   description:
     "Convert PDF to Excel online free — extract tables, data, and numbers from any PDF into an editable Excel spreadsheet (XLSX). No upload required, no signup, instant download.",
+  url: "https://thepdftools.site/pdf-to-excel",
   keywords: [
     "pdf to excel",
     "convert pdf to excel",
@@ -27,17 +30,8 @@ export const metadata: Metadata = {
     "pdf to excel no signup",
     "free pdf to xlsx converter",
   ],
-  openGraph: {
-    title: "PDF to Excel Converter Free — Extract Tables from PDF to XLSX",
-    description:
-    "Convert PDF to Excel online free — extract tables and data from any PDF into an editable XLSX spreadsheet. No upload required, no signup.",
-    url: "https://thepdftools.site/pdf-to-excel",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-to-excel",
-  },
-};
+  imageAlt: "Convert PDF tables to editable Excel spreadsheets",
+});
 
 export default function PdfToExcelPage() {
   const jsonLd = {
@@ -57,7 +51,8 @@ export default function PdfToExcelPage() {
         description:
           "Convert PDF files to Excel spreadsheets for free online. Extract tables and download as .xlsx — runs entirely in your browser.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -220,6 +215,13 @@ export default function PdfToExcelPage() {
               <Link href="/excel-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Excel to PDF</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://support.microsoft.com/excel", label: "Microsoft Excel support" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-based data processing foundations" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-to-excel" />
         </div>
       </div>

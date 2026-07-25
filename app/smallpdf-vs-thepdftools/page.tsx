@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/smallpdf-vs-thepdftools`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Smallpdf vs ThePDFTools — Free No-Signup PDF Tool Comparison",
   description:
     "Smallpdf vs ThePDFTools: compare features, pricing, privacy, and upload limits. ThePDFTools is a free Smallpdf alternative with no signup, no upload, and no daily limits.",
+  url: PAGE_URL,
   keywords: [
     "smallpdf alternative",
     "smallpdf alternative free",
@@ -17,14 +20,8 @@ export const metadata: Metadata = {
     "pdf tools without upload",
     "smallpdf no account needed",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Smallpdf vs ThePDFTools — Free Alternative Comparison",
-    description: "Compare Smallpdf vs ThePDFTools. See which is better for free, private, no-signup PDF work.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+  imageAlt: "Smallpdf vs ThePDFTools",
+});
 
 const faqItems = [
   { q: "Is ThePDFTools a free alternative to Smallpdf?", a: "Yes. ThePDFTools is completely free with no account required, no daily limits, and no watermarks. All tools work in your browser." },
@@ -61,6 +58,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 2, name: "Smallpdf vs ThePDFTools", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -203,6 +202,13 @@ export default function SmallpdfComparisonPage() {
             ))}
           </div>
         </section>
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/WebAssembly", label: "MDN: WebAssembly overview" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+            { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+          ]}
+        />
       </main>
     </div>
   );

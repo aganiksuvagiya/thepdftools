@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 import { getLastUpdated } from "@/lib/last-updated";
 
@@ -445,6 +446,14 @@ export default function PdfCompressPage() {
               <Link href="/blog/compress-pdf-for-email-online" className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700">Compress PDF for Email</Link>
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js: Browser PDF rendering" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image formats and compression basics" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image optimization tradeoffs" },
+            ]}
+          />
 
           <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="faq-heading">
             <h2 id="faq-heading" className="text-2xl font-bold tracking-tight text-slate-950">

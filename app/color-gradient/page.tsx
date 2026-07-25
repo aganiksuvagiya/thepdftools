@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ColorGradientClient = dynamic(() => import("./ColorGradientClient"), {
   loading: () => <div className="animate-pulse h-64 rounded-2xl bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free CSS Gradient Generator — Linear, Radial & Conic Gradients",
   description:
     "Generate beautiful CSS color gradients online for free. Create linear, radial, and conic gradients with custom color stops. Copy CSS code instantly — no signup required.",
+  url: "https://thepdftools.site/color-gradient",
   keywords: [
     "css gradient generator",
     "color gradient generator online free",
@@ -25,17 +27,8 @@ export const metadata: Metadata = {
     "gradient code generator",
     "tailwind gradient",
   ],
-  openGraph: {
-    title: "Free CSS Gradient Generator — Linear, Radial & Conic Gradients",
-    description:
-      "Create beautiful CSS gradients with custom color stops. Linear, radial, and conic gradient builder with instant CSS code output.",
-    url: "https://thepdftools.site/color-gradient",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/color-gradient",
-  },
-};
+  imageAlt: "CSS gradient generator online",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -58,6 +51,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Color Gradient Generator", item: "https://thepdftools.site/color-gradient" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -165,6 +160,14 @@ export default function ColorGradientPage() {
               Copy the CSS code with one click and use it in any project — HTML, CSS, React, Tailwind, Vue, or any frontend stack.
               No signup required. Works entirely in your browser.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/gradient" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: CSS gradients</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: linear-gradient()</a></li>
+            </ul>
           </div>
 
           <div>

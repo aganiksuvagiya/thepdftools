@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-tools`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Tools Category — Merge, Split, Compress & Convert PDF Online",
   description:
     "Browse the PDF Tools category on thepdftools.site. Merge, split, compress, convert, edit, and secure PDF files online with free browser-based tools.",
+  url: PAGE_URL,
   keywords: [
     "free pdf tools online",
     "pdf tools",
@@ -19,16 +21,8 @@ export const metadata: Metadata = {
     "free pdf editor",
     "pdf tools no upload",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "PDF Tools Category — Merge, Split, Compress & Convert PDF Online",
-    description:
-      "Browse free browser-based PDF tools for merging, compressing, converting, editing, and securing documents.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+  imageAlt: "PDF tools category on thepdftools",
+});
 
 const pdfTools = [
   {
@@ -186,6 +180,8 @@ const jsonLd = {
       url: PAGE_URL,
       description: "Category page for browser-based PDF tools including merge, split, compress, convert, edit, and secure workflows.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -354,6 +350,29 @@ export default function PdfToolsPage() {
               </details>
             ))}
           </div>
+        </section>
+
+        <section className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+            References
+          </h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developers.google.com/search/docs/crawling-indexing/internal-links" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Internal linking best practices
+              </a>
+            </li>
+            <li>
+              <a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Structured data overview
+              </a>
+            </li>
+            <li>
+              <a href="https://www.w3.org/TR/pdf-ua-1/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                W3C: PDF accessibility and document guidance
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
     </div>

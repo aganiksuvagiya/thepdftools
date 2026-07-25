@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
+const PAGE_URL = `${SITE_URL}/about`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About ThePDFTools — Free Online PDF, Image & Developer Tools",
   description:
     "ThePDFTools is a free, browser-based toolkit with 100+ tools for PDF, image, and developer tasks. No upload, no signup, no tracking — everything runs privately in your browser.",
-  alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: {
-    title: "About ThePDFTools — Free Online PDF & Image Tools",
-    description: "Free browser-based PDF and image tools. No upload, no signup, 100+ tools.",
-    url: `${SITE_URL}/about`,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-};
+  url: PAGE_URL,
+  keywords: [
+    "about thepdftools",
+    "free browser based tools",
+    "privacy first pdf tools",
+    "free image tools online",
+    "developer tools online",
+  ],
+  imageAlt: "About thepdftools",
+});
 
 const stats = [
   { value: "100+", label: "Free Tools" },
@@ -34,12 +38,23 @@ const categories = [
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "ThePDFTools",
-  url: SITE_URL,
-  description: "Free browser-based toolkit with 100+ tools for PDF, image, and developer tasks. No upload, no signup required.",
-  logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.svg` },
-  sameAs: [],
+  "@graph": [
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
+    {
+      "@type": "AboutPage",
+      url: PAGE_URL,
+      name: "About ThePDFTools",
+      description: "Learn how thepdftools works, why it is privacy-first, and which users it helps.",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "About", item: PAGE_URL },
+      ],
+    },
+  ],
 };
 
 export default function AboutPage() {
@@ -47,6 +62,11 @@ export default function AboutPage() {
     <div className="bg-[#f8fafc] py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-slate-500">
+          <Link href="/" className="hover:text-brand-700 transition-colors">Home</Link>
+          <span>/</span>
+          <span className="text-slate-800 font-medium">About</span>
+        </nav>
 
         {/* Hero */}
         <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm sm:p-12">
@@ -165,6 +185,27 @@ export default function AboutPage() {
           <Link href="/pdf-tools" className="text-slate-500 hover:underline">PDF Tools</Link>
           <Link href="/image-tools" className="text-slate-500 hover:underline">Image Tools</Link>
           <Link href="/privacy" className="text-slate-500 hover:underline">Privacy Policy</Link>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900">References</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: Canvas API documentation
+              </a>
+            </li>
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: WebAssembly overview
+              </a>
+            </li>
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: Web Crypto API overview
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

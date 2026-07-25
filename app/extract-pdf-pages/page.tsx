@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfSplitClient = dynamic(() => import("../pdf-split/PdfSplitClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Extract PDF Pages Online Free — Pull Out Specific Pages",
   description:
     "Extract pages from a PDF online for free — pull out specific pages or page ranges into a new file. No upload to server, no signup, instant download.",
+  url: "https://thepdftools.site/extract-pdf-pages",
   keywords: [
     "extract pdf pages",
     "extract pdf pages online free",
@@ -20,17 +23,8 @@ export const metadata: Metadata = {
     "pull pages from pdf",
     "pdf page extractor",
   ],
-  openGraph: {
-    title: "Extract PDF Pages Online Free — Pull Out Specific Pages",
-    description:
-      "Pull out specific pages or ranges from a PDF into a new file. No upload to server, no signup.",
-    url: "https://thepdftools.site/extract-pdf-pages",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/extract-pdf-pages",
-  },
-};
+  imageAlt: "Extract specific pages from PDF online",
+});
 
 export default function ExtractPdfPagesPage() {
   const jsonLd = {
@@ -46,6 +40,8 @@ export default function ExtractPdfPagesPage() {
         description:
           "Extract specific pages or ranges from a PDF into a new file, for free. No upload, no signup.",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -124,6 +120,13 @@ export default function ExtractPdfPagesPage() {
               <Link href="/pdf-merge" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Merge</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF page extraction in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-based document workflows" },
+            ]}
+          />
           <ToolSeoGrowth slug="extract-pdf-pages" />
         </div>
       </div>

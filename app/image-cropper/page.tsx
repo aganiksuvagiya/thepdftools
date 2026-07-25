@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageCropperClient = dynamic(() => import("./ImageCropperClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Image Cropper Online Free No Upload",
   description:
     "Crop images online for free — trim, cut, and resize photos to exact dimensions. Set aspect ratios for social media, profile photos, and print. No upload, no signup.",
+  url: "https://thepdftools.site/image-cropper",
   keywords: [
     "image cropper",
     "crop image online",
@@ -22,26 +25,8 @@ export const metadata: Metadata = {
     "free image cropper",
     "aspect ratio crop",
   ],
-  openGraph: {
-    title: "Image Cropper Online Free No Upload",
-    description:
-    "Crop images online for free — trim, cut, and resize photos to exact dimensions. Set aspect ratios for social media, profile photos, and print. No upload, no signup.",
-    url: "https://thepdftools.site/image-cropper",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Image Cropper - ThePDFTools",
-      },
-    ],
-    type: "website",
-    siteName: "ThePDFTools",
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-cropper",
-  },
-};
+  imageAlt: "Crop images online for free with no upload",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -56,7 +41,8 @@ const jsonLd = {
       "description":
         "Crop JPG, PNG, and WebP images for free online. Select any region, choose preset aspect ratios, and download instantly.",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -266,6 +252,13 @@ export default function ImageCropperPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio", label: "MDN: Aspect ratio reference" },
+              { href: "https://web.dev/articles/codelab-serve-images-webp", label: "web.dev: Modern image delivery" },
+              { href: "https://developers.google.com/search/docs/appearance/google-images", label: "Google Search Central: Image best practices" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-cropper" />
         </div>
       </div>

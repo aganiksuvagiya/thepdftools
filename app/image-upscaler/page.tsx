@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageUpscalerClient = dynamic(() => import("./ImageUpscalerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Image Upscaler Online Free No Upload",
   description:
     "Upscale images online free — increase image resolution to 2x, 3x, or 4x without quality loss. Works in your browser with no upload required, no signup.",
+  url: "https://thepdftools.site/image-upscaler",
   keywords: [
     "image upscaler",
     "upscale image online",
@@ -21,17 +24,8 @@ export const metadata: Metadata = {
     "ai image upscaler",
     "free image upscaler",
   ],
-  openGraph: {
-    title: "Image Upscaler Online Free No Upload",
-    description:
-    "Upscale images online free — increase image resolution to 2x, 3x, or 4x without quality loss. Works in your browser with no upload required, no signup.",
-    url: "https://thepdftools.site/image-upscaler",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-upscaler",
-  },
-};
+  imageAlt: "Upscale images online free with local browser processing",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -50,7 +44,8 @@ const jsonLd = {
       description:
         "Upscale and enhance images for free online. Increase resolution by 2x, 3x, or 4x with smooth interpolation.",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -214,6 +209,13 @@ export default function ImageUpscalerPage() {
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API image scaling" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image quality and optimization" },
+              { href: "https://developers.google.com/search/docs/appearance/google-images", label: "Google Search Central: Image guidance" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-upscaler" />
         </div>
       </div>

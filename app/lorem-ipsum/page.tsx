@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const LoremIpsumClient = dynamic(() => import("./LoremIpsumClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Lorem Ipsum Online Free No Upload",
   description:
     "Generate Lorem Ipsum placeholder text online free — create paragraphs, sentences, or words of dummy text for design and development. Customizable output, no signup.",
+  url: "https://thepdftools.site/lorem-ipsum",
   keywords: [
     "lorem ipsum generator",
     "placeholder text",
@@ -21,17 +24,8 @@ export const metadata: Metadata = {
     "free lorem ipsum",
     "text generator",
   ],
-  openGraph: {
-    title: "Lorem Ipsum Online Free No Upload",
-    description:
-    "Generate Lorem Ipsum placeholder text online free — create paragraphs, sentences, or words of dummy text for design and development. Customizable output, no signup.",
-    url: "https://thepdftools.site/lorem-ipsum",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/lorem-ipsum",
-  },
-};
+  imageAlt: "Lorem Ipsum Online Free",
+});
 
 export default function LoremIpsumPage() {
   const jsonLd = {
@@ -59,7 +53,8 @@ export default function LoremIpsumPage() {
         { "@type": "ListItem", "position": 3, "name": "Lorem Ipsum", "item": "https://thepdftools.site/lorem-ipsum" },
         ],
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -204,6 +199,13 @@ export default function LoremIpsumPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="lorem-ipsum" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText", label: "MDN: Clipboard API reference" },
+              { href: "https://en.wikipedia.org/wiki/Lorem_ipsum", label: "Lorem ipsum background" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", label: "MDN: String reference" },
+            ]}
+          />
         </div>
       </div>
     </div>

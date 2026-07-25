@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfToWordClient = dynamic(() => import("./PdfToWordClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Word Converter Online Free - No Upload",
   description:
     "Convert PDF to Word online free with no upload required. Extract editable text from PDFs in your browser with no signup.",
+  url: "https://thepdftools.site/pdf-to-word",
   keywords: [
     "pdf to word",
     "pdf to docx",
@@ -25,17 +28,8 @@ export const metadata: Metadata = {
     "pdf to doc",
     "extract text from pdf",
   ],
-  openGraph: {
-    title: "PDF to Word Converter Online Free - No Upload",
-    description:
-    "Convert PDF to Word online free with no upload required. Extract editable text from PDFs in your browser with no signup.",
-    url: "https://thepdftools.site/pdf-to-word",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-to-word",
-  },
-};
+  imageAlt: "Convert PDF to editable Word online free",
+});
 
 export default function PdfToWordPage() {
   const jsonLd = {
@@ -55,7 +49,8 @@ export default function PdfToWordPage() {
         description:
           "Convert PDF files to editable Word documents for free online. Extract text and download as .doc — runs entirely in your browser.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
             {
         "@type": "HowTo",
         name: "How to Convert PDF to Word Online",
@@ -248,6 +243,13 @@ export default function PdfToWordPage() {
               <Link href="/ppt-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PPT to PDF</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML", label: "MDN: Working with text content on the web" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developers.google.com/search/docs/appearance/google-images", label: "Google Search Central: Document and media guidance" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-to-word" />
         </div>
       </div>

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Converter Online Free — Convert PDF to Word, JPG, Excel & More",
   description:
     "Free online PDF converter — convert PDF to Word, Excel, PowerPoint, JPG, or convert Word, JPG, and images to PDF. No signup, no upload to server, all in your browser.",
+  url: "https://thepdftools.site/pdf-converter",
   keywords: [
     "pdf converter",
     "convert pdf online",
@@ -14,15 +17,8 @@ export const metadata: Metadata = {
     "convert pdf to word online",
     "free pdf conversion tool",
   ],
-  openGraph: {
-    title: "PDF Converter Online Free — Convert PDF to Word, JPG, Excel & More",
-    description:
-      "Free online PDF converter for every file format. No signup, no upload to server.",
-    url: "https://thepdftools.site/pdf-converter",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/pdf-converter" },
-};
+  imageAlt: "PDF Converter Online Free",
+});
 
 const converters = [
   { href: "/pdf-to-word", label: "PDF to Word", desc: "Convert PDF to an editable Word document." },
@@ -69,6 +65,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 2, name: "PDF Converter", item: "https://thepdftools.site/pdf-converter" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -122,6 +120,14 @@ export default function PdfConverterPage() {
             server upload.
           </p>
         </div>
+
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+            { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file", label: "MDN: file input reference" },
+          ]}
+        />
       </div>
     </div>
   );

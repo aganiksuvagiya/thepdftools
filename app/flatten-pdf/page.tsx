@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfFlattenClient = dynamic(() => import("./PdfFlattenClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Flatten PDF Online Free — Merge Form Fields into the Page",
   description:
     "Flatten a PDF online for free — merge fillable form fields into static page content so the PDF can't be edited further. No upload to server, no signup.",
+  url: "https://thepdftools.site/flatten-pdf",
   keywords: [
     "flatten pdf",
     "flatten pdf online free",
@@ -20,15 +23,8 @@ export const metadata: Metadata = {
     "merge pdf form fields",
     "make pdf non-editable",
   ],
-  openGraph: {
-    title: "Flatten PDF Online Free — Merge Form Fields into the Page",
-    description:
-      "Flatten fillable PDF form fields into static page content, for free. No upload to server, no signup.",
-    url: "https://thepdftools.site/flatten-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/flatten-pdf" },
-};
+  imageAlt: "Flatten PDF Online Free",
+});
 
 const faqItems = [
   { q: "What does flattening a PDF do?", a: "Flattening merges fillable form fields (text boxes, checkboxes, signatures) into the static page content, so the values become permanent and the form can no longer be edited." },
@@ -60,6 +56,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 3, name: "Flatten PDF", item: "https://thepdftools.site/flatten-pdf" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -121,6 +119,13 @@ export default function FlattenPdfPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="flatten-pdf" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+              { href: "https://www.iso.org/standard/75839.html", label: "ISO 32000-2 PDF standard overview" },
+            ]}
+          />
         </div>
       </div>
     </div>

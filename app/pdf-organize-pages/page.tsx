@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfOrganizeClient = dynamic(() => import("./PdfOrganizeClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Organize PDF Pages Online Free — Reorder & Delete Pages",
   description:
     "Organize PDF pages online for free — reorder pages, remove unwanted pages, and export a clean PDF. No upload to server, no signup, works instantly in your browser.",
+  url: "https://thepdftools.site/pdf-organize-pages",
   keywords: [
     "organize pdf pages",
     "organize pdf pages online free",
@@ -22,17 +25,8 @@ export const metadata: Metadata = {
     "pdf page organizer",
     "arrange pdf pages",
   ],
-  openGraph: {
-    title: "Organize PDF Pages Online Free — Reorder & Delete Pages",
-    description:
-      "Reorder and delete PDF pages online for free. No upload to server, no signup, instant download.",
-    url: "https://thepdftools.site/pdf-organize-pages",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-organize-pages",
-  },
-};
+  imageAlt: "Organize reorder and delete PDF pages online",
+});
 
 export default function PdfOrganizePagesPage() {
   const jsonLd = {
@@ -48,6 +42,8 @@ export default function PdfOrganizePagesPage() {
         description:
           "Organize PDF pages online for free — reorder and delete pages, then export a clean PDF. No upload, no signup, runs in your browser.",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "HowTo",
         name: "How to Organize PDF Pages Online",
@@ -152,6 +148,13 @@ export default function PdfOrganizePagesPage() {
               <Link href="/pdf-merge" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Merge</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF page manipulation in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-based file workflows" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-organize-pages" />
         </div>
       </div>

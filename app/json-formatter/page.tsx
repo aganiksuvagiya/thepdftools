@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const JsonFormatterClient = dynamic(() => import("./JsonFormatterClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "JSON Formatter Online Free No Upload",
   description:
     "Format and validate JSON online free — pretty print, minify, and check JSON data for errors. View stats and find exact error positions. No signup required.",
+  url: "https://thepdftools.site/json-formatter",
   keywords: [
     "json formatter",
     "json validator",
@@ -21,17 +23,8 @@ export const metadata: Metadata = {
     "json beautifier",
     "free json tool",
   ],
-  openGraph: {
-    title: "JSON Formatter Online Free No Upload",
-    description:
-    "Format and validate JSON online free — pretty print, minify, and check JSON data for errors. View stats and find exact error positions. No signup required.",
-    url: "https://thepdftools.site/json-formatter",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/json-formatter",
-  },
-};
+  imageAlt: "JSON formatter and validator online",
+});
 
 export default function JsonFormatterPage() {
   const jsonLd = {
@@ -96,7 +89,8 @@ export default function JsonFormatterPage() {
         { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
         ],
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -224,6 +218,14 @@ export default function JsonFormatterPage() {
 
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Our free JSON formatter and validator lets you format, beautify, minify, and validate JSON online in seconds. Whether you are debugging API responses, cleaning up configuration files, or preparing JSON for production, this json beautifier and json minifier handles it all. Paste your JSON, detect errors instantly, and copy formatted output — no data is sent to any server. Perfect for developers, testers, and anyone working with JSON data.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">RFC 8259: JSON data interchange format</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: Working with JSON</a></li>
+            </ul>
           </div>
 
           <div>

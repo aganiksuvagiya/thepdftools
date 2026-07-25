@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
   description:
     "Convert Excel spreadsheets to PDF online free — turn any XLSX or XLS file into a clean PDF document for sharing or printing. No upload required, no signup.",
+  url: "https://thepdftools.site/excel-to-pdf",
   keywords: [
     "excel to pdf",
     "xlsx to pdf",
@@ -27,17 +29,8 @@ export const metadata: Metadata = {
     "excel to pdf converter",
     "convert xlsx to pdf online",
   ],
-  openGraph: {
-    title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
-    description:
-    "Convert Excel spreadsheets to PDF online free — turn any XLSX or XLS file into a clean PDF document for sharing or printing. No upload required, no signup.",
-    url: "https://thepdftools.site/excel-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/excel-to-pdf",
-  },
-};
+  imageAlt: "Excel to PDF converter online",
+});
 
 export default function ExcelToPdfPage() {
   const jsonLd = {
@@ -65,6 +58,8 @@ export default function ExcelToPdfPage() {
           { "@type": "ListItem", position: 3, name: "Excel to PDF", item: "https://thepdftools.site/excel-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -217,6 +212,14 @@ export default function ExcelToPdfPage() {
             <p className="text-[15px] leading-8 text-slate-500">
               Converting Excel spreadsheets to PDF is essential for sharing data in a universally viewable format. Whether you need to share financial reports with stakeholders, print inventory lists, distribute grade sheets, or archive data tables, our free online Excel to PDF converter handles it efficiently. The tool runs entirely in your browser using JavaScript, so your sensitive spreadsheet data never leaves your computer. It extracts cell values from the XML structure of XLSX files, parses CSV data directly, and generates a clean PDF with properly formatted tables, making your data presentation-ready instantly.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: JavaScript data handling basics</a></li>
+              <li><a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Structured data overview</a></li>
+            </ul>
           </div>
 
           <div>

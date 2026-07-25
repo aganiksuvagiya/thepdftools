@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
 import ThirdPartyScripts from "@/components/ThirdPartyScripts";
+import SitewideStructuredData from "@/components/SitewideStructuredData";
 
 const SidePopupAd = dynamic(() => import("@/components/SidePopupAd"), {
   ssr: false,
@@ -111,6 +112,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en-US": SITE_URL,
+      "x-default": SITE_URL,
+    },
   },
   category: "technology",
   referrer: "origin-when-cross-origin",
@@ -177,6 +182,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-[var(--surface)] text-slate-900 antialiased">
         <ThirdPartyScripts enableAnalytics={shouldLoadAnalytics} />
+        <SitewideStructuredData />
         {shouldLoadAds ? (
           <>
             <Script

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageResizerClient = dynamic(() => import("./ImageResizerClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Resize Images Online Free - JPG, PNG, WebP No Upload",
   description:
     "Resize images online free with no upload required. Change JPG, PNG, and WebP dimensions in your browser with no signup.",
+  url: "https://thepdftools.site/image-resizer",
   keywords: [
     "image resizer",
     "resize image online",
@@ -25,24 +28,8 @@ export const metadata: Metadata = {
     "bulk image resizer",
     "resize image in pixels",
   ],
-  openGraph: {
-    title: "Resize Images Online Free - JPG, PNG, WebP No Upload",
-    description:
-    "Resize images online free with no upload required. Change JPG, PNG, and WebP dimensions in your browser with no signup.",
-    url: "https://thepdftools.site/image-resizer",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Free Image Resizer Tool - thepdftools.site",
-      },
-    ],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-resizer",
-  },
-};
+  imageAlt: "Resize images online free in your browser",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -62,7 +49,8 @@ const jsonLd = {
       },
       browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -272,6 +260,13 @@ export default function ImageResizerPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img", label: "MDN: Responsive image basics" },
+              { href: "https://web.dev/learn/design/responsive-images/", label: "web.dev: Responsive images and dimensions" },
+              { href: "https://developers.google.com/search/docs/appearance/google-images", label: "Google Search Central: Image SEO guidance" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-resizer" />
         </div>
       </div>

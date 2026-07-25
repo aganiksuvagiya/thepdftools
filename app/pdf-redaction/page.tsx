@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
+import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfRedactionClient = dynamic(() => import("./PdfRedactionClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -10,10 +14,11 @@ const PdfRedactionClient = dynamic(() => import("./PdfRedactionClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-redaction`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Redaction Online Free - Black Out Sensitive PDF Data",
   description:
     "Redact PDF online for free. Black out names, addresses, account numbers, and sensitive PDF content in your browser with no upload and no signup.",
+  url: PAGE_URL,
   keywords: [
     "pdf redaction online free",
     "redact pdf online",
@@ -22,15 +27,8 @@ export const metadata: Metadata = {
     "pdf privacy redaction",
     "redact confidential pdf",
   ],
-  openGraph: {
-    title: "PDF Redaction Online Free - Black Out Sensitive PDF Data",
-    description:
-      "Redact private PDF content safely in your browser and download a flattened redacted PDF.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+  imageAlt: "Redact sensitive data from PDF online",
+});
 
 export default function PdfRedactionPage() {
   const jsonLd = {
@@ -46,6 +44,8 @@ export default function PdfRedactionPage() {
         description:
           "Black out sensitive information in PDF files and download a flattened redacted PDF.",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -61,6 +61,11 @@ export default function PdfRedactionPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "PDF Redaction" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -125,6 +130,18 @@ export default function PdfRedactionPage() {
               PDF Editor
             </Link>
           </div>
+        </div>
+        <div className="mt-8">
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF rewriting in JavaScript" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for flattened exports" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+            ]}
+          />
+        </div>
+        <div className="mt-8">
+          <ToolSeoGrowth slug="pdf-redaction" />
         </div>
       </div>
     </div>

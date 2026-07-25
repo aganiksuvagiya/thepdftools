@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfRepairClient = dynamic(() => import("./PdfRepairClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Repair PDF Online Free — Fix Broken or Corrupt PDF Files",
   description:
     "Repair a broken or corrupt PDF online for free — rebuild the file structure so it opens correctly again. No upload to server, no signup.",
+  url: "https://thepdftools.site/repair-pdf",
   keywords: [
     "repair pdf",
     "repair pdf online free",
@@ -20,15 +23,8 @@ export const metadata: Metadata = {
     "fix broken pdf file",
     "pdf repair tool",
   ],
-  openGraph: {
-    title: "Repair PDF Online Free — Fix Broken or Corrupt PDF Files",
-    description:
-      "Rebuild a broken PDF's file structure online for free. No upload to server, no signup.",
-    url: "https://thepdftools.site/repair-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/repair-pdf" },
-};
+  imageAlt: "Repair broken or corrupt PDF files online",
+});
 
 const faqItems = [
   { q: "What kind of PDF problems can this fix?", a: "This tool rebuilds the PDF's internal file structure, which resolves many 'file won't open', corrupt cross-reference table, and truncated-save issues." },
@@ -48,6 +44,8 @@ const jsonLd = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       description: "Repair broken or corrupt PDF files online for free by rebuilding the file structure. No upload, no signup.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "FAQPage",
       mainEntity: faqItems.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
@@ -105,6 +103,13 @@ export default function RepairPdfPage() {
               <Link href="/pdf-unlock" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">PDF Unlock</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF parsing and rebuilding in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-side file processing" },
+            ]}
+          />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">

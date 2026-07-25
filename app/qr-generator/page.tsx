@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const QrGeneratorClient = dynamic(() => import("./QrGeneratorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "QR Generator Online Free No Upload",
   description:
     "Generate QR codes online for free — create QR codes for URLs, text, email, or any data. Customize size and colors, download as PNG. No signup required.",
+  url: "https://thepdftools.site/qr-generator",
   keywords: [
     "qr code generator",
     "create qr code online",
@@ -21,17 +24,8 @@ export const metadata: Metadata = {
     "url to qr code",
     "text to qr code",
   ],
-  openGraph: {
-    title: "QR Generator Online Free No Upload",
-    description:
-    "Generate QR codes online for free — create QR codes for URLs, text, email, or any data. Customize size and colors, download as PNG. No signup required.",
-    url: "https://thepdftools.site/qr-generator",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/qr-generator",
-  },
-};
+  imageAlt: "QR Generator Online Free",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -51,7 +45,7 @@ const jsonLd = {
         "Generate QR codes for any text or URL for free online. Customize size, colors, and download instantly.",
     },
     
-          {
+      {
         "@type": "HowTo",
         name: "How to Generate a QR Code Online",
         description: "Create a free QR code for a URL, text, Wi-Fi, or contact.",
@@ -88,9 +82,11 @@ const jsonLd = {
           }
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
+        "@type": "BreadcrumbList",
+        "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
         { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://thepdftools.site/generators" },
         { "@type": "ListItem", "position": 3, "name": "QR Generator", "item": "https://thepdftools.site/qr-generator" },
@@ -243,6 +239,13 @@ export default function QrGeneratorPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="qr-generator" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://www.rfc-editor.org/rfc/rfc3986", label: "RFC 3986 URI syntax" },
+              { href: "https://github.com/soldair/node-qrcode", label: "QR code library documentation" },
+            ]}
+          />
         </div>
       </div>
     </div>

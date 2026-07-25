@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import { blogCategories, blogPostsSorted, getCategoryUrl } from "@/lib/blog";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
@@ -215,6 +216,16 @@ export default function SiteMapPage() {
             ))}
           </div>
         </section>
+
+        <div className="mt-8">
+          <SeoReferences
+            links={[
+              { href: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview", label: "Google Search Central: Sitemap overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a", label: "MDN: Crawlable HTML linking basics" },
+              { href: "https://schema.org/CollectionPage", label: "Schema.org: CollectionPage reference" },
+            ]}
+          />
+        </div>
       </div>
     </div>
   );

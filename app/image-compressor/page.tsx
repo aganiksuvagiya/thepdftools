@@ -2,17 +2,20 @@ import type { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumb";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageCompressorClient = dynamic(() => import("./ImageCompressorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Compress Image Online Free — Reduce Image File Size Instantly",
   description:
     "Compress JPG, PNG, and WebP images online free — reduce file size by up to 90% without visible quality loss. No upload, no signup. Works on any device.",
+  url: "https://thepdftools.site/image-compressor",
   keywords: [
     "image compressor",
     "compress image online",
@@ -31,17 +34,8 @@ export const metadata: Metadata = {
     "reduce photo size",
     "compress images for website",
   ],
-  openGraph: {
-    title: "Compress Images Online Free - JPG, PNG, WebP No Upload",
-    description:
-    "Compress images online free with no upload required. Reduce JPG, PNG, and WebP file size fast in your browser with no signup needed.",
-    url: "https://thepdftools.site/image-compressor",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-compressor",
-  },
-};
+  imageAlt: "Compress images online free with no upload required",
+});
 
 export default function ImageCompressorPage() {
   const jsonLd = {
@@ -61,7 +55,9 @@ export default function ImageCompressorPage() {
         description:
           "Compress JPG, PNG, and WebP images for free online. Reduce file size by up to 90% without losing visible quality.",
       },
-            {
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
+      {
         "@type": "HowTo",
         name: "How to Compress an Image Online",
         description: "Reduce image file size without visible quality loss — free, in your browser.",
@@ -304,6 +300,13 @@ export default function ImageCompressorPage() {
               <Link href="/image-to-webp" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image to WebP</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image optimization fundamentals" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Common web image formats" },
+              { href: "https://developers.google.com/speed/docs/insights/OptimizeImages", label: "Google PageSpeed: Optimize images" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-compressor" />
         </div>
       </div>

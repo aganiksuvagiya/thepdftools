@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const Base64Client = dynamic(() => import("./Base64Client"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Base64 Online Free No Upload",
   description:
     "Encode and decode Base64 online free — convert text to Base64 or decode Base64 back to text instantly. Supports Unicode characters. No upload, no signup required.",
+  url: "https://thepdftools.site/base64",
   keywords: [
     "base64 encoder",
     "base64 decoder",
@@ -21,17 +23,8 @@ export const metadata: Metadata = {
     "decode base64",
     "free base64 tool",
   ],
-  openGraph: {
-    title: "Base64 Online Free No Upload",
-    description:
-    "Encode and decode Base64 online free — convert text to Base64 or decode Base64 back to text instantly. Supports Unicode characters. No upload, no signup required.",
-    url: "https://thepdftools.site/base64",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/base64",
-  },
-};
+  imageAlt: "Base64 encoder and decoder online",
+});
 
 export default function Base64Page() {
   const jsonLd = {
@@ -59,6 +52,8 @@ export default function Base64Page() {
         { "@type": "ListItem", "position": 3, "name": "Base64 Encoder", "item": "https://thepdftools.site/base64" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -191,6 +186,14 @@ export default function Base64Page() {
 
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Our free Base64 encoder and decoder lets you encode text to Base64 or decode Base64 back to plain text instantly online. With full Unicode support, auto-encode mode, and clear error handling, this tool is ideal for developers working with APIs, data URIs, email encoding, and authentication tokens. Everything runs in your browser — no data is ever sent to a server, keeping your information completely private and secure.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">RFC 4648: Base64 data encodings</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/Base64" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: Base64 glossary</a></li>
+            </ul>
           </div>
 
           <div>

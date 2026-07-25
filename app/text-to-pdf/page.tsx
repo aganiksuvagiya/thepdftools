@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const TextToPdfClient = dynamic(() => import("./TextToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Text To PDF Online Free No Upload",
   description:
     "Convert text to PDF online free — paste plain text and download a clean PDF document. Choose font, page size, and margins. No upload, no signup required.",
+  url: "https://thepdftools.site/text-to-pdf",
   keywords: [
     "text to pdf",
     "convert text to pdf",
@@ -26,17 +28,8 @@ export const metadata: Metadata = {
     "convert txt to pdf online",
     "text to pdf generator",
   ],
-  openGraph: {
-    title: "Text To PDF Online Free No Upload",
-    description:
-    "Convert text to PDF online free — paste plain text and download a clean PDF document. Choose font, page size, and margins. No upload, no signup required.",
-    url: "https://thepdftools.site/text-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/text-to-pdf",
-  },
-};
+  imageAlt: "Text to PDF converter online",
+});
 
 export default function TextToPdfPage() {
   const jsonLd = {
@@ -65,6 +58,8 @@ export default function TextToPdfPage() {
         { "@type": "ListItem", position: 3, name: "Text to PDF", item: "https://thepdftools.site/text-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -249,6 +244,14 @@ export default function TextToPdfPage() {
             <p className="text-[15px] leading-8 text-slate-500">
               Converting text to PDF is one of the most common document tasks for students, professionals, and anyone who needs to share written content in a universal format. Whether you need to convert meeting notes into a polished PDF for your team, turn a plain text draft into a printable document, or create a quick PDF from a notepad file, our free text to PDF converter makes it effortless. Unlike other tools that require uploading your text to remote servers, this txt to pdf converter processes everything locally in your browser, ensuring complete privacy. Students use it to format study notes and essays. Professionals rely on it to create clean documents from quick drafts. Writers and researchers convert their plain text notes into properly formatted PDFs ready for sharing or archiving. The tool supports multiple fonts, sizes, and margin options so every document looks professional without needing word processing software.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: Text and string handling basics</a></li>
+              <li><a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Structured data overview</a></li>
+            </ul>
           </div>
 
           <div>

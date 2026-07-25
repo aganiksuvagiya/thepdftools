@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfEditorClient = dynamic(() => import("./PdfEditorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Editor Online Free — Highlight, Sign, Annotate & Fill PDF",
   description:
     "Edit PDF files online for free — highlight text, add signatures, fill forms, and annotate PDF documents directly in your browser. No upload, no signup required.",
+  url: "https://thepdftools.site/pdf-editor",
   keywords: [
     "pdf editor",
     "edit pdf online",
@@ -27,17 +30,8 @@ export const metadata: Metadata = {
     "annotate pdf online",
     "add text to pdf",
   ],
-  openGraph: {
-    title: "PDF Editor Online Free — Highlight, Sign, Annotate & Fill PDF",
-    description:
-    "Edit PDF files online for free — highlight text, add signatures, fill forms, and annotate PDF documents directly in your browser. No upload, no signup required.",
-    url: "https://thepdftools.site/pdf-editor",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-editor",
-  },
-};
+  imageAlt: "Edit PDF online free in your browser",
+});
 
 export default function PdfEditorPage() {
   const jsonLd = {
@@ -57,7 +51,8 @@ export default function PdfEditorPage() {
         description:
           "Edit PDF files for free online. Add text, images, shapes, highlights, and freehand drawings. Delete and reorder pages. No signup, no server upload — 100% browser-based.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -421,6 +416,13 @@ export default function PdfEditorPage() {
               </Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: Editing PDFs in JavaScript" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js: PDF rendering in the browser" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for annotations and drawing" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-editor" />
         </div>
       </div>

@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const MarkdownToPdfClient = dynamic(() => import("./MarkdownToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Markdown To PDF Online Free No Upload",
   description:
     "Convert Markdown to PDF online free — paste your Markdown content and download a formatted PDF. Live preview, customizable fonts and page sizes. No upload, no signup.",
+  url: "https://thepdftools.site/markdown-to-pdf",
   keywords: [
     "markdown to pdf",
     "convert markdown to pdf",
@@ -26,17 +28,8 @@ export const metadata: Metadata = {
     "free markdown converter",
     "markdown preview pdf",
   ],
-  openGraph: {
-    title: "Markdown To PDF Online Free No Upload",
-    description:
-    "Convert Markdown to PDF online free — paste your Markdown content and download a formatted PDF. Live preview, customizable fonts and page sizes. No upload, no signup.",
-    url: "https://thepdftools.site/markdown-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/markdown-to-pdf",
-  },
-};
+  imageAlt: "Markdown to PDF converter online",
+});
 
 export default function MarkdownToPdfPage() {
   const jsonLd = {
@@ -65,6 +58,8 @@ export default function MarkdownToPdfPage() {
         { "@type": "ListItem", position: 3, name: "Markdown to PDF", item: "https://thepdftools.site/markdown-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -249,6 +244,14 @@ export default function MarkdownToPdfPage() {
             <p className="text-[15px] leading-8 text-slate-500">
               Markdown has become the standard writing format for developers, technical writers, and content creators. Whether you need to convert a README to PDF for a client presentation, export documentation from your GitHub repository, turn project specifications into printable documents, or share formatted notes with your team, our free Markdown to PDF converter makes it effortless. Unlike command-line tools like Pandoc that require installation and configuration, or desktop apps that cost money, this md to pdf converter runs entirely in your browser with zero setup. Developers use it to quickly generate PDF versions of their documentation without leaving the browser. Technical writers rely on it to produce clean, consistently formatted documents from Markdown sources. Students and researchers convert their Markdown notes into polished PDFs for submission. The live preview ensures your document looks exactly right before you generate the final PDF, saving time and eliminating guesswork.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://www.markdownguide.org/basic-syntax/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Markdown Guide: Basic syntax</a></li>
+              <li><a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Helpful content guidance</a></li>
+            </ul>
           </div>
 
           <div>

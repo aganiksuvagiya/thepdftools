@@ -101,14 +101,6 @@ const homeJsonLd = [
     inLanguage: "en",
     description:
       "Free online PDF tools to merge, compress, convert, split, and edit PDF files. No upload, no signup required.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
     publisher: {
       "@type": "Organization",
       name: "thepdftools",
@@ -1059,7 +1051,7 @@ export default function HomePage() {
             </div>
 
             <ScrollReveal delay={140}>
-              <div className="relative mx-auto flex min-h-[500px] w-full max-w-[520px] items-center justify-center sm:min-h-[540px]">
+              <div className="relative mx-auto hidden min-h-[500px] w-full max-w-[520px] items-center justify-center sm:flex sm:min-h-[540px]">
                 <div className="hero-glow-pulse absolute inset-x-10 top-16 h-60 rounded-full bg-secondary-200/45 blur-3xl" />
 
                 <div className="hero-float absolute right-0 top-0 w-[280px] rounded-[2rem] border border-white/80 bg-white/90 p-5 shadow-[0_25px_80px_-35px_rgba(15,23,42,0.24)] backdrop-blur sm:w-[300px]">
@@ -1161,22 +1153,22 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
             {categoryHubCards.map((cat, index) => (
-              <ScrollReveal key={cat.href} delay={index * 40} distance={14}>
+              <ScrollReveal className="h-full" key={cat.href} delay={index * 40} distance={14}>
                 <Link
                   href={cat.href}
-                  className={`group flex h-full flex-col items-center rounded-[1.5rem] border p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${cat.color}`}
+                  className={`group flex h-full flex-col items-center rounded-[1.5rem] border p-4 sm:p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${cat.color}`}
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
+                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                       <path strokeLinecap="round" strokeLinejoin="round" d={cat.icon} />
                     </svg>
                   </div>
 
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold">{cat.label}</h3>
-                    <p className="mt-1.5 text-sm font-medium opacity-75">
+                  <div className="mt-3 sm:mt-4">
+                    <h3 className="text-base sm:text-lg font-bold">{cat.label}</h3>
+                    <p className="mt-1 sm:mt-1.5 text-xs sm:text-sm font-medium opacity-75">
                       {cat.count} tools
                     </p>
                   </div>
@@ -1187,10 +1179,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="featured-tools" className="py-16">
+      <section id="featured-tools" className="py-10 sm:py-16">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="mb-6 sm:mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
                   Popular PDF Tools
@@ -1206,10 +1198,15 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
             {featuredTools.map((tool, i) => (
-              <ScrollReveal key={tool.href} delay={i * 60} distance={20}>
-                <ToolCard {...tool} />
+              <ScrollReveal
+                key={tool.href}
+                delay={i * 60}
+                distance={20}
+                className={i > 3 ? "hidden md:block" : undefined}
+              >
+                <ToolCard {...tool} compact />
               </ScrollReveal>
             ))}
           </div>
@@ -1230,10 +1227,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-slate-950 text-white">
+      <section className="py-8 sm:py-12 bg-slate-950 text-white">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-tertiary-300">
                   How It Works
@@ -1241,29 +1238,31 @@ export default function HomePage() {
                 <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
                   Simple tools that stay out of your way
                 </h2>
-                <p className="mt-5 text-base leading-8 text-slate-300">
+                <p className="mt-4 text-base leading-7 text-slate-300">
                   Open the tool you need, upload your file, and download the
                   result. No account walls, no complicated workflow, and no
                   unnecessary steps between you and the finished file.
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3">
                 {howItWorksSteps.map((step) => (
                   <div
                     key={step.n}
-                    className="rounded-3xl border border-white/10 bg-white/5 p-6"
+                    className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5"
                   >
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${step.color}`}>
-                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d={step.icon} />
-                      </svg>
+                    <div className="flex items-center gap-3">
+                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${step.color}`}>
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d={step.icon} />
+                        </svg>
+                      </div>
+                      <div className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                        {step.n}
+                      </div>
                     </div>
-                    <div className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
-                      {step.n}
-                    </div>
-                    <div className="mt-2 text-lg font-semibold">{step.title}</div>
-                    <div className="mt-3 text-sm leading-6 text-slate-300">
+                    <div className="mt-3 text-base font-semibold">{step.title}</div>
+                    <div className="mt-1.5 text-sm leading-6 text-slate-300">
                       {step.desc}
                     </div>
                   </div>
@@ -1273,14 +1272,14 @@ export default function HomePage() {
           </ScrollReveal>
 
           <ScrollReveal delay={120}>
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            <div className="mt-6 hidden gap-3 sm:grid sm:grid-cols-3">
               {trustPoints.map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-3xl border border-white/10 bg-white/5 p-6"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-5"
                 >
-                  <div className="text-lg font-semibold text-white">{item.title}</div>
-                  <div className="mt-3 text-sm leading-6 text-slate-300">
+                  <div className="text-base font-semibold text-white">{item.title}</div>
+                  <div className="mt-2 text-sm leading-6 text-slate-300">
                     {item.desc}
                   </div>
                 </div>
@@ -1290,10 +1289,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="all-tools" className="py-16 bg-[#f8fafc]">
+      <section id="all-tools" className="py-10 sm:py-16 bg-[#f8fafc]">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <div className="mb-12 text-center">
+            <div className="mb-8 sm:mb-12 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
                 All Free PDF &amp; Image Tools
               </p>
@@ -1308,7 +1307,7 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {toolCategories.map((category, categoryIndex) => (
               <ScrollReveal key={category.title} delay={categoryIndex * 60}>
                 <div>
@@ -1319,7 +1318,19 @@ export default function HomePage() {
                     <div className="h-px flex-1 bg-slate-200" />
                   </div>
 
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2 md:hidden">
+                    {category.tools.map((tool) => (
+                      <Link
+                        key={tool.href}
+                        href={tool.href}
+                        className="flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-medium leading-snug text-slate-700 transition-colors hover:border-brand-300 hover:text-brand-700"
+                      >
+                        {tool.title}
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="hidden gap-5 md:grid md:grid-cols-2 xl:grid-cols-3">
                     {category.tools.map((tool, toolIndex) => (
                       <ScrollReveal className="h-full" key={tool.href} delay={toolIndex * 40} distance={18}>
                         <ToolCard {...tool}   />
@@ -1333,10 +1344,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-[#f8fafc]">
+      <section className="py-8 sm:py-12 bg-[#f8fafc]">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="mb-6 sm:mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700">
                   Latest Guides
@@ -1358,30 +1369,34 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {latestGuides.map((post, index) => (
-              <ScrollReveal key={post.slug} delay={index * 60}>
+              <ScrollReveal
+                key={post.slug}
+                delay={index * 60}
+                className={index > 2 ? "hidden sm:block" : undefined}
+              >
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="group block rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
+                  className="group block h-full rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-brand-200 hover:shadow-md"
                 >
                   <div className="flex flex-wrap gap-2">
                     {(post as any).tags?.slice(0, 2).map((tag: string) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
+                        className="rounded-full bg-brand-50 px-2.5 py-0.5 text-[11px] font-semibold text-brand-700 ring-1 ring-brand-100"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h3 className="mt-4 text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
+                  <h3 className="mt-3 text-base font-bold text-slate-900 transition-colors group-hover:text-brand-700">
                     {post.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                  <p className="mt-1.5 text-sm leading-6 text-slate-500 line-clamp-2">
                     {post.description}
                   </p>
-                  <div className="mt-4 flex items-center gap-3 text-xs text-slate-400">
+                  <div className="mt-3 flex items-center gap-3 text-xs text-slate-400">
                     <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                     <span className="h-1 w-1 rounded-full bg-slate-300" />
                     <span>{post.readTime}</span>
@@ -1393,10 +1408,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-8 sm:py-12 bg-white">
         <div className="mx-auto max-w-6xl px-5">
           <ScrollReveal>
-            <div className="mb-12 text-center">
+            <div className="mb-6 sm:mb-8 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-secondary-700">
                 Quick Links
               </p>
@@ -1410,22 +1425,23 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {popularSearchPages.map((page, index) => (
-              <ScrollReveal key={page.href} delay={index * 60}>
+              <ScrollReveal
+                key={page.href}
+                delay={index * 60}
+                className={index > 2 ? "hidden sm:block" : undefined}
+              >
                 <Link
                   href={page.href}
-                  className="group block rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] p-6 shadow-sm transition-all hover:border-brand-200 hover:bg-white hover:shadow-md"
+                  className="group block h-full rounded-2xl border border-slate-200 bg-[#f8fafc] p-4 sm:p-5 shadow-sm transition-all hover:border-brand-200 hover:bg-white hover:shadow-md"
                 >
-                  <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-brand-700">
+                  <h3 className="text-base font-bold text-slate-900 transition-colors group-hover:text-brand-700">
                     {page.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                  <p className="mt-1.5 text-sm leading-6 text-slate-500 line-clamp-2">
                     {page.description}
                   </p>
-                  <div className="mt-4 text-sm font-medium text-brand-600 transition-colors group-hover:text-brand-700">
-                    Open page
-                  </div>
                 </Link>
               </ScrollReveal>
             ))}
@@ -1433,7 +1449,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-[#f8fafc]">
+      <section className="py-10 sm:py-16 bg-[#f8fafc]">
         <div className="mx-auto max-w-5xl px-5">
           <ScrollReveal>
             <div className="text-center">
@@ -1446,7 +1462,7 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
+          <div className="mt-8 sm:mt-12 grid gap-4 lg:grid-cols-2">
             {faqItems.map((item, i) => (
               <ScrollReveal key={item.q} delay={i * 50} distance={10}>
                 <details className="group rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm">
@@ -1465,7 +1481,7 @@ export default function HomePage() {
       </section>
 
       <ScrollReveal>
-        <section className="py-12 bg-white">
+        <section className="hidden py-12 bg-white sm:block">
           <div className="mx-auto max-w-6xl px-5">
             <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white ">
               <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-14">

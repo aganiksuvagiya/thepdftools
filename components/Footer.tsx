@@ -218,7 +218,6 @@ export default function Footer() {
             </p>
             <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 sm:block sm:space-y-2.5">
               <li><Link href="/blog" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">Blog</Link></li>
-              <li><Link href="/site-map" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">HTML Sitemap</Link></li>
               <li><Link href="/about" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">About</Link></li>
               <li><Link href="/privacy" className="text-[13px] text-slate-400 transition-colors hover:text-brand-400">Privacy Policy</Link></li>
             </ul>

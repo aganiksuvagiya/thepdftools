@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 import { getLastUpdated } from "@/lib/last-updated";
 
@@ -468,6 +469,13 @@ export default function ImageToPdfPage() {
               <Link href="/html-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">HTML to PDF</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://artskydj.github.io/jsPDF/docs/", label: "jsPDF: Client-side PDF creation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Common web image formats" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image quality and format tradeoffs" },
+            ]}
+          />
         </div>
       </div>
     </div>

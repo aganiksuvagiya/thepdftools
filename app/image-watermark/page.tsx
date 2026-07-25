@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageWatermarkClient = dynamic(() => import("./ImageWatermarkClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Image Watermark Online Free No Upload",
   description:
     "Add watermark to images online free — customize font, size, opacity, color, and position. Tile across the entire image if needed. No upload to server, no signup.",
+  url: "https://thepdftools.site/image-watermark",
   keywords: [
     "add watermark to image online free",
     "convert jpg to watermark online",
@@ -25,26 +28,8 @@ export const metadata: Metadata = {
     "online watermark maker",
     "text watermark generator",
   ],
-  openGraph: {
-    title: "Image Watermark Online Free No Upload",
-    description:
-    "Add watermark to images online free — customize font, size, opacity, color, and position. Tile across the entire image if needed. No upload to server, no signup.",
-    url: "https://thepdftools.site/image-watermark",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Image Watermark Tool - ThePDFTools",
-      },
-    ],
-    type: "website",
-    siteName: "ThePDFTools",
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-watermark",
-  },
-};
+  imageAlt: "Add a watermark to images online for free",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -59,7 +44,8 @@ const jsonLd = {
       "description":
         "Add text watermarks to JPG, PNG, and WebP images for free online. Customize font size, opacity, color, position, and tiling.",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -220,6 +206,13 @@ export default function ImageWatermarkPage() {
               <Link href="/background-remover" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Background Remover</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillText", label: "MDN: Drawing text on canvas" },
+              { href: "https://www.w3.org/Graphics/SVG/WG/wiki/Proposals/Copyright", label: "W3C: Copyright and visual assets context" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image workflows on the web" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-watermark" />
         </div>
       </div>

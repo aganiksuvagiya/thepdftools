@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const HtmlToPdfClient = dynamic(() => import("./HtmlToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "HTML to PDF Converter Free — Convert Webpage to PDF Online",
   description:
     "Convert HTML to PDF online free — paste HTML code or a URL and download a clean PDF document. No upload, no signup, runs in your browser.",
+  url: "https://thepdftools.site/html-to-pdf",
   keywords: [
     "html to pdf",
     "convert html to pdf",
@@ -23,17 +25,8 @@ export const metadata: Metadata = {
     "convert webpage to pdf",
     "html to pdf online free",
   ],
-  openGraph: {
-    title: "HTML to PDF Converter Free — Convert Webpage to PDF Online",
-    description:
-    "Convert HTML to PDF online free — paste HTML code or a URL and download a clean PDF document. No upload, no signup, runs in your browser.",
-    url: "https://thepdftools.site/html-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/html-to-pdf",
-  },
-};
+  imageAlt: "HTML to PDF converter online",
+});
 
 export default function HtmlToPdfPage() {
   const jsonLd = {
@@ -61,6 +54,8 @@ export default function HtmlToPdfPage() {
           { "@type": "ListItem", position: 3, name: "HTML to PDF", item: "https://thepdftools.site/html-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -212,6 +207,14 @@ export default function HtmlToPdfPage() {
             <p className="text-[15px] leading-8 text-slate-500">
               Converting HTML to PDF is essential for web developers, designers, and anyone who needs to archive or share web content in a portable format. Whether you need to save an HTML email template as a PDF for review, archive a web page for offline access, generate invoices from HTML templates, or create reports from rendered HTML, our free online HTML to PDF converter handles it efficiently. The tool offers two conversion approaches: a full-formatting option that uses your browser built-in print engine to preserve all CSS styling, images, fonts, and layout; and a text extraction option that creates a lightweight PDF with just the text content. Both methods run entirely in your browser, so your HTML content never leaves your device.
             </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: HTML reference</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: CSS reference</a></li>
+            </ul>
           </div>
 
           <div>

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageToWebpClient = dynamic(() => import("./ImageToWebpClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Image To WebP Online Free No Upload",
   description:
     "Convert images to WebP format online free — reduce file size while keeping quality. Supports JPG, PNG, and BMP to WebP conversion. No upload, no signup required.",
+  url: "https://thepdftools.site/image-to-webp",
   keywords: [
     "image to webp",
     "jpg to webp",
@@ -21,26 +24,8 @@ export const metadata: Metadata = {
     "free webp converter",
     "webp converter",
   ],
-  openGraph: {
-    title: "Image To WebP Online Free No Upload",
-    description:
-    "Convert images to WebP format online free — reduce file size while keeping quality. Supports JPG, PNG, and BMP to WebP conversion. No upload, no signup required.",
-    url: "https://thepdftools.site/image-to-webp",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Image to WebP Converter - ThePDFTools",
-      },
-    ],
-    type: "website",
-    siteName: "ThePDFTools",
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-to-webp",
-  },
-};
+  imageAlt: "Convert images to WebP online free",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -55,7 +40,8 @@ const jsonLd = {
       "description":
         "Convert JPG, PNG, and BMP images to WebP format free online. Smaller file sizes with adjustable quality. Runs entirely in your browser.",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -218,6 +204,13 @@ export default function ImageToWebpPage() {
               <Link href="/image-rotate" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Rotate</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developers.google.com/speed/webp", label: "Google Developers: WebP overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image format comparison" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Modern image optimization" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-to-webp" />
         </div>
       </div>

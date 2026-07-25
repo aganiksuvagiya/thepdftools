@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const TailwindColorsClient = dynamic(() => import("./TailwindColorsClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Tailwind CSS Color Palette — Complete Reference with HEX Codes",
   description:
     "Browse all Tailwind CSS colors with HEX codes, copy classes instantly for web design. Complete color reference for developers and designers.",
+  url: "https://thepdftools.site/tailwind-colors",
   keywords: [
     "tailwind color palette",
     "tailwind css colors",
@@ -22,17 +24,8 @@ export const metadata: Metadata = {
     "tailwind hex codes",
     "tailwind color classes",
   ],
-  openGraph: {
-    title: "Tailwind CSS Color Palette — Complete Reference with HEX Codes",
-    description:
-      "Browse all Tailwind CSS colors with HEX codes, copy classes instantly for web design. Complete color reference for developers and designers.",
-    url: "https://thepdftools.site/tailwind-colors",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/tailwind-colors",
-  },
-};
+  imageAlt: "Tailwind CSS color palette reference",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -60,6 +53,8 @@ const jsonLd = {
         { "@type": "ListItem", "position": 3, "name": "Tailwind Colors", "item": "https://thepdftools.site/tailwind-colors" },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -176,6 +171,14 @@ export default function TailwindColorsPage() {
 
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Browse the complete Tailwind CSS color palette with all shades from 50 to 900. Copy Tailwind classes like bg-blue-500 or text-gray-700 directly to your clipboard. Perfect for developers using Tailwind CSS and designers needing consistent color references. No signup required — works instantly in your browser.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://tailwindcss.com/docs/customizing-colors" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Tailwind CSS: Customizing colors</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: CSS color values</a></li>
+            </ul>
           </div>
 
           <div>

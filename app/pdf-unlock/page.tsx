@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfUnlockClient = dynamic(() => import("./PdfUnlockClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
   description:
     "Unlock PDF files online for free — remove printing, copying, and editing restrictions from your own PDF documents. No upload, no signup, instant result.",
+  url: "https://thepdftools.site/pdf-unlock",
   keywords: [
     "pdf unlock",
     "remove pdf password",
@@ -26,17 +29,8 @@ export const metadata: Metadata = {
     "open locked pdf",
     "free pdf unlocker",
   ],
-  openGraph: {
-    title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
-    description:
-    "Unlock PDF files online for free — remove printing, copying, and editing restrictions from your own PDF documents. No upload, no signup, instant result.",
-    url: "https://thepdftools.site/pdf-unlock",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-unlock",
-  },
-};
+  imageAlt: "Unlock protected PDF files online free",
+});
 
 export default function PdfUnlockPage() {
   const jsonLd = {
@@ -56,7 +50,8 @@ export default function PdfUnlockPage() {
         description:
           "Remove restrictions from PDF files for free online. Unlock printing, copying, and editing restrictions instantly in your browser.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -380,6 +375,13 @@ export default function PdfUnlockPage() {
               </Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: Client-side PDF processing" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-side file processing" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-unlock" />
         </div>
       </div>

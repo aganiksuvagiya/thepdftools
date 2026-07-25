@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/ilovepdf-alternative`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "iLovePDF Alternative Free — No Signup PDF Tools Online",
   description:
     "Looking for a free iLovePDF alternative? ThePDFTools offers PDF merge, split, compress, convert, sign and 30+ more tools — no account, no upload, no limits.",
+  url: PAGE_URL,
   keywords: [
     "ilovepdf alternative",
     "ilovepdf alternative free",
@@ -17,14 +20,8 @@ export const metadata: Metadata = {
     "free pdf tools online no signup",
     "ilovepdf free replacement",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "iLovePDF Alternative Free — No Signup PDF Tools",
-    description: "Free iLovePDF alternative with no signup, no upload, and no limits. 30+ PDF and image tools.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+  imageAlt: "iLovePDF Alternative Free",
+});
 
 const faqItems = [
   { q: "Is ThePDFTools a free iLovePDF alternative?", a: "Yes. ThePDFTools is completely free with no account required, no daily limits, and no watermarks on any output." },
@@ -92,6 +89,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 2, name: "iLovePDF Alternative", item: PAGE_URL },
       ],
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
   ],
 };
 
@@ -183,6 +182,13 @@ export default function IlovePdfAlternativePage() {
             ))}
           </div>
         </section>
+        <SeoReferences
+          links={[
+            { href: "https://developer.mozilla.org/en-US/docs/WebAssembly", label: "MDN: WebAssembly overview" },
+            { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+            { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+          ]}
+        />
       </main>
     </div>
   );

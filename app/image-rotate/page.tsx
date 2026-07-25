@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ImageRotateClient = dynamic(() => import("./ImageRotateClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Image Rotate Online Free No Upload",
   description:
     "Rotate and flip images online free — rotate by 90°, 180°, or custom angle. Flip horizontally or vertically. Supports JPG, PNG, WebP. No upload, no signup required.",
+  url: "https://thepdftools.site/image-rotate",
   keywords: [
     "image rotate",
     "rotate image online",
@@ -23,24 +26,8 @@ export const metadata: Metadata = {
     "free image rotate",
     "image flip tool",
   ],
-  openGraph: {
-    title: "Image Rotate Online Free No Upload",
-    description:
-    "Rotate and flip images online free — rotate by 90°, 180°, or custom angle. Flip horizontally or vertically. Supports JPG, PNG, WebP. No upload, no signup required.",
-    url: "https://thepdftools.site/image-rotate",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Free Image Rotate & Flip Tool - thepdftools.site",
-      },
-    ],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/image-rotate",
-  },
-};
+  imageAlt: "Rotate and flip images online free",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -60,7 +47,8 @@ const jsonLd = {
       },
       browserRequirements: "Requires a modern web browser with JavaScript enabled",
     },
-    
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -434,6 +422,13 @@ export default function ImageRotatePage() {
               <Link href="/image-watermark" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Image Watermark</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/CSS/image-orientation", label: "MDN: Image orientation" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image processing and delivery" },
+            ]}
+          />
           <ToolSeoGrowth slug="image-rotate" />
         </div>
       </div>

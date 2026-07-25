@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const InvoiceGeneratorClient = dynamic(() => import("./InvoiceGeneratorClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Invoice Generator Online Free No Upload",
   description:
     "Create and download free PDF invoices online — add items, taxes, discounts, and your business details. Professional invoice generator with no signup required.",
+  url: "https://thepdftools.site/invoice-generator",
   keywords: [
     "invoice generator",
     "free invoice generator",
@@ -27,17 +30,8 @@ export const metadata: Metadata = {
     "freelance invoice generator",
     "small business invoice",
   ],
-  openGraph: {
-    title: "Invoice Generator Online Free No Upload",
-    description:
-    "Create and download free PDF invoices online — add items, taxes, discounts, and your business details. Professional invoice generator with no signup required.",
-    url: "https://thepdftools.site/invoice-generator",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/invoice-generator",
-  },
-};
+  imageAlt: "Invoice Generator Online Free",
+});
 
 export default function InvoiceGeneratorPage() {
   const jsonLd = {
@@ -66,6 +60,8 @@ export default function InvoiceGeneratorPage() {
         { "@type": "ListItem", position: 3, name: "Invoice Generator", item: "https://thepdftools.site/invoice-generator" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -263,6 +259,13 @@ export default function InvoiceGeneratorPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="invoice-generator" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat", label: "MDN: Intl.NumberFormat reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Window/print", label: "MDN: print() reference" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+            ]}
+          />
         </div>
       </div>
     </div>

@@ -2,17 +2,20 @@ import type { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumb";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const JpgToPngClient = dynamic(() => import("./JpgToPngClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "JPG to PNG Converter Online Free — Convert JPEG to PNG Instantly",
   description:
     "Convert JPG to PNG online free — instant, lossless conversion in your browser. No upload, no signup, supports transparent PNG output.",
+  url: "https://thepdftools.site/jpg-to-png",
   keywords: [
     "jpg to png",
     "jpeg to png converter",
@@ -28,17 +31,8 @@ export const metadata: Metadata = {
     "online jpg to png converter",
     "change jpg to png",
   ],
-  openGraph: {
-    title: "JPG to PNG Converter Online Free - No Upload",
-    description:
-    "Convert JPG to PNG online free with no upload required. Fast browser-based JPG to PNG converter with no signup.",
-    url: "https://thepdftools.site/jpg-to-png",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/jpg-to-png",
-  },
-};
+  imageAlt: "JPG to PNG Converter Online Free",
+});
 
 export default function JpgToPngPage() {
   const jsonLd = {
@@ -98,6 +92,8 @@ export default function JpgToPngPage() {
         { "@type": "ListItem", "position": 3, "name": "JPG to PNG", "item": "https://thepdftools.site/jpg-to-png" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -319,6 +315,13 @@ export default function JpgToPngPage() {
             </div>
           </div>
           <ToolSeoGrowth slug="jpg-to-png" />
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: Image format guide" },
+            ]}
+          />
         </div>
       </div>
     </div>

@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const VideoToGifClient = dynamic(() => import("./VideoToGifClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Video To Gif Online Free No Upload",
   description:
     "Convert video to GIF online free — turn MP4, WebM, or MOV clips into animated GIFs. Customize FPS, size, and duration. No upload to server, no signup required.",
+  url: "https://thepdftools.site/video-to-gif",
   keywords: [
     "video to gif",
     "mp4 to gif",
@@ -25,26 +28,8 @@ export const metadata: Metadata = {
     "webm to gif",
     "mov to gif",
   ],
-  openGraph: {
-    title: "Video To Gif Online Free No Upload",
-    description:
-    "Convert video to GIF online free — turn MP4, WebM, or MOV clips into animated GIFs. Customize FPS, size, and duration. No upload to server, no signup required.",
-    url: "https://thepdftools.site/video-to-gif",
-    images: [
-      {
-        url: "https://thepdftools.site/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Video to GIF Converter - ThePDFTools",
-      },
-    ],
-    type: "website",
-    siteName: "ThePDFTools",
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/video-to-gif",
-  },
-};
+  imageAlt: "Convert video clips to animated GIF online",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -59,6 +44,8 @@ const jsonLd = {
       "description":
         "Convert MP4, WebM, MOV, and AVI videos to GIF format free online. Adjust FPS, width, quality, and trim duration. Runs entirely in your browser.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
@@ -224,6 +211,13 @@ export default function VideoToGifPage() {
               <Link href="/svg-to-png" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">SVG to PNG</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for frame rendering" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: GIF image format basics" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image delivery and animated media tradeoffs" },
+            ]}
+          />
           <ToolSeoGrowth slug="video-to-gif" />
         </div>
       </div>

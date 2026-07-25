@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfWatermarkClient = dynamic(() => import("./PdfWatermarkClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -11,10 +13,11 @@ const PdfWatermarkClient = dynamic(() => import("./PdfWatermarkClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-watermark`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Add Watermark to PDF Online Free — No Upload",
   description:
     "Add a text watermark to your PDF online for free. Stamp PDFs with custom text, choose position and opacity — no upload, no signup, runs in your browser.",
+  url: PAGE_URL,
   keywords: [
     "add watermark to pdf online free",
     "pdf watermark tool",
@@ -25,14 +28,8 @@ export const metadata: Metadata = {
     "watermark pdf pages free",
     "confidential watermark pdf",
   ],
-  openGraph: {
-    title: "Add Watermark to PDF Online Free — No Upload",
-    description: "Add a text watermark to your PDF online for free. No upload, no signup.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+  imageAlt: "Add custom text watermark to PDF online",
+});
 
 export default function PdfWatermarkPage() {
   const jsonLd = {
@@ -47,7 +44,8 @@ export default function PdfWatermarkPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Add text watermarks to PDF files online for free. No upload required.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -152,6 +150,13 @@ export default function PdfWatermarkPage() {
               <Link href="/pdf-compress" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Compress</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF overlays and page edits" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas text rendering concepts" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+            ]}
+          />
         </div>
       </div>
     </div>

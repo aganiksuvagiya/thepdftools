@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfRotateClient = dynamic(() => import("./PdfRotateClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -11,10 +13,11 @@ const PdfRotateClient = dynamic(() => import("./PdfRotateClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-rotate`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Rotate PDF Online Free — No Upload Required",
   description:
     "Rotate PDF pages 90°, 180°, or 270° online for free. No upload, no signup — runs entirely in your browser for complete privacy.",
+  url: PAGE_URL,
   keywords: [
     "rotate pdf online free",
     "rotate pdf pages",
@@ -25,15 +28,8 @@ export const metadata: Metadata = {
     "pdf rotate tool free",
     "rotate pdf without upload",
   ],
-  openGraph: {
-    title: "Rotate PDF Online Free — No Upload Required",
-    description:
-      "Rotate PDF pages 90°, 180°, or 270° online for free. No upload, no signup — runs entirely in your browser.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+  imageAlt: "Rotate PDF pages online by 90 180 or 270 degrees",
+});
 
 export default function PdfRotatePage() {
   const jsonLd = {
@@ -49,7 +45,8 @@ export default function PdfRotatePage() {
         description:
           "Rotate PDF pages online for free. Choose 90°, 180°, or 270° rotation for all pages or specific pages. No upload required.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -181,6 +178,13 @@ export default function PdfRotatePage() {
               <Link href="/pdf-to-image" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF to Image</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF editing in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-side document processing" },
+            ]}
+          />
         </div>
       </div>
     </div>

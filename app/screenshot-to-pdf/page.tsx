@@ -2,16 +2,19 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
+import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const ScreenshotToPdfClient = dynamic(() => import("./ScreenshotToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Screenshot To PDF Online Free No Upload",
   description:
     "Convert screenshots to PDF online free — combine multiple screenshots or images into a single PDF document. Reorder pages, customize layout. No upload, no signup.",
+  url: "https://thepdftools.site/screenshot-to-pdf",
   keywords: [
     "screenshot to pdf",
     "image to pdf",
@@ -20,17 +23,8 @@ export const metadata: Metadata = {
     "free screenshot pdf",
     "combine images to pdf",
   ],
-  openGraph: {
-    title: "Screenshot To PDF Online Free No Upload",
-    description:
-    "Convert screenshots to PDF online free — combine multiple screenshots or images into a single PDF document. Reorder pages, customize layout. No upload, no signup.",
-    url: "https://thepdftools.site/screenshot-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/screenshot-to-pdf",
-  },
-};
+  imageAlt: "Screenshot to PDF converter online",
+});
 
 export default function ScreenshotToPdfPage() {
   const jsonLd = {
@@ -59,6 +53,8 @@ export default function ScreenshotToPdfPage() {
         { "@type": "ListItem", "position": 3, "name": "Screenshot to PDF", "item": "https://thepdftools.site/screenshot-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -69,6 +65,11 @@ export default function ScreenshotToPdfPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "Screenshot to PDF" },
+        ]} />
         {/* HERO CARD */}
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
@@ -195,6 +196,14 @@ export default function ScreenshotToPdfPage() {
           {/* SEO paragraph */}
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Convert screenshots to PDF and images to PDF online for free with our browser-based converter. Combine multiple photos, screenshots, and images into a single PDF document with customizable page sizes and orientation. This free screenshot to PDF tool is perfect for creating photo portfolios, archiving screenshots, compiling receipts, or sharing image collections as a professional PDF. No upload, no signup, no watermark.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: Web image formats overview</a></li>
+              <li><a href="https://developers.google.com/search/docs/appearance/google-images" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Image SEO basics</a></li>
+            </ul>
           </div>
 
           {/* Related tools */}

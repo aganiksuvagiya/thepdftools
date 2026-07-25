@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfSignClient = dynamic(() => import("./PdfSignClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -11,10 +13,11 @@ const PdfSignClient = dynamic(() => import("./PdfSignClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-sign`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Sign PDF Online Free - Add Signature No Upload",
   description:
     "Sign PDF online free by drawing or typing your signature. Add a signature to any PDF in your browser with no upload or signup.",
+  url: PAGE_URL,
   keywords: [
     "sign pdf online free",
     "pdf signature online",
@@ -25,14 +28,8 @@ export const metadata: Metadata = {
     "pdf sign no signup",
     "electronic signature pdf",
   ],
-  openGraph: {
-    title: "Sign PDF Online Free - Add Signature No Upload",
-    description: "Sign PDF online free by drawing or typing your signature. No upload, no signup.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+  imageAlt: "Sign PDF online free with drawn or typed signature",
+});
 
 export default function PdfSignPage() {
   const jsonLd = {
@@ -47,7 +44,8 @@ export default function PdfSignPage() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         description: "Sign PDF files online for free. Draw or type your signature and embed it into any PDF without uploading the file.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -163,6 +161,13 @@ export default function PdfSignPage() {
               <Link href="/pdf-unlock" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Unlock</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF editing and annotation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for signature drawing" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+            ]}
+          />
         </div>
       </div>
     </div>

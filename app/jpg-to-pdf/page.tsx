@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 import { getLastUpdated } from "@/lib/last-updated";
 
@@ -264,6 +265,13 @@ export default function JpgToPdfPage() {
               <Link href="/image-compressor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Compressor</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://artskydj.github.io/jsPDF/docs/", label: "jsPDF: Client-side PDF creation" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: JPG image format overview" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image compression tradeoffs" },
+            ]}
+          />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm" aria-labelledby="faq-heading">
             <h2 id="faq-heading" className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">

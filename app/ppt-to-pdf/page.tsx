@@ -3,16 +3,18 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PptToPdfClient = dynamic(() => import("./PptToPdfClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PPT to PDF Converter Free — Convert PowerPoint to PDF Online",
   description:
     "Convert PowerPoint presentations to PDF online free — turn PPTX files into shareable PDF documents instantly. No upload to server, no signup.",
+  url: "https://thepdftools.site/ppt-to-pdf",
   keywords: [
     "ppt to pdf",
     "powerpoint to pdf",
@@ -25,17 +27,8 @@ export const metadata: Metadata = {
     "pptx to pdf",
     "presentation to pdf",
   ],
-  openGraph: {
-    title: "PPT to PDF Converter Free — Convert PowerPoint to PDF Online",
-    description:
-    "Convert PowerPoint presentations to PDF online free — turn PPTX files into shareable PDF documents instantly. No upload to server, no signup.",
-    url: "https://thepdftools.site/ppt-to-pdf",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/ppt-to-pdf",
-  },
-};
+  imageAlt: "PPT to PDF converter online",
+});
 
 export default function PptToPdfPage() {
   const jsonLd = {
@@ -64,6 +57,8 @@ export default function PptToPdfPage() {
         { "@type": "ListItem", "position": 3, "name": "PPTX to PDF", "item": "https://thepdftools.site/ppt-to-pdf" },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -206,6 +201,14 @@ export default function PptToPdfPage() {
           {/* SEO paragraph */}
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">Our free online PowerPoint to PDF converter is designed for anyone who needs to convert PPTX presentations to PDF format quickly and securely. Whether you are a student converting lecture slides for study notes, a professional sharing presentation content with colleagues who do not have PowerPoint, or a teacher creating printable handouts from your slides, this tool handles it efficiently. Because the conversion runs entirely inside your browser using JavaScript, your files never leave your computer, eliminating privacy concerns and the wait times associated with server-side processing. The tool extracts text content from each slide in your presentation and creates a clean, organized PDF document with one page per slide. This makes it ideal for archiving presentation text, creating searchable documents from slide content, and sharing talking points without requiring PowerPoint software. The converter supports modern .pptx files (PowerPoint 2007 and later). It works on Windows, macOS, Linux, Android, and iOS devices with any modern web browser. There are no file-size limits, no daily conversion caps, and no account registration required. Simply drop your PowerPoint file, wait for processing, and download your PDF instantly.</p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/File" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: File API overview</a></li>
+              <li><a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Helpful content guidance</a></li>
+            </ul>
           </div>
 
           {/* Related tools */}

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/image-tools`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Free Image Tools Online — Compress, Resize, Convert & Edit Images",
   description:
     "20+ free image tools: compress images without quality loss, resize photos, convert JPG to PNG, remove backgrounds, crop, rotate, and more. No software needed.",
+  url: PAGE_URL,
   keywords: [
     "free image tools online",
     "image compressor",
@@ -19,16 +21,8 @@ export const metadata: Metadata = {
     "compress image without losing quality",
     "image tools no upload",
   ],
-  alternates: { canonical: PAGE_URL },
-  openGraph: {
-    title: "Free Image Tools Online — Compress, Resize, Convert & Edit Images",
-    description:
-      "20+ free image tools: compress, resize, convert, remove backgrounds, and more. No software needed.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 }],
-  },
-};
+  imageAlt: "Free image tools category on thepdftools",
+});
 
 const imageTools = [
   {
@@ -115,6 +109,8 @@ const jsonLd = {
       url: PAGE_URL,
       description: "20+ free browser-based image tools: compress, resize, convert, and edit images.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -247,6 +243,27 @@ export default function ImageToolsPage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 sm:p-10 shadow-sm">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">References</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+            <li>
+              <a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                MDN: Common web image formats and use cases
+              </a>
+            </li>
+            <li>
+              <a href="https://developers.google.com/speed/webp" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Developers: WebP image format guidance
+              </a>
+            </li>
+            <li>
+              <a href="https://developers.google.com/search/docs/appearance/google-images" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Image SEO basics
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
     </div>

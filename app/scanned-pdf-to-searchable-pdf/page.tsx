@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const SearchablePdfClient = dynamic(() => import("./SearchablePdfClient"), {
   loading: () => <div className="card h-64 animate-pulse bg-gray-50" />,
@@ -10,10 +12,11 @@ const SearchablePdfClient = dynamic(() => import("./SearchablePdfClient"), {
 const SITE_URL = "https://thepdftools.site";
 const PAGE_URL = `${SITE_URL}/scanned-pdf-to-searchable-pdf`;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Scanned PDF to Searchable PDF Online Free",
   description:
     "Convert scanned PDF to searchable PDF online for free. Add OCR text to image-based PDFs in your browser with no upload and no signup.",
+  url: PAGE_URL,
   keywords: [
     "scanned pdf to searchable pdf",
     "searchable pdf ocr online",
@@ -22,15 +25,8 @@ export const metadata: Metadata = {
     "convert scanned pdf to searchable pdf free",
     "pdf ocr searchable download",
   ],
-  openGraph: {
-    title: "Scanned PDF to Searchable PDF Online Free",
-    description:
-      "Turn image-based PDFs into searchable PDFs with OCR. Browser-based, private, and free.",
-    url: PAGE_URL,
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+  imageAlt: "Scanned PDF to searchable PDF OCR tool",
+});
 
 export default function SearchablePdfPage() {
   const jsonLd = {
@@ -85,6 +81,8 @@ export default function SearchablePdfPage() {
           { "@type": "ListItem", position: 3, name: "Scanned PDF to Searchable PDF", item: PAGE_URL },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -92,6 +90,11 @@ export default function SearchablePdfPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[
+          { label: "Home", href: "/" },
+          { label: "PDF Tools", href: "/pdf-tools" },
+          { label: "Scanned PDF to Searchable PDF" },
+        ]} />
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-12">
@@ -178,6 +181,13 @@ export default function SearchablePdfPage() {
                 </details>
               ))}
             </div>
+          </div>
+          <div className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-slate-900">References</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+              <li><a href="https://developers.google.com/search/docs/appearance/snippet" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">Google Search Central: Search result visibility basics</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">MDN: Canvas API overview</a></li>
+            </ul>
           </div>
           </div>
     </div>

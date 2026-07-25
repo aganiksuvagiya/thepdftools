@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfToJpgClient = dynamic(() => import("./PdfToJpgClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF to JPG Online Free — Convert PDF Pages to JPG Images",
   description:
     "Convert PDF to JPG online for free. Select specific pages, choose resolution and quality, download individual JPGs or all as ZIP. No signup, runs in your browser.",
+  url: "https://thepdftools.site/pdf-to-jpg",
   keywords: [
     "pdf to jpg online free",
     "convert pdf to jpg",
@@ -24,15 +27,8 @@ export const metadata: Metadata = {
     "pdf to jpg without signup",
     "high quality pdf to jpg",
   ],
-  openGraph: {
-    title: "PDF to JPG Online Free — Convert PDF Pages to JPG Images",
-    description:
-      "Convert PDF pages to JPG online free. Choose resolution, select pages, download as ZIP. No signup required.",
-    url: "https://thepdftools.site/pdf-to-jpg",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/pdf-to-jpg" },
-};
+  imageAlt: "Convert PDF pages to JPG images online",
+});
 
 const faqItems = [
   { q: "Can I convert all pages of a PDF to JPG?", a: "Yes. The tool converts every page of your PDF to a separate JPG image. You can download them individually or as a ZIP." },
@@ -54,6 +50,8 @@ const jsonLd = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       description: "Convert PDF pages to high-quality JPG images online for free. No upload required — runs entirely in your browser.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "HowTo",
       name: "How to Convert PDF to JPG Online",
@@ -138,6 +136,13 @@ export default function PdfToJpgPage() {
               <Link href="/image-compressor" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Image Compressor</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: JPG image format overview" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js: Rendering PDFs in the browser" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Image optimization and delivery" },
+            ]}
+          />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">

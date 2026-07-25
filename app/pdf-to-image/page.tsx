@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfToImageClient = dynamic(() => import("./PdfToImageClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Image Converter Free — Convert PDF Pages to JPG or PNG",
   description:
     "Convert PDF to image online free — export any PDF page as JPG or PNG. Select specific pages, choose format, and download instantly. No signup, no upload required.",
+  url: "https://thepdftools.site/pdf-to-image",
   keywords: [
     "pdf to image",
     "pdf to jpg",
@@ -26,17 +29,8 @@ export const metadata: Metadata = {
     "free pdf converter",
     "pdf page to image",
   ],
-  openGraph: {
-    title: "PDF to Image Converter Free — Convert PDF Pages to JPG or PNG",
-    description:
-    "Convert PDF to image online free — export any PDF page as JPG or PNG. Select specific pages, choose format, and download instantly. No signup, no upload required.",
-    url: "https://thepdftools.site/pdf-to-image",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/pdf-to-image",
-  },
-};
+  imageAlt: "Convert PDF pages to JPG or PNG images online",
+});
 
 export default function PdfToImagePage() {
   const jsonLd = {
@@ -56,7 +50,8 @@ export default function PdfToImagePage() {
         description:
           "Convert PDF pages to high-quality JPG or PNG images for free online. No upload, no signup — runs in your browser.",
       },
-      
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -218,6 +213,13 @@ export default function PdfToImagePage() {
               <Link href="/screenshot-to-pdf" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">Screenshot to PDF</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types", label: "MDN: JPG and PNG image format guide" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js: PDF rendering in the browser" },
+              { href: "https://web.dev/learn/images/", label: "web.dev: Choosing image formats and quality" },
+            ]}
+          />
           <ToolSeoGrowth slug="pdf-to-image" />
         </div>
       </div>

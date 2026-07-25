@@ -12,6 +12,7 @@ interface ToolCardProps {
   badge?: string;
   color: "blue" | "purple" | "rose" | "emerald" | "violet" | "amber" | "orange" | "teal" | "indigo" | "pink";
   stretch?: boolean;
+  compact?: boolean;
 }
 
 const colorMap: Record<string, string> = {
@@ -35,9 +36,44 @@ export default function ToolCard({
   badge,
   color,
   stretch = true,
+  compact = false,
 }: ToolCardProps) {
+  if (compact) {
+    return (
+      <TiltCard className="h-full">
+        <Link
+          href={href}
+          className={clsx(
+            "group flex items-start gap-3.5 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-300 hover:border-brand-100 hover:shadow-lg hover:shadow-brand-100/40",
+            stretch && "h-full"
+          )}
+        >
+          <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${colorMap[color]} transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3`}>
+            {icon}
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="text-[15px] font-semibold text-gray-900 group-hover:text-brand-700 transition-colors duration-200">
+                {title}
+              </h3>
+              {badge && (
+                <span className="rounded-md bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-600">
+                  {badge}
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-[13px] leading-relaxed text-gray-400">
+              {description}
+            </p>
+          </div>
+        </Link>
+      </TiltCard>
+    );
+  }
+
   return (
-    <TiltCard className="h-full"> 
+    <TiltCard className="h-full">
       <Link
         href={href}
         className={clsx(

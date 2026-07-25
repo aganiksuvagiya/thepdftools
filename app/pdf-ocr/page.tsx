@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfOcrClient = dynamic(() => import("./PdfOcrClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
@@ -72,10 +74,11 @@ const howToSteps = [
   "Copy the text, download it, or continue with related workflows like editing or conversion.",
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF OCR Online - Extract Text from Scanned PDF Free",
   description:
     "Use PDF OCR online to extract text from scanned PDFs and image-based documents for free. Search, copy, and reuse text in your browser with no upload needed.",
+  url: PAGE_URL,
   keywords: [
     "pdf ocr online",
     "pdf ocr online free",
@@ -88,41 +91,8 @@ export const metadata: Metadata = {
     "pdf text extraction no upload",
     "ocr for invoices and contracts",
   ],
-  alternates: { canonical: PAGE_URL },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-  openGraph: {
-    title: "PDF OCR Online - Extract Text from Scanned PDF Free",
-    description:
-      "Extract text from scanned PDFs online. Make image-based PDFs searchable in your browser with free PDF OCR online.",
-    url: PAGE_URL,
-    type: "website",
-    images: [
-      {
-        url: `${SITE_URL}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "PDF OCR Online tool preview",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "PDF OCR Online - Extract Text from Scanned PDF Free",
-    description:
-      "Free PDF OCR online for scanned and image-based PDFs. Search, copy, and reuse extracted text in your browser.",
-    images: [`${SITE_URL}/opengraph-image`],
-  },
-};
+  imageAlt: "Extract text from scanned PDF online with OCR",
+});
 
 export default function PdfOcrPage() {
   const jsonLd = {
@@ -169,16 +139,8 @@ export default function PdfOcrPage() {
           text: step,
         })),
       },
-      {
-        "@type": "Organization",
-        name: "thepdftools.site",
-        url: SITE_URL,
-      },
-      {
-        "@type": "WebSite",
-        name: "thepdftools.site",
-        url: SITE_URL,
-      },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -567,6 +529,13 @@ export default function PdfOcrPage() {
               </Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://github.com/naptha/tesseract.js", label: "Tesseract.js: OCR in JavaScript" },
+              { href: "https://mozilla.github.io/pdf.js/", label: "PDF.js: PDF rendering in the browser" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API for image processing" },
+            ]}
+          />
         </div>
       </div>
     </div>

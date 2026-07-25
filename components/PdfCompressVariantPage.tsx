@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import { SITE_URL } from "@/lib/seo-growth";
+import {
+  buildOrganizationSchema,
+  buildPageMetadata,
+  buildWebsiteSchema,
+} from "@/lib/seo-page";
 import {
   PDF_COMPRESS_VARIANTS,
   type PdfCompressVariant,
@@ -23,39 +29,20 @@ export function buildPdfCompressVariantMetadata(
   const url = `${SITE_URL}/${variant.slug}`;
 
   return {
-    title: variant.title,
-    description: variant.description,
-    keywords: [
-      variant.primaryKeyword,
-      "compress pdf online free",
-      "pdf compressor no upload",
-      "reduce pdf file size online",
-      "free pdf compressor",
-      "browser based pdf tools",
-    ],
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
+    ...buildPageMetadata({
       title: variant.title,
       description: variant.description,
       url,
-      type: "website",
-      images: [
-        {
-          url: `${SITE_URL}/opengraph-image`,
-          width: 1200,
-          height: 630,
-          alt: variant.title,
-        },
+      keywords: [
+        variant.primaryKeyword,
+        "compress pdf online free",
+        "pdf compressor no upload",
+        "reduce pdf file size online",
+        "free pdf compressor",
+        "browser based pdf tools",
       ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: variant.title,
-      description: variant.description,
-      images: [`${SITE_URL}/opengraph-image`],
-    },
+      imageAlt: variant.title,
+    }),
   };
 }
 
@@ -125,6 +112,8 @@ export default function PdfCompressVariantPage({
           },
         ],
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
     ],
   };
 
@@ -271,6 +260,14 @@ export default function PdfCompressVariantPage({
               ))}
             </div>
           </section>
+
+          <SeoReferences
+            links={[
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/File", label: "MDN: File API reference" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API", label: "MDN: Canvas API reference" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib documentation" },
+            ]}
+          />
         </article>
       </main>
     </div>

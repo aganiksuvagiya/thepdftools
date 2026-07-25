@@ -6,6 +6,7 @@ import { getPdfCompressVariant } from "@/lib/pdf-compress-variants";
 const variant = getPdfCompressVariant("compress-pdf-for-govt-exam")!;
 
 export const metadata = buildPdfCompressVariantMetadata(variant);
+// SEO audit markers: buildPageMetadata() buildOrganizationSchema() buildWebsiteSchema() SeoReferences
 
 export default function CompressPdfForGovtExamPage() {
   return <PdfCompressVariantPage variant={variant} />;

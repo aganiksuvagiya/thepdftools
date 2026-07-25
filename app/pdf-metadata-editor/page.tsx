@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfMetadataClient = dynamic(() => import("./PdfMetadataClient"), {
   loading: () => <div className="card animate-pulse h-64 bg-gray-50" />,
   ssr: false,
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Metadata Editor Online Free — Edit Title, Author & Keywords",
   description:
     "Edit PDF metadata online for free — change title, author, subject, and keywords. No upload to server, no signup, works instantly in your browser.",
+  url: "https://thepdftools.site/pdf-metadata-editor",
   keywords: [
     "pdf metadata editor",
     "edit pdf metadata online free",
@@ -20,15 +23,8 @@ export const metadata: Metadata = {
     "pdf properties editor",
     "edit pdf document info",
   ],
-  openGraph: {
-    title: "PDF Metadata Editor Online Free — Edit Title, Author & Keywords",
-    description:
-      "Edit PDF title, author, subject, and keywords online for free. No upload to server, no signup.",
-    url: "https://thepdftools.site/pdf-metadata-editor",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: { canonical: "https://thepdftools.site/pdf-metadata-editor" },
-};
+  imageAlt: "Edit PDF title author subject and keywords online",
+});
 
 const faqItems = [
   { q: "What PDF metadata can I edit?", a: "You can edit the document title, author, subject, and keywords — the standard PDF document info fields." },
@@ -48,6 +44,8 @@ const jsonLd = {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       description: "Edit PDF title, author, subject, and keywords online for free. No upload, no signup.",
     },
+    buildOrganizationSchema(),
+    buildWebsiteSchema(),
     {
       "@type": "FAQPage",
       mainEntity: faqItems.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
@@ -105,6 +103,13 @@ export default function PdfMetadataEditorPage() {
               <Link href="/pdf-organize-pages" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-brand-300 hover:text-brand-700 transition-colors">Organize PDF Pages</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types", label: "MDN: Document metadata and file types context" },
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: Editing PDF metadata in JavaScript" },
+            ]}
+          />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">

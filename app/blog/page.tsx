@@ -77,6 +77,13 @@ export default function BlogPage() {
         url: SITE_URL,
         name: "thepdftools",
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Blog", item: BLOG_URL },
+        ],
+      },
     ],
   };
 
@@ -86,6 +93,12 @@ export default function BlogPage() {
     <div className="bg-[#f8fafc] py-10 sm:py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-slate-500">
+          <Link href="/" className="hover:text-brand-700 transition-colors">Home</Link>
+          <span>/</span>
+          <span className="text-slate-800 font-medium">Blog</span>
+        </nav>
+
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] shadow-[0_24px_90px_-44px_rgba(79,70,229,0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.1),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_24%)]" />
           <div className="relative px-6 py-10 sm:px-10 sm:py-14">
@@ -190,6 +203,22 @@ export default function BlogPage() {
               </Link>
             ))}
           </div>
+        </div>
+
+        <div className="mt-10 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">References</h2>
+          <ul className="mt-4 space-y-2 text-sm text-slate-600">
+            <li>
+              <a href="https://developers.google.com/search/docs/fundamentals/creating-helpful-content" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Helpful, reliable, people-first content
+              </a>
+            </li>
+            <li>
+              <a href="https://developers.google.com/search/docs/appearance/structured-data/article" target="_blank" rel="noopener noreferrer" className="hover:text-brand-700 hover:underline">
+                Google Search Central: Article structured data guidance
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import SeoReferences from "@/components/SeoReferences";
 import ToolSeoGrowth from "@/components/ToolSeoGrowth";
 import Breadcrumb from "@/components/Breadcrumb";
+import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
 const PdfOrganizeClient = dynamic(
   () => import("../pdf-organize-pages/PdfOrganizeClient"),
@@ -12,10 +14,11 @@ const PdfOrganizeClient = dynamic(
   }
 );
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Rearrange PDF Pages Online Free — Reorder Pages Instantly",
   description:
     "Rearrange PDF pages online for free — move pages into any order and export instantly. No upload to server, no signup, works in your browser.",
+  url: "https://thepdftools.site/rearrange-pdf-pages",
   keywords: [
     "rearrange pdf pages",
     "rearrange pdf pages online free",
@@ -23,17 +26,8 @@ export const metadata: Metadata = {
     "move pdf pages",
     "change pdf page order",
   ],
-  openGraph: {
-    title: "Rearrange PDF Pages Online Free — Reorder Pages Instantly",
-    description:
-      "Move PDF pages into any order and export instantly. No upload to server, no signup.",
-    url: "https://thepdftools.site/rearrange-pdf-pages",
-    images: [{ url: "https://thepdftools.site/opengraph-image" }],
-  },
-  alternates: {
-    canonical: "https://thepdftools.site/rearrange-pdf-pages",
-  },
-};
+  imageAlt: "Rearrange PDF pages online instantly",
+});
 
 export default function RearrangePdfPagesPage() {
   const jsonLd = {
@@ -49,6 +43,8 @@ export default function RearrangePdfPagesPage() {
         description:
           "Rearrange PDF pages online for free — move pages into any order and export instantly. No upload, no signup.",
       },
+      buildOrganizationSchema(),
+      buildWebsiteSchema(),
       {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -126,6 +122,13 @@ export default function RearrangePdfPagesPage() {
               <Link href="/pdf-merge" className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:border-brand-300 hover:text-brand-700">PDF Merge</Link>
             </div>
           </div>
+          <SeoReferences
+            links={[
+              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF page reordering in JavaScript" },
+              { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
+              { href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN: Browser-based document workflows" },
+            ]}
+          />
           <ToolSeoGrowth slug="rearrange-pdf-pages" />
         </div>
       </div>
