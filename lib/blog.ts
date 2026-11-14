@@ -74,6 +74,49 @@ function buildPost(entry: Omit<BlogPostEntry, "updatedAt" | "references" | "faq"
 
 export const blogPosts: BlogPostEntry[] = [
   buildPost({
+    slug: "jpeg-xl-in-chrome-what-it-means-for-your-images",
+    title: "JPEG XL Is Coming to Chrome 155: What It Means for Your Website Images",
+    description: "Chrome says JPEG XL decoding ships starting with Chrome 155. Here is what changes for web images, what stays the same, and how to prepare without breaking anything.",
+    excerpt: "Chrome says JPEG XL decoding ships starting with Chrome 155. Here is what changes for web images, what stays the same, and how to prepare without breaking anything.",
+    publishedAt: "2026-11-14",
+    readTime: "8 min read",
+    category: "Image Tools",
+    tags: ["JPEG XL", "Image Formats", "Chrome", "Web Performance"],
+    keywords: ["JPEG XL Chrome", "JPEG XL Chrome 155", "JPEG XL vs AVIF", "JPEG XL vs WebP", "JXL image format", "next-gen image formats 2026"],
+    toolLinks: [
+      { href: "/image-compressor", label: "Image Compressor" },
+      { href: "/image-to-webp", label: "Image to WebP" },
+      { href: "/image-resizer", label: "Image Resizer" },
+    ],
+    references: [
+      { label: "Chrome for Developers: Shipping JPEG XL in Chrome", href: "https://developer.chrome.com/blog/jpeg-xl-in-chrome" },
+      { label: "The Register: Google rekindles relationship with jilted JPEG XL image format", href: "https://www.theregister.com/2026/01/14/google_rekindles_relationship_with_jilted/" },
+      { label: "Core Web Vitals: JPEG XL and Core Web Vitals", href: "https://www.corewebvitals.io/pagespeed/jpeg-xl-core-web-vitals-support" },
+    ],
+    faq: [
+      {
+        question: "When does JPEG XL arrive in Chrome?",
+        answer: "Chrome's developer blog, published October 6, 2026, says Chrome is shipping JPEG XL decoding starting from Chrome 155. The post does not say whether it is on by default, so check the Chrome 155 release notes before you plan around it.",
+      },
+      {
+        question: "Is JPEG XL replacing WebP or AVIF?",
+        answer: "Not on its own. Chrome's own guidance is to try both AVIF and JPEG XL and see which gives the better result for your images. WebP, AVIF and JPEG all keep working, and most sites will keep serving them as the baseline.",
+      },
+      {
+        question: "Will my existing images stop working?",
+        answer: "No. A browser adding a new decoder does not remove support for formats it already handles. Your JPEG, PNG and WebP files render exactly as before.",
+      },
+      {
+        question: "Can I convert images to JPEG XL on thepdftools?",
+        answer: "Not today. Our image tools output JPEG, PNG and WebP. Resizing and compressing images before you encode them in any newer format is still the biggest win, and those steps work with our free browser-based tools.",
+      },
+      {
+        question: "How should I add JPEG XL to my site later?",
+        answer: "Use a picture element with a JPEG XL source listed first, then AVIF or WebP, and a JPEG or PNG img tag as the fallback. Browsers pick the first format they support, so visitors on older browsers are unaffected.",
+      },
+    ],
+  }),
+  buildPost({
     slug: "create-resume-online-free",
     title: "How to Create a Resume Online for Free (No Signup, No Watermark)",
     description: "Build a professional, ATS-friendly resume online for free and download it as a PDF. Templates, formatting tips, and a step-by-step walkthrough.",
