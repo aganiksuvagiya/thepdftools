@@ -55,6 +55,7 @@ interface EditableTextData {
   originalFontSizePt: number; // PDF points
   originalFontWeight: string;
   originalFontStyle: string;
+  originalFill: string;
 }
 
 interface TextCoverData {
@@ -92,6 +93,37 @@ const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3;
 const THUMBNAIL_HEIGHT = 120;
 const MOBILE_QUERY = "(max-width: 767px)";
+
+// Every page is rendered at this many canvas px per PDF point (1 pt = 1/72 inch).
+// Font sizes are shown to the user in points and stored on canvas objects in canvas px.
+const RENDER_SCALE = 1.5;
+const MIN_FONT_PT = 4;
+const MAX_FONT_PT = 200;
+const DEFAULT_TEXT_PT = 12;
+
+/** Canvas px -> PDF points, rounded to 0.1 for display. */
+function pxToPt(px: number, scale: number = RENDER_SCALE): number {
+  return Math.round((px / scale) * 10) / 10;
+}
+
+/** PDF points -> canvas px (no rounding, so 13 pt stays exactly 13 pt). */
+function ptToPx(pt: number, scale: number = RENDER_SCALE): number {
+  return pt * scale;
+}
+
+/** True when an edited copy of existing PDF text differs from the original (text, size, weight, style or color). */
+function isEditableTextChanged(textbox: FabricObject): boolean {
+  const data = textbox.get("data") as EditableTextData | undefined;
+  if (!data || data.type !== "editableText") return false;
+  const tb = textbox as FabricObject & { text?: string; fontSize?: number; fontWeight?: string | number; fontStyle?: string };
+  return (
+    (tb.text || "").trim() !== data.originalText.trim() ||
+    Math.abs((tb.fontSize || 0) - data.originalFontSize) > 0.01 ||
+    String(tb.fontWeight || "normal") !== data.originalFontWeight ||
+    String(tb.fontStyle || "normal") !== data.originalFontStyle ||
+    String(tb.fill || "") !== data.originalFill
+  );
+}
 
 function mergeNearbyTextItems(items: TextItem[]) {
   if (items.length <= 1) return items;
@@ -233,6 +265,48 @@ async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport:
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Point-size input. Always shows the real current size (never a stale value), lets the user
+ * type multi-digit numbers freely (a draft is kept while typing), and applies every valid value live.
+ */
+function PtInput({
+  value,
+  onCommit,
+  className,
+  min = MIN_FONT_PT,
+  max = MAX_FONT_PT,
+  ariaLabel,
+}: {
+  value: number;
+  onCommit: (pt: number) => void;
+  className?: string;
+  min?: number;
+  max?: number;
+  ariaLabel?: string;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  return (
+    <input
+      type="number"
+      min={min}
+      max={max}
+      step={1}
+      aria-label={ariaLabel}
+      value={draft ?? String(value)}
+      onChange={(e) => {
+        setDraft(e.target.value);
+        const n = parseFloat(e.target.value);
+        if (Number.isFinite(n) && n >= min && n <= max) onCommit(n);
+      }}
+      onBlur={() => setDraft(null)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+      }}
+      className={className}
+    />
+  );
+}
+
 export default function PdfEditorClient() {
   /* --- state --- */
   const [file, setFile] = useState<File | null>(null);
@@ -242,13 +316,15 @@ export default function PdfEditorClient() {
 
   const [pages, setPages] = useState<PageData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  // Canvas px per PDF point for the page being edited (used to convert font sizes to/from points).
+  const pageScale = pages[currentPage]?.scale ?? RENDER_SCALE;
   const [zoom, setZoom] = useState(1);
   const zoomPerPageRef = useRef<Map<number, number>>(new Map());
 
   const [activeTool, setActiveTool] = useState<Tool>("select");
   const [brushColor, setBrushColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(3);
-  const [fontSize, setFontSize] = useState(18);
+  const [fontSize, setFontSize] = useState(DEFAULT_TEXT_PT); // text tool size, in PDF points
   const [fontBold, setFontBold] = useState(false);
   const [fontItalic, setFontItalic] = useState(false);
 
@@ -397,6 +473,7 @@ export default function PdfEditorClient() {
         originalFontSizePt: item.fontSizePt,
         originalFontWeight: item.fontWeight || "normal",
         originalFontStyle: item.fontStyle || "normal",
+        originalFill: item.color,
       } satisfies EditableTextData,
     });
 
@@ -467,7 +544,7 @@ export default function PdfEditorClient() {
         const totalPages = pdf.numPages;
         const pagesArr: PageData[] = [];
 
-        const renderScale = 1.5;
+        const renderScale = RENDER_SCALE;
         const EAGER_PAGES = Math.min(3, totalPages); // render first 3 upfront
 
         for (let i = 1; i <= totalPages; i++) {
@@ -867,9 +944,9 @@ export default function PdfEditorClient() {
             (textbox as any).__hotspotRef = resolvedTarget;
 
             const syncEditedState = () => {
-              const currentText = (textbox.text || "").trim();
               const tbData = textbox.get("data") as EditableTextData;
-              const changed = currentText !== tbData.originalText.trim();
+              // Text, size, bold/italic or color changes all count as an edit (not just the characters).
+              const changed = isEditableTextChanged(textbox);
 
               textbox.set("data", { ...tbData, changed } satisfies EditableTextData);
 
@@ -929,7 +1006,8 @@ export default function PdfEditorClient() {
           top: pointer.y,
           originX: "left",
           originY: "top",
-          fontSize: fontSize,
+          // The text tool size is in points; the canvas works in px at the page render scale.
+          fontSize: ptToPx(Math.min(Math.max(fontSize || DEFAULT_TEXT_PT, MIN_FONT_PT), MAX_FONT_PT), pageScale),
           fill: brushColor,
           fontWeight: fontBold ? "bold" : "normal",
           fontStyle: fontItalic ? "italic" : "normal",
@@ -1043,7 +1121,7 @@ export default function PdfEditorClient() {
     return () => {
       fc.off("mouse:down", handleMouseDown);
     };
-  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo, textEditMode, pages, currentPage, createEditableTextObjects]);
+  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo, textEditMode, pages, currentPage, pageScale, createEditableTextObjects]);
 
   /* ================================================================ */
   /*  Undo / Redo                                                      */
@@ -1112,7 +1190,7 @@ export default function PdfEditorClient() {
     const pdf = pdfDocRef.current;
     if (!pdfjsLib || !pdf) return;
 
-    const renderScale = 1.5;
+    const renderScale = RENDER_SCALE;
     const page = await pdf.getPage(pageIndex + 1); // pdfjs uses 1-based
     const viewport = page.getViewport({ scale: renderScale });
     const canvas = document.createElement("canvas");
@@ -1198,8 +1276,10 @@ export default function PdfEditorClient() {
   );
 
   const addBlankPage = useCallback(() => {
-    const w = pages[currentPage]?.width || 1190;
-    const h = pages[currentPage]?.height || 1684;
+    // A blank page copies the current page's size and scale (fallback: A4 in points).
+    const scale = pages[currentPage]?.scale ?? RENDER_SCALE;
+    const w = pages[currentPage]?.width || Math.round(595 * scale);
+    const h = pages[currentPage]?.height || Math.round(842 * scale);
     // Create blank white image
     const canvas = document.createElement("canvas");
     canvas.width = w;
@@ -1211,7 +1291,7 @@ export default function PdfEditorClient() {
     saveCurrentPageState();
     setPages((prev) => [
       ...prev.slice(0, currentPage + 1),
-      { dataUrl, width: w, height: h, fabricJson: null, textItems: [], scale: 2, loaded: true },
+      { dataUrl, width: w, height: h, fabricJson: null, textItems: [], scale, loaded: true },
       ...prev.slice(currentPage + 1),
     ]);
     setCurrentPage(currentPage + 1);
@@ -1363,9 +1443,9 @@ export default function PdfEditorClient() {
         // Embed in PDF
         const imgBytes = await fetch(dataUrl).then((r) => r.arrayBuffer());
         const pngImage = await pdfDoc.embedPng(imgBytes);
-        // Use original page dimensions (at scale 2, so divide by 2 for PDF points)
-        const pageWidth = pg.width / 2;
-        const pageHeight = pg.height / 2;
+        // Keep the original physical page size: canvas px / render scale = PDF points.
+        const pageWidth = pg.width / pg.scale;
+        const pageHeight = pg.height / pg.scale;
         const pdfPage = pdfDoc.addPage([pageWidth, pageHeight]);
         pdfPage.drawImage(pngImage, {
           x: 0,
@@ -1400,7 +1480,28 @@ export default function PdfEditorClient() {
     const fc = fabricRef.current;
     const obj = fc?.getActiveObject();
     if (!obj) return;
-    obj.set(prop as any, value);
+
+    const data = obj.get("data") as EditableTextData | undefined;
+    const isExistingText = data?.type === "editableText";
+
+    if (isExistingText && prop === "fontSize") {
+      // Keep the original line breaks: the box grows/shrinks together with the glyphs.
+      const oldSize = (obj as FabricObject & { fontSize?: number }).fontSize || value;
+      const ratio = oldSize > 0 ? value / oldSize : 1;
+      obj.set({ fontSize: value, width: (obj.width ?? 0) * ratio } as Partial<FabricObject>);
+    } else {
+      obj.set(prop as keyof FabricObject, value);
+    }
+
+    if (isExistingText && data) {
+      // Size, bold/italic and color edits count as edits too; otherwise leaving the box discards them.
+      const changed = isEditableTextChanged(obj);
+      obj.set("data", { ...data, changed } satisfies EditableTextData);
+      const cover = (obj as FabricObject & { __coverRef?: FabricObject }).__coverRef;
+      if (changed && cover) cover.set({ visible: true, excludeFromExport: false });
+    }
+
+    obj.setCoords();
     fc!.requestRenderAll();
     pushUndo();
   }, [pushUndo]);
@@ -1674,13 +1775,11 @@ export default function PdfEditorClient() {
         {/* Font controls (for text tool) */}
         {(activeTool === "text") && (
           <div className="flex items-center gap-1.5 ml-1">
-            <label className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Size</label>
-            <input
-              type="number"
-              min={8}
-              max={120}
+            <label className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Size (pt)</label>
+            <PtInput
+              ariaLabel="Text size in points"
               value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
+              onCommit={setFontSize}
               className="w-14 rounded border border-slate-200 px-1.5 py-0.5 text-xs text-center"
             />
             <button
@@ -1703,22 +1802,10 @@ export default function PdfEditorClient() {
           <div className="flex items-center gap-1.5 ml-1">
             <label className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Size (pt)</label>
             <div className="relative">
-              <input
-                type="number"
-                min={4}
-                max={200}
-                value={(() => {
-                  const data = (selectedObject as any).get?.("data") as EditableTextData | undefined;
-                  return data?.originalFontSizePt || Math.round((selectedObject as any).fontSize / 1.5);
-                })()}
-                onChange={(e) => {
-                  const ptVal = Number(e.target.value);
-                  if (ptVal >= 4 && ptVal <= 200) {
-                    // Convert pt to viewport pixels (multiply by renderScale)
-                    const vpVal = Math.round(ptVal * 1.5);
-                    updateSelectedProp("fontSize", vpVal);
-                  }
-                }}
+              <PtInput
+                ariaLabel="Font size in points"
+                value={pxToPt((selectedObject as any).fontSize, pageScale)}
+                onCommit={(pt) => updateSelectedProp("fontSize", ptToPx(pt, pageScale))}
                 className="w-14 rounded border border-slate-200 px-1.5 py-0.5 text-xs text-center"
               />
             </div>
@@ -1981,13 +2068,11 @@ export default function PdfEditorClient() {
             {(selectedObject.type === "textbox" || selectedObject.type === "i-text") && (
               <>
                 <div>
-                  <label className="text-[10px] font-medium text-slate-500 block mb-1">Font Size</label>
-                  <input
-                    type="number"
-                    min={8}
-                    max={200}
-                    value={(selectedObject as any).fontSize || 18}
-                    onChange={(e) => updateSelectedProp("fontSize", Number(e.target.value))}
+                  <label className="text-[10px] font-medium text-slate-500 block mb-1">Font Size (pt)</label>
+                  <PtInput
+                    ariaLabel="Font size in points"
+                    value={pxToPt((selectedObject as any).fontSize || ptToPx(DEFAULT_TEXT_PT, pageScale), pageScale)}
+                    onCommit={(pt) => updateSelectedProp("fontSize", ptToPx(pt, pageScale))}
                     className="w-full rounded border border-slate-200 px-2 py-1 text-xs"
                   />
                 </div>
