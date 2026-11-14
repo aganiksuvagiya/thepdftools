@@ -179,7 +179,7 @@ export default function PdfProtectPage() {
           </div>
           <SeoReferences
             links={[
-              { href: "https://pdf-lib.js.org/", label: "pdf-lib: PDF encryption and editing in JavaScript" },
+              { href: "https://github.com/cantoo-scribe/pdf-lib", label: "@cantoo/pdf-lib: AES-256 PDF encryption in JavaScript" },
               { href: "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/", label: "Adobe PDF standards overview" },
               { href: "https://developer.mozilla.org/en-US/docs/Web/Crypto_API", label: "MDN: Web Cryptography concepts" },
             ]}

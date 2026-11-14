@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cantoo/pdf-lib": "^2.11.1",
     "@imgly/background-removal": "^1.4.5",
     "@tensorflow/tfjs": "~4.11.0",
     "@types/jsbarcode": "^3.11.4",

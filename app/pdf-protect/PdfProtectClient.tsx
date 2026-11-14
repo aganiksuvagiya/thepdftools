@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { PDFDocument } from "pdf-lib";
+// Plain `pdf-lib` cannot write encrypted PDFs (it silently ignores password options),
+// so this tool uses the maintained `@cantoo/pdf-lib` fork, which supports encrypt().
+import { PDFDocument } from "@cantoo/pdf-lib";
 import DropZone from "@/components/DropZone";
 
 function formatBytes(bytes: number): string {
@@ -42,21 +44,37 @@ export default function PdfProtectClient() {
 
     try {
       const buf = await file.arrayBuffer();
-      const doc = await PDFDocument.load(buf);
-      const pdfBytes = await doc.save({
+
+      let doc: PDFDocument;
+      try {
+        doc = await PDFDocument.load(buf);
+      } catch (loadErr) {
+        // A PDF that already has a password cannot be opened without it.
+        if (loadErr instanceof Error && /encrypt|password/i.test(`${loadErr.name} ${loadErr.message}`)) {
+          throw new Error(
+            "This PDF is already password-protected. Unlock it first with the PDF Unlock tool, then protect it again."
+          );
+        }
+        throw loadErr;
+      }
+
+      // Real AES-256 (PDF 2.0, revision 6) encryption. The password is required to open the file.
+      // Printing/copying stay allowed: this tool only adds an open-password.
+      doc.encrypt({
         userPassword: password,
-        ownerPassword: password + "_owner",
+        ownerPassword: password,
+        algorithm: "AES-256",
         permissions: {
-          printing: "lowResolution",
-          modifying: false,
-          copying: false,
-          annotating: false,
+          printing: "highResolution",
+          modifying: true,
+          copying: true,
+          annotating: true,
           fillingForms: true,
           contentAccessibility: true,
-          documentAssembly: false,
+          documentAssembly: true,
         },
-        encryptionKey: undefined,
-      } as Parameters<typeof doc.save>[0]);
+      });
+      const pdfBytes = await doc.save();
 
       const pdfOutput = Uint8Array.from(pdfBytes);
       const blob = new Blob([pdfOutput], { type: "application/pdf" });
@@ -131,6 +149,12 @@ export default function PdfProtectClient() {
               {password && confirm && password !== confirm && (
                 <p className="text-xs text-red-500">Passwords do not match</p>
               )}
+              {/[^\x00-\x7F]/.test(password) && (
+                <p className="text-xs text-amber-700">
+                  Your password has non-English characters. Some viewers (for example macOS Preview) can only open
+                  PDFs with plain letters, numbers and symbols, so use those for best compatibility.
+                </p>
+              )}
               <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-700">
                 ⚠ Remember your password — encrypted PDFs cannot be recovered without it.
               </div>
@@ -142,7 +166,7 @@ export default function PdfProtectClient() {
 
           {resultUrl && (
             <div className="card p-6 text-center space-y-4">
-              <div className="text-green-600 font-semibold text-sm">✓ PDF protected successfully</div>
+              <div className="text-green-600 font-semibold text-sm">✓ PDF encrypted with AES-256 and password-protected</div>
               <p className="text-xs text-gray-400">{formatBytes(resultSize)}</p>
               <a
                 href={resultUrl}
