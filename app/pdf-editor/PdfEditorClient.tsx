@@ -12,6 +12,7 @@ import {
   FabricImage,
   FabricObject,
   Triangle,
+  Group,
 } from "fabric";
 import { PDFDocument } from "pdf-lib";
 
@@ -45,10 +46,14 @@ interface TextItem {
   color: string;
   fontWeight: string; // "normal" or "bold"
   fontStyle: string; // "normal" or "italic"
+  lossy?: boolean; // the PDF could not map some glyphs back to text (they were dropped)
+  coverLeft?: number; // the white cover must reach this far left/right (unmapped glyphs next to the text)
+  coverRight?: number;
 }
 
 interface EditableTextData {
   type: "editableText";
+  itemKey?: number; // index of the source text item in PageData.textItems
   originalText: string;
   changed: boolean;
   originalFontSize: number; // viewport px
@@ -60,15 +65,19 @@ interface EditableTextData {
 
 interface TextCoverData {
   type: "textCover";
+  itemKey?: number;
   originalText: string;
 }
 
 interface TextHotspotData {
   type: "textHotspot";
+  itemKey?: number;
   originalText: string;
 }
 
 interface PageData {
+  id: string; // stable identity, survives reordering and deleting other pages
+  srcIndex: number | null; // page index in the original PDF (null for pages added in the editor)
   dataUrl: string; // rendered page as PNG data-url (without text)
   width: number;
   height: number;
@@ -109,6 +118,39 @@ function pxToPt(px: number, scale: number = RENDER_SCALE): number {
 /** PDF points -> canvas px (no rounding, so 13 pt stays exactly 13 pt). */
 function ptToPx(pt: number, scale: number = RENDER_SCALE): number {
   return pt * scale;
+}
+
+// Fabric only serialises known properties. Without this, `data` (which marks edited PDF text,
+// covers and hotspots) is dropped by toJSON(), so edits cannot be restored after a reload.
+if (!FabricObject.customProperties.includes("data")) {
+  FabricObject.customProperties = [...FabricObject.customProperties, "data"];
+}
+
+/**
+ * Canvas state as JSON without the page background. The background is the full page PNG, so keeping it
+ * in every undo snapshot would cost megabytes per step; it is always re-applied from PageData on load.
+ */
+function serializeCanvas(fc: FabricCanvas): string {
+  const obj = fc.toObject() as Record<string, unknown>;
+  delete obj.backgroundImage;
+  return JSON.stringify(obj);
+}
+
+let pageIdCounter = 0;
+const newPageId = () => `page-${++pageIdCounter}-${Math.random().toString(36).slice(2, 7)}`;
+
+/** Pick a canvas font family close to the PDF font, so edited text does not turn into a different typeface. */
+function pickFontFamily(pdfFontName: string, styleFamily?: string): string {
+  const name = (pdfFontName || "").toLowerCase();
+  const family = (styleFamily || "").toLowerCase();
+  if (/courier|mono|consolas|typewriter/.test(name) || family.includes("monospace")) {
+    return '"Courier New", Courier, monospace';
+  }
+  const looksSerif = /times|georgia|garamond|palatino|bookman|cambria|minion|serif/.test(name) && !/sans/.test(name);
+  if (looksSerif || family === "serif") {
+    return '"Times New Roman", Times, serif';
+  }
+  return "Helvetica, Arial, sans-serif";
 }
 
 /** True when an edited copy of existing PDF text differs from the original (text, size, weight, style or color). */
@@ -196,6 +238,13 @@ function mergeNearbyTextItems(items: TextItem[]) {
         // Preserve bold/italic if any fragment has it
         if (item.fontWeight === "bold") current.fontWeight = "bold";
         if (item.fontStyle === "italic") current.fontStyle = "italic";
+        if (item.lossy) current.lossy = true;
+        if (item.coverLeft !== undefined || current.coverLeft !== undefined) {
+          current.coverLeft = Math.min(current.coverLeft ?? current.x, item.coverLeft ?? item.x);
+        }
+        if (item.coverRight !== undefined || current.coverRight !== undefined) {
+          current.coverRight = Math.max(current.coverRight ?? currentRight, item.coverRight ?? item.x + item.width);
+        }
       }
     }
 
@@ -222,14 +271,57 @@ function resolveFabricTarget(result: unknown): CanvasTargetLike | null {
   return "get" in result ? (result as CanvasTargetLike) : null;
 }
 
+/** Hit tolerance (screen px) for thin annotations such as lines, arrows and pen strokes. */
+const THIN_HIT_TOLERANCE_PX = 8;
+// Scripts whose glyphs reach far above/below the line box (Indic, Thai/Lao, Myanmar, Arabic).
+const COMPLEX_SCRIPT_RE = /[؀-ۿऀ-໿က-႟]/;
+// Space kept between an edited line and the right page edge before the text wraps.
+const EDIT_RIGHT_MARGIN_PX = 24;
+
+/**
+ * Fabric only hits a line within its own 2px box, which is almost impossible to click.
+ * Find the topmost plain annotation (no PDF text/cover/hotspot data) whose bounding box,
+ * grown by a small tolerance, contains the point.
+ */
+function findAnnotationNear(fc: FabricCanvas, point: { x: number; y: number }): FabricObject | null {
+  const tol = THIN_HIT_TOLERANCE_PX / (fc.getZoom() || 1);
+  const objects = fc.getObjects();
+  for (let i = objects.length - 1; i >= 0; i--) {
+    const obj = objects[i];
+    if (!obj.visible || obj.get("data")) continue;
+    const b = obj.getBoundingRect();
+    if (point.x >= b.left - tol && point.x <= b.left + b.width + tol && point.y >= b.top - tol && point.y <= b.top + b.height + tol) {
+      return obj;
+    }
+  }
+  return null;
+}
+
+/** Colour shown in the properties panel; an arrow (group) reports the colour of its shaft. */
+function panelColor(obj: FabricObject, prop: "fill" | "stroke"): string {
+  const source = obj instanceof Group ? obj.getObjects()[0] ?? obj : obj;
+  const value = source.get(prop);
+  return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value) ? value : "#000000";
+}
+
 async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport: any) {
   const textContent = await page.getTextContent();
   if (typeof window === "undefined") return [];
 
   const items: TextItem[] = [];
+  const unmapped: { baseline: number; x: number; width: number }[] = [];
   for (const item of textContent.items) {
-    if (!("str" in item) || !item.str.trim()) continue;
+    if (!("str" in item)) continue;
+    // Gujarati/Hindi PDFs often have glyphs (such as the short "i" sign) with no text mapping;
+    // pdf.js reports those as NUL characters. Drop them, but remember the line lost something.
+    const lossy = item.str.includes("\u0000");
+    const str: string = lossy ? item.str.replace(/\u0000/g, "") : item.str;
     const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+    if (!str.trim()) {
+      // A piece that was nothing but unmapped glyphs: remember where, so the line it belongs to is flagged.
+      if (lossy) unmapped.push({ baseline: tx[5], x: tx[4], width: (item.width || 0) * viewport.scale });
+      continue;
+    }
     const style = textContent.styles?.[item.fontName];
     const fontHeight = Math.hypot(tx[2], tx[3]);
     const ascent = style?.ascent
@@ -238,24 +330,50 @@ async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport:
         ? (1 + style.descent) * fontHeight
         : fontHeight * 0.8;
 
+    // pdf.js ids like "g_d0_f1" say nothing about the font; once the page is rendered the real
+    // BaseFont name (for example "ABCDEF+Arial-BoldMT") is available from commonObjs.
+    let realFontName: string = item.fontName || "";
+    try {
+      if (page.commonObjs?.has(item.fontName)) {
+        realFontName = page.commonObjs.get(item.fontName)?.name || realFontName;
+      }
+    } catch {
+      // font object not resolved; keep the pdf.js id
+    }
+
     // Detect bold/italic from PDF font name
-    const fn = (item.fontName || "").toLowerCase();
+    const fn = realFontName.toLowerCase();
     const isBold = fn.includes("bold") || fn.includes("heavy") || fn.includes("black");
     const isItalic = fn.includes("italic") || fn.includes("oblique");
 
     items.push({
-      str: item.str,
+      str,
+      lossy,
       x: tx[4],
       y: tx[5] - ascent,
-      width: Math.max(item.width * viewport.scale, item.str.length * fontHeight * 0.45),
+      width: Math.max(item.width * viewport.scale, str.length * fontHeight * 0.45),
       height: fontHeight,
-      fontFamily: item.fontName || "Helvetica",
+      fontFamily: pickFontFamily(realFontName, style?.fontFamily),
       fontSize: parseFloat(fontHeight.toFixed(2)),
       fontSizePt: parseFloat((fontHeight / viewport.scale).toFixed(2)),
       color: "#000000",
       fontWeight: isBold ? "bold" : "normal",
       fontStyle: isItalic ? "italic" : "normal",
     });
+  }
+
+  // Flag the line each unmapped piece sat on (its baseline falls inside that line's box) and let the
+  // white cover reach it, so the glyphs that have no text are hidden too (the text itself is unchanged).
+  for (const piece of unmapped) {
+    for (const entry of items) {
+      if (piece.baseline < entry.y - 2 || piece.baseline > entry.y + entry.height * 1.3) continue;
+      const nearLeft = piece.x + piece.width >= entry.x - entry.height * 2;
+      const nearRight = piece.x <= entry.x + entry.width + entry.height * 2;
+      if (!nearLeft || !nearRight) continue;
+      entry.lossy = true;
+      entry.coverLeft = Math.min(entry.coverLeft ?? entry.x, piece.x);
+      entry.coverRight = Math.max(entry.coverRight ?? entry.x + entry.width, piece.x + piece.width);
+    }
   }
 
   return mergeNearbyTextItems(items);
@@ -320,6 +438,9 @@ export default function PdfEditorClient() {
   const pageScale = pages[currentPage]?.scale ?? RENDER_SCALE;
   const [zoom, setZoom] = useState(1);
   const zoomPerPageRef = useRef<Map<number, number>>(new Map());
+  // Latest zoom for async loaders; zoom changes alone must never reload (and so reset) the canvas.
+  const zoomRef = useRef(1);
+  zoomRef.current = zoom;
 
   const [activeTool, setActiveTool] = useState<Tool>("select");
   const [brushColor, setBrushColor] = useState("#000000");
@@ -345,6 +466,10 @@ export default function PdfEditorClient() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pdfBytesRef = useRef<ArrayBuffer | null>(null);
   const isLoadingPage = useRef(false);
+  // Which page (by stable id) the fabric canvas currently shows, and with which load settings.
+  const loadedPageIdRef = useRef<string | null>(null);
+  const loadedSignatureRef = useRef("");
+  const loadSeq = useRef(0);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const pdfjsLibRef = useRef<any>(null);
   const pdfDocRef = useRef<any>(null);
@@ -424,12 +549,19 @@ export default function PdfEditorClient() {
     return () => mediaQuery.removeEventListener("change", syncCompactLayout);
   }, []);
 
-  const createEditableTextObjects = useCallback((item: TextItem) => {
-    const cover = new Rect({
-      left: item.x - 2,
-      top: item.y - 2,
-      width: item.width + 6,
-      height: item.height + 6,
+  const createCover = useCallback((item: TextItem, key: number) => {
+    // Indic, Thai, Arabic... scripts have marks well above and below the line box; a Latin-sized
+    // cover would leave pieces of the old glyphs showing around the new text.
+    const tall = COMPLEX_SCRIPT_RE.test(item.str);
+    const padTop = tall ? item.height * 0.3 : 2;
+    const padBottom = tall ? item.height * 0.5 : 4;
+    const coverL = Math.min(item.x, item.coverLeft ?? item.x);
+    const coverR = Math.max(item.x + item.width, item.coverRight ?? 0);
+    return new Rect({
+      left: coverL - 2,
+      top: item.y - padTop,
+      width: coverR - coverL + 6,
+      height: item.height + padTop + padBottom,
       originX: "left",
       originY: "top",
       fill: "#ffffff",
@@ -437,8 +569,36 @@ export default function PdfEditorClient() {
       evented: false,
       visible: false,
       excludeFromExport: true,
-      data: { type: "textCover", originalText: item.str } satisfies TextCoverData,
+      data: { type: "textCover", itemKey: key, originalText: item.str } satisfies TextCoverData,
     });
+  }, []);
+
+  // Invisible click target over a piece of original PDF text (only active in Edit Text mode).
+  const createHotspot = useCallback((item: TextItem, key: number) => {
+    return new Rect({
+      left: item.x,
+      top: item.y,
+      width: item.width + 2,
+      height: item.height + 2,
+      originX: "left",
+      originY: "top",
+      fill: "transparent",
+      stroke: "transparent",
+      strokeWidth: 1,
+      strokeDashArray: [4, 3],
+      opacity: 0,
+      selectable: false,
+      evented: true,
+      hoverCursor: "text",
+      rx: 2,
+      ry: 2,
+      excludeFromExport: true,
+      data: { type: "textHotspot", itemKey: key, originalText: item.str } satisfies TextHotspotData,
+    });
+  }, []);
+
+  const createEditableTextObjects = useCallback((item: TextItem, key: number) => {
+    const cover = createCover(item, key);
 
     // Use the exact viewport-pixel fontSize — no rounding.
     // The pt size is stored in data for display in the toolbar.
@@ -450,7 +610,7 @@ export default function PdfEditorClient() {
       fontSize: item.fontSize,
       lineHeight: 1,
       fill: item.color,
-      fontFamily: "Helvetica",
+      fontFamily: item.fontFamily || "Helvetica, Arial, sans-serif",
       fontWeight: item.fontWeight || "normal",
       fontStyle: (item.fontStyle || "normal") as "" | "normal" | "italic" | "oblique",
       width: Math.max(item.width + 4, item.str.length * item.fontSize * 0.55),
@@ -467,6 +627,7 @@ export default function PdfEditorClient() {
       excludeFromExport: false,
       data: {
         type: "editableText",
+        itemKey: key,
         originalText: item.str,
         changed: false,
         originalFontSize: item.fontSize,
@@ -478,7 +639,99 @@ export default function PdfEditorClient() {
     });
 
     return { cover, textbox };
-  }, []);
+  }, [createCover]);
+
+  // Links an edited-text box to its white cover and keeps the "edited" bookkeeping in sync.
+  // Called for a fresh box (click on a hotspot) and again for boxes restored from saved JSON.
+  const wireEditable = useCallback((fc: FabricCanvas, textbox: Textbox, cover: FabricObject, item: TextItem, key: number) => {
+    (textbox as any).__coverRef = cover;
+
+    const syncEditedState = () => {
+      // Leaving edit mode fires both "editing:exited" and "modified"; the second call must not
+      // run again once the box has been removed, or the hotspot would be added twice.
+      if (!fc.getObjects().includes(textbox)) return;
+      const tbData = textbox.get("data") as EditableTextData;
+      // Text, size, bold/italic or color changes all count as an edit (not just the characters).
+      const changed = isEditableTextChanged(textbox);
+
+      textbox.set("data", { ...tbData, changed } satisfies EditableTextData);
+
+      if (changed) {
+        // Text was modified — keep cover visible, keep textbox on canvas
+        cover.set({ visible: true, excludeFromExport: false });
+      } else if (!textbox.isEditing) {
+        // Unchanged and not editing — restore the hotspot, remove the textbox
+        fc.remove(cover);
+        fc.remove(textbox);
+        fc.add(createHotspot(item, key));
+      }
+
+      fc.requestRenderAll();
+    };
+
+    textbox.on("editing:entered", () => {
+      cover.set({ visible: true, excludeFromExport: false });
+      // A line of text must not wrap onto the line below while it is being typed: let the box
+      // reach the right page margin (it shrinks back to the text when editing ends).
+      const pageWidth = fc.getWidth() / (fc.getZoom() || 1);
+      const room = pageWidth - (textbox.left ?? 0) - EDIT_RIGHT_MARGIN_PX;
+      if (room > (textbox.width ?? 0)) {
+        textbox.set({ width: room });
+        textbox.initDimensions();
+        textbox.setCoords();
+      }
+      fc.requestRenderAll();
+    });
+    textbox.on("editing:exited", () => {
+      if (!fc.getObjects().includes(textbox)) return;
+      const fitted = Math.ceil(textbox.calcTextWidth()) + 4;
+      if (fitted < (textbox.width ?? 0)) {
+        textbox.set({ width: fitted });
+        textbox.initDimensions();
+        textbox.setCoords();
+      }
+      syncEditedState();
+    });
+    textbox.on("modified", syncEditedState);
+  }, [createHotspot]);
+
+  // After loading saved canvas JSON: re-link edited text to its cover and return the text items
+  // that are currently edited, so only the remaining items get a click target.
+  const rewireEditables = useCallback((fc: FabricCanvas, pageData: PageData) => {
+    const edited = new Set<number>();
+    const covers = new Map<number, FabricObject>();
+    const boxes: FabricObject[] = [];
+    for (const obj of fc.getObjects()) {
+      const d = obj.get("data") as { type?: string; itemKey?: number } | undefined;
+      if (d?.type === "textCover" && typeof d.itemKey === "number") covers.set(d.itemKey, obj);
+      if (d?.type === "editableText") boxes.push(obj);
+    }
+
+    for (const obj of boxes) {
+      const d = obj.get("data") as EditableTextData;
+      const key = d.itemKey;
+      const item = typeof key === "number" ? pageData.textItems[key] : undefined;
+      if (typeof key !== "number" || !item) continue; // not linked to the page text: leave as a plain box
+
+      if (!isEditableTextChanged(obj)) {
+        // Opened but never changed: drop it so the original text and its hotspot come back.
+        const stale = covers.get(key);
+        if (stale) fc.remove(stale);
+        fc.remove(obj);
+        continue;
+      }
+
+      let cover = covers.get(key);
+      if (!cover) {
+        cover = createCover(item, key);
+        cover.set({ visible: true, excludeFromExport: false });
+        fc.insertAt(Math.max(0, fc.getObjects().indexOf(obj)), cover);
+      }
+      wireEditable(fc, obj as Textbox, cover, item, key);
+      edited.add(key);
+    }
+    return edited;
+  }, [createCover, wireEditable]);
 
   const applyTextEditInteractivity = useCallback((canvas: FabricCanvas) => {
     for (const obj of canvas.getObjects()) {
@@ -508,6 +761,39 @@ export default function PdfEditorClient() {
       }
     }
   }, [textEditMode]);
+
+  // Fills the canvas for one page from saved JSON: background, annotations, edited text and
+  // (in Edit Text mode) a click target for every text item that has not been edited yet.
+  // Returns false when `isStale()` says a newer load superseded this one.
+  const populateCanvas = useCallback(
+    async (fc: FabricCanvas, pageData: PageData, json: string | null, isStale: () => boolean = () => false) => {
+      fc.clear();
+      const background = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
+      if (isStale()) return false;
+      fc.backgroundImage = background;
+
+      if (json) {
+        const parsed = JSON.parse(json);
+        if (parsed.objects && parsed.objects.length > 0) {
+          await fc.loadFromJSON(parsed);
+          if (isStale()) return false;
+          // loadFromJSON resets the background, so put the page image back.
+          fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
+          if (isStale()) return false;
+        }
+      }
+
+      const edited = rewireEditables(fc, pageData);
+      if (textEditMode) {
+        pageData.textItems.forEach((item, key) => {
+          if (!edited.has(key)) fc.add(createHotspot(item, key));
+        });
+      }
+      applyTextEditInteractivity(fc);
+      return true;
+    },
+    [createBackgroundImage, rewireEditables, createHotspot, applyTextEditInteractivity, textEditMode]
+  );
 
   /* ================================================================ */
   /*  PDF loading via pdfjs-dist CDN                                   */
@@ -564,6 +850,8 @@ export default function PdfEditorClient() {
             const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport);
 
             pagesArr.push({
+              id: newPageId(),
+              srcIndex: i - 1,
               dataUrl: canvas.toDataURL("image/png"),
               width: viewport.width,
               height: viewport.height,
@@ -575,6 +863,8 @@ export default function PdfEditorClient() {
           } else {
             // Placeholder for lazy-loaded pages (just store dimensions)
             pagesArr.push({
+              id: newPageId(),
+              srcIndex: i - 1,
               dataUrl: "",
               width: viewport.width,
               height: viewport.height,
@@ -616,7 +906,7 @@ export default function PdfEditorClient() {
   const saveCurrentPageState = useCallback(() => {
     const fc = fabricRef.current;
     if (!fc || isLoadingPage.current) return;
-    const json = JSON.stringify(fc.toJSON());
+    const json = serializeCanvas(fc);
     setPages((prev) => {
       const next = [...prev];
       if (next[currentPage]) next[currentPage] = { ...next[currentPage], fabricJson: json };
@@ -627,7 +917,7 @@ export default function PdfEditorClient() {
   const pushUndo = useCallback(() => {
     const fc = fabricRef.current;
     if (!fc || isLoadingPage.current) return;
-    const json = JSON.stringify(fc.toJSON());
+    const json = serializeCanvas(fc);
     setUndoStack((prev) => {
       // Skip if identical to last state
       if (prev.length > 0 && prev[prev.length - 1] === json) return prev;
@@ -677,66 +967,42 @@ export default function PdfEditorClient() {
   useEffect(() => {
     const fc = fabricRef.current;
     if (!fc || pages.length === 0) return;
-    isLoadingPage.current = true;
 
     const pageData = pages[currentPage];
     if (!pageData) return;
 
-      fc.setViewportTransform([1, 0, 0, 1, 0, 0]);
-      fc.setDimensions({ width: pageData.width, height: pageData.height });
+    // Same page, same mode, nothing new to show: leave the live canvas alone.
+    const signature = `${pageData.id}|${pageData.dataUrl.length}|${pageData.textItems.length}|${textEditMode}`;
+    const alreadyShowing = loadedPageIdRef.current === pageData.id;
+    if (alreadyShowing && loadedSignatureRef.current === signature && !isLoadingPage.current) return;
 
-    const loadPage = async () => {
-      // Clear canvas
-      fc.clear();
+    // When this page is already on the canvas (Edit Text toggled, page list changed), carry the live
+    // edits over. Reloading from the last saved snapshot would silently drop unsaved annotations.
+    const liveJson = alreadyShowing && !isLoadingPage.current ? serializeCanvas(fc) : null;
 
-      // Set background image (the rendered PDF page)
-      fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
+    const seq = ++loadSeq.current;
+    isLoadingPage.current = true;
 
-      // Restore fabric objects if any
-      if (pageData.fabricJson) {
-        const parsed = JSON.parse(pageData.fabricJson);
-        if (parsed.objects && parsed.objects.length > 0) {
-          await fc.loadFromJSON(parsed);
-          // Re-set background since loadFromJSON may overwrite it
-          fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
-        }
-      }
+    fc.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    fc.setDimensions({ width: pageData.width, height: pageData.height });
 
-      // In text edit mode, add click targets instead of rendering every text overlay up front.
-      if (textEditMode && !pageData.fabricJson && pageData.textItems.length > 0) {
-        for (const item of pageData.textItems) {
-          const hotspot = new Rect({
-            left: item.x,
-            top: item.y,
-            width: item.width + 2,
-            height: item.height + 2,
-            originX: "left",
-            originY: "top",
-            fill: "transparent",
-            stroke: "transparent",
-            strokeWidth: 1,
-            strokeDashArray: [4, 3],
-            opacity: 0,
-            selectable: false,
-            evented: true,
-            hoverCursor: "text",
-            rx: 2,
-            ry: 2,
-            excludeFromExport: true,
-            data: { type: "textHotspot", originalText: item.str } satisfies TextHotspotData,
-          });
-          fc.add(hotspot);
-        }
-      }
+    (async () => {
+      const done = await populateCanvas(fc, pageData, liveJson ?? pageData.fabricJson, () => seq !== loadSeq.current);
+      if (!done || seq !== loadSeq.current) return;
 
-      applyTextEditInteractivity(fc);
+      applyCanvasZoom(fc, pageData, zoomRef.current);
       fc.renderAll();
-      applyCanvasZoom(fc, pageData, zoom);
       isLoadingPage.current = false;
-    };
+      loadedPageIdRef.current = pageData.id;
+      loadedSignatureRef.current = signature;
 
-    loadPage();
-  }, [currentPage, pages, textEditMode, zoom, createBackgroundImage, applyCanvasZoom, applyTextEditInteractivity]);
+      if (!alreadyShowing) {
+        // First time this page is shown: undo history starts from its current state.
+        setUndoStack([serializeCanvas(fc)]);
+        setRedoStack([]);
+      }
+    })();
+  }, [currentPage, pages, textEditMode, applyCanvasZoom, populateCanvas]);
 
   useEffect(() => {
     const fc = fabricRef.current;
@@ -929,46 +1195,22 @@ export default function PdfEditorClient() {
 
         if (resolvedData?.type === "textHotspot") {
           const originalText = resolvedData.originalText;
-          const item = pages[currentPage]?.textItems.find(
-            (textItem) =>
-              textItem.str === originalText &&
-              Math.abs(textItem.x - ((resolvedTarget?.left || 0))) < 6 &&
-              Math.abs(textItem.y - ((resolvedTarget?.top || 0))) < 6
-          );
+          const textItems = pages[currentPage]?.textItems ?? [];
+          // Every hotspot knows which text item it covers; fall back to matching by text and position.
+          let key = typeof resolvedData.itemKey === "number" ? resolvedData.itemKey : -1;
+          if (key < 0 || !textItems[key]) {
+            key = textItems.findIndex(
+              (textItem) =>
+                textItem.str === originalText &&
+                Math.abs(textItem.x - (resolvedTarget?.left || 0)) < 6 &&
+                Math.abs(textItem.y - (resolvedTarget?.top || 0)) < 6
+            );
+          }
+          const item = key >= 0 ? textItems[key] : undefined;
 
           if (item) {
-            const { cover, textbox } = createEditableTextObjects(item);
-
-            // Track cover-textbox pair via a ref on the textbox
-            (textbox as any).__coverRef = cover;
-            (textbox as any).__hotspotRef = resolvedTarget;
-
-            const syncEditedState = () => {
-              const tbData = textbox.get("data") as EditableTextData;
-              // Text, size, bold/italic or color changes all count as an edit (not just the characters).
-              const changed = isEditableTextChanged(textbox);
-
-              textbox.set("data", { ...tbData, changed } satisfies EditableTextData);
-
-              if (changed) {
-                // Text was modified — keep cover visible, keep textbox on canvas
-                cover.set({ visible: true, excludeFromExport: false });
-              } else if (!textbox.isEditing) {
-                // Unchanged and not editing — restore hotspot, remove textbox
-                fc.remove(cover);
-                fc.remove(textbox);
-                if (resolvedTarget) fc.add(resolvedTarget as unknown as FabricObject);
-              }
-
-              fc.requestRenderAll();
-            };
-
-            textbox.on("editing:entered", () => {
-              cover.set({ visible: true, excludeFromExport: false });
-              fc.requestRenderAll();
-            });
-            textbox.on("editing:exited", syncEditedState);
-            textbox.on("modified", syncEditedState);
+            const { cover, textbox } = createEditableTextObjects(item, key);
+            wireEditable(fc, textbox, cover, item, key);
 
             if (resolvedTarget) fc.remove(resolvedTarget as unknown as FabricObject);
             fc.add(cover);
@@ -992,12 +1234,22 @@ export default function PdfEditorClient() {
       }
 
       if (activeTool === "eraser") {
-        if (target) {
-          fc.remove(target as unknown as FabricObject);
+        const victim = (target as unknown as FabricObject | null) ?? findAnnotationNear(fc, pointer);
+        if (victim) {
+          fc.remove(victim);
           fc.requestRenderAll();
           pushUndo();
         }
         return;
+      }
+
+      // Thin lines/arrows are hard to hit exactly: give the select tool a small tolerance too.
+      if (activeTool === "select" && !textEditMode && !target) {
+        const near = findAnnotationNear(fc, pointer);
+        if (near) {
+          fc.setActiveObject(near);
+          fc.requestRenderAll();
+        }
       }
 
       if (activeTool === "text") {
@@ -1009,6 +1261,7 @@ export default function PdfEditorClient() {
           // The text tool size is in points; the canvas works in px at the page render scale.
           fontSize: ptToPx(Math.min(Math.max(fontSize || DEFAULT_TEXT_PT, MIN_FONT_PT), MAX_FONT_PT), pageScale),
           fill: brushColor,
+          fontFamily: "Helvetica, Arial, sans-serif",
           fontWeight: fontBold ? "bold" : "normal",
           fontStyle: fontItalic ? "italic" : "normal",
           width: 200,
@@ -1017,6 +1270,9 @@ export default function PdfEditorClient() {
         fc.add(text);
         fc.setActiveObject(text);
         text.enterEditing();
+        // Select the placeholder so the first keystroke replaces "Type here" instead of appending to it.
+        text.selectAll();
+        text.hiddenTextarea?.focus();
         fc.requestRenderAll();
         setActiveTool("select");
         return;
@@ -1031,8 +1287,8 @@ export default function PdfEditorClient() {
           width: 150,
           height: 30,
           fill: "#ffffff",
-          stroke: "#e2e8f0",
-          strokeWidth: 1,
+          // No outline: a grey border would stay visible on the saved PDF after covering text.
+          strokeWidth: 0,
         });
         fc.add(rect);
         fc.setActiveObject(rect);
@@ -1091,17 +1347,19 @@ export default function PdfEditorClient() {
       }
 
       if (activeTool === "arrow") {
-        // Arrow = line + triangle head
+        // Arrow = shaft + triangle head, kept together as ONE object so it can be moved,
+        // erased, copied and recoloured as a whole.
         const x1 = pointer.x, y1 = pointer.y;
         const x2 = x1 + 150, y2 = y1;
-        const line = new Line([x1, y1, x2, y2], {
+        const headSize = 12;
+        const shaft = new Line([x1, y1, x2 - headSize / 2, y2], {
           stroke: brushColor,
           strokeWidth: 2,
         });
-        const headSize = 12;
         const arrowHead = new Triangle({
-          left: x2,
-          top: y2 - headSize / 2,
+          // After the 90° turn the tip points right; the tip ends exactly at (x2, y2).
+          left: x2 - headSize / 2,
+          top: y2,
           width: headSize,
           height: headSize,
           fill: brushColor,
@@ -1109,8 +1367,9 @@ export default function PdfEditorClient() {
           originX: "center",
           originY: "center",
         });
-        fc.add(line);
-        fc.add(arrowHead);
+        const arrow = new Group([shaft, arrowHead]);
+        fc.add(arrow);
+        fc.setActiveObject(arrow);
         fc.requestRenderAll();
         setActiveTool("select");
         return;
@@ -1121,45 +1380,46 @@ export default function PdfEditorClient() {
     return () => {
       fc.off("mouse:down", handleMouseDown);
     };
-  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo, textEditMode, pages, currentPage, pageScale, createEditableTextObjects]);
+  }, [activeTool, brushColor, fontSize, fontBold, fontItalic, brushSize, pushUndo, textEditMode, pages, currentPage, pageScale, createEditableTextObjects, wireEditable]);
 
   /* ================================================================ */
   /*  Undo / Redo                                                      */
   /* ================================================================ */
 
-  const handleUndo = useCallback(async () => {
-    const fc = fabricRef.current;
-    if (!fc || undoStack.length === 0) return;
-    const currentJson = JSON.stringify(fc.toJSON());
-    setRedoStack((prev) => [...prev, currentJson]);
-    const prevState = undoStack[undoStack.length - 1];
-    setUndoStack((prev) => prev.slice(0, -1));
+  // The undo stack always ends with the state that is on the canvas right now, and starts with the
+  // page as it was when it was opened. So one Undo = drop the last entry and show the one before it.
+  const restoreSnapshot = useCallback(
+    async (json: string) => {
+      const fc = fabricRef.current;
+      const pageData = pages[currentPage];
+      if (!fc || !pageData) return;
+      const seq = ++loadSeq.current;
+      isLoadingPage.current = true;
+      const done = await populateCanvas(fc, pageData, json, () => seq !== loadSeq.current);
+      if (!done || seq !== loadSeq.current) return;
+      applyCanvasZoom(fc, pageData, zoomRef.current);
+      fc.renderAll();
+      isLoadingPage.current = false;
+    },
+    [pages, currentPage, populateCanvas, applyCanvasZoom]
+  );
 
-    isLoadingPage.current = true;
-    const pageData = pages[currentPage];
-    await fc.loadFromJSON(JSON.parse(prevState));
-    fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
-    applyCanvasZoom(fc, pageData, zoom);
-    fc.renderAll();
-    isLoadingPage.current = false;
-  }, [undoStack, pages, currentPage, zoom, createBackgroundImage, applyCanvasZoom]);
+  const handleUndo = useCallback(async () => {
+    if (undoStack.length < 2 || isLoadingPage.current) return;
+    const current = undoStack[undoStack.length - 1];
+    const previous = undoStack[undoStack.length - 2];
+    setRedoStack((prev) => [...prev, current]);
+    setUndoStack((prev) => prev.slice(0, -1));
+    await restoreSnapshot(previous);
+  }, [undoStack, restoreSnapshot]);
 
   const handleRedo = useCallback(async () => {
-    const fc = fabricRef.current;
-    if (!fc || redoStack.length === 0) return;
-    const currentJson = JSON.stringify(fc.toJSON());
-    setUndoStack((prev) => [...prev, currentJson]);
-    const nextState = redoStack[redoStack.length - 1];
+    if (redoStack.length === 0 || isLoadingPage.current) return;
+    const next = redoStack[redoStack.length - 1];
     setRedoStack((prev) => prev.slice(0, -1));
-
-    isLoadingPage.current = true;
-    const pageData = pages[currentPage];
-    await fc.loadFromJSON(JSON.parse(nextState));
-    fc.backgroundImage = await createBackgroundImage(pageData.dataUrl, pageData.width, pageData.height);
-    applyCanvasZoom(fc, pageData, zoom);
-    fc.renderAll();
-    isLoadingPage.current = false;
-  }, [redoStack, pages, currentPage, zoom, createBackgroundImage, applyCanvasZoom]);
+    setUndoStack((prev) => [...prev, next]);
+    await restoreSnapshot(next);
+  }, [redoStack, restoreSnapshot]);
 
   /* ================================================================ */
   /*  Image upload                                                     */
@@ -1291,7 +1551,7 @@ export default function PdfEditorClient() {
     saveCurrentPageState();
     setPages((prev) => [
       ...prev.slice(0, currentPage + 1),
-      { dataUrl, width: w, height: h, fabricJson: null, textItems: [], scale, loaded: true },
+      { id: newPageId(), srcIndex: null, dataUrl, width: w, height: h, fabricJson: null, textItems: [], scale, loaded: true },
       ...prev.slice(currentPage + 1),
     ]);
     setCurrentPage(currentPage + 1);
@@ -1333,6 +1593,16 @@ export default function PdfEditorClient() {
       const active = fc.getActiveObject();
       const isEditing = active && (active as any).isEditing;
 
+      // Typing in a form field (font size, colour, the site search box...) must never run editor
+      // shortcuts: Backspace in the size box used to delete the selected object. Fabric's own
+      // hidden textarea (used while editing text on the canvas) is the one field we keep handling.
+      const field = e.target as HTMLElement | null;
+      const inFormField =
+        !!field &&
+        (field.tagName === "INPUT" || field.tagName === "TEXTAREA" || field.tagName === "SELECT" || field.isContentEditable) &&
+        field !== (active as any)?.hiddenTextarea;
+      if (inFormField) return;
+
       if (e.key === "Delete" || e.key === "Backspace") {
         if (isEditing) return;
         deleteSelected();
@@ -1358,12 +1628,14 @@ export default function PdfEditorClient() {
           // Offset pasted object to avoid exact overlap
           parsed.left = (parsed.left || 0) + 15;
           parsed.top = (parsed.top || 0) + 15;
+          // A pasted copy is a plain object; it must not claim to be the edited original PDF text.
+          delete parsed.data;
           import("fabric").then(({ util }) => {
             util.enlivenObjects([parsed]).then((objects) => {
               for (const obj of objects) {
-                const fObj = obj as FabricObject;
-                fObj.set({ originX: "left", originY: "top" });
-                fc.add(fObj);
+                // Keep the copied object's own origin (pen strokes and lines are centre-based);
+                // forcing left/top used to throw them half their size away from the original.
+                fc.add(obj as FabricObject);
               }
               fc.setActiveObject(objects[0] as FabricObject);
               fc.requestRenderAll();
@@ -1400,14 +1672,49 @@ export default function PdfEditorClient() {
       // Update current page with latest fabric state
       latestPages[currentPage] = {
         ...latestPages[currentPage],
-        fabricJson: JSON.stringify(fc.toJSON()),
+        fabricJson: serializeCanvas(fc),
       };
 
       // Create new PDF with pdf-lib
       const pdfDoc = await PDFDocument.create();
 
+      // Pages without any edit are copied from the original file, so their text, links and
+      // quality stay exactly as they were. Only edited pages are flattened to an image.
+      // If the original cannot be re-opened by pdf-lib (for example it is encrypted), every
+      // page falls back to the image route.
+      let sourceDoc: PDFDocument | null = null;
+      if (pdfBytesRef.current) {
+        try {
+          sourceDoc = await PDFDocument.load(pdfBytesRef.current.slice(0));
+        } catch {
+          sourceDoc = null;
+        }
+      }
+
       for (let i = 0; i < latestPages.length; i++) {
         const pg = latestPages[i];
+
+        let hasEdits = false;
+        if (pg.fabricJson) {
+          try {
+            const parsedJson = JSON.parse(pg.fabricJson);
+            hasEdits = Array.isArray(parsedJson.objects) && parsedJson.objects.length > 0;
+          } catch {
+            hasEdits = true;
+          }
+        }
+
+        if (!hasEdits && sourceDoc && pg.srcIndex !== null && pg.srcIndex < sourceDoc.getPageCount()) {
+          const [copied] = await pdfDoc.copyPages(sourceDoc, [pg.srcIndex]);
+          pdfDoc.addPage(copied);
+          continue;
+        }
+
+        if (!hasEdits && pg.srcIndex === null) {
+          // Blank page added in the editor and left untouched.
+          pdfDoc.addPage([pg.width / pg.scale, pg.height / pg.scale]);
+          continue;
+        }
 
         // Create a temporary fabric canvas to render the full page
         const tempCanvas = document.createElement("canvas");
@@ -1489,6 +1796,18 @@ export default function PdfEditorClient() {
       const oldSize = (obj as FabricObject & { fontSize?: number }).fontSize || value;
       const ratio = oldSize > 0 ? value / oldSize : 1;
       obj.set({ fontSize: value, width: (obj.width ?? 0) * ratio } as Partial<FabricObject>);
+    } else if (obj instanceof Group) {
+      // An arrow is a group: colour = shaft stroke + head fill, width = shaft width.
+      const [shaft, head] = obj.getObjects();
+      if (prop === "fill" || prop === "stroke") {
+        shaft?.set("stroke", value);
+        head?.set("fill", value);
+      } else if (prop === "strokeWidth") {
+        shaft?.set("strokeWidth", value);
+      } else {
+        obj.set(prop as keyof FabricObject, value);
+      }
+      obj.set("dirty", true);
     } else {
       obj.set(prop as keyof FabricObject, value);
     }
@@ -1569,6 +1888,19 @@ export default function PdfEditorClient() {
   /* ================================================================ */
   /*  RENDER — Editor                                                  */
   /* ================================================================ */
+
+  // Edit Text mode only helps on pages that have real text: say so instead of staying silent.
+  const noticePage = pages[currentPage];
+  let textEditNotice: string | null = null;
+  if (textEditMode && noticePage?.loaded && noticePage.srcIndex !== null) {
+    if (noticePage.textItems.length === 0) {
+      textEditNotice =
+        "This page has no editable text (it looks scanned or image-only). Use White-out to cover something, then Add Text to type over it.";
+    } else if (noticePage.textItems.some((item) => item.lossy)) {
+      textEditNotice =
+        "Some lines use characters this PDF cannot map back to text (common with Gujarati/Hindi). Those characters can drop out when you edit the line, so check the result or use White-out + Add Text.";
+    }
+  }
 
   return (
     <div
@@ -1722,7 +2054,7 @@ export default function PdfEditorClient() {
         {/* Undo / Redo */}
         <button
           onClick={handleUndo}
-          disabled={undoStack.length === 0}
+          disabled={undoStack.length < 2}
           className="group relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 transition-all"
           title="Undo (Ctrl+Z)"
         >
@@ -1889,8 +2221,13 @@ export default function PdfEditorClient() {
             setCurrentPage(0);
             setUndoStack([]);
             setRedoStack([]);
+            // The old canvas is gone, so a selection from it must not keep the properties panel open.
+            setSelectedObject(null);
+            setShowProperties(false);
             fabricRef.current?.dispose();
             fabricRef.current = null;
+            loadedPageIdRef.current = null;
+            loadedSignatureRef.current = "";
           }}
           className="flex h-9 flex-shrink-0 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all"
           title="Open new file"
@@ -2011,7 +2348,9 @@ export default function PdfEditorClient() {
             className={
               isCompact
                 ? "absolute inset-x-3 bottom-3 z-30 max-h-[45%] space-y-3 overflow-y-auto rounded-lg border border-slate-200 bg-white p-3 shadow-xl"
-                : "w-[200px] space-y-3 overflow-y-auto border-l border-slate-200 bg-white p-3"
+                : // Floats over the canvas instead of squeezing it: a side column made the page jump
+                  // sideways the moment an object was clicked, so the first drag/click landed wrong.
+                  "absolute right-4 top-3 z-30 max-h-[calc(100%-24px)] w-[200px] space-y-3 overflow-y-auto rounded-lg border border-slate-200 bg-white p-3 shadow-xl"
             }
           >
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Properties</h3>
@@ -2021,7 +2360,7 @@ export default function PdfEditorClient() {
               <label className="text-[10px] font-medium text-slate-500 block mb-1">Fill Color</label>
               <input
                 type="color"
-                value={(selectedObject.get("fill") as string) || "#000000"}
+                value={panelColor(selectedObject, "fill")}
                 onChange={(e) => updateSelectedProp("fill", e.target.value)}
                 className="h-7 w-full cursor-pointer rounded border border-slate-200"
               />
@@ -2032,7 +2371,7 @@ export default function PdfEditorClient() {
               <label className="text-[10px] font-medium text-slate-500 block mb-1">Stroke Color</label>
               <input
                 type="color"
-                value={(selectedObject.get("stroke") as string) || "#000000"}
+                value={panelColor(selectedObject, "stroke")}
                 onChange={(e) => updateSelectedProp("stroke", e.target.value)}
                 className="h-7 w-full cursor-pointer rounded border border-slate-200"
               />
@@ -2045,7 +2384,11 @@ export default function PdfEditorClient() {
                 type="range"
                 min={0}
                 max={20}
-                value={selectedObject.get("strokeWidth") || 0}
+                value={
+                  (selectedObject instanceof Group
+                    ? selectedObject.getObjects()[0]?.get("strokeWidth")
+                    : selectedObject.get("strokeWidth")) || 0
+                }
                 onChange={(e) => updateSelectedProp("strokeWidth", Number(e.target.value))}
                 className="w-full accent-brand-600"
               />
@@ -2094,6 +2437,17 @@ export default function PdfEditorClient() {
             )}
           </div>
         )}
+
+        {/* Edit Text hint (scanned page / unreadable glyphs). Floats over the canvas area so it can
+            never push the page around and throw off pointer positions. */}
+        {textEditNotice && (
+          <div
+            role="status"
+            className="pointer-events-none absolute inset-x-3 bottom-3 z-30 mx-auto max-w-xl rounded-lg border border-amber-200 bg-amber-50/95 px-3 py-2 text-xs text-amber-900 shadow-md"
+          >
+            {textEditNotice}
+          </div>
+        )}
       </div>
 
       {/* ============ BOTTOM BAR ============ */}
@@ -2120,6 +2474,16 @@ export default function PdfEditorClient() {
         <span className="hidden text-[10px] text-slate-400 sm:inline">
           All edits are local — your PDF never leaves your browser
         </span>
+        {/* On phones the toolbar scrolls sideways and Save PDF is its last button: keep a copy in reach. */}
+        {isCompact && (
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex h-8 items-center gap-1.5 rounded-lg bg-brand-600 px-3 text-xs font-semibold text-white shadow-sm hover:bg-brand-700 disabled:opacity-50"
+          >
+            {saving ? "Saving..." : "Save PDF"}
+          </button>
+        )}
       </div>
     </div>
   );
