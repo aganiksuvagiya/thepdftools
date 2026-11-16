@@ -1,17 +1,86 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import QRCode from "qrcode";
 
 type ECC = "L" | "M" | "Q" | "H";
 type QRFormat = "png" | "svg";
 type PresetType = "url" | "email" | "phone" | "wifi" | "sms" | "custom";
+
+// Wi-Fi QR format reserves \ ; , : " so they must be backslash-escaped.
+function escapeWifi(v: string) {
+  return v.replace(/([\\;,:"])/g, "\\$1");
+}
+
+// Draw the QR into an exact size x size canvas. Module edges are rounded to whole
+// pixels so neighbouring modules never leave gaps, whatever the chosen size is.
+function renderQr(data: string, opts: { size: number; margin: number; ecc: ECC; fg: string; bg: string }) {
+  const qr = QRCode.create(data, { errorCorrectionLevel: opts.ecc });
+  const n = qr.modules.size;
+  const total = n + opts.margin * 2;
+  return { qr, n, total };
+}
+
+function qrToCanvas(data: string, opts: { size: number; margin: number; ecc: ECC; fg: string; bg: string }) {
+  const { qr, n, total } = renderQr(data, opts);
+  const canvas = document.createElement("canvas");
+  canvas.width = opts.size;
+  canvas.height = opts.size;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas is not available");
+  ctx.fillStyle = opts.bg;
+  ctx.fillRect(0, 0, opts.size, opts.size);
+  ctx.fillStyle = opts.fg;
+  const cell = opts.size / total;
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (!qr.modules.get(r, c)) continue;
+      const x0 = Math.round((c + opts.margin) * cell);
+      const x1 = Math.round((c + opts.margin + 1) * cell);
+      const y0 = Math.round((r + opts.margin) * cell);
+      const y1 = Math.round((r + opts.margin + 1) * cell);
+      ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    }
+  }
+  return canvas;
+}
+
+function qrToSvg(data: string, opts: { size: number; margin: number; ecc: ECC; fg: string; bg: string }) {
+  const { qr, n, total } = renderQr(data, opts);
+  let path = "";
+  for (let r = 0; r < n; r++) {
+    let c = 0;
+    while (c < n) {
+      if (!qr.modules.get(r, c)) { c++; continue; }
+      let run = 1;
+      while (c + run < n && qr.modules.get(r, c + run)) run++;
+      path += `M${c + opts.margin} ${r + opts.margin}h${run}v1h-${run}z`;
+      c += run;
+    }
+  }
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${opts.size}" height="${opts.size}" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges">` +
+    `<rect width="${total}" height="${total}" fill="${opts.bg}"/><path d="${path}" fill="${opts.fg}"/></svg>`
+  );
+}
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 const PRESETS: { type: PresetType; label: string; placeholder: string; build: (v: string, extra: string) => string }[] = [
   { type: "url",    label: "URL",    placeholder: "https://example.com",    build: (v) => v },
   { type: "email",  label: "Email",  placeholder: "hello@example.com",      build: (v) => `mailto:${v}` },
   { type: "phone",  label: "Phone",  placeholder: "+1 234 567 8900",        build: (v) => `tel:${v.replace(/\s/g, "")}` },
   { type: "sms",    label: "SMS",    placeholder: "+1 234 567 8900",        build: (v) => `sms:${v.replace(/\s/g, "")}` },
-  { type: "wifi",   label: "Wi-Fi",  placeholder: "NetworkName",            build: (v, p) => `WIFI:T:WPA;S:${v};P:${p};;` },
+  { type: "wifi",   label: "Wi-Fi",  placeholder: "NetworkName",            build: (v, p) => (p ? `WIFI:T:WPA;S:${escapeWifi(v)};P:${escapeWifi(p)};;` : `WIFI:T:nopass;S:${escapeWifi(v)};;`) },
   { type: "custom", label: "Custom", placeholder: "Any text or data…",      build: (v) => v },
 ];
 
@@ -29,43 +98,59 @@ export default function QrGeneratorClient() {
 
   const currentPreset = PRESETS.find((p) => p.type === preset)!;
   const qrData = value.trim() ? currentPreset.build(value.trim(), wifiPass.trim()) : "";
-  const fg = fgColor.replace("#", "");
-  const bg = bgColor.replace("#", "");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [error, setError] = useState("");
 
-  const qrUrl = qrData
-    ? `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(qrData)}&color=${fg}&bgcolor=${bg}&ecc=${ecc}&margin=${margin}&format=${format}`
-    : "";
-
-  const handleDownload = useCallback(async () => {
-    if (!qrUrl) return;
-    try {
-      const res = await fetch(qrUrl);
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `qrcode-${Date.now()}.${format}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch {
-      window.open(qrUrl, "_blank");
+  // Everything is generated in the browser — the QR content never leaves the device.
+  useEffect(() => {
+    if (!qrData) {
+      setPreviewUrl("");
+      setError("");
+      return;
     }
-  }, [qrUrl, format]);
+    try {
+      const canvas = qrToCanvas(qrData, { size, margin, ecc, fg: fgColor, bg: bgColor });
+      setPreviewUrl(canvas.toDataURL("image/png"));
+      setError("");
+    } catch {
+      setPreviewUrl("");
+      setError("This text is too long for a QR code at this error-correction level. Shorten it or choose a lower level (L or M).");
+    }
+  }, [qrData, size, margin, ecc, fgColor, bgColor]);
+
+  const handleDownload = useCallback(() => {
+    if (!qrData || !previewUrl) return;
+    const name = `qrcode-${Date.now()}.${format}`;
+    if (format === "svg") {
+      const svg = qrToSvg(qrData, { size, margin, ecc, fg: fgColor, bg: bgColor });
+      downloadBlob(new Blob([svg], { type: "image/svg+xml" }), name);
+      return;
+    }
+    const canvas = qrToCanvas(qrData, { size, margin, ecc, fg: fgColor, bg: bgColor });
+    canvas.toBlob((blob) => {
+      if (blob) downloadBlob(blob, name);
+    }, "image/png");
+  }, [qrData, previewUrl, format, size, margin, ecc, fgColor, bgColor]);
 
   const handleCopy = useCallback(async () => {
-    if (!qrUrl) return;
+    if (!qrData || !previewUrl) return;
     try {
-      const res = await fetch(qrUrl);
-      const blob = await res.blob();
+      const canvas = qrToCanvas(qrData, { size, margin, ecc, fg: fgColor, bg: bgColor });
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!blob) throw new Error("no blob");
       await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+      setCopied(true);
     } catch {
-      await navigator.clipboard.writeText(qrUrl);
+      // Clipboard image access is not available in every browser; fall back to the raw text.
+      try {
+        await navigator.clipboard.writeText(qrData);
+        setCopied(true);
+      } catch {
+        setCopied(false);
+      }
     }
-    setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [qrUrl]);
+  }, [qrData, previewUrl, size, margin, ecc, fgColor, bgColor]);
 
   return (
     <div className="space-y-6">
@@ -174,11 +259,13 @@ export default function QrGeneratorClient() {
       {/* Preview */}
       <div className="card flex flex-col items-center">
         <h3 className="text-sm font-semibold text-gray-700 mb-4 self-start">Preview</h3>
-        {qrUrl ? (
+        {error ? (
+          <p className="py-10 text-center text-sm font-medium text-red-600">{error}</p>
+        ) : previewUrl ? (
           <>
             <div className="rounded-xl border border-gray-100 overflow-hidden shadow-sm" style={{ backgroundColor: bgColor }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={qrUrl} alt="QR code" width={Math.min(size, 320)} height={Math.min(size, 320)} className="block" />
+              <img src={previewUrl} alt="QR code" width={Math.min(size, 320)} height={Math.min(size, 320)} className="block" />
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={handleDownload} className="btn-primary">

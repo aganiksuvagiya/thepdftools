@@ -9,12 +9,64 @@ async function loadTesseract() {
   return module.default;
 }
 
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function escapeXml(str: string): string {
+  return (
+    str
+      // characters that are not allowed in XML 1.0 would make Word reject the file
+      // eslint-disable-next-line no-control-regex
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+  );
 }
 
-function preserveSpacing(str: string): string {
-  return str.replace(/ {2,}/g, (m) => "&nbsp;".repeat(m.length - 1) + " ");
+const DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+/** Builds a real .docx (Office Open XML) with one paragraph per text line and a page break between PDF pages. */
+async function buildDocx(pages: string[]): Promise<Blob> {
+  const JSZip = (await import("jszip")).default;
+
+  const run = (text: string) =>
+    `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="22"/></w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r>`;
+
+  const body = pages
+    .map((page, idx) => {
+      const paragraphs = page
+        .split("<br/>")
+        .map((line) => `<w:p><w:pPr><w:spacing w:after="80" w:line="276" w:lineRule="auto"/></w:pPr>${line ? run(line) : ""}</w:p>`)
+        .join("");
+      const pageBreak = idx < pages.length - 1 ? '<w:p><w:r><w:br w:type="page"/></w:r></w:p>' : "";
+      return paragraphs + pageBreak;
+    })
+    .join("");
+
+  const documentXml =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' +
+    body +
+    '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>' +
+    "</w:body></w:document>";
+
+  const zip = new JSZip();
+  zip.file(
+    "[Content_Types].xml",
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+      '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+      '<Default Extension="xml" ContentType="application/xml"/>' +
+      '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
+      "</Types>"
+  );
+  zip.file(
+    "_rels/.rels",
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
+      "</Relationships>"
+  );
+  zip.file("word/document.xml", documentXml);
+  return zip.generateAsync({ type: "blob", mimeType: DOCX_MIME, compression: "DEFLATE" });
 }
 
 function formatBytes(bytes: number): string {
@@ -191,34 +243,7 @@ export default function PdfToWordClient() {
       setWordCount(words);
       setProgress("Generating Word document...");
 
-      const htmlContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta charset="utf-8">
-<style>
-body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; color: #333; margin: 1in; }
-p { margin: 0 0 6pt 0; white-space: pre-wrap; }
-.page { margin-bottom: 12pt; }
-</style>
-</head>
-<body>
-${pages
-  .map(
-    (p, idx) =>
-      `<div class="page"${idx < pages.length - 1 ? ' style="page-break-after:always"' : ""}>${p
-        .split("<br/>")
-        .map((line) => {
-          const escaped = preserveSpacing(escapeHtml(line));
-          return `<p>${escaped || "&nbsp;"}</p>`;
-        })
-        .join("\n")}</div>`
-  )
-  .join("\n")}
-</body>
-</html>`;
-
-      const blob = new Blob(["\ufeff", htmlContent], {
-        type: "application/msword",
-      });
+      const blob = await buildDocx(pages);
       const url = URL.createObjectURL(blob);
       setDocUrl(url);
 
@@ -241,7 +266,7 @@ ${pages
     if (!docUrl || !file) return;
     const a = document.createElement("a");
     a.href = docUrl;
-    a.download = file.name.replace(/\.pdf$/i, "") + ".doc";
+    a.download = file.name.replace(/\.pdf$/i, "") + ".docx";
     a.click();
   };
 
@@ -366,7 +391,7 @@ ${pages
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                Download {file.name.replace(/\.pdf$/i, "")}.doc
+                Download {file.name.replace(/\.pdf$/i, "")}.docx
               </button>
 
               {/* Convert another */}

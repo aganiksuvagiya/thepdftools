@@ -10,9 +10,15 @@ interface ImageData {
   height: number;
 }
 
+const PATCH_SIZE = 64;
+const PATCH_PADDING = 4;
+const MAX_OUTPUT_SIDE = 16384;
+const MAX_OUTPUT_PIXELS = 100_000_000;
+
 export default function ImageUpscalerClient() {
   const [original, setOriginal] = useState<ImageData | null>(null);
-  const [upscaled, setUpscaled] = useState<{ url: string; width: number; height: number } | null>(null);
+  const [upscaled, setUpscaled] = useState<{ url: string; width: number; height: number; usedAi: boolean } | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [scale, setScale] = useState<number>(2);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("");
@@ -22,6 +28,7 @@ export default function ImageUpscalerClient() {
     const file = files[0];
     setUpscaled(null);
     setError(null);
+    setNotice(null);
     setProgress("");
 
     const img = new Image();
@@ -41,10 +48,20 @@ export default function ImageUpscalerClient() {
 
   const handleUpscale = async () => {
     if (!original) return;
+    const outW = original.width * scale;
+    const outH = original.height * scale;
+    if (Math.max(outW, outH) > MAX_OUTPUT_SIDE || outW * outH > MAX_OUTPUT_PIXELS) {
+      setError(
+        `A ${scale}x result would be ${outW} x ${outH} px, which is more than a browser can safely handle. Choose a smaller scale or resize the image first.`
+      );
+      return;
+    }
     setLoading(true);
     setError(null);
+    setNotice(null);
     setProgress("Loading AI model...");
 
+    let upscaler: { dispose?: () => void } | null = null;
     try {
       // Load image as HTMLImageElement for Upscaler
       const img = new Image();
@@ -62,13 +79,17 @@ export default function ImageUpscalerClient() {
 
       const model = scale >= 4 ? x4 : x2;
 
-      const upscaler = new Upscaler({
+      const instance = new Upscaler({
         model,
       });
+      upscaler = instance;
 
-      // Upscaler returns a base64 string
-      const result = await upscaler.upscale(img, {
+      // Upscaler returns a base64 string. Working on small patches keeps every WebGL texture
+      // small, so large photos no longer fail with a texture-size error.
+      const result = await instance.upscale(img, {
         output: "base64",
+        patchSize: PATCH_SIZE,
+        padding: PATCH_PADDING,
         progress: (pct: number) => {
           setProgress(`Enhancing image with AI... ${Math.round(pct * 100)}%`);
         },
@@ -97,13 +118,13 @@ export default function ImageUpscalerClient() {
         const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/png", 1.0));
         if (!blob) throw new Error("Failed to create image");
         const url = URL.createObjectURL(blob);
-        setUpscaled({ url, width: targetW, height: targetH });
+        setUpscaled({ url, width: targetW, height: targetH, usedAi: true });
       } else {
         // Convert base64 to blob URL
         const res = await fetch(result as string);
         const blob = await res.blob();
         const url = URL.createObjectURL(blob);
-        setUpscaled({ url, width: upscaledImg.naturalWidth, height: upscaledImg.naturalHeight });
+        setUpscaled({ url, width: upscaledImg.naturalWidth, height: upscaledImg.naturalHeight, usedAi: true });
       }
 
       setProgress("");
@@ -131,12 +152,20 @@ export default function ImageUpscalerClient() {
         const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/png", 1.0));
         if (!blob) throw new Error("Failed to create image");
         const url = URL.createObjectURL(blob);
-        setUpscaled({ url, width: newWidth, height: newHeight });
+        setUpscaled({ url, width: newWidth, height: newHeight, usedAi: false });
+        setNotice(
+          "The AI model could not run on this image or device, so a standard high-quality resize was used instead. This result is not AI-enhanced."
+        );
         setProgress("");
       } catch {
         setError("Upscaling failed. Please try another image.");
       }
     } finally {
+      try {
+        upscaler?.dispose?.();
+      } catch {
+        // model cleanup is best-effort
+      }
       setLoading(false);
     }
   };
@@ -184,6 +213,7 @@ export default function ImageUpscalerClient() {
                     onChange={() => {
                       setScale(s);
                       setUpscaled(null);
+                      setNotice(null);
                     }}
                     className="sr-only"
                   />
@@ -220,6 +250,10 @@ export default function ImageUpscalerClient() {
             </p>
           )}
 
+          {notice && (
+            <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">{notice}</p>
+          )}
+
           {/* Before / After comparison */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div className="space-y-3">
@@ -241,7 +275,9 @@ export default function ImageUpscalerClient() {
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-medium text-gray-700">AI Upscaled</p>
+              <p className="text-sm font-medium text-gray-700">
+                {upscaled && !upscaled.usedAi ? "Resized (no AI)" : "AI Upscaled"}
+              </p>
               <div className="overflow-hidden rounded-xl border border-gray-100 min-h-[12rem] flex items-center justify-center bg-gray-50">
                 {upscaled ? (
                   // eslint-disable-next-line @next/next/no-img-element

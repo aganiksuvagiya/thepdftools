@@ -42,11 +42,11 @@ const howToSteps = [
   },
   {
     name: "Pick a compression level",
-    text: "Choose Light for text-heavy documents where you want to keep quality high, Medium for a balance, or Maximum for scanned or image-heavy files where the smallest size matters most.",
+    text: "Choose Light to keep embedded images sharp, Medium for a balance, or Maximum when the smallest size matters most. Text, links and forms are kept at every level.",
   },
   {
     name: "Compress",
-    text: "Click Compress PDF. Each page is re-rendered as an image at your chosen quality, then rebuilt into a new PDF — this takes a few seconds per page.",
+    text: "Click Compress PDF. The tool re-encodes the images inside your PDF at the chosen quality and rebuilds the file. For scanned PDFs you can also tick “Convert pages to images” for an even smaller result.",
   },
   {
     name: "Check the result",
@@ -61,27 +61,27 @@ const howToSteps = [
 const faqItems = [
   {
     q: "How does this PDF compressor actually reduce file size?",
-    a: "It re-renders each page of the PDF as an image at your chosen quality level, then rebuilds a new PDF from those images. This works well for scanned pages and image-heavy documents, but it means every page becomes a flattened image rather than staying as live text.",
+    a: "By default it re-encodes the JPEG images embedded in your PDF at a lower quality and, at Medium and Maximum, a lower resolution, then rebuilds the file with a more compact structure. Text, fonts, links and form fields are not touched. For scanned or photo-only PDFs there is an optional “Convert pages to images” setting that renders each page as an image for the smallest possible file.",
   },
   {
     q: "Will the text in my PDF still be selectable and searchable after compressing?",
-    a: "No. Because compression works by rendering each page to an image, the output PDF no longer contains selectable, searchable, or copyable text — even if the original document did. If you need to keep text selectable, do not use this tool on that file.",
+    a: "Yes, with the default settings. Only the embedded images are re-encoded, so selectable, searchable and copyable text stays exactly as it was. The one exception is the optional “Convert pages to images” setting (and the automatic fallback on the 100KB and 200KB pages), which flattens every page into a picture, so text can no longer be selected.",
   },
   {
     q: "Is this tool a good choice for compressing a resume before a job application?",
-    a: "Be cautious. Many applicant tracking systems (ATS) parse resume text directly from the PDF. Since this tool converts every page into an image, an ATS may no longer be able to read the resume's text after compression. For resumes, try Light compression only if the file must be smaller, and verify the result opens and reads correctly before submitting.",
+    a: "Yes, as long as you leave “Convert pages to images” unticked. The default mode keeps the resume's text intact, so applicant tracking systems can still read it. Always open the result and check that it reads correctly before submitting.",
   },
   {
     q: "Does this always reduce PDF file size by 80%?",
-    a: "No. Reductions of 50–80% are common on scanned or image-heavy PDFs. Text-heavy documents can shrink much less, and in some cases the rendered-image version can end up larger than a well-optimized text-based original, since a photo of a page of text takes more data than the text itself.",
+    a: "No. Reductions of 50–80% are common on PDFs that contain large photos or scans. A PDF that is mostly text has few images to shrink, so it may get only a few percent smaller, or none at all.",
   },
   {
-    q: "Why does the tool say \"No further reduction possible\" on my file?",
-    a: "This means the image-rendered version at your chosen quality level didn't come out smaller than the original. This is more likely on already-compact, text-based PDFs. Try a lower quality level (Maximum), or consider that this file may not be a good candidate for this specific compression method.",
+    q: "Why does the tool say \"No smaller version could be made\" on my file?",
+    a: "It means none of the attempts produced a file smaller than the original, so the tool does not offer a download. This is typical for text-only PDFs and for files that were already compressed. If the file is a scan, tick “Convert pages to images” and try again.",
   },
   {
     q: "Which compression level should I use?",
-    a: "Use Light for documents where readability and quality matter most, such as contracts or reports you'll print. Use Medium as a general default. Use Maximum only for scanned documents or image-heavy files headed to a strict size-limited portal, since it produces the most visible quality loss.",
+    a: "Use Light for documents where picture quality matters most, such as brochures or reports you'll print. Use Medium as a general default. Use Maximum when you must hit a strict size limit, since it produces the most visible loss in photos.",
   },
   {
     q: "Is my PDF uploaded to a server during compression?",
@@ -89,15 +89,15 @@ const faqItems = [
   },
   {
     q: "Can I compress a password-protected PDF?",
-    a: "No. The tool needs to read the PDF's pages to render them, so an encrypted or password-protected file will fail to process until the password is removed first.",
+    a: "Not directly. An encrypted or password-protected file cannot be read until the password is removed, so use the PDF Unlock tool first and then compress the unlocked copy.",
   },
   {
     q: "Does compression affect PDF forms or embedded links?",
-    a: "Yes, significantly. Since every page is flattened into an image, interactive form fields, clickable links, and bookmarks from the original PDF do not survive compression. Use this tool on final, non-interactive documents, not on fillable forms you still need to be interactive.",
+    a: "Not with the default settings: form fields, clickable links and bookmarks are kept. They are lost only if you tick “Convert pages to images”, or when the 100KB and 200KB pages have to fall back to it to reach their target size.",
   },
   {
     q: "Will small text still be readable after Maximum compression?",
-    a: "Not always. Maximum compression uses the lowest render scale and JPEG quality, which can make small fonts or fine print blurry. Check the result before relying on it, especially for documents with dense small text.",
+    a: "Yes in the default mode, because text is not re-encoded. Photos and scanned pages inside the PDF can look softer at Maximum. If you tick “Convert pages to images”, small fonts can also turn blurry, so check the result before relying on it.",
   },
   {
     q: "Is it free to use?",
@@ -105,15 +105,15 @@ const faqItems = [
   },
   {
     q: "Does it work on mobile?",
-    a: "Yes, the interface is responsive, though rendering many pages as images can be slower on an older or lower-powered phone than on a desktop.",
+    a: "Yes, the interface is responsive. Large PDFs with many big images, or the “Convert pages to images” option, can be slower on an older or lower-powered phone than on a desktop.",
   },
   {
     q: "How many pages can I compress at once?",
-    a: "There's no fixed page limit, but each page is individually rendered to an image, so very long documents take proportionally longer and use more of your device's memory.",
+    a: "There's no fixed page limit. Very large files take proportionally longer and use more of your device's memory, especially when pages are converted to images.",
   },
   {
     q: "What's the difference between this and Compress PDF to 100KB?",
-    a: "Compress PDF to 100KB is the same underlying approach tuned toward a specific 100KB target for portal uploads. Use this general compressor when you want to choose a quality level directly instead of targeting an exact file size.",
+    a: "Compress PDF to 100KB and Compress PDF to 200KB use the same engine but keep going until the file is under the target: first stronger image compression with text kept, and only if that is not enough, converting pages to images step by step. Use this general compressor when you want to choose the level yourself.",
   },
   {
     q: "Should I merge or split PDFs before or after compressing?",
@@ -217,10 +217,11 @@ export default function PdfCompressPage() {
                 <time dateTime={lastUpdated.date}>Updated {lastUpdated.formatted}</time>
               </div>
               <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-                Reduce PDF file size in your browser by re-rendering pages at a
-                quality level you choose. It works best on scanned or
-                image-heavy PDFs — read below before using it on a document
-                where you need to keep the text selectable or searchable.
+                Reduce PDF file size in your browser by re-encoding the images
+                inside your PDF at a quality level you choose. Text, links and
+                forms stay untouched. It works best on PDFs with photos or
+                scans; for scanned files there is an optional setting that
+                converts pages to images for an even smaller result.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <a
@@ -271,25 +272,26 @@ export default function PdfCompressPage() {
           </h2>
           <div className="mt-4 space-y-4 text-[15px] leading-8 text-slate-700">
             <p>
-              This tool reduces file size by rendering every page of your PDF
-              as an image at your chosen quality level, then rebuilding a new
-              PDF from those images. That approach shrinks scanned pages and
-              image-heavy documents very effectively, but it comes with a
-              real tradeoff: <strong>the output PDF no longer contains
-              selectable, searchable, or copyable text</strong>, even if your
-              original file did. Form fields, links, and bookmarks also do
-              not survive the process.
+              By default this tool looks for the JPEG images embedded in your
+              PDF, re-encodes them at the quality (and, for Medium and
+              Maximum, the resolution) you chose, and rebuilds the file with a
+              more compact structure. <strong>Text, fonts, links, bookmarks and
+              form fields are not touched</strong>, so the result stays
+              selectable and searchable. A new version is only offered when it
+              is actually smaller than your original.
             </p>
             <p>
-              That matters most for resumes (many applicant tracking systems
-              read resume text directly and may not be able to parse a
-              flattened image version), contracts you still need to
-              search or copy from, and any fillable form you plan to keep
-              interactive. For those documents, use Light compression only if
-              a smaller file is required, and always check the result before
-              relying on it. For scanned documents, photographed pages, or
-              already-flattened image-based PDFs, this tradeoff doesn't cost
-              you anything you had to begin with.
+              The limit of this approach is that a PDF with little or no
+              embedded imagery (a text-only resume or contract, for example)
+              has almost nothing to shrink, and the tool will tell you so
+              instead of giving you a bigger file. For scanned or photo-only
+              PDFs you can tick <strong>Convert pages to images</strong>. That
+              renders every page as a picture, which gives the smallest
+              files, but <strong>text is no longer selectable or searchable
+              and links and form fields are lost</strong>, so leave it off for
+              resumes, contracts and fillable forms. The 100KB and 200KB pages
+              use that fallback automatically only when the target cannot be
+              reached any other way, and say so in the result.
             </p>
           </div>
         </section>
@@ -313,11 +315,11 @@ export default function PdfCompressPage() {
             Tool Limitations
           </h2>
           <ul className="mt-4 list-inside list-disc space-y-2 text-[15px] leading-7 text-slate-600">
-            <li>Output pages are flattened images — text is no longer selectable, searchable, or copyable.</li>
-            <li>Form fields, links, and bookmarks in the original PDF do not carry over.</li>
+            <li>Only embedded JPEG images are re-encoded. PNG-style images, vector art and text are left as they are.</li>
+            <li>Text-only PDFs may shrink very little; if nothing smaller can be made, no download is offered.</li>
+            <li>“Convert pages to images” makes text non-selectable and drops links, bookmarks and form fields.</li>
             <li>Password-protected PDFs must be unlocked before compressing.</li>
-            <li>Text-heavy documents may shrink very little, or occasionally end up larger than the original.</li>
-            <li>Maximum compression can make small or fine-print text blurry — check before relying on it.</li>
+            <li>Maximum compression can make photos and scanned pages look soft — check before relying on it.</li>
           </ul>
         </section>
 
@@ -328,15 +330,15 @@ export default function PdfCompressPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 p-5">
               <h3 className="text-sm font-medium text-slate-900">Compressing a resume before ATS submission</h3>
-              <p className="mt-1 text-sm text-slate-500">Verify the result still reads correctly, or skip compression if the file already meets the portal's size limit.</p>
+              <p className="mt-1 text-sm text-slate-500">Leave “Convert pages to images” off so the text stays readable, and open the result to check it before submitting.</p>
             </div>
             <div className="rounded-2xl bg-slate-50 p-5">
-              <h3 className="text-sm font-medium text-slate-900">Using Maximum on dense small text</h3>
+              <h3 className="text-sm font-medium text-slate-900">Using Maximum on photo-heavy pages</h3>
               <p className="mt-1 text-sm text-slate-500">Try Light or Medium first and compare before assuming the smallest setting is the right one.</p>
             </div>
             <div className="rounded-2xl bg-slate-50 p-5">
-              <h3 className="text-sm font-medium text-slate-900">Compressing a fillable form</h3>
-              <p className="mt-1 text-sm text-slate-500">Interactive form fields don't survive this process — only compress a form after it's fully filled and finalized.</p>
+              <h3 className="text-sm font-medium text-slate-900">Flattening a fillable form</h3>
+              <p className="mt-1 text-sm text-slate-500">Only tick “Convert pages to images” after a form is fully filled and finalized; interactive fields do not survive it.</p>
             </div>
             <div className="rounded-2xl bg-slate-50 p-5">
               <h3 className="text-sm font-medium text-slate-900">Compressing several files separately</h3>
@@ -381,27 +383,26 @@ export default function PdfCompressPage() {
               Choosing a Compression Level
             </h2>
             <p className="mt-4 text-[15px] leading-8 text-slate-600">
-              <strong>Light</strong> renders pages at the highest scale and
-              JPEG quality of the three settings — the smallest visible
-              quality change, best for documents you still need to look
-              sharp. <strong>Medium</strong> is a reasonable default for
-              general size reduction. <strong>Maximum</strong> renders at the
-              lowest scale and quality for the smallest possible file, and is
-              best reserved for already-scanned or image-heavy documents
-              headed to a strict size-limited portal, since it's the setting
-              most likely to make text look soft or blurry.
+              <strong>Light</strong> re-encodes embedded images at high quality
+              and keeps their resolution — the smallest visible change, best
+              for documents you still need to look sharp.{" "}
+              <strong>Medium</strong> lowers quality and caps image
+              resolution, a reasonable default for general size reduction.{" "}
+              <strong>Maximum</strong> uses the lowest quality and resolution
+              for the smallest file, best reserved for strict size-limited
+              portals, since it is the setting most likely to make photos
+              look soft.
             </p>
             <h3 className="mt-6 text-lg font-semibold text-slate-900">
               When this tool is the right choice
             </h3>
             <p className="mt-3 text-[15px] leading-8 text-slate-600">
-              This compressor is a strong fit for scanned reports, photographed
-              pages, and image-heavy PDFs where the pages were never
-              selectable text to begin with. For a text-based contract,
-              resume, or report where you need to preserve copy-paste text,
-              searchability, or embedded form fields, either accept the
-              tradeoff explicitly or look for a text-preserving compression
-              approach instead.
+              This compressor is a strong fit for PDFs that contain photos,
+              scans or other large JPEG images, and it keeps the text,
+              links and forms of such documents intact. A PDF that is only
+              text has almost nothing to shrink; the tool will report that
+              honestly. For scans without any selectable text, the “Convert
+              pages to images” option gives the smallest result.
             </p>
           </section>
 

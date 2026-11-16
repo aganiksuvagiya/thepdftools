@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 export default function SidePopupAd() {
   const pathname = usePathname();
 
+  // The editor fills the whole window; a fixed ad rail would sit on top of its toolbar and property panel.
+  if (pathname?.startsWith("/pdf-editor")) return null;
+
   const srcdoc = `<!DOCTYPE html>
 <html>
 <head><style>*{margin:0;padding:0;overflow:hidden}body{background:transparent}</style></head>

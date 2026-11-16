@@ -43,6 +43,7 @@ export default function PdfUnlockClient() {
   const [error, setError] = useState("");
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [resultSize, setResultSize] = useState(0);
+  const [resultNote, setResultNote] = useState("");
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
@@ -56,6 +57,7 @@ export default function PdfUnlockClient() {
     setError("");
     setResultUrl(null);
     setResultSize(0);
+    setResultNote("");
   };
 
   const checkPdf = useCallback(async (f: File) => {
@@ -88,15 +90,24 @@ export default function PdfUnlockClient() {
     }
   }, []);
 
-  const saveUnlockedPdf = useCallback((bytes: Uint8Array, numPages: number) => {
+  const saveUnlockedPdf = useCallback((bytes: Uint8Array, numPages: number, note = "") => {
     if (resultUrl) URL.revokeObjectURL(resultUrl);
     const blob = new Blob([toArrayBuffer(bytes)], { type: "application/pdf" });
     setResultUrl(URL.createObjectURL(blob));
     setResultSize(blob.size);
     setPageCount(numPages);
+    setResultNote(note);
     setStage("done");
     setProgress("");
   }, [resultUrl]);
+
+  // Real decryption: opens the file with the password and saves it again without encryption,
+  // so text, fonts, links and images stay exactly as they were.
+  const decryptWithPassword = useCallback(async (buffer: ArrayBuffer, pwd: string) => {
+    const { PDFDocument } = await import("@cantoo/pdf-lib");
+    const doc = await PDFDocument.load(buffer, { password: pwd });
+    return { bytes: await doc.save(), numPages: doc.getPageCount() };
+  }, []);
 
   const unlockWithPdfLib = useCallback(async (buffer: ArrayBuffer) => {
     const { PDFDocument } = await import("pdf-lib");
@@ -158,9 +169,24 @@ export default function PdfUnlockClient() {
       const numPages = pdfDoc.numPages;
       setPageCount(numPages);
 
+      // The password is correct. First try a true decrypt, which keeps text selectable.
+      try {
+        setProgress("Removing password...");
+        const decrypted = await decryptWithPassword(copyFileBuffer(buffer), pwd);
+        await pdfDoc.destroy();
+        saveUnlockedPdf(
+          decrypted.bytes,
+          decrypted.numPages,
+          "Password removed. Text, fonts, links and images are exactly as in the original."
+        );
+        return;
+      } catch (decryptError) {
+        console.warn("Direct decryption failed, rebuilding pages as images instead:", decryptError);
+      }
+
       setProgress("Removing restrictions...");
 
-      // Render each page to canvas then embed as image in new PDF
+      // Fallback for encryption the direct route cannot handle: render each page and rebuild the PDF from images
       const { PDFDocument } = await import("pdf-lib");
       const newPdf = await PDFDocument.create();
 
@@ -189,13 +215,17 @@ export default function PdfUnlockClient() {
       setProgress("Saving unlocked PDF...");
       const pdfBytes = await newPdf.save();
       await pdfDoc.destroy();
-      saveUnlockedPdf(pdfBytes, numPages);
+      saveUnlockedPdf(
+        pdfBytes,
+        numPages,
+        "This file uses an encryption type that could not be removed directly, so every page was rebuilt as an image. Text is no longer selectable."
+      );
     } catch (err: any) {
       setStage("error");
       setError(err?.message || "Failed to unlock PDF.");
       setProgress("");
     }
-  }, [file, saveUnlockedPdf, unlockWithPdfLib]);
+  }, [file, saveUnlockedPdf, unlockWithPdfLib, decryptWithPassword]);
 
   const handleDownload = () => {
     if (!resultUrl || !file) return;
@@ -312,6 +342,7 @@ export default function PdfUnlockClient() {
             <p className="mt-1 text-xs text-green-600">
               {pageCount} page{pageCount !== 1 ? "s" : ""} &middot; {formatBytes(resultSize)}
             </p>
+            {resultNote && <p className="mt-1 text-xs text-green-700">{resultNote}</p>}
           </div>
           <button onClick={handleDownload} className="btn-primary w-full">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

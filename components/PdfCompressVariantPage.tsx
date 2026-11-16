@@ -23,6 +23,12 @@ const PdfCompressClient = dynamic(
   }
 );
 
+// Variants that promise a size target get a client that keeps compressing until it is met.
+const TARGET_KB: Record<string, number | undefined> = {
+  "compress-pdf-to-100kb": 100,
+  "compress-pdf-to-200kb": 200,
+};
+
 export function buildPdfCompressVariantMetadata(
   variant: PdfCompressVariant
 ): Metadata {
@@ -173,7 +179,7 @@ export default function PdfCompressVariantPage({
 
         <section id="pdf-compressor" className="mt-8">
           <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-            <PdfCompressClient />
+            <PdfCompressClient targetKB={TARGET_KB[variant.slug]} />
           </div>
         </section>
 

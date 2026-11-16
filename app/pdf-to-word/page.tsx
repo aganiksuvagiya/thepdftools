@@ -47,7 +47,7 @@ export default function PdfToWordPage() {
           priceCurrency: "USD",
         },
         description:
-          "Convert PDF files to editable Word documents for free online. Extract text and download as .doc — runs entirely in your browser.",
+          "Convert PDF files to editable Word documents for free online. Extract text and download as a .docx file — runs entirely in your browser.",
       },
       buildOrganizationSchema(),
       buildWebsiteSchema(),
@@ -177,7 +177,7 @@ export default function PdfToWordPage() {
               <li>Upload your PDF file by clicking the upload area or dragging it in.</li>
               <li>The tool automatically extracts text content from your PDF document.</li>
               <li>Preview the extracted text to verify the conversion looks correct.</li>
-              <li>Click the download button to save your editable Word (.doc) file.</li>
+              <li>Click the download button to save your editable Word (.docx) file.</li>
               <li>Open the file in Microsoft Word, Google Docs, or LibreOffice to edit.</li>
             </ol>
           </div>
@@ -192,7 +192,7 @@ export default function PdfToWordPage() {
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Editable Output</h3>
-                <p className="mt-1 text-sm text-slate-500">The output .doc file is fully editable in Microsoft Word, Google Docs, LibreOffice, and other popular word processors.</p>
+                <p className="mt-1 text-sm text-slate-500">The output .docx file is a real Word document, fully editable in Microsoft Word, Google Docs, LibreOffice, and other popular word processors.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">No Signup Required</h3>

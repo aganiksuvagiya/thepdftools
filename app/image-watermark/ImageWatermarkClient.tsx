@@ -74,28 +74,35 @@ export default function ImageWatermarkClient() {
   const [tile, setTile] = useState(false);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
 
+  // The decoded image lives in state (not a ref) so the preview effect re-runs once it has loaded.
+  const [imgEl, setImgEl] = useState<HTMLImageElement | null>(null);
+  const [loadError, setLoadError] = useState("");
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const handleFiles = useCallback((files: File[]) => {
     const f = files[0];
     if (!f) return;
     setFile(f);
     setResultUrl(null);
+    setImgEl(null);
+    setLoadError("");
     const url = URL.createObjectURL(f);
-    setImageUrl(url);
+    setImageUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return url;
+    });
 
     const img = new Image();
-    img.onload = () => {
-      imgRef.current = img;
-    };
+    img.onload = () => setImgEl(img);
+    img.onerror = () => setLoadError("Could not read this image. Try a JPG, PNG or WebP file.");
     img.src = url;
   }, []);
 
   // Draw preview whenever settings change
   useEffect(() => {
     const canvas = canvasRef.current;
-    const img = imgRef.current;
+    const img = imgEl;
     if (!canvas || !img || !imageUrl) return;
 
     const ctx = canvas.getContext("2d");
@@ -148,11 +155,11 @@ export default function ImageWatermarkClient() {
     }
 
     ctx.globalAlpha = 1;
-  }, [imageUrl, watermarkText, fontSize, opacity, color, position, tile]);
+  }, [imgEl, imageUrl, watermarkText, fontSize, opacity, color, position, tile]);
 
   const applyWatermark = () => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !imgEl) return;
     canvas.toBlob((blob) => {
       if (!blob) return;
       if (resultUrl) URL.revokeObjectURL(resultUrl);
@@ -289,6 +296,8 @@ export default function ImageWatermarkClient() {
 
           <hr className="border-gray-100" />
 
+          {loadError && <p className="text-sm font-medium text-red-600">{loadError}</p>}
+
           {/* Canvas preview */}
           <div className="space-y-2">
             <label className="text-xs font-medium text-gray-500">Preview</label>
@@ -304,7 +313,7 @@ export default function ImageWatermarkClient() {
 
           {/* Action buttons */}
           <div className="flex gap-3">
-            <button onClick={applyWatermark} className="btn-primary flex-1">
+            <button onClick={applyWatermark} disabled={!imgEl} className="btn-primary flex-1 disabled:cursor-not-allowed disabled:opacity-50">
               Apply Watermark
             </button>
             {resultUrl && (
