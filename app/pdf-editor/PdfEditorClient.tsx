@@ -47,6 +47,8 @@ interface TextItem {
   bgColor?: string; // colour behind the text (the edit cover uses it); undefined = plain white
   fontWeight: string; // "normal" or "bold"
   fontStyle: string; // "normal" or "italic"
+  baseline: number; // y of the text baseline in viewport px (the glyph bottom, not the box top)
+  fontFace?: string; // the PDF's own embedded font as pdf.js registered it (CSS family), when usable for editing
   lossy?: boolean; // the PDF could not map some glyphs back to text (they were dropped)
   coverLeft?: number; // the white cover must reach this far left/right (unmapped glyphs next to the text)
   coverRight?: number;
@@ -62,6 +64,9 @@ interface EditableTextData {
   originalFontWeight: string;
   originalFontStyle: string;
   originalFill: string;
+  originalFontFamily?: string; // family stack the box starts with (the PDF's embedded font first, when usable)
+  fallbackFontFamily?: string; // system font stack close to the PDF font, used once bold/italic is switched off
+  originalCharSpacing?: number; // letter spacing that makes the line exactly as wide as in the PDF
 }
 
 interface TextCoverData {
@@ -171,6 +176,43 @@ function pickFontFamily(pdfFontName: string, styleFamily?: string): string {
   return "Helvetica, Arial, sans-serif";
 }
 
+// Text the PDF's own (subset) font can be trusted with: Latin letters, digits and common punctuation.
+// Indic/Arabic/CJK glyphs depend on shaping tables that pdf.js strips from the embedded font.
+const EMBEDDED_FONT_TEXT_RE = /^[ -ɏ‐-‧‰-⁞₠-⃏]*$/;
+// Widest/narrowest the embedded font may measure against the width the PDF reports before it is distrusted.
+const EMBEDDED_FIT_MIN = 0.9;
+const EMBEDDED_FIT_MAX = 1.1;
+// A line may be stretched/squeezed by up to this much to land on the PDF's width.
+const SPACING_FIT_MAX = 0.04;
+// Most spaces a wide gap inside a line is written as.
+const MAX_GAP_SPACES = 80;
+
+let measureCtx: CanvasRenderingContext2D | null = null;
+/** Width of a string in a CSS font shorthand, measured on a scratch canvas. */
+function measureTextWidth(str: string, font: string): number {
+  if (typeof document === "undefined") return 0;
+  if (!measureCtx) measureCtx = document.createElement("canvas").getContext("2d");
+  if (!measureCtx) return 0;
+  measureCtx.font = font;
+  return measureCtx.measureText(str).width;
+}
+
+const fontShorthand = (style: string, weight: string, sizePx: number, family: string) =>
+  `${style === "italic" ? "italic" : "normal"} ${weight === "bold" ? "bold" : "normal"} ${sizePx}px ${family}`;
+
+/** The FontFace pdf.js registered for an embedded PDF font (by its CSS family), once it has loaded. */
+function findLoadedFontFace(loadedName: string): FontFace | null {
+  if (typeof document === "undefined" || !document.fonts) return null;
+  let found: FontFace | null = null;
+  document.fonts.forEach((face) => {
+    if (!found && face.family.replace(/["']/g, "") === loadedName && face.status === "loaded") found = face;
+  });
+  return found;
+}
+
+/** Letters/words of a text piece, ignoring whitespace (used to find which piece of a line dominates it). */
+const textLength = (item: { str: string }) => item.str.replace(/\s/g, "").length;
+
 /** True when an edited copy of existing PDF text differs from the original (text, size, weight, style or color). */
 function isEditableTextChanged(textbox: FabricObject): boolean {
   const data = textbox.get("data") as EditableTextData | undefined;
@@ -232,6 +274,8 @@ function mergeNearbyTextItems(items: TextItem[]) {
 
   for (const line of lines) {
     let current = { ...line[0] };
+    // The longest piece decides the font of the whole line (a bullet or a small label must not win).
+    let dominantLength = textLength(current);
     // Estimate page width from the rightmost item
     const lineRight = Math.max(...line.map((it) => it.x + it.width));
     const lineWidth = lineRight - line[0].x;
@@ -246,16 +290,32 @@ function mergeNearbyTextItems(items: TextItem[]) {
       if (gap > columnGapThreshold) {
         merged.push(current);
         current = { ...item };
+        dominantLength = textLength(current);
       } else {
-        const needsSpace = gap > Math.max(2, item.fontSize * 0.15) && !current.str.endsWith(" ") && !item.str.startsWith(" ");
-        current.str = `${current.str}${needsSpace ? " " : ""}${item.str}`;
+        // One space for a normal word gap. A much wider gap (a column, a "label     : value" row) is
+        // written as that many spaces, so editing the line does not pull its parts together.
+        const em = Math.max(current.fontSize, item.fontSize);
+        const present =
+          current.str.length - current.str.trimEnd().length + (item.str.length - item.str.trimStart().length);
+        let wanted = 0;
+        if (gap > Math.max(2, item.fontSize * 0.15)) {
+          const wide = gap >= em * 0.7 && !COMPLEX_SCRIPT_RE.test(current.str + item.str);
+          wanted = wide ? Math.min(MAX_GAP_SPACES, Math.round(gap / (em * 0.25))) : 1;
+        }
+        current.str = `${current.str}${" ".repeat(Math.max(0, wanted - present))}${item.str}`;
         current.width = Math.max(currentRight, item.x + item.width) - current.x;
         current.height = Math.max(current.height, item.height);
         current.fontSize = Math.max(current.fontSize, item.fontSize);
         current.fontSizePt = Math.max(current.fontSizePt, item.fontSizePt);
-        // Preserve bold/italic if any fragment has it
-        if (item.fontWeight === "bold") current.fontWeight = "bold";
-        if (item.fontStyle === "italic") current.fontStyle = "italic";
+        // Font, bold and italic come from the piece with the most text, so the line keeps the look of
+        // most of its letters instead of turning bold because one small piece is.
+        if (textLength(item) > dominantLength) {
+          dominantLength = textLength(item);
+          current.fontFamily = item.fontFamily;
+          current.fontFace = item.fontFace;
+          current.fontWeight = item.fontWeight;
+          current.fontStyle = item.fontStyle;
+        }
         if (item.lossy) current.lossy = true;
         if (item.coverLeft !== undefined || current.coverLeft !== undefined) {
           current.coverLeft = Math.min(current.coverLeft ?? current.x, item.coverLeft ?? item.x);
@@ -431,6 +491,8 @@ async function extractTextItemsFromTextLayer(
 
   const items: TextItem[] = [];
   const unmapped: { baseline: number; x: number; width: number }[] = [];
+  // Words are often separate pieces with a space piece in between; remember where the spaces are.
+  const spaces: { baseline: number; x: number; height: number }[] = [];
   for (const item of textContent.items) {
     if (!("str" in item)) continue;
     // Gujarati/Hindi PDFs often have glyphs (such as the short "i" sign) with no text mapping;
@@ -441,6 +503,7 @@ async function extractTextItemsFromTextLayer(
     if (!str.trim()) {
       // A piece that was nothing but unmapped glyphs: remember where, so the line it belongs to is flagged.
       if (lossy) unmapped.push({ baseline: tx[5], x: tx[4], width: (item.width || 0) * viewport.scale });
+      else if (str.length > 0) spaces.push({ baseline: tx[5], x: tx[4], height: Math.hypot(tx[2], tx[3]) });
       continue;
     }
     const style = textContent.styles?.[item.fontName];
@@ -467,20 +530,65 @@ async function extractTextItemsFromTextLayer(
     const isBold = fn.includes("bold") || fn.includes("heavy") || fn.includes("black");
     const isItalic = fn.includes("italic") || fn.includes("oblique");
 
+    // pdf.js already loaded the PDF's own font into the page to draw it. Editing in that very font
+    // keeps the letters, their size and the line width exactly as in the PDF (Calibri, for example,
+    // is about 10% narrower and smaller-looking than the Arial that would be used instead).
+    const reportedWidth = item.width * viewport.scale;
+    let fontFace: string | undefined;
+    try {
+      const fontObj = page.commonObjs?.has(item.fontName) ? page.commonObjs.get(item.fontName) : null;
+      const loadedName: string | undefined = fontObj?.loadedName;
+      const plain = str.replace(/\s/g, "");
+      if (loadedName && !fontObj?.missingFile && plain.length >= 2 && EMBEDDED_FONT_TEXT_RE.test(str)) {
+        const face = findLoadedFontFace(loadedName);
+        if (face) {
+          // Trust the font only if it measures like the PDF says (some fonts map glyphs differently).
+          const fit =
+            reportedWidth > 0
+              ? measureTextWidth(str, fontShorthand("normal", "normal", fontHeight, `"${loadedName}"`)) / reportedWidth
+              : 1;
+          if (fit >= EMBEDDED_FIT_MIN && fit <= EMBEDDED_FIT_MAX) {
+            fontFace = loadedName;
+            // The font file is already bold/italic: say so, or the browser may thicken or slant it again.
+            if (isBold) face.weight = "bold";
+            if (isItalic) face.style = "italic";
+          }
+        }
+      }
+    } catch {
+      // no usable embedded font: keep the system font
+    }
+
     items.push({
       str,
       lossy,
       x: tx[4],
       y: tx[5] - ascent,
-      width: Math.max(item.width * viewport.scale, str.length * fontHeight * 0.45),
+      baseline: tx[5],
+      // pdf.js reports the real advance width; only a missing/zero width needs an estimate.
+      width: reportedWidth >= str.length * fontHeight * 0.15 ? reportedWidth : Math.max(reportedWidth, str.length * fontHeight * 0.45),
       height: fontHeight,
       fontFamily: pickFontFamily(realFontName, style?.fontFamily),
+      fontFace,
       fontSize: parseFloat(fontHeight.toFixed(2)),
       fontSizePt: parseFloat((fontHeight / viewport.scale).toFixed(2)),
       color: "#000000",
       fontWeight: isBold ? "bold" : "normal",
       fontStyle: isItalic ? "italic" : "normal",
     });
+  }
+
+  // A space piece right after a word ends that word with a space (the merge step cannot tell a
+  // word gap from kerning once the space piece itself is gone).
+  for (const space of spaces) {
+    let best: TextItem | null = null;
+    for (const entry of items) {
+      if (Math.abs(entry.baseline - space.baseline) > space.height * 0.35) continue;
+      const end = entry.x + entry.width;
+      if (end < space.x - space.height * 0.4 || end > space.x + space.height * 0.3) continue;
+      if (!best || end > best.x + best.width) best = entry;
+    }
+    if (best && !best.str.endsWith(" ")) best.str += " ";
   }
 
   // Flag the line each unmapped piece sat on (its baseline falls inside that line's box) and let the
@@ -498,6 +606,7 @@ async function extractTextItemsFromTextLayer(
   }
 
   const merged = mergeNearbyTextItems(items);
+  for (const entry of merged) entry.str = entry.str.replace(/\s+$/, "");
   if (renderedCtx) sampleTextColors(renderedCtx, merged);
   return merged;
 }
@@ -738,19 +847,39 @@ export default function PdfEditorClient() {
   const createEditableTextObjects = useCallback((item: TextItem, key: number) => {
     const cover = createCover(item, key);
 
+    // The PDF's own font first (when usable), then a close system font for any letter it lacks.
+    const fallbackFamily = item.fontFamily || "Helvetica, Arial, sans-serif";
+    const family = item.fontFace ? `"${item.fontFace}", ${fallbackFamily}` : fallbackFamily;
+    const weight = item.fontWeight || "normal";
+    const fontStyle = (item.fontStyle || "normal") as "" | "normal" | "italic" | "oblique";
+
+    // Land on the PDF's exact line width: the same font still measures a little differently than the
+    // PDF's own advances. Only small corrections; a bigger gap means the line has wide gaps inside.
+    let charSpacing = 0;
+    if (item.fontFace && item.str.length > 1 && item.width > 0) {
+      const natural = measureTextWidth(item.str, fontShorthand(fontStyle, weight, item.fontSize, family));
+      const ratio = natural > 0 ? item.width / natural : 1;
+      if (Math.abs(ratio - 1) <= SPACING_FIT_MAX) {
+        charSpacing = Math.round(((item.width - natural) / (item.str.length - 1) / item.fontSize) * 1000);
+      }
+    }
+
     // Use the exact viewport-pixel fontSize — no rounding.
     // The pt size is stored in data for display in the toolbar.
     const textbox = new Textbox(item.str, {
       left: item.x,
-      top: item.y,
+      // Fabric puts the baseline 0.879 of the font size below the top of the box (line height 1):
+      // place the box so the baseline sits exactly where the PDF's text sits.
+      top: item.baseline - 0.879 * item.fontSize,
       originX: "left",
       originY: "top",
       fontSize: item.fontSize,
       lineHeight: 1,
+      charSpacing,
       fill: item.color,
-      fontFamily: item.fontFamily || "Helvetica, Arial, sans-serif",
-      fontWeight: item.fontWeight || "normal",
-      fontStyle: (item.fontStyle || "normal") as "" | "normal" | "italic" | "oblique",
+      fontFamily: family,
+      fontWeight: weight,
+      fontStyle,
       width: Math.max(item.width + 4, item.str.length * item.fontSize * 0.55),
       editable: true,
       backgroundColor: "transparent",
@@ -773,6 +902,9 @@ export default function PdfEditorClient() {
         originalFontWeight: item.fontWeight || "normal",
         originalFontStyle: item.fontStyle || "normal",
         originalFill: item.color,
+        originalFontFamily: family,
+        fallbackFontFamily: fallbackFamily,
+        originalCharSpacing: charSpacing,
       } satisfies EditableTextData,
     });
 
@@ -2026,6 +2158,26 @@ export default function PdfEditorClient() {
       const oldSize = (obj as FabricObject & { fontSize?: number }).fontSize || value;
       const ratio = oldSize > 0 ? value / oldSize : 1;
       obj.set({ fontSize: value, width: (obj.width ?? 0) * ratio } as Partial<FabricObject>);
+    } else if (isExistingText && data && (prop === "fontWeight" || prop === "fontStyle")) {
+      obj.set(prop as keyof FabricObject, value);
+      // The PDF's embedded font has its bold/italic built in and a browser cannot take that away, so
+      // switching it off moves the box to the matching system font; switching it back restores the PDF font.
+      if (data.originalFontFamily && data.fallbackFontFamily) {
+        const styled = obj as FabricObject & { fontWeight?: string | number; fontStyle?: string };
+        const lostStyle =
+          (data.originalFontWeight === "bold" && String(styled.fontWeight) !== "bold") ||
+          (data.originalFontStyle === "italic" && String(styled.fontStyle) !== "italic");
+        obj.set({
+          fontFamily: lostStyle ? data.fallbackFontFamily : data.originalFontFamily,
+          charSpacing: lostStyle ? 0 : data.originalCharSpacing ?? 0,
+        } as Partial<FabricObject>);
+      }
+      // The other font/weight is wider or narrower: refit the box so the line does not wrap.
+      const box = obj as Textbox;
+      box.set({ width: 10000 });
+      box.initDimensions();
+      box.set({ width: Math.ceil(box.calcTextWidth()) + 4 });
+      box.initDimensions();
     } else if (obj instanceof Group) {
       // An arrow is a group: colour = shaft stroke + head fill, width = shaft width.
       const [shaft, head] = obj.getObjects();
