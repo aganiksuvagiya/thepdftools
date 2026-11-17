@@ -43,7 +43,8 @@ interface TextItem {
   fontFamily: string;
   fontSize: number; // in viewport pixels (scaled)
   fontSizePt: number; // in PDF points (unscaled)
-  color: string;
+  color: string; // text colour read from the rendered page
+  bgColor?: string; // colour behind the text (the edit cover uses it); undefined = plain white
   fontWeight: string; // "normal" or "bold"
   fontStyle: string; // "normal" or "italic"
   lossy?: boolean; // the PDF could not map some glyphs back to text (they were dropped)
@@ -82,6 +83,7 @@ interface PageData {
   width: number;
   height: number;
   fabricJson: string | null; // serialised fabric canvas state
+  thumb?: string; // sidebar thumbnail that includes the edits (absent = show the plain page image)
   textItems: TextItem[]; // extracted text items with positions
   scale: number; // render scale used
   loaded: boolean; // whether the page has been fully rendered
@@ -101,6 +103,8 @@ const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3;
 const THUMBNAIL_HEIGHT = 120;
+const THUMBNAIL_RENDER_WIDTH = 300; // px; sidebar thumbnails are drawn at ~150 css px, so 2x for sharp screens
+const DELETED_PAGE_NOTICE_MS = 30000; // how long the "Page deleted - Undo" bar stays up
 const MOBILE_QUERY = "(max-width: 767px)";
 
 // Every page is rendered at this many canvas px per PDF point (1 pt = 1/72 inch).
@@ -134,6 +138,20 @@ function serializeCanvas(fc: FabricCanvas): string {
   const obj = fc.toObject() as Record<string, unknown>;
   delete obj.backgroundImage;
   return JSON.stringify(obj);
+}
+
+/**
+ * True when a canvas snapshot holds something the user made: an annotation, or PDF text they changed.
+ * Merely clicking a line (opens an editing box that is still identical to the original) is not an edit.
+ */
+function snapshotHasRealEdits(json: string | undefined | null): boolean {
+  if (!json) return false;
+  try {
+    const parsed = JSON.parse(json) as { objects?: { data?: { type?: string; changed?: boolean } }[] };
+    return (parsed.objects ?? []).some((o) => !o.data || (o.data.type === "editableText" && o.data.changed === true));
+  } catch {
+    return true; // cannot tell: assume there is something to lose
+  }
 }
 
 let pageIdCounter = 0;
@@ -304,7 +322,110 @@ function panelColor(obj: FabricObject, prop: "fill" | "stroke"): string {
   return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value) ? value : "#000000";
 }
 
-async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport: any) {
+const toHex = (r: number, g: number, b: number) =>
+  `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+
+/**
+ * pdf.js gives no colour for text, so read it from the rendered page: the most common colour in a
+ * line's box is the background, and the most common colour among the pixels furthest from it is the
+ * ink. Without this every edited line turned black (and white-on-dark text got a white cover).
+ * Lines whose background is not a flat colour (photos, gradients) keep the plain black-on-white default.
+ */
+function sampleTextColors(ctx: CanvasRenderingContext2D, items: TextItem[]) {
+  const width = ctx.canvas.width;
+  const height = ctx.canvas.height;
+  let data: Uint8ClampedArray;
+  try {
+    data = ctx.getImageData(0, 0, width, height).data;
+  } catch {
+    return; // canvas not readable: keep the defaults
+  }
+
+  for (const item of items) {
+    const x0 = Math.max(0, Math.floor(item.x));
+    const x1 = Math.min(width, Math.ceil(item.x + item.width));
+    const y0 = Math.max(0, Math.floor(item.y));
+    const y1 = Math.min(height, Math.ceil(item.y + item.height));
+    if (x1 - x0 < 2 || y1 - y0 < 2) continue;
+
+    // Background: dominant colour bucket (5 bits per channel), averaged exactly.
+    const buckets = new Map<number, { n: number; r: number; g: number; b: number }>();
+    let total = 0;
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const i = (y * width + x) * 4;
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const key = ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3);
+        const bucket = buckets.get(key);
+        if (bucket) {
+          bucket.n++;
+          bucket.r += r;
+          bucket.g += g;
+          bucket.b += b;
+        } else {
+          buckets.set(key, { n: 1, r, g, b });
+        }
+        total++;
+      }
+    }
+    let top: { n: number; r: number; g: number; b: number } | null = null;
+    for (const bucket of Array.from(buckets.values())) if (!top || bucket.n > top.n) top = bucket;
+    if (!top || top.n / total < 0.3) continue;
+
+    const bgR = Math.round(top.r / top.n);
+    const bgG = Math.round(top.g / top.n);
+    const bgB = Math.round(top.b / top.n);
+    item.bgColor = bgR >= 250 && bgG >= 250 && bgB >= 250 ? "#ffffff" : toHex(bgR, bgG, bgB);
+
+    // Ink: the exact colour that occurs most among the pixels furthest from the background.
+    let maxDist = 0;
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const i = (y * width + x) * 4;
+        const d = Math.abs(data[i] - bgR) + Math.abs(data[i + 1] - bgG) + Math.abs(data[i + 2] - bgB);
+        if (d > maxDist) maxDist = d;
+      }
+    }
+    if (maxDist < 120) continue; // no readable ink found: keep the default text colour
+    const cutoff = maxDist * 0.8;
+    const counts = new Map<number, number>();
+    let best = 0;
+    let bestCount = 0;
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const i = (y * width + x) * 4;
+        const d = Math.abs(data[i] - bgR) + Math.abs(data[i + 1] - bgG) + Math.abs(data[i + 2] - bgB);
+        if (d < cutoff) continue;
+        const key = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
+        const count = (counts.get(key) ?? 0) + 1;
+        counts.set(key, count);
+        if (count > bestCount) {
+          bestCount = count;
+          best = key;
+        }
+      }
+    }
+    let r = (best >> 16) & 255;
+    let g = (best >> 8) & 255;
+    let b = best & 255;
+    // Thin black text is anti-aliased and may never reach pure black: snap near-black to black.
+    if (r <= 32 && g <= 32 && b <= 32) {
+      r = 0;
+      g = 0;
+      b = 0;
+    }
+    item.color = toHex(r, g, b);
+  }
+}
+
+async function extractTextItemsFromTextLayer(
+  pdfjsLib: any,
+  page: any,
+  viewport: any,
+  renderedCtx?: CanvasRenderingContext2D
+) {
   const textContent = await page.getTextContent();
   if (typeof window === "undefined") return [];
 
@@ -376,7 +497,9 @@ async function extractTextItemsFromTextLayer(pdfjsLib: any, page: any, viewport:
     }
   }
 
-  return mergeNearbyTextItems(items);
+  const merged = mergeNearbyTextItems(items);
+  if (renderedCtx) sampleTextColors(renderedCtx, merged);
+  return merged;
 }
 
 /* ------------------------------------------------------------------ */
@@ -477,6 +600,21 @@ export default function PdfEditorClient() {
   const clipboardRef = useRef<string | null>(null);
   const bgImageCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
 
+  // The current page changed since its thumbnail was last drawn.
+  const thumbDirtyRef = useRef(false);
+  // Anything (an annotation, an edit, page add/move/delete) changed since the file was opened or saved.
+  const docDirtyRef = useRef(false);
+  // Pages removed with the sidebar button, newest last; "Undo" on the notice brings the last one back.
+  const deletedPagesRef = useRef<{ page: PageData; index: number }[]>([]);
+  const deletedNoticeTimer = useRef<number | null>(null);
+  const [deletedNotice, setDeletedNotice] = useState<string | null>(null);
+  const [confirmState, setConfirmState] = useState<{
+    title: string;
+    message: string;
+    confirmLabel: string;
+    onConfirm: () => void;
+  } | null>(null);
+
   const createBackgroundImage = useCallback(async (dataUrl: string, width: number, height: number) => {
     // Use cached HTMLImageElement to avoid re-decoding the base64 data URL
     let htmlImg = bgImageCacheRef.current.get(dataUrl);
@@ -564,7 +702,7 @@ export default function PdfEditorClient() {
       height: item.height + padTop + padBottom,
       originX: "left",
       originY: "top",
-      fill: "#ffffff",
+      fill: item.bgColor ?? "#ffffff",
       selectable: false,
       evented: false,
       visible: false,
@@ -801,6 +939,8 @@ export default function PdfEditorClient() {
 
   const handleFiles = useCallback((files: File[]) => {
     if (files.length > 0) {
+      docDirtyRef.current = false;
+      thumbDirtyRef.current = false;
       setFile(files[0]);
       setError(null);
     }
@@ -844,10 +984,12 @@ export default function PdfEditorClient() {
             const canvas = document.createElement("canvas");
             canvas.width = viewport.width;
             canvas.height = viewport.height;
-            const ctx = canvas.getContext("2d")!;
+            // willReadFrequently keeps this canvas in CPU memory: the text colours are sampled from it,
+            // and reading a GPU canvas back costs about half a second per page.
+            const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
             await page.render({ canvasContext: ctx, viewport }).promise;
 
-            const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport);
+            const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport, ctx);
 
             pagesArr.push({
               id: newPageId(),
@@ -903,16 +1045,30 @@ export default function PdfEditorClient() {
   /*  Fabric canvas init / page switching                              */
   /* ================================================================ */
 
+  // Small picture of the live canvas (page + annotations + edited text) for the sidebar.
+  const makeThumbnail = useCallback((fc: FabricCanvas): string | null => {
+    try {
+      const width = fc.getWidth();
+      if (!width) return null;
+      return fc.toDataURL({ format: "jpeg", quality: 0.78, multiplier: THUMBNAIL_RENDER_WIDTH / width });
+    } catch {
+      return null;
+    }
+  }, []);
+
   const saveCurrentPageState = useCallback(() => {
     const fc = fabricRef.current;
     if (!fc || isLoadingPage.current) return;
     const json = serializeCanvas(fc);
+    // Leaving the page soon after an edit: make sure its thumbnail shows that edit.
+    const thumb = thumbDirtyRef.current ? makeThumbnail(fc) : null;
+    thumbDirtyRef.current = false;
     setPages((prev) => {
       const next = [...prev];
-      if (next[currentPage]) next[currentPage] = { ...next[currentPage], fabricJson: json };
+      if (next[currentPage]) next[currentPage] = { ...next[currentPage], fabricJson: json, ...(thumb ? { thumb } : {}) };
       return next;
     });
-  }, [currentPage]);
+  }, [currentPage, makeThumbnail]);
 
   const pushUndo = useCallback(() => {
     const fc = fabricRef.current;
@@ -925,6 +1081,25 @@ export default function PdfEditorClient() {
     });
     setRedoStack([]);
   }, []);
+
+  // Every history change (draw, move, type, delete, undo, redo) means the page differs from what was
+  // opened: remember that for the "New" warning, and redraw its sidebar thumbnail shortly after.
+  useEffect(() => {
+    if (undoStack.length <= 1 && redoStack.length === 0) return;
+    if (!docDirtyRef.current && snapshotHasRealEdits(undoStack[undoStack.length - 1])) docDirtyRef.current = true;
+    thumbDirtyRef.current = true;
+    const pageId = loadedPageIdRef.current;
+    const timer = window.setTimeout(() => {
+      const fc = fabricRef.current;
+      // The user may have moved to another page meanwhile; never put one page's picture on another.
+      if (!fc || isLoadingPage.current || loadedPageIdRef.current !== pageId || !thumbDirtyRef.current) return;
+      const thumb = makeThumbnail(fc);
+      thumbDirtyRef.current = false;
+      if (!thumb) return;
+      setPages((prev) => prev.map((p) => (p.id === pageId ? { ...p, thumb } : p)));
+    }, 500);
+    return () => window.clearTimeout(timer);
+  }, [undoStack, redoStack, makeThumbnail]);
 
   // Initialize fabric canvas
   useEffect(() => {
@@ -1445,32 +1620,28 @@ export default function PdfEditorClient() {
   /*  Lazy page loading                                                */
   /* ================================================================ */
 
-  const loadSinglePage = useCallback(async (pageIndex: number) => {
+  // Renders a page that was left unrendered at open time. `srcIndex` is its page in the original PDF;
+  // its position in the editor can differ after pages were deleted or moved, so never use that instead.
+  const loadSinglePage = useCallback(async (pageId: string, srcIndex: number) => {
     const pdfjsLib = pdfjsLibRef.current;
     const pdf = pdfDocRef.current;
     if (!pdfjsLib || !pdf) return;
 
     const renderScale = RENDER_SCALE;
-    const page = await pdf.getPage(pageIndex + 1); // pdfjs uses 1-based
+    const page = await pdf.getPage(srcIndex + 1); // pdfjs uses 1-based
     const viewport = page.getViewport({ scale: renderScale });
     const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true })!; // CPU canvas: colours are sampled from it
     await page.render({ canvasContext: ctx, viewport }).promise;
 
-    const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport);
+    const mergedTextItems = await extractTextItemsFromTextLayer(pdfjsLib, page, viewport, ctx);
 
-    setPages((prev) => {
-      const next = [...prev];
-      next[pageIndex] = {
-        ...next[pageIndex],
-        dataUrl: canvas.toDataURL("image/png"),
-        textItems: mergedTextItems,
-        loaded: true,
-      };
-      return next;
-    });
+    const dataUrl = canvas.toDataURL("image/png");
+    setPages((prev) =>
+      prev.map((p) => (p.id === pageId ? { ...p, dataUrl, textItems: mergedTextItems, loaded: true } : p))
+    );
   }, []);
 
   /* ================================================================ */
@@ -1481,9 +1652,10 @@ export default function PdfEditorClient() {
     async (idx: number) => {
       if (idx < 0 || idx >= pages.length || idx === currentPage) return;
       // Lazy load if not yet rendered
-      if (!pages[idx].loaded) {
+      const target = pages[idx];
+      if (!target.loaded && target.srcIndex !== null) {
         setProgress(`Loading page ${idx + 1}...`);
-        await loadSinglePage(idx);
+        await loadSinglePage(target.id, target.srcIndex);
         setProgress("");
       }
       // Save current zoom for this page
@@ -1503,9 +1675,36 @@ export default function PdfEditorClient() {
   /*  Page management                                                  */
   /* ================================================================ */
 
+  const showDeletedNotice = useCallback((label: string | null) => {
+    if (deletedNoticeTimer.current !== null) window.clearTimeout(deletedNoticeTimer.current);
+    deletedNoticeTimer.current = null;
+    setDeletedNotice(label);
+    if (label) {
+      deletedNoticeTimer.current = window.setTimeout(() => {
+        deletedNoticeTimer.current = null;
+        setDeletedNotice(null);
+        deletedPagesRef.current = []; // the offer to undo has expired
+      }, DELETED_PAGE_NOTICE_MS);
+    }
+  }, []);
+
   const deletePage = useCallback(
     (idx: number) => {
-      if (pages.length <= 1) return;
+      if (pages.length <= 1 || !pages[idx]) return;
+      const fc = fabricRef.current;
+      // Keep the page exactly as it is right now (live edits, thumbnail) so Undo can bring it back whole.
+      let removed: PageData = pages[idx];
+      if (idx === currentPage && fc && !isLoadingPage.current) {
+        removed = {
+          ...removed,
+          fabricJson: serializeCanvas(fc),
+          ...(thumbDirtyRef.current ? { thumb: makeThumbnail(fc) ?? removed.thumb } : {}),
+        };
+      }
+      deletedPagesRef.current = [...deletedPagesRef.current, { page: removed, index: idx }].slice(-10);
+      docDirtyRef.current = true;
+      showDeletedNotice(`Page ${idx + 1} deleted`);
+
       saveCurrentPageState();
       setPages((prev) => prev.filter((_, i) => i !== idx));
       if (currentPage >= pages.length - 1) {
@@ -1516,13 +1715,39 @@ export default function PdfEditorClient() {
         setCurrentPage(Math.min(idx, pages.length - 2));
       }
     },
-    [pages.length, currentPage, saveCurrentPageState]
+    [pages, currentPage, saveCurrentPageState, makeThumbnail, showDeletedNotice]
   );
+
+  // Puts the most recently deleted page back where it was and opens it.
+  const undoDeletePage = useCallback(() => {
+    const entry = deletedPagesRef.current[deletedPagesRef.current.length - 1];
+    if (!entry) return;
+    deletedPagesRef.current = deletedPagesRef.current.slice(0, -1);
+    const at = Math.min(entry.index, pages.length);
+    saveCurrentPageState();
+    setPages((prev) => {
+      const next = [...prev];
+      next.splice(Math.min(entry.index, next.length), 0, entry.page);
+      return next;
+    });
+    if (entry.page.loaded) {
+      // Open the restored page so the user sees it is back.
+      setCurrentPage(at);
+      setUndoStack([]);
+      setRedoStack([]);
+    } else if (at <= currentPage) {
+      // Never opened (still the "Click to load" placeholder): keep looking at the same page.
+      setCurrentPage(currentPage + 1);
+    }
+    const earlier = deletedPagesRef.current[deletedPagesRef.current.length - 1];
+    showDeletedNotice(earlier ? `Page ${earlier.index + 1} deleted` : null);
+  }, [pages.length, currentPage, saveCurrentPageState, showDeletedNotice]);
 
   const movePage = useCallback(
     (idx: number, direction: "up" | "down") => {
       const newIdx = direction === "up" ? idx - 1 : idx + 1;
       if (newIdx < 0 || newIdx >= pages.length) return;
+      docDirtyRef.current = true;
       saveCurrentPageState();
       setPages((prev) => {
         const next = [...prev];
@@ -1548,6 +1773,7 @@ export default function PdfEditorClient() {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, w, h);
     const dataUrl = canvas.toDataURL("image/png");
+    docDirtyRef.current = true;
     saveCurrentPageState();
     setPages((prev) => [
       ...prev.slice(0, currentPage + 1),
@@ -1602,6 +1828,8 @@ export default function PdfEditorClient() {
         (field.tagName === "INPUT" || field.tagName === "TEXTAREA" || field.tagName === "SELECT" || field.isContentEditable) &&
         field !== (active as any)?.hiddenTextarea;
       if (inFormField) return;
+      // A confirm dialog is open: its buttons own the keyboard (Backspace must not delete a shape behind it).
+      if (field?.closest?.('[role="dialog"]')) return;
 
       if (e.key === "Delete" || e.key === "Backspace") {
         if (isEditing) return;
@@ -1772,6 +2000,8 @@ export default function PdfEditorClient() {
       a.download = (file?.name?.replace(/\.pdf$/i, "") || "edited") + "_edited.pdf";
       a.click();
       URL.revokeObjectURL(url);
+      // Everything so far is in the downloaded file; "New" need not warn until the next change.
+      docDirtyRef.current = false;
     } catch (e: any) {
       setError("Failed to save PDF: " + (e?.message || "Unknown error"));
     } finally {
@@ -1888,6 +2118,48 @@ export default function PdfEditorClient() {
   /* ================================================================ */
   /*  RENDER — Editor                                                  */
   /* ================================================================ */
+
+  // Which property controls make sense for the selected object.
+  const selectedType = selectedObject?.type ?? "";
+  const isTextObject = selectedType === "textbox" || selectedType === "i-text";
+  const isPictureObject = selectedType === "image";
+  const showFill = !isPictureObject && selectedType !== "path" && selectedType !== "line";
+  const showStroke = !isPictureObject;
+
+  // Closes the current file and goes back to the upload screen (edits are gone for good).
+  const resetEditorForNewFile = () => {
+    setConfirmState(null);
+    showDeletedNotice(null);
+    deletedPagesRef.current = [];
+    docDirtyRef.current = false;
+    thumbDirtyRef.current = false;
+    setFile(null);
+    setPages([]);
+    setCurrentPage(0);
+    setUndoStack([]);
+    setRedoStack([]);
+    // The old canvas is gone, so a selection from it must not keep the properties panel open.
+    setSelectedObject(null);
+    setShowProperties(false);
+    fabricRef.current?.dispose();
+    fabricRef.current = null;
+    loadedPageIdRef.current = null;
+    loadedSignatureRef.current = "";
+  };
+
+  // "New" used to throw every edit away without a word. Ask first when there is anything to lose.
+  const handleNewFile = () => {
+    if (!docDirtyRef.current) {
+      resetEditorForNewFile();
+      return;
+    }
+    setConfirmState({
+      title: "Discard your edits?",
+      message: "Opening a new file closes this one, and the changes you have not saved with Save PDF will be lost.",
+      confirmLabel: "Discard and open new",
+      onConfirm: resetEditorForNewFile,
+    });
+  };
 
   // Edit Text mode only helps on pages that have real text: say so instead of staying silent.
   const noticePage = pages[currentPage];
@@ -2215,20 +2487,7 @@ export default function PdfEditorClient() {
 
         {/* New file */}
         <button
-          onClick={() => {
-            setFile(null);
-            setPages([]);
-            setCurrentPage(0);
-            setUndoStack([]);
-            setRedoStack([]);
-            // The old canvas is gone, so a selection from it must not keep the properties panel open.
-            setSelectedObject(null);
-            setShowProperties(false);
-            fabricRef.current?.dispose();
-            fabricRef.current = null;
-            loadedPageIdRef.current = null;
-            loadedSignatureRef.current = "";
-          }}
+          onClick={handleNewFile}
           className="flex h-9 flex-shrink-0 items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all"
           title="Open new file"
         >
@@ -2260,7 +2519,7 @@ export default function PdfEditorClient() {
             </div>
             <div className="flex-1 overflow-y-auto px-2 pb-2 space-y-2">
               {pages.map((pg, idx) => (
-                <div key={idx} className="group relative">
+                <div key={pg.id} className="group relative">
                   <button
                     onClick={() => goToPage(idx)}
                     className={`w-full rounded-lg border-2 overflow-hidden transition-all ${
@@ -2271,7 +2530,7 @@ export default function PdfEditorClient() {
                   >
                     {pg.loaded ? (
                       <img
-                        src={pg.dataUrl}
+                        src={pg.thumb ?? pg.dataUrl}
                         alt={`Page ${idx + 1}`}
                         className="w-full"
                         style={{ height: THUMBNAIL_HEIGHT, objectFit: "cover", objectPosition: "top" }}
@@ -2355,44 +2614,53 @@ export default function PdfEditorClient() {
           >
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Properties</h3>
 
-            {/* Fill color */}
-            <div>
-              <label className="text-[10px] font-medium text-slate-500 block mb-1">Fill Color</label>
-              <input
-                type="color"
-                value={panelColor(selectedObject, "fill")}
-                onChange={(e) => updateSelectedProp("fill", e.target.value)}
-                className="h-7 w-full cursor-pointer rounded border border-slate-200"
-              />
-            </div>
+            {/* Only offer what the selected object can really use: a picture has no fill or outline
+                to colour, and a pen stroke or line has no fill. */}
+            {showFill && (
+              <div>
+                <label className="text-[10px] font-medium text-slate-500 block mb-1">
+                  {isTextObject ? "Text Color" : "Fill Color"}
+                </label>
+                <input
+                  type="color"
+                  value={panelColor(selectedObject, "fill")}
+                  onChange={(e) => updateSelectedProp("fill", e.target.value)}
+                  className="h-7 w-full cursor-pointer rounded border border-slate-200"
+                />
+              </div>
+            )}
 
-            {/* Stroke color */}
-            <div>
-              <label className="text-[10px] font-medium text-slate-500 block mb-1">Stroke Color</label>
-              <input
-                type="color"
-                value={panelColor(selectedObject, "stroke")}
-                onChange={(e) => updateSelectedProp("stroke", e.target.value)}
-                className="h-7 w-full cursor-pointer rounded border border-slate-200"
-              />
-            </div>
+            {showStroke && (
+              <>
+                {/* Stroke color */}
+                <div>
+                  <label className="text-[10px] font-medium text-slate-500 block mb-1">Stroke Color</label>
+                  <input
+                    type="color"
+                    value={panelColor(selectedObject, "stroke")}
+                    onChange={(e) => updateSelectedProp("stroke", e.target.value)}
+                    className="h-7 w-full cursor-pointer rounded border border-slate-200"
+                  />
+                </div>
 
-            {/* Stroke width */}
-            <div>
-              <label className="text-[10px] font-medium text-slate-500 block mb-1">Stroke Width</label>
-              <input
-                type="range"
-                min={0}
-                max={20}
-                value={
-                  (selectedObject instanceof Group
-                    ? selectedObject.getObjects()[0]?.get("strokeWidth")
-                    : selectedObject.get("strokeWidth")) || 0
-                }
-                onChange={(e) => updateSelectedProp("strokeWidth", Number(e.target.value))}
-                className="w-full accent-brand-600"
-              />
-            </div>
+                {/* Stroke width */}
+                <div>
+                  <label className="text-[10px] font-medium text-slate-500 block mb-1">Stroke Width</label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={20}
+                    value={
+                      (selectedObject instanceof Group
+                        ? selectedObject.getObjects()[0]?.get("strokeWidth")
+                        : selectedObject.get("strokeWidth")) || 0
+                    }
+                    onChange={(e) => updateSelectedProp("strokeWidth", Number(e.target.value))}
+                    className="w-full accent-brand-600"
+                  />
+                </div>
+              </>
+            )}
 
             {/* Opacity */}
             <div>
@@ -2448,6 +2716,29 @@ export default function PdfEditorClient() {
             {textEditNotice}
           </div>
         )}
+
+        {/* A deleted page can be brought back for a few seconds. Floats over the canvas area. */}
+        {deletedNotice && (
+          <div
+            role="status"
+            className="absolute left-1/2 top-3 z-40 flex max-w-[calc(100%-24px)] -translate-x-1/2 items-center gap-3 rounded-lg bg-slate-800 px-3 py-2 text-xs text-white shadow-lg"
+          >
+            <span>{deletedNotice}</span>
+            <button
+              onClick={undoDeletePage}
+              className="rounded bg-white/15 px-2 py-0.5 font-semibold hover:bg-white/25"
+            >
+              Undo
+            </button>
+            <button
+              onClick={() => showDeletedNotice(null)}
+              aria-label="Dismiss"
+              className="text-white/60 hover:text-white"
+            >
+              ×
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ============ BOTTOM BAR ============ */}
@@ -2485,6 +2776,42 @@ export default function PdfEditorClient() {
           </button>
         )}
       </div>
+
+      {/* Confirm dialog (used before something that cannot be undone) */}
+      {confirmState && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pdf-editor-confirm-title"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 p-4"
+          onClick={() => setConfirmState(null)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setConfirmState(null);
+          }}
+        >
+          <div className="w-full max-w-sm rounded-xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h2 id="pdf-editor-confirm-title" className="text-sm font-semibold text-slate-900">
+              {confirmState.title}
+            </h2>
+            <p className="mt-2 text-xs leading-relaxed text-slate-600">{confirmState.message}</p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                autoFocus
+                onClick={() => setConfirmState(null)}
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
+              >
+                Keep editing
+              </button>
+              <button
+                onClick={confirmState.onConfirm}
+                className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700"
+              >
+                {confirmState.confirmLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
