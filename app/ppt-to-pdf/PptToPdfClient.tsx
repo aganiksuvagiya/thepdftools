@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
+import { loadDeck, disposeDeck, renderSlide, getNotes, Deck } from "./pptx/render";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -15,145 +16,106 @@ interface ConversionResult {
   url: string;
   pdfSize: number;
   name: string;
+  pageCount: number;
   slideCount: number;
+  skippedHidden: number;
+  notes: string[];
+  preview: string;
 }
 
-const ANS = "http://schemas.openxmlformats.org/drawingml/2006/main";
-const PNS = "http://schemas.openxmlformats.org/presentationml/2006/main";
+type Quality = "high" | "standard" | "small";
 
-interface TextRun {
-  text: string;
-  bold: boolean;
-  italic: boolean;
-  fontSize: number; // pts (already halved from hundredths)
-  color: string;
+const QUALITY: Record<Quality, { label: string; scale: number; jpeg: number }> = {
+  high: { label: "High (sharpest, larger file)", scale: 2, jpeg: 0.92 },
+  standard: { label: "Standard (recommended)", scale: 1.5, jpeg: 0.85 },
+  small: { label: "Small file", scale: 1, jpeg: 0.7 },
+};
+
+const MAX_SIDE = 4096;
+const PT_PER_PX = 0.75; // 96 dpi px -> pt
+
+/** "1-5, 8, 10" -> set of slide numbers (1-based). Returns null when empty, throws on bad input. */
+function parseRange(input: string, total: number): Set<number> | null {
+  const text = input.trim();
+  if (!text) return null;
+  const out = new Set<number>();
+  text.split(",").forEach((part) => {
+    const p = part.trim();
+    if (!p) return;
+    const m = /^(\d+)\s*-\s*(\d+)$/.exec(p);
+    if (m) {
+      const a = parseInt(m[1], 10), b = parseInt(m[2], 10);
+      for (let i = Math.min(a, b); i <= Math.max(a, b); i++) out.add(i);
+    } else if (/^\d+$/.test(p)) out.add(parseInt(p, 10));
+    else throw new Error(`Slide range "${p}" is not valid. Use something like 1-5, 8, 10.`);
+  });
+  const valid = new Set<number>();
+  out.forEach((n) => {
+    if (n >= 1 && n <= total) valid.add(n);
+  });
+  if (!valid.size) throw new Error(`No slides match that range. This presentation has ${total} slides.`);
+  return valid;
 }
 
-interface TextPara {
-  runs: TextRun[];
-  align: string;
-  bulletChar: string;
-  indent: number;
+function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Promise<Uint8Array> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      async (blob) => {
+        if (!blob) return reject(new Error("Could not encode a slide image."));
+        resolve(new Uint8Array(await blob.arrayBuffer()));
+      },
+      "image/jpeg",
+      quality
+    );
+  });
 }
 
-interface Shape {
-  type: "title" | "body" | "other";
-  paragraphs: TextPara[];
-  x: number; y: number; w: number; h: number; // EMUs
+function wrapLines(g: CanvasRenderingContext2D, text: string, maxW: number): string[] {
+  const out: string[] = [];
+  text.split("\n").forEach((para) => {
+    if (!para.trim()) {
+      out.push("");
+      return;
+    }
+    let line = "";
+    para.split(/(\s+)/).forEach((tok) => {
+      const test = line + tok;
+      if (line && g.measureText(test).width > maxW) {
+        out.push(line.replace(/\s+$/, ""));
+        line = tok.replace(/^\s+/, "");
+      } else line = test;
+    });
+    if (line.trim()) out.push(line);
+  });
+  return out;
 }
 
-interface Slide {
-  slideNumber: number;
-  bgColor: string;
-  shapes: Shape[];
-}
-
-function parseColor(el: Element | null): string {
-  if (!el) return "";
-  const srgb = el.getElementsByTagNameNS(ANS, "srgbClr")[0];
-  if (srgb) return srgb.getAttribute("val") || "";
-  return "";
-}
-
-function parseTextRun(rEl: Element): TextRun {
-  const run: TextRun = { text: "", bold: false, italic: false, fontSize: 18, color: "" };
-  const tEl = rEl.getElementsByTagNameNS(ANS, "t")[0];
-  run.text = tEl?.textContent || "";
-  const rPr = rEl.getElementsByTagNameNS(ANS, "rPr")[0];
-  if (rPr) {
-    run.bold = rPr.getAttribute("b") === "1" || rPr.getAttribute("b") === "true";
-    run.italic = rPr.getAttribute("i") === "1" || rPr.getAttribute("i") === "true";
-    const sz = rPr.getAttribute("sz");
-    if (sz) run.fontSize = parseInt(sz, 10) / 100;
-    const solidFill = rPr.getElementsByTagNameNS(ANS, "solidFill")[0];
-    if (solidFill) run.color = parseColor(solidFill);
+function notesCanvas(deck: Deck, slideNo: number, notes: string, scale: number): HTMLCanvasElement {
+  const c = document.createElement("canvas");
+  c.width = Math.round(deck.width * scale);
+  c.height = Math.round(deck.height * scale);
+  const g = c.getContext("2d") as CanvasRenderingContext2D;
+  g.scale(scale, scale);
+  g.fillStyle = "#ffffff";
+  g.fillRect(0, 0, deck.width, deck.height);
+  const pad = Math.max(40, deck.width * 0.05);
+  g.fillStyle = "#111827";
+  g.textBaseline = "alphabetic";
+  g.font = `bold ${Math.round(deck.height * 0.04)}px Arial, sans-serif`;
+  g.fillText(`Slide ${slideNo} – speaker notes`, pad, pad + deck.height * 0.03);
+  let size = Math.round(deck.height * 0.032);
+  let lines: string[] = [];
+  const top = pad + deck.height * 0.09;
+  for (; size >= 10; size -= 2) {
+    g.font = `${size}px Arial, sans-serif`;
+    lines = wrapLines(g, notes, deck.width - pad * 2);
+    if (lines.length * size * 1.35 <= deck.height - top - pad) break;
   }
-  return run;
+  g.font = `${size}px Arial, sans-serif`;
+  g.fillStyle = "#1f2937";
+  lines.forEach((l, i) => g.fillText(l, pad, top + (i + 1) * size * 1.35));
+  return c;
 }
-
-function parseTextPara(pEl: Element): TextPara {
-  const para: TextPara = { runs: [], align: "left", bulletChar: "", indent: 0 };
-  const pPr = pEl.getElementsByTagNameNS(ANS, "pPr")[0];
-  if (pPr) {
-    para.align = pPr.getAttribute("algn") || "left";
-    const lvl = parseInt(pPr.getAttribute("lvl") || "0", 10);
-    para.indent = lvl;
-    const buChar = pPr.getElementsByTagNameNS(ANS, "buChar")[0];
-    if (buChar) para.bulletChar = buChar.getAttribute("char") || "•";
-    const buFont = pPr.getElementsByTagNameNS(ANS, "buFont")[0];
-    if (buFont && !para.bulletChar) para.bulletChar = "•";
-    const buNone = pPr.getElementsByTagNameNS(ANS, "buNone")[0];
-    if (buNone) para.bulletChar = "";
-  }
-  const rEls = pEl.getElementsByTagNameNS(ANS, "r");
-  for (let i = 0; i < rEls.length; i++) {
-    const r = parseTextRun(rEls[i]);
-    if (r.text) para.runs.push(r);
-  }
-  return para;
-}
-
-function parseShape(spEl: Element): Shape | null {
-  // Detect shape type via placeholder
-  let shapeType: Shape["type"] = "other";
-  const ph = spEl.getElementsByTagNameNS(PNS, "ph")[0];
-  if (ph) {
-    const phType = ph.getAttribute("type") || "";
-    if (phType === "title" || phType === "ctrTitle") shapeType = "title";
-    else if (phType === "body" || phType === "subTitle" || phType === "") shapeType = "body";
-  }
-
-  // Position/size from spPr > xfrm
-  const xfrm = spEl.getElementsByTagNameNS(ANS, "xfrm")[0];
-  let x = 0, y = 0, w = 6858000, h = 1143000;
-  if (xfrm) {
-    const off = xfrm.getElementsByTagNameNS(ANS, "off")[0];
-    const ext = xfrm.getElementsByTagNameNS(ANS, "ext")[0];
-    if (off) { x = parseInt(off.getAttribute("x") || "0", 10); y = parseInt(off.getAttribute("y") || "0", 10); }
-    if (ext) { w = parseInt(ext.getAttribute("cx") || "6858000", 10); h = parseInt(ext.getAttribute("cy") || "1143000", 10); }
-  }
-
-  // Text body
-  const txBody = spEl.getElementsByTagNameNS(PNS, "txBody")[0]
-    || spEl.getElementsByTagNameNS(ANS, "txBody")[0];
-  if (!txBody) return null;
-
-  const pEls = txBody.getElementsByTagNameNS(ANS, "p");
-  const paragraphs: TextPara[] = [];
-  for (let i = 0; i < pEls.length; i++) {
-    paragraphs.push(parseTextPara(pEls[i]));
-  }
-
-  if (paragraphs.every((p) => p.runs.length === 0)) return null;
-  return { type: shapeType, paragraphs, x, y, w, h };
-}
-
-function parseSlide(xml: string, slideNumber: number): Slide {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(xml, "text/xml");
-
-  // Background color
-  let bgColor = "";
-  const bgPr = doc.getElementsByTagNameNS(PNS, "bg")[0];
-  if (bgPr) {
-    const solidFill = bgPr.getElementsByTagNameNS(ANS, "solidFill")[0];
-    if (solidFill) bgColor = parseColor(solidFill);
-  }
-
-  // Shapes
-  const shapes: Shape[] = [];
-  const spEls = doc.getElementsByTagNameNS(PNS, "sp");
-  for (let i = 0; i < spEls.length; i++) {
-    const shape = parseShape(spEls[i]);
-    if (shape) shapes.push(shape);
-  }
-
-  // Sort by Y position
-  shapes.sort((a, b) => a.y - b.y);
-
-  return { slideNumber, bgColor, shapes };
-}
-
 
 export default function PptToPdfClient() {
   const [file, setFile] = useState<File | null>(null);
@@ -161,217 +123,169 @@ export default function PptToPdfClient() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [slideCount, setSlideCount] = useState<number>(0);
+  const [quality, setQuality] = useState<Quality>("standard");
+  const [includeNotes, setIncludeNotes] = useState(false);
+  const [includeHidden, setIncludeHidden] = useState(false);
+  const [range, setRange] = useState("");
 
   const handleFiles = useCallback((files: File[]) => {
     setFile(files[0]);
     setResult(null);
     setError(null);
     setProgress("");
-    setSlideCount(0);
   }, []);
 
   const handleConvert = async () => {
     if (!file) return;
-
     setLoading(true);
     setError(null);
     setProgress("Reading file...");
+    let deck: Deck | null = null;
 
     try {
-      setProgress("Loading dependencies...");
-      if (!(window as any).JSZip) {
-        await new Promise<void>((resolve, reject) => {
-          const script = document.createElement("script");
-          script.src = "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js";
-          script.onload = () => resolve();
-          script.onerror = () => reject(new Error("Failed to load JSZip library"));
-          document.head.appendChild(script);
-        });
-      }
-
-      const JSZip = (window as any).JSZip;
-      setProgress("Parsing PowerPoint file...");
-      const arrayBuffer = await file.arrayBuffer();
-      const zip = await JSZip.loadAsync(arrayBuffer);
-
-      const slideFiles = Object.keys(zip.files)
-        .filter((f: string) => /^ppt\/slides\/slide\d+\.xml$/.test(f))
-        .sort((a: string, b: string) => {
-          const numA = parseInt(a.match(/slide(\d+)/)?.[1] || "0");
-          const numB = parseInt(b.match(/slide(\d+)/)?.[1] || "0");
-          return numA - numB;
-        });
-
-      if (slideFiles.length === 0) throw new Error("No slides found. Please ensure this is a valid .pptx file.");
-      setSlideCount(slideFiles.length);
-
-      const slides: Slide[] = [];
-      for (let i = 0; i < slideFiles.length; i++) {
-        setProgress(`Processing slide ${i + 1} of ${slideFiles.length}...`);
-        const xml: string = await zip.file(slideFiles[i]).async("string");
-        slides.push(parseSlide(xml, i + 1));
-      }
-
-      setProgress("Generating PDF...");
       const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      deck = await loadDeck(await file.arrayBuffer());
+      const total = deck.slides.length;
+      const wanted = parseRange(range, total);
+
+      const q = QUALITY[quality];
+      const scale = Math.min(q.scale, MAX_SIDE / Math.max(deck.width, deck.height));
+      const pageW = deck.width * PT_PER_PX;
+      const pageH = deck.height * PT_PER_PX;
+
       const pdfDoc = await PDFDocument.create();
-      const fontReg = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-      const fontItalic = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
-      const fontBoldItalic = await pdfDoc.embedFont(StandardFonts.HelveticaBoldOblique);
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const charSet = new Set<number>(font.getCharacterSet());
 
-      // Widescreen slide: 10" x 7.5" = 720 x 540 pt
-      const PW = 720;
-      const PH = 540;
-      const MARGIN = 40;
-
-      const hexToRgb = (hex: string) => {
-        const n = parseInt(hex, 16);
-        if (isNaN(n)) return null;
-        return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+      const warnings: Record<string, number> = {};
+      const addWarn = (k: string, n: number) => {
+        warnings[k] = (warnings[k] || 0) + n;
       };
+      let skippedHidden = 0;
+      let preview = "";
+      let rendered = 0;
 
-      const getFont = (bold: boolean, italic: boolean) => {
-        if (bold && italic) return fontBoldItalic;
-        if (bold) return fontBold;
-        if (italic) return fontItalic;
-        return fontReg;
-      };
-
-      const SLIDE_THEMES = [
-        { bg: rgb(0.12, 0.18, 0.38), titleColor: rgb(1, 1, 1), accent: rgb(0.3, 0.6, 1) },
-        { bg: rgb(0.08, 0.28, 0.22), titleColor: rgb(1, 1, 1), accent: rgb(0.3, 0.85, 0.6) },
-        { bg: rgb(0.25, 0.1, 0.35), titleColor: rgb(1, 1, 1), accent: rgb(0.8, 0.5, 1) },
-        { bg: rgb(0.35, 0.12, 0.1), titleColor: rgb(1, 1, 1), accent: rgb(1, 0.65, 0.4) },
-        { bg: rgb(0.1, 0.22, 0.35), titleColor: rgb(1, 1, 1), accent: rgb(0.4, 0.75, 1) },
-      ];
-
-      for (let si = 0; si < slides.length; si++) {
-        const slide = slides[si];
-        const page = pdfDoc.addPage([PW, PH]);
-        const theme = SLIDE_THEMES[si % SLIDE_THEMES.length];
-
-        // Background
-        let bgFill = theme.bg;
-        if (slide.bgColor) {
-          const c = hexToRgb(slide.bgColor);
-          if (c) bgFill = c;
+      const list = deck.slides.filter((s) => {
+        if (wanted && !wanted.has(s.index + 1)) return false;
+        if (s.hidden && !includeHidden) {
+          skippedHidden++;
+          return false;
         }
-        page.drawRectangle({ x: 0, y: 0, width: PW, height: PH, color: bgFill });
+        return true;
+      });
+      if (!list.length) throw new Error("There are no slides to convert (all selected slides are hidden). Turn on \"Include hidden slides\".");
 
-        // Accent bar at top
-        page.drawRectangle({ x: 0, y: PH - 4, width: PW, height: 4, color: theme.accent });
+      for (let i = 0; i < list.length; i++) {
+        const ref = list[i];
+        setProgress(`Rendering slide ${i + 1} of ${list.length}...`);
+        await new Promise((r) => setTimeout(r, 0));
 
-        // Slide number badge
-        const badge = `${slide.slideNumber}/${slides.length}`;
-        page.drawRectangle({ x: PW - MARGIN - 30, y: PH - 28, width: 34, height: 18, color: rgb(0.15, 0.15, 0.15) });
-        page.drawText(badge, { x: PW - MARGIN - 26, y: PH - 22, size: 8, font: fontReg, color: rgb(0.9, 0.9, 0.9) });
+        let canvas: HTMLCanvasElement;
+        let texts: Array<{ text: string; x: number; y: number; w: number; size: number }> = [];
+        try {
+          const res = await renderSlide(deck, ref, ref.index + 1, scale);
+          canvas = res.canvas;
+          texts = res.texts;
+          Object.keys(res.warnings).forEach((k) => addWarn(k, res.warnings[k]));
+        } catch {
+          addWarn("failed", 1);
+          canvas = document.createElement("canvas");
+          canvas.width = Math.round(deck.width * scale);
+          canvas.height = Math.round(deck.height * scale);
+          const g = canvas.getContext("2d") as CanvasRenderingContext2D;
+          g.fillStyle = "#ffffff";
+          g.fillRect(0, 0, canvas.width, canvas.height);
+          g.fillStyle = "#6b7280";
+          g.font = `${Math.round(24 * scale)}px Arial, sans-serif`;
+          g.fillText(`Slide ${ref.index + 1} could not be rendered`, 40 * scale, 60 * scale);
+        }
 
-        // Separate title shapes from body shapes
-        const titleShapes = slide.shapes.filter((s) => s.type === "title");
-        const bodyShapes = slide.shapes.filter((s) => s.type !== "title");
+        if (!preview) {
+          const small = document.createElement("canvas");
+          small.width = 640;
+          small.height = Math.max(1, Math.round((640 * canvas.height) / canvas.width));
+          small.getContext("2d")?.drawImage(canvas, 0, 0, small.width, small.height);
+          preview = small.toDataURL("image/jpeg", 0.8);
+        }
 
-        // Draw title area
-        let titleY = PH - MARGIN - 10;
-        for (const shape of titleShapes) {
-          for (const para of shape.paragraphs) {
-            const text = para.runs.map((r) => r.text).join("");
-            if (!text.trim()) continue;
-            const sz = Math.max(para.runs[0]?.fontSize || 28, 20);
-            const font = getFont(true, false);
-            // Word wrap title
-            const words = text.split(/\s+/);
-            let line = "";
-            const lines: string[] = [];
-            for (const word of words) {
-              const test = line ? `${line} ${word}` : word;
-              if (font.widthOfTextAtSize(test, sz) > PW - 2 * MARGIN && line) {
-                lines.push(line);
-                line = word;
-              } else {
-                line = test;
-              }
-            }
-            if (line) lines.push(line);
-            for (const l of lines) {
-              page.drawText(l, { x: MARGIN, y: titleY, size: sz, font, color: theme.titleColor });
-              titleY -= sz * 1.3;
-            }
+        const page = pdfDoc.addPage([pageW, pageH]);
+        const img = await pdfDoc.embedJpg(await canvasToJpeg(canvas, q.jpeg));
+        page.drawImage(img, { x: 0, y: 0, width: pageW, height: pageH });
+
+        // invisible text layer so the PDF is searchable / copyable (Latin text)
+        texts.forEach((t) => {
+          const clean = Array.from(t.text)
+            .map((ch) => (charSet.has(ch.codePointAt(0) as number) ? ch : " "))
+            .join("")
+            .replace(/\s+/g, " ")
+            .trim();
+          if (!/[A-Za-z0-9]/.test(clean)) return;
+          const size = Math.max(1, (t.size / scale) * PT_PER_PX);
+          const target = (t.w / scale) * PT_PER_PX;
+          const natural = font.widthOfTextAtSize(clean, size);
+          const fitted = natural > 0 && target > 0 ? Math.min(size * 2, Math.max(size * 0.4, (size * target) / natural)) : size;
+          try {
+            page.drawText(clean, {
+              x: (t.x / scale) * PT_PER_PX,
+              y: pageH - (t.y / scale) * PT_PER_PX,
+              size: fitted,
+              font,
+              color: rgb(0, 0, 0),
+              opacity: 0,
+            });
+          } catch {
+            /* skip text we cannot encode */
           }
-        }
+        });
+        canvas.width = 0;
+        canvas.height = 0;
+        rendered++;
 
-        // Divider below title
-        const dividerY = titleY - 6;
-        page.drawLine({ start: { x: MARGIN, y: dividerY }, end: { x: PW - MARGIN, y: dividerY }, thickness: 1, color: theme.accent });
-
-        // Body content
-        let bodyY = dividerY - 18;
-        const bodyContentW = PW - 2 * MARGIN;
-
-        for (const shape of bodyShapes) {
-          for (const para of shape.paragraphs) {
-            const text = para.runs.map((r) => r.text).join("").trim();
-            if (!text) { bodyY -= 6; continue; }
-
-            const firstRun = para.runs[0];
-            const sz = Math.min(Math.max(firstRun?.fontSize || 16, 10), 22);
-            const bold = firstRun?.bold || false;
-            const italic = firstRun?.italic || false;
-            const font = getFont(bold, italic);
-            const textColor = firstRun?.color ? (hexToRgb(firstRun.color) || rgb(0.9, 0.9, 0.9)) : rgb(0.9, 0.9, 0.9);
-
-            const indent = para.indent * 14;
-            const bullet = para.bulletChar ? para.bulletChar + " " : "";
-            const bulletW = bullet ? font.widthOfTextAtSize(bullet, sz) : 0;
-            const lineW = bodyContentW - indent - bulletW;
-
-            // Word wrap
-            const words = text.split(/\s+/);
-            let line = "";
-            const lines: string[] = [];
-            for (const word of words) {
-              const test = line ? `${line} ${word}` : word;
-              if (font.widthOfTextAtSize(test, sz) > lineW && line) {
-                lines.push(line);
-                line = word;
-              } else {
-                line = test;
-              }
-            }
-            if (line) lines.push(line);
-
-            for (let li = 0; li < lines.length; li++) {
-              if (bodyY < MARGIN + 20) break;
-              if (li === 0 && bullet) {
-                page.drawText(bullet, { x: MARGIN + indent, y: bodyY, size: sz, font, color: theme.accent });
-              }
-              page.drawText(lines[li], { x: MARGIN + indent + bulletW, y: bodyY, size: sz, font, color: textColor });
-              bodyY -= sz * 1.5;
-            }
-            bodyY -= 4;
+        if (includeNotes) {
+          const notes = await getNotes(deck, ref);
+          if (notes) {
+            const nc = notesCanvas(deck, ref.index + 1, notes, Math.min(scale, 1.5));
+            const np = pdfDoc.addPage([pageW, pageH]);
+            const nimg = await pdfDoc.embedJpg(await canvasToJpeg(nc, 0.88));
+            np.drawImage(nimg, { x: 0, y: 0, width: pageW, height: pageH });
+            nc.width = 0;
+            nc.height = 0;
+            addWarn("notesPages", 1);
           }
-        }
-
-        // No-content fallback
-        if (slide.shapes.length === 0) {
-          page.drawText("(No text content on this slide)", {
-            x: MARGIN, y: PH / 2, size: 14, font: fontItalic, color: rgb(0.6, 0.6, 0.6),
-          });
         }
       }
 
       setProgress("Finalizing PDF...");
+      const baseName = file.name.replace(/\.[^/.]+$/, "");
+      pdfDoc.setTitle(baseName);
+      pdfDoc.setProducer("ThePDFTools");
+      pdfDoc.setCreator("ThePDFTools PPT to PDF");
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
-      const baseName = file.name.replace(/\.[^/.]+$/, "");
 
-      setResult({ url, pdfSize: blob.size, name: `${baseName}.pdf`, slideCount: slides.length });
+      const notesOut: string[] = [];
+      if (warnings.chart) notesOut.push(`${warnings.chart} chart${warnings.chart > 1 ? "s" : ""} of an unsupported type (such as scatter or radar) ${warnings.chart > 1 ? "were" : "was"} shown as a grey box.`);
+      if (warnings.smartart) notesOut.push(`${warnings.smartart} SmartArt graphic${warnings.smartart > 1 ? "s" : ""} could not be drawn.`);
+      if (warnings.image) notesOut.push("Some pictures (for example EMF/WMF) are in a format the browser cannot draw and were skipped.");
+      if (warnings.object) notesOut.push("Some embedded objects (video, audio, OLE) were skipped.");
+      if (warnings.failed) notesOut.push(`${warnings.failed} slide${warnings.failed > 1 ? "s" : ""} could not be rendered.`);
+
+      setResult({
+        url,
+        pdfSize: blob.size,
+        name: `${baseName}.pdf`,
+        pageCount: pdfDoc.getPageCount(),
+        slideCount: rendered,
+        skippedHidden,
+        notes: notesOut,
+        preview,
+      });
       setProgress("");
     } catch (err: any) {
-      setError(err.message || "Conversion failed. Please try again.");
+      setError(err?.message || "Conversion failed. Please try again.");
     } finally {
+      if (deck) disposeDeck(deck);
       setLoading(false);
     }
   };
@@ -390,7 +304,6 @@ export default function PptToPdfClient() {
     setResult(null);
     setError(null);
     setProgress("");
-    setSlideCount(0);
   };
 
   return (
@@ -416,14 +329,49 @@ export default function PptToPdfClient() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 truncate max-w-xs">{file.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {formatBytes(file.size)}{slideCount > 0 && ` · ${slideCount} slides`}
-                  </p>
+                  <p className="text-xs text-gray-500">{formatBytes(file.size)}</p>
                 </div>
               </div>
               <button onClick={handleReset} className="text-xs text-gray-400 hover:text-gray-600 transition-colors">Remove</button>
             </div>
           </div>
+
+          {!result && (
+            <div className="grid gap-4 rounded-xl border border-gray-100 bg-white p-4 sm:grid-cols-2">
+              <label className="block text-sm">
+                <span className="mb-1 block font-medium text-gray-700">Quality</span>
+                <select
+                  value={quality}
+                  onChange={(e) => setQuality(e.target.value as Quality)}
+                  disabled={loading}
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                >
+                  {(Object.keys(QUALITY) as Quality[]).map((k) => (
+                    <option key={k} value={k}>{QUALITY[k].label}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block text-sm">
+                <span className="mb-1 block font-medium text-gray-700">Slides (optional)</span>
+                <input
+                  type="text"
+                  value={range}
+                  onChange={(e) => setRange(e.target.value)}
+                  disabled={loading}
+                  placeholder="All slides, or e.g. 1-5, 8, 10"
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" checked={includeNotes} onChange={(e) => setIncludeNotes(e.target.checked)} disabled={loading} />
+                Add speaker notes pages
+              </label>
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input type="checkbox" checked={includeHidden} onChange={(e) => setIncludeHidden(e.target.checked)} disabled={loading} />
+                Include hidden slides
+              </label>
+            </div>
+          )}
 
           {loading && progress && (
             <div className="flex items-center gap-3 rounded-lg bg-orange-50 px-4 py-3">
@@ -438,9 +386,27 @@ export default function PptToPdfClient() {
           {error && <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
 
           {result && (
-            <div className="rounded-xl bg-green-50 border border-green-100 p-4 space-y-1 text-center">
-              <p className="text-sm font-semibold text-green-800">Conversion Complete</p>
-              <p className="text-xs text-green-600">{result.slideCount} slides · {formatBytes(result.pdfSize)}</p>
+            <div className="rounded-xl bg-green-50 border border-green-100 p-4 space-y-3 text-center">
+              {result.preview && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={result.preview} alt="First slide preview" className="mx-auto max-h-56 rounded-lg border border-green-100 bg-white shadow-sm" />
+              )}
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-green-800">Conversion Complete</p>
+                <p className="text-xs text-green-700">
+                  {result.slideCount} slide{result.slideCount === 1 ? "" : "s"} · {result.pageCount} page{result.pageCount === 1 ? "" : "s"} · {formatBytes(result.pdfSize)}
+                </p>
+                {result.skippedHidden > 0 && (
+                  <p className="text-xs text-green-700">{result.skippedHidden} hidden slide{result.skippedHidden === 1 ? "" : "s"} skipped.</p>
+                )}
+              </div>
+              {result.notes.length > 0 && (
+                <ul className="space-y-1 rounded-lg bg-amber-50 px-3 py-2 text-left text-xs text-amber-800">
+                  {result.notes.map((n) => (
+                    <li key={n}>• {n}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 
