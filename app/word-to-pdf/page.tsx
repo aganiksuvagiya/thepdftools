@@ -13,7 +13,7 @@ const WordToPdfClient = dynamic(() => import("./WordToPdfClient"), {
 export const metadata: Metadata = buildPageMetadata({
   title: "Word to PDF Converter Online Free - DOCX No Upload",
   description:
-    "Convert Word to PDF online free with no upload required. Turn DOC and DOCX files into PDFs in your browser with no signup.",
+    "Convert Word to PDF online free with no upload required. Turn DOCX files into PDFs that keep fonts, headings, lists, tables, images and page numbers, right in your browser with no signup.",
   url: "https://thepdftools.site/word-to-pdf",
   keywords: [
     "word to pdf",
@@ -65,7 +65,7 @@ export default function WordToPdfPage() {
             "@type": "HowToStep",
             position: 2,
             name: "Upload your Word file",
-            text: "Click the upload area or drag and drop your DOC or DOCX file.",
+            text: "Click the upload area or drag and drop your DOCX file.",
           },
           {
             "@type": "HowToStep",
@@ -125,9 +125,9 @@ export default function WordToPdfPage() {
               </h1>
 
               <p className="mt-5 text-base leading-8 text-slate-600 sm:text-lg">
-                Upload a DOC or DOCX file and convert it to PDF instantly in
-                your browser. No signup, no server upload — your documents stay
-                private.
+                Upload a DOCX file and convert it to PDF in your browser. Fonts,
+                headings, lists, tables, pictures, headers and page numbers are
+                kept. No signup, no server upload — your documents stay private.
               </p>
             </div>
 
@@ -154,9 +154,9 @@ export default function WordToPdfPage() {
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-900">Quick Tips</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-              <li>DOCX files produce the best text extraction results.</li>
-              <li>Complex layouts with images may not be fully preserved.</li>
-              <li>Text content is extracted and wrapped into clean PDF pages.</li>
+              <li>Save old .doc files as .docx in Word or Google Docs first.</li>
+              <li>If a font is not installed on your device, a similar font is used, so page breaks can shift slightly.</li>
+              <li>Text boxes, shapes, charts and footnote text are not drawn yet.</li>
             </ul>
           </div>
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">
@@ -173,8 +173,8 @@ export default function WordToPdfPage() {
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm">
             <h2 className="text-xl font-semibold text-slate-900">How to Convert Word to PDF Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
-              <li>Upload your Word document by dragging and dropping or clicking the upload area. Both DOC and DOCX formats are supported.</li>
-              <li>Click the &quot;Convert to PDF&quot; button. The tool reads your document, extracts text content, and generates a clean PDF.</li>
+              <li>Upload your Word document by dragging and dropping or clicking the upload area. DOCX (Word 2007 and later) is supported.</li>
+              <li>Click the &quot;Convert to PDF&quot; button. The tool reads your document, lays out every page with its fonts, styles, lists, tables, pictures, headers and footers, and generates the PDF.</li>
               <li>Download your PDF instantly. The converted file is ready for sharing, printing, or archiving.</li>
             </ol>
           </div>
@@ -187,8 +187,8 @@ export default function WordToPdfPage() {
                 <p className="mt-1 text-sm text-slate-500">Your Word documents never leave your device. All conversion happens locally in your browser, keeping your files 100% private and secure.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">Text Extraction</h3>
-                <p className="mt-1 text-sm text-slate-500">Extracts all text content from your Word document and wraps it into clean, readable PDF pages with proper formatting.</p>
+                <h3 className="text-sm font-medium text-slate-900">Real Page Layout</h3>
+                <p className="mt-1 text-sm text-slate-500">Each page is laid out like in Word: paper size and margins, fonts, headings, bullets and numbering, tables, pictures, headers, footers and page numbers. Latin text stays searchable and copyable.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Universal PDF Format</h3>
@@ -206,8 +206,8 @@ export default function WordToPdfPage() {
             <div className="mt-5 divide-y divide-slate-100">
               {[
                 { q: "Is it safe to convert Word documents here?", a: "Absolutely. Your Word files never leave your browser. All conversion runs client-side using JavaScript, so no data is uploaded to any server. Your documents remain completely private on your device." },
-                { q: "What Word formats are supported?", a: "Both DOC and DOCX formats are supported. DOCX files (Microsoft Word 2007 and later) provide the best conversion results with full text extraction from the XML-based file structure." },
-                { q: "Will my formatting be preserved in the PDF?", a: "This converter extracts text content from your document and creates a clean PDF. For full formatting preservation including images, tables, and complex layouts, use Microsoft Word or Google Docs to export as PDF." },
+                { q: "What Word formats are supported?", a: "DOCX files (Microsoft Word 2007 and later) are supported. Old binary .doc files cannot be read in the browser: open them in Word or Google Docs and save them as .docx first." },
+                { q: "Will my formatting be preserved in the PDF?", a: "For most documents, yes. Paper size and margins, fonts, bold and italic, colours, headings, bullets and numbering, tabs, tables with borders and shading, pictures, headers, footers and page numbers are kept. Not supported yet: text boxes and shapes, charts, SmartArt, footnote text, multi-column layouts and equations. If a font is not installed on your device, a similar font is used, so line and page breaks can differ slightly from Word. For a pixel-perfect legal or print file, export directly from Word. Latin text is searchable and copyable; Gujarati, Hindi and other scripts look correct but cannot be selected." },
                 { q: "Is there a file size limit?", a: "There is no hard file size limit. Since all processing happens in your browser, performance depends on your device memory. Most Word documents up to 20MB convert smoothly on modern devices." },
                 { q: "Can I convert multiple Word files at once?", a: "You can convert Word files one at a time for best results. Each conversion happens instantly in your browser, so batch workflows are fast. Simply upload your next document after downloading the previous PDF." },
               ].map((item) => (
@@ -227,12 +227,12 @@ export default function WordToPdfPage() {
           {/* SEO Content */}
           <div className="mt-12 space-y-6 text-sm text-gray-500 leading-relaxed">
             <h2 className="text-lg font-semibold text-gray-900">About This Tool</h2>
-            <p>Our free Word to PDF converter lets you transform DOC and DOCX files into clean, portable PDF documents directly in your browser. Using advanced client-side parsing, the tool reads the internal XML structure of your Word document, extracts all text content, and generates a professionally formatted PDF with proper word wrapping and pagination. No data ever leaves your device.</p>
+            <p>Our free Word to PDF converter lets you transform DOCX files into clean, portable PDF documents directly in your browser. The tool reads the internal XML structure of your Word document, applies its styles, numbering, tables and headers, and draws every page like Word does, with the right paper size, margins and page numbers. No data ever leaves your device.</p>
             <h2 className="text-lg font-semibold text-gray-900">Key Features</h2>
             <ul className="list-disc list-inside space-y-1">
               <li>100% browser-based conversion with no server uploads</li>
-              <li>Supports both DOC and DOCX Word document formats</li>
-              <li>Automatic word wrapping and multi-page PDF generation</li>
+              <li>Supports DOCX files (save old .doc files as .docx first)</li>
+              <li>Keeps fonts, headings, lists, tables, pictures, headers, footers and page numbers</li>
               <li>Instant download with no watermarks or signup required</li>
             </ul>
             <p className="text-xs text-gray-400">Convert word to pdf, docx to pdf converter, free online word to pdf tool, doc to pdf no upload, convert microsoft word document to pdf format, word to pdf browser based, docx to pdf free online converter, word file to pdf no signup, convert doc to pdf instantly, word to pdf without installing software.</p>

@@ -1,5 +1,5 @@
 // Preset and custom shape geometry for PPTX rendering (local box coordinates 0..w, 0..h).
-import { El, kid, kids, at, numAt } from "./xml";
+import { El, kid, kids, at, numAt } from "@/lib/ooxml/xml";
 
 export interface GeomPart {
   path: Path2D;

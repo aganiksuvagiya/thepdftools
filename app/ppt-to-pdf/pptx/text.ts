@@ -1,6 +1,6 @@
 // Text layout and painting for PPTX text bodies (paragraphs, runs, bullets, wrapping, autofit).
-import { El, kid, kids, at, numAt, boolAt, EMU } from "./xml";
-import { StyleCtx, RGBA, Theme, colorOf, rgba, findFillEl } from "./theme";
+import { El, kid, kids, at, numAt, boolAt, EMU } from "@/lib/ooxml/xml";
+import { StyleCtx, RGBA, Theme, colorOf, rgba, findFillEl } from "@/lib/ooxml/theme";
 
 const PT = 96 / 72; // px per pt
 

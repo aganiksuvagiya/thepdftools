@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
 import { loadDeck, disposeDeck, renderSlide, getNotes, Deck } from "./pptx/render";
+import { addCanvasPage } from "@/lib/ooxml/pdfPage";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -55,19 +56,6 @@ function parseRange(input: string, total: number): Set<number> | null {
   });
   if (!valid.size) throw new Error(`No slides match that range. This presentation has ${total} slides.`);
   return valid;
-}
-
-function canvasToJpeg(canvas: HTMLCanvasElement, quality: number): Promise<Uint8Array> {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      async (blob) => {
-        if (!blob) return reject(new Error("Could not encode a slide image."));
-        resolve(new Uint8Array(await blob.arrayBuffer()));
-      },
-      "image/jpeg",
-      quality
-    );
-  });
 }
 
 function wrapLines(g: CanvasRenderingContext2D, text: string, maxW: number): string[] {
@@ -208,9 +196,7 @@ export default function PptToPdfClient() {
           preview = small.toDataURL("image/jpeg", 0.8);
         }
 
-        const page = pdfDoc.addPage([pageW, pageH]);
-        const img = await pdfDoc.embedJpg(await canvasToJpeg(canvas, q.jpeg));
-        page.drawImage(img, { x: 0, y: 0, width: pageW, height: pageH });
+        const page = await addCanvasPage(pdfDoc, canvas, pageW, pageH, q.jpeg);
 
         // invisible text layer so the PDF is searchable / copyable (Latin text)
         texts.forEach((t) => {
@@ -245,9 +231,7 @@ export default function PptToPdfClient() {
           const notes = await getNotes(deck, ref);
           if (notes) {
             const nc = notesCanvas(deck, ref.index + 1, notes, Math.min(scale, 1.5));
-            const np = pdfDoc.addPage([pageW, pageH]);
-            const nimg = await pdfDoc.embedJpg(await canvasToJpeg(nc, 0.88));
-            np.drawImage(nimg, { x: 0, y: 0, width: pageW, height: pageH });
+            await addCanvasPage(pdfDoc, nc, pageW, pageH, 0.88);
             nc.width = 0;
             nc.height = 0;
             addWarn("notesPages", 1);

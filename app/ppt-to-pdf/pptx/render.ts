@@ -1,6 +1,6 @@
 // PPTX -> canvas slide renderer (backgrounds, masters/layouts, shapes, pictures, groups, tables, SmartArt).
-import { El, EMU, Pkg, Rel, kid, kids, dig, at, numAt, boolAt, relId } from "./xml";
-import { RGBA, StyleCtx, Theme, parseTheme, emptyTheme, withPh, colorOf, rgba, findFillEl, makeGradient } from "./theme";
+import { El, EMU, Pkg, Rel, kid, kids, dig, at, numAt, boolAt, relId } from "@/lib/ooxml/xml";
+import { RGBA, StyleCtx, Theme, parseTheme, emptyTheme, withPh, colorOf, rgba, findFillEl, makeGradient } from "@/lib/ooxml/theme";
 import { Geom, presetGeom, customGeom } from "./geometry";
 import { TextEnv, TextRecord, drawTextBody, hasText, layoutText } from "./text";
 import { drawChart } from "./chart";
