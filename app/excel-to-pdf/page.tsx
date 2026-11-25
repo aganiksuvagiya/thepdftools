@@ -13,7 +13,7 @@ const ExcelToPdfClient = dynamic(() => import("./ExcelToPdfClient"), {
 export const metadata: Metadata = buildPageMetadata({
   title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
   description:
-    "Convert Excel spreadsheets to PDF online free — turn any XLSX or XLS file into a clean PDF document for sharing or printing. No upload required, no signup.",
+    "Convert Excel spreadsheets to PDF online free — turn XLSX and CSV files into PDFs that keep cell colours, fonts, borders, number formats, merged cells and charts. No upload required, no signup.",
   url: "https://thepdftools.site/excel-to-pdf",
   keywords: [
     "excel to pdf",
@@ -106,8 +106,8 @@ export default function ExcelToPdfPage() {
 
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {[
-                { title: "Best for reports", text: "Convert spreadsheet data into shareable PDF reports with clean table formatting." },
-                { title: "Best for printing", text: "PDF preserves table layout and column widths for professional printing." },
+                { title: "Best for reports", text: "Convert spreadsheets into shareable PDF reports that look like the sheet in Excel." },
+                { title: "Best for printing", text: "Page size, orientation, margins, print areas and repeated header rows from the workbook are respected." },
                 { title: "Best for privacy", text: "Everything runs locally in your browser — your spreadsheet data never leaves your device." },
               ].map((item) => (
                 <div key={item.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
@@ -123,9 +123,9 @@ export default function ExcelToPdfPage() {
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-900">Quick Tips</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
-              <li>XLSX files produce the best results with full cell data extraction.</li>
-              <li>CSV files are parsed directly — ensure comma-separated format.</li>
-              <li>The first row is treated as a header row and displayed in bold in the PDF.</li>
+              <li>XLSX keeps formatting. Save old .xls files as .xlsx in Excel or Google Sheets first.</li>
+              <li>CSV files (comma, semicolon or tab separated) get a bold header row and auto-sized columns.</li>
+              <li>Wide sheets are scaled to fit the page width; turn that off to keep 100% size and split columns across pages.</li>
             </ul>
           </div>
           <aside className="rounded-[1.75rem] border border-brand-100 bg-brand-50 p-6">
@@ -143,8 +143,8 @@ export default function ExcelToPdfPage() {
             <h2 className="text-xl font-semibold text-slate-900">How to Convert Excel to PDF Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Upload your Excel file by dragging and dropping or clicking the upload area. XLSX and CSV formats are supported.</li>
-              <li>Preview the extracted table data to verify the content looks correct.</li>
-              <li>Click &quot;Convert to PDF&quot; to generate a formatted PDF with table borders and column sizing.</li>
+              <li>Pick the sheets, quality, orientation and gridlines, then check the preview of the first page after converting.</li>
+              <li>Click &quot;Convert to PDF&quot; to generate a PDF that keeps the sheet formatting, with one or more pages per sheet.</li>
               <li>Download your PDF instantly. The converted file is ready for sharing or printing.</li>
             </ol>
           </div>
@@ -153,8 +153,8 @@ export default function ExcelToPdfPage() {
             <h2 className="text-xl font-semibold text-slate-900">Why Use Our Excel to PDF Converter?</h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">Table Formatting</h3>
-                <p className="mt-1 text-sm text-slate-500">Cell data is rendered as a clean table with borders, headers in bold, and auto-sized columns for optimal readability in the PDF.</p>
+                <h3 className="text-sm font-medium text-slate-900">Real Sheet Layout</h3>
+                <p className="mt-1 text-sm text-slate-500">Each sheet is drawn like in Excel: column widths and row heights, fonts, fills, borders, merged cells, number and date formats, wrapped text and charts, split into pages with repeated header rows.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Multiple Formats</h3>
@@ -176,8 +176,8 @@ export default function ExcelToPdfPage() {
             <div className="mt-5 divide-y divide-slate-100">
               {[
                 { q: "Is it safe to convert Excel files here?", a: "Absolutely. Your Excel files never leave your browser. All conversion runs client-side using JavaScript, so no data is uploaded to any server. Your spreadsheet data remains completely private on your device." },
-                { q: "What Excel formats are supported?", a: "XLSX (Excel 2007+) and CSV (comma-separated values) files are supported. XLSX files provide the best results with full cell data extraction." },
-                { q: "Will cell formatting be preserved?", a: "This converter extracts cell values and renders them as a formatted table in the PDF with borders and headers. Cell colors, merged cells, formulas, and charts are not preserved. For full visual fidelity, export directly from Microsoft Excel." },
+                { q: "What Excel formats are supported?", a: "XLSX (Excel 2007 and later) and CSV files are supported. Old binary .xls files cannot be read in the browser: open them in Excel or Google Sheets and save them as .xlsx first." },
+                { q: "Will cell formatting be preserved?", a: "For most workbooks, yes. Fonts, bold and italic, text and fill colours, borders, merged cells, column widths and row heights, alignment, wrapped text, number, currency, percent and date formats, print areas, repeated header rows, page setup and column, bar, line, area and pie charts are kept. Formulas show their saved result. Not applied: conditional formatting (colour scales, data bars, icon sets), shapes and text boxes, and special chart types. If a font is not installed on your device a similar font is used. Latin text is searchable; Gujarati, Hindi and other scripts look correct but cannot be selected." },
                 { q: "Can I convert large spreadsheets?", a: "Yes. The tool auto-paginates large tables across multiple PDF pages. Performance depends on your device's memory and processing power. Most spreadsheets convert smoothly." },
                 { q: "Does it support multiple sheets?", a: "Currently the tool converts the first sheet (Sheet1) of your workbook. For multi-sheet workbooks, you can convert each sheet separately or combine them in a PDF merger tool." },
               ].map((item) => (
@@ -197,7 +197,7 @@ export default function ExcelToPdfPage() {
           {/* SEO Content */}
           <div className="mt-12 space-y-6 text-sm text-gray-500 leading-relaxed">
             <h2 className="text-lg font-semibold text-gray-900">About This Tool</h2>
-            <p>Our free Excel to PDF converter transforms XLSX and CSV spreadsheets into clean, formatted PDF documents directly in your browser. The tool parses the internal XML structure of Excel files to extract cell data, shared strings, and sheet layout, then renders the content as a professional table in your PDF with borders, bold headers, and auto-sized columns. No data ever leaves your device.</p>
+            <p>Our free Excel to PDF converter transforms XLSX and CSV spreadsheets into clean, formatted PDF documents directly in your browser. The tool reads the internal XML structure of Excel files, applies the cell styles, number formats, merged cells, column widths and page setup, and draws each sheet like Excel prints it, including charts. No data ever leaves your device.</p>
             <h2 className="text-lg font-semibold text-gray-900">Key Features</h2>
             <ul className="list-disc list-inside space-y-1">
               <li>Supports XLSX and CSV spreadsheet formats</li>
@@ -210,7 +210,7 @@ export default function ExcelToPdfPage() {
 
           <div className="rounded-[2rem] border border-dashed border-slate-200 bg-white p-8">
             <p className="text-[15px] leading-8 text-slate-500">
-              Converting Excel spreadsheets to PDF is essential for sharing data in a universally viewable format. Whether you need to share financial reports with stakeholders, print inventory lists, distribute grade sheets, or archive data tables, our free online Excel to PDF converter handles it efficiently. The tool runs entirely in your browser using JavaScript, so your sensitive spreadsheet data never leaves your computer. It extracts cell values from the XML structure of XLSX files, parses CSV data directly, and generates a clean PDF with properly formatted tables, making your data presentation-ready instantly.
+              Converting Excel spreadsheets to PDF is essential for sharing data in a universally viewable format. Whether you need to share financial reports with stakeholders, print inventory lists, distribute grade sheets, or archive data tables, our free online Excel to PDF converter handles it efficiently. The tool runs entirely in your browser using JavaScript, so your sensitive spreadsheet data never leaves your computer. It reads the cell styles, number formats and layout from the XML structure of XLSX files, parses CSV data directly, and generates a PDF that looks like the sheet, making your data presentation-ready instantly.
             </p>
           </div>
 

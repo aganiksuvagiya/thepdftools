@@ -1,7 +1,7 @@
 // Simple chart renderer for PPTX charts (bar/column, line, area, pie, doughnut) from the chart XML data cache.
 import { El, kid, kids, dig, at, numAt, boolAt } from "@/lib/ooxml/xml";
 import { RGBA, StyleCtx, colorOf, rgba, findFillEl } from "@/lib/ooxml/theme";
-import { fontStack } from "./text";
+import { fontStack } from "./fonts";
 
 const PT = 96 / 72;
 

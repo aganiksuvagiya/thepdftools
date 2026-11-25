@@ -3,7 +3,7 @@ import { El, EMU, Pkg, Rel, kid, kids, dig, at, numAt, boolAt, relId } from "@/l
 import { RGBA, StyleCtx, Theme, parseTheme, emptyTheme, withPh, colorOf, rgba, findFillEl, makeGradient } from "@/lib/ooxml/theme";
 import { Geom, presetGeom, customGeom } from "./geometry";
 import { TextEnv, TextRecord, drawTextBody, hasText, layoutText } from "./text";
-import { drawChart } from "./chart";
+import { drawChart } from "@/lib/ooxml/chart";
 
 export interface SlideRef {
   path: string;
