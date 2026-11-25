@@ -175,7 +175,7 @@ export default function PdfToWordPage() {
             <h2 className="text-xl font-semibold text-slate-900">How to Convert PDF to Word Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Upload your PDF file by clicking the upload area or dragging it in.</li>
-              <li>The tool automatically extracts text content from your PDF document.</li>
+              <li>The tool reads the text and layout of every page and rebuilds paragraphs, headings, bullet lists and tables.</li>
               <li>Preview the extracted text to verify the conversion looks correct.</li>
               <li>Click the download button to save your editable Word (.docx) file.</li>
               <li>Open the file in Microsoft Word, Google Docs, or LibreOffice to edit.</li>
@@ -188,7 +188,7 @@ export default function PdfToWordPage() {
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Preserves Formatting</h3>
-                <p className="mt-1 text-sm text-slate-500">Text content and paragraph structure are preserved along with page breaks, giving you a well-organized editable document.</p>
+                <p className="mt-1 text-sm text-slate-500">Lines are joined into real paragraphs, headings keep their size, bold and italic are kept, bullet lists and tables become editable Word lists and tables, and page breaks are preserved.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Editable Output</h3>
@@ -210,7 +210,7 @@ export default function PdfToWordPage() {
             <h2 className="text-[2rem] font-bold tracking-tight text-slate-900">Frequently Asked Questions</h2>
             <div className="mt-5 divide-y divide-slate-100">
               {[
-                { q: "Will the formatting be preserved?", a: "The tool extracts text content and preserves paragraph structure and page breaks. Complex formatting like tables, columns, and images may not be fully preserved." },
+                { q: "Will the formatting be preserved?", a: "Mostly, for text-based PDFs. Paragraphs, headings, bold and italic, bullet lists, tables with aligned columns and page breaks are rebuilt as editable Word content. Images, multi-column page layouts, colours and exact fonts are not reproduced, so check complex documents after converting. Scanned PDFs go through OCR and come out as plain text paragraphs." },
                 { q: "Can I convert scanned PDFs?", a: "This tool works best with text-based PDFs. Scanned PDFs that contain only images will not produce extractable text. You would need an OCR tool for scanned documents." },
                 { q: "Is this tool completely free?", a: "Yes, 100% free with no hidden costs, no trial period, and no premium tier. Convert as many PDFs as you like without any restrictions." },
                 { q: "Can I convert large PDF files?", a: "Yes. There is no server-imposed size limit. Since conversion runs in your browser, very large files may take longer depending on your device's processing power and available memory." },

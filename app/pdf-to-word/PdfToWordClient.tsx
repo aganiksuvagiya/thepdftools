@@ -2,71 +2,13 @@
 
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
+import { Block, RawItem, bodyFontSize, pageToBlocks, textToBlocks } from "./pdfBlocks";
+import { buildDocx, PageSetup } from "./docxBuilder";
 
 async function loadTesseract() {
   const cdnUrl = "https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.esm.min.js";
   const module = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
   return module.default;
-}
-
-function escapeXml(str: string): string {
-  return (
-    str
-      // characters that are not allowed in XML 1.0 would make Word reject the file
-      // eslint-disable-next-line no-control-regex
-      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-  );
-}
-
-const DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-
-/** Builds a real .docx (Office Open XML) with one paragraph per text line and a page break between PDF pages. */
-async function buildDocx(pages: string[]): Promise<Blob> {
-  const JSZip = (await import("jszip")).default;
-
-  const run = (text: string) =>
-    `<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="22"/></w:rPr><w:t xml:space="preserve">${escapeXml(text)}</w:t></w:r>`;
-
-  const body = pages
-    .map((page, idx) => {
-      const paragraphs = page
-        .split("<br/>")
-        .map((line) => `<w:p><w:pPr><w:spacing w:after="80" w:line="276" w:lineRule="auto"/></w:pPr>${line ? run(line) : ""}</w:p>`)
-        .join("");
-      const pageBreak = idx < pages.length - 1 ? '<w:p><w:r><w:br w:type="page"/></w:r></w:p>' : "";
-      return paragraphs + pageBreak;
-    })
-    .join("");
-
-  const documentXml =
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' +
-    body +
-    '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr>' +
-    "</w:body></w:document>";
-
-  const zip = new JSZip();
-  zip.file(
-    "[Content_Types].xml",
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
-      '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
-      '<Default Extension="xml" ContentType="application/xml"/>' +
-      '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
-      "</Types>"
-  );
-  zip.file(
-    "_rels/.rels",
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
-      "</Relationships>"
-  );
-  zip.file("word/document.xml", documentXml);
-  return zip.generateAsync({ type: "blob", mimeType: DOCX_MIME, compression: "DEFLATE" });
 }
 
 function formatBytes(bytes: number): string {
@@ -105,10 +47,10 @@ export default function PdfToWordClient() {
     try {
       setProgress("Loading PDF library...");
 
-      const cdnUrl = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+      const cdnUrl = "/vendor/pdfjs-4.0.379/pdf.mjs";
       const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
       pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+        "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
 
       setProgress("Reading PDF file...");
       const arrayBuffer = await file.arrayBuffer();
@@ -116,48 +58,80 @@ export default function PdfToWordClient() {
       const totalPages = pdf.numPages;
       setPageCount(totalPages);
 
-      const pages: string[] = [];
-      let fullText = "";
+      const rawPages: RawItem[][] = [];
+      const pageSizes: Array<{ w: number; h: number }> = [];
+      const fontCache = new Map<string, { bold: boolean; italic: boolean; font: string }>();
 
       for (let i = 1; i <= totalPages; i++) {
         setProgress(`Extracting page ${i} of ${totalPages}...`);
         const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 1 });
+        pageSizes.push({ w: viewport.width, h: viewport.height });
         const textContent = await page.getTextContent();
-
-        let lastY: number | null = null;
-        let lastX: number | null = null;
-        let pageText = "";
-
-        for (const item of textContent.items) {
-          if (!("str" in item)) continue;
-          const textItem = item as { str: string; transform: number[]; width?: number };
-          const y = textItem.transform[5];
-          const x = textItem.transform[4];
-          const fontSize = Math.abs(textItem.transform[0]) || Math.abs(textItem.transform[3]) || 10;
-
-          if (lastY !== null && Math.abs(y - lastY) > 2) {
-            pageText += "<br/>";
-            lastX = null;
-          } else if (lastX !== null) {
-            const gap = x - lastX;
-            const spaceWidth = Math.max(fontSize * 0.28, 1);
-            if (gap > spaceWidth) {
-              pageText += " ".repeat(Math.min(Math.round(gap / spaceWidth), 40));
-            }
-          }
-
-          if (textItem.str.trim() !== "") {
-            pageText += textItem.str;
-          } else if (textItem.str.length > 0) {
-            pageText += " ";
-          }
-          lastY = y;
-          lastX = x + (textItem.width || 0);
+        try {
+          await page.getOperatorList(); // loads the fonts so their real names (Bold, Italic...) are known
+        } catch {
+          /* font names are optional */
         }
 
-        pages.push(pageText);
-        fullText += pageText.replace(/<br\/>/g, "\n") + "\n\n";
+        const info = (fontName: string) => {
+          let f = fontCache.get(fontName);
+          if (f) return f;
+          let name = "";
+          try {
+            const obj = page.commonObjs.has(fontName) ? page.commonObjs.get(fontName) : null;
+            name = String((obj && (obj.name || obj.fallbackName)) || "");
+          } catch {
+            name = "";
+          }
+          const css = String((textContent.styles && textContent.styles[fontName] && textContent.styles[fontName].fontFamily) || "");
+          f = {
+            bold: /bold|black|heavy|semibold|demi/i.test(name),
+            italic: /italic|oblique/i.test(name),
+            font: /courier|mono|consolas/i.test(name) || /monospace/i.test(css) ? "Courier New" : /times|georgia|cambria|garamond|palatino|serif/i.test(name) && !/sans/i.test(name) || (/^serif$/i.test(css.trim()) && !/arial|helvet|calibri/i.test(name)) ? "Times New Roman" : "Arial",
+          };
+          fontCache.set(fontName, f);
+          return f;
+        };
+
+        const items: RawItem[] = [];
+        for (const item of textContent.items) {
+          if (!("str" in item)) continue;
+          const t = item as { str: string; transform: number[]; width?: number; fontName: string };
+          const size = Math.hypot(t.transform[0], t.transform[1]) || Math.abs(t.transform[3]) || 10;
+          if (Math.abs(t.transform[1]) > Math.abs(t.transform[0]) * 0.5) continue; // rotated text
+          const f = info(t.fontName);
+          items.push({ str: t.str, x: t.transform[4], y: t.transform[5], w: t.width || 0, size, bold: f.bold, italic: f.italic, font: f.font });
+        }
+        rawPages.push(items);
       }
+
+      const body = bodyFontSize(rawPages);
+      const first = pageSizes[0] || { w: 595, h: 842 };
+      let minX = Infinity;
+      let maxX = 0;
+      rawPages.forEach((items) =>
+        items.forEach((it) => {
+          if (!it.str.trim()) return;
+          minX = Math.min(minX, it.x);
+          maxX = Math.max(maxX, it.x + it.w);
+        })
+      );
+      const clamp = (v: number) => Math.max(720, Math.min(1800, Math.round(v * 20)));
+      const setup: PageSetup = {
+        wTw: Math.round(first.w * 20),
+        hTw: Math.round(first.h * 20),
+        left: minX === Infinity ? 1440 : clamp(minX),
+        right: maxX === 0 ? 1440 : clamp(first.w - maxX),
+        top: 1080,
+        bottom: 1080,
+      };
+      const textWidth = Math.max(2000, setup.wTw - setup.left - setup.right);
+      let pages: Block[][] = rawPages.map((items, i) => pageToBlocks(items, pageSizes[i].w, body, textWidth));
+      let fullText = "";
+      const blockText = (b: Block) =>
+        b.k === "p" ? b.runs.map((r) => r.text).join("") : b.rows.map((r) => r.map((c) => c.runs.map((x) => x.text).join("")).join(" ")).join("\n");
+      pages.forEach((blocks) => blocks.forEach((b) => (fullText += blockText(b) + "\n")));
 
       let words = fullText.trim().split(/\s+/).filter((w) => w.length > 0).length;
 
@@ -235,15 +209,14 @@ export default function PdfToWordClient() {
           return;
         }
 
-        pages.length = 0;
-        pages.push(...ocrPages);
+        pages = ocrPages.map((p) => textToBlocks(p.replace(/<br\/>/g, "\n")));
         fullText = ocrFullText;
       }
 
       setWordCount(words);
       setProgress("Generating Word document...");
 
-      const blob = await buildDocx(pages);
+      const blob = await buildDocx(pages, setup, body);
       const url = URL.createObjectURL(blob);
       setDocUrl(url);
 
