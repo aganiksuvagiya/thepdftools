@@ -17,10 +17,10 @@ interface ConvertedPage {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function loadPdfJs(): Promise<any> {
-  const url = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+  const url = "/vendor/pdfjs-4.0.379/pdf.mjs";
   const lib = await (Function(`return import("${url}")`)() as Promise<any>);
   lib.GlobalWorkerOptions.workerSrc =
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+    "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
   return lib;
 }
 

@@ -5,17 +5,25 @@ import DropZone from "@/components/DropZone";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function loadPdfJs(): Promise<any> {
-  const cdnUrl = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+  const cdnUrl = "/vendor/pdfjs-4.0.379/pdf.mjs";
   const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
   pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+    "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
   return pdfjsLib;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function loadPptxGenJs(): Promise<any> {
-  const cdnUrl = "https://esm.sh/pptxgenjs@4.0.1?bundle";
-  return Function(`return import("${cdnUrl}")`)() as Promise<any>;
+  const w = window as any;
+  if (w.PptxGenJS) return w.PptxGenJS;
+  await new Promise<void>((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "/vendor/pptxgen-4.0.1.bundle.js";
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load the PowerPoint library. Please reload the page."));
+    document.head.appendChild(script);
+  });
+  return w.PptxGenJS;
 }
 
 function formatBytes(bytes: number): string {

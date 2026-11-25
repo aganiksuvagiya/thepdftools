@@ -28,10 +28,10 @@ function formatBytes(bytes: number): string {
 }
 
 async function loadPdfJs() {
-  const cdnUrl = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+  const cdnUrl = "/vendor/pdfjs-4.0.379/pdf.mjs";
   const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
   pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+    "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
   return pdfjsLib;
 }
 
