@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { jsPDF } from "jspdf";
+import { generateUnicodePdf, needsUnicode } from "./unicodePdf";
 
 type PageSize = "a4" | "letter";
 type FontFamily = "helvetica" | "courier" | "times";
@@ -53,13 +54,33 @@ export default function TextToPdfClient() {
     return Math.max(1, Math.ceil(lines / linesPerPage));
   }, [text, fontSize, pageSize, margin]);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!text.trim()) return;
     setLoading(true);
     setError(null);
 
     try {
       const m = MARGIN_VALUES[margin];
+      if (needsUnicode(text)) {
+        // Gujarati, Hindi, Arabic, CJK... cannot be written with the standard PDF fonts
+        const dims = PAGE_DIMENSIONS[pageSize];
+        const blob = await generateUnicodePdf({
+          text,
+          pageWmm: dims.w,
+          pageHmm: dims.h,
+          marginMm: m,
+          fontSizePt: fontSize,
+          family: fontFamily,
+          lineHeight: LINE_HEIGHT_FACTOR,
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "text-document.pdf";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        return;
+      }
       const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
