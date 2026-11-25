@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Base64 Online Free No Upload",
   description:
     "Encode and decode Base64 online free — convert text to Base64 or decode Base64 back to text instantly. Supports Unicode characters. No upload, no signup required.",
-  url: "https://thepdftools.site/base64",
+  url: "https://www.thepdftools.site/base64",
   keywords: [
     "base64 encoder",
     "base64 decoder",
@@ -33,7 +33,7 @@ export default function Base64Page() {
       {
         "@type": "WebApplication",
         name: "Free Base64 Encoder & Decoder",
-        url: "https://thepdftools.site/base64",
+        url: "https://www.thepdftools.site/base64",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -47,9 +47,9 @@ export default function Base64Page() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Base64 Encoder", "item": "https://thepdftools.site/base64" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Base64 Encoder", "item": "https://www.thepdftools.site/base64" },
         ],
       },
       buildOrganizationSchema(),

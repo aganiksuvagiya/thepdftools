@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF to JPG Online Free — Convert PDF Pages to JPG Images",
   description:
     "Convert PDF to JPG online for free. Select specific pages, choose resolution and quality, download individual JPGs or all as ZIP. No signup, runs in your browser.",
-  url: "https://thepdftools.site/pdf-to-jpg",
+  url: "https://www.thepdftools.site/pdf-to-jpg",
   keywords: [
     "pdf to jpg online free",
     "convert pdf to jpg",
@@ -44,7 +44,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free PDF to JPG Converter",
-      url: "https://thepdftools.site/pdf-to-jpg",
+      url: "https://www.thepdftools.site/pdf-to-jpg",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -71,9 +71,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "PDF to JPG", item: "https://thepdftools.site/pdf-to-jpg" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "PDF to JPG", item: "https://www.thepdftools.site/pdf-to-jpg" },
       ],
     },
   ],

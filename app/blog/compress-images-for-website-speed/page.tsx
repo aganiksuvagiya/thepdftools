@@ -17,12 +17,12 @@ export default function BlogPost() {
       "Learn how to compress images for faster website performance. Covers image formats, compression, Core Web Vitals, and more.",
     datePublished: "2026-04-02",
     dateModified: "2026-04-02",
-    url: "https://thepdftools.site/blog/compress-images-for-website-speed",
+    url: "https://www.thepdftools.site/blog/compress-images-for-website-speed",
     author: { "@type": "Organization", name: "thepdftools" },
     publisher: { "@type": "Organization", name: "thepdftools" },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://thepdftools.site/blog/compress-images-for-website-speed",
+      "@id": "https://www.thepdftools.site/blog/compress-images-for-website-speed",
     },
   };
 

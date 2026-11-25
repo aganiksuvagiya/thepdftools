@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "JSON Formatter Online Free No Upload",
   description:
     "Format and validate JSON online free — pretty print, minify, and check JSON data for errors. View stats and find exact error positions. No signup required.",
-  url: "https://thepdftools.site/json-formatter",
+  url: "https://www.thepdftools.site/json-formatter",
   keywords: [
     "json formatter",
     "json validator",
@@ -33,7 +33,7 @@ export default function JsonFormatterPage() {
       {
         "@type": "WebApplication",
         name: "Free JSON Formatter & Validator",
-        url: "https://thepdftools.site/json-formatter",
+        url: "https://www.thepdftools.site/json-formatter",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -53,7 +53,7 @@ export default function JsonFormatterPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the JSON Formatter",
-            text: "Go to https://thepdftools.site/json-formatter and open the free JSON formatter.",
+            text: "Go to https://www.thepdftools.site/json-formatter and open the free JSON formatter.",
           },
           {
             "@type": "HowToStep",
@@ -84,9 +84,9 @@ export default function JsonFormatterPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://thepdftools.site/json-formatter" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://www.thepdftools.site/json-formatter" },
         ],
       },
       buildOrganizationSchema(),

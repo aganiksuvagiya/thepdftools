@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://thepdftools.site/sitemap.xml",
-    host: "https://thepdftools.site",
+    sitemap: "https://www.thepdftools.site/sitemap.xml",
+    host: "https://www.thepdftools.site",
   };
 }

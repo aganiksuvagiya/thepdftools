@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF Editor Online Free — Highlight, Sign, Annotate & Fill PDF",
   description:
     "Edit PDF files online for free — highlight text, add signatures, fill forms, and annotate PDF documents directly in your browser. No upload, no signup required.",
-  url: "https://thepdftools.site/pdf-editor",
+  url: "https://www.thepdftools.site/pdf-editor",
   keywords: [
     "pdf editor",
     "edit pdf online",
@@ -40,7 +40,7 @@ export default function PdfEditorPage() {
       {
         "@type": "WebApplication",
         name: "Free Online PDF Editor",
-        url: "https://thepdftools.site/pdf-editor",
+        url: "https://www.thepdftools.site/pdf-editor",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -60,19 +60,19 @@ export default function PdfEditorPage() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://thepdftools.site",
+            item: "https://www.thepdftools.site",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "PDF Tools",
-            item: "https://thepdftools.site/pdf-tools",
+            item: "https://www.thepdftools.site/pdf-tools",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "PDF Editor",
-            item: "https://thepdftools.site/pdf-editor",
+            item: "https://www.thepdftools.site/pdf-editor",
           },
         ],
       },

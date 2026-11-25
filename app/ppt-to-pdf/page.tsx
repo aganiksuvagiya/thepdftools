@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PPT to PDF Converter Free — Convert PowerPoint to PDF Online",
   description:
     "Convert PowerPoint presentations to PDF online free — every slide keeps its layout, colours, images, shapes, tables and charts. No upload to server, no signup.",
-  url: "https://thepdftools.site/ppt-to-pdf",
+  url: "https://www.thepdftools.site/ppt-to-pdf",
   keywords: [
     "ppt to pdf",
     "powerpoint to pdf",
@@ -37,7 +37,7 @@ export default function PptToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free PowerPoint to PDF Converter",
-        url: "https://thepdftools.site/ppt-to-pdf",
+        url: "https://www.thepdftools.site/ppt-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -52,9 +52,9 @@ export default function PptToPdfPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", "position": 3, "name": "PPTX to PDF", "item": "https://thepdftools.site/ppt-to-pdf" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PPTX to PDF", "item": "https://www.thepdftools.site/ppt-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

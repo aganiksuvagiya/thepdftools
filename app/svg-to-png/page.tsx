@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "SVG To PNG Online Free No Upload",
   description:
     "Convert SVG to PNG online free — export vector SVG files as PNG images at 1x to 4x scale. Choose transparent or white background. No upload, no signup required.",
-  url: "https://thepdftools.site/svg-to-png",
+  url: "https://www.thepdftools.site/svg-to-png",
   keywords: [
     "svg to png",
     "convert svg to png",
@@ -39,7 +39,7 @@ export default function SvgToPngPage() {
       {
         "@type": "WebApplication",
         name: "Free SVG to PNG Converter",
-        url: "https://thepdftools.site/svg-to-png",
+        url: "https://www.thepdftools.site/svg-to-png",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -55,9 +55,9 @@ export default function SvgToPngPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "SVG to PNG", "item": "https://thepdftools.site/svg-to-png" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "SVG to PNG", "item": "https://www.thepdftools.site/svg-to-png" },
         ],
       },
     ],

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Video To Gif Online Free No Upload",
   description:
     "Convert video to GIF online free — turn MP4, WebM, or MOV clips into animated GIFs. Customize FPS, size, and duration. No upload to server, no signup required.",
-  url: "https://thepdftools.site/video-to-gif",
+  url: "https://www.thepdftools.site/video-to-gif",
   keywords: [
     "video to gif",
     "mp4 to gif",
@@ -37,7 +37,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Video to GIF Converter Online",
-      "url": "https://thepdftools.site/video-to-gif",
+      "url": "https://www.thepdftools.site/video-to-gif",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -49,9 +49,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Video to GIF", "item": "https://thepdftools.site/video-to-gif" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Video to GIF", "item": "https://www.thepdftools.site/video-to-gif" },
       ],
     },
   ],

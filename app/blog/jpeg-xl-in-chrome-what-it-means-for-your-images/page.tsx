@@ -4,7 +4,7 @@ import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
 const SLUG = "jpeg-xl-in-chrome-what-it-means-for-your-images";
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/${SLUG}`;
 
 export async function generateMetadata(): Promise<Metadata> {

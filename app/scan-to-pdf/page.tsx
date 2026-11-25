@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Scan to PDF Online Free — Turn Photos of Documents into PDF",
   description:
     "Turn phone photos or scans of documents into a PDF online for free. Upload images, arrange page order, and download a PDF instantly. No signup, no upload to server.",
-  url: "https://thepdftools.site/scan-to-pdf",
+  url: "https://www.thepdftools.site/scan-to-pdf",
   keywords: [
     "scan to pdf",
     "scan to pdf online free",
@@ -39,7 +39,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free Scan to PDF Converter",
-      url: "https://thepdftools.site/scan-to-pdf",
+      url: "https://www.thepdftools.site/scan-to-pdf",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -52,9 +52,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "Scan to PDF", item: "https://thepdftools.site/scan-to-pdf" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "Scan to PDF", item: "https://www.thepdftools.site/scan-to-pdf" },
       ],
     },
     buildOrganizationSchema(),

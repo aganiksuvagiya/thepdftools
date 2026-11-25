@@ -11,7 +11,7 @@ const PdfMergeClient = dynamic(() => import("./PdfMergeClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-merge`;
 
 const pageTitle = "Merge PDF Files Online Free - Combine PDFs, Images & Certificates";

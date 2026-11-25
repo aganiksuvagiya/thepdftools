@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Excel Converter Free — Extract Tables from PDF to XLSX",
   description:
     "Convert PDF to Excel online free — extract tables, data, and numbers from any PDF into an editable Excel spreadsheet (XLSX). No upload required, no signup, instant download.",
-  url: "https://thepdftools.site/pdf-to-excel",
+  url: "https://www.thepdftools.site/pdf-to-excel",
   keywords: [
     "pdf to excel",
     "convert pdf to excel",
@@ -40,7 +40,7 @@ export default function PdfToExcelPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF to Excel Converter",
-        url: "https://thepdftools.site/pdf-to-excel",
+        url: "https://www.thepdftools.site/pdf-to-excel",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -56,9 +56,9 @@ export default function PdfToExcelPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", "position": 3, "name": "PDF to Excel", "item": "https://thepdftools.site/pdf-to-excel" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF to Excel", "item": "https://www.thepdftools.site/pdf-to-excel" },
         ],
       },
     ],

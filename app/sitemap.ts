@@ -3,7 +3,7 @@ import path from "path";
 import { MetadataRoute } from "next";
 import { blogCategories, blogPostsSorted, getCategoryUrl } from "@/lib/blog";
 
-const BASE_URL = "https://thepdftools.site";
+const BASE_URL = "https://www.thepdftools.site";
 const APP_DIR = path.join(process.cwd(), "app");
 const EXCLUDED_ROUTES = new Set([
   "/convert-jpeg-to-png-online-free",

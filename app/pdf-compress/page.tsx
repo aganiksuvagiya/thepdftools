@@ -13,7 +13,7 @@ const PdfCompressClient = dynamic(() => import("./PdfCompressClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-compress`;
 
 const pageTitle = "Compress PDF Online Free — Reduce PDF File Size Instantly";

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Image Watermark Online Free No Upload",
   description:
     "Add watermark to images online free — customize font, size, opacity, color, and position. Tile across the entire image if needed. No upload to server, no signup.",
-  url: "https://thepdftools.site/image-watermark",
+  url: "https://www.thepdftools.site/image-watermark",
   keywords: [
     "add watermark to image online free",
     "convert jpg to watermark online",
@@ -37,7 +37,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image Watermark Tool Online",
-      "url": "https://thepdftools.site/image-watermark",
+      "url": "https://www.thepdftools.site/image-watermark",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -49,9 +49,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Watermark", "item": "https://thepdftools.site/image-watermark" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Watermark", "item": "https://www.thepdftools.site/image-watermark" },
       ],
     },
   ],

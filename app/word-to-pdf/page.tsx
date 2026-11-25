@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Word to PDF Converter Online Free - DOCX No Upload",
   description:
     "Convert Word to PDF online free with no upload required. Turn DOCX files into PDFs that keep fonts, headings, lists, tables, images and page numbers, right in your browser with no signup.",
-  url: "https://thepdftools.site/word-to-pdf",
+  url: "https://www.thepdftools.site/word-to-pdf",
   keywords: [
     "word to pdf",
     "docx to pdf",
@@ -39,7 +39,7 @@ export default function WordToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free Word to PDF Converter",
-        url: "https://thepdftools.site/word-to-pdf",
+        url: "https://www.thepdftools.site/word-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -59,7 +59,7 @@ export default function WordToPdfPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the Word to PDF converter",
-            text: "Go to https://thepdftools.site/word-to-pdf and open the free converter.",
+            text: "Go to https://www.thepdftools.site/word-to-pdf and open the free converter.",
           },
           {
             "@type": "HowToStep",
@@ -84,9 +84,9 @@ export default function WordToPdfPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Word to PDF", item: "https://thepdftools.site/word-to-pdf" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Word to PDF", item: "https://www.thepdftools.site/word-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

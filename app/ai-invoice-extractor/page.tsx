@@ -11,7 +11,7 @@ const InvoiceExtractorClient = dynamic(() => import("./InvoiceExtractorClient"),
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/ai-invoice-extractor`;
 
 export const metadata: Metadata = buildPageMetadata({
@@ -66,8 +66,8 @@ export default function AiInvoiceExtractorPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Generators", item: "https://www.thepdftools.site/generators" },
           { "@type": "ListItem", position: 3, name: "AI Invoice Extractor", item: PAGE_URL },
         ],
       },

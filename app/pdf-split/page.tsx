@@ -11,7 +11,7 @@ const PdfSplitClient = dynamic(() => import("./PdfSplitClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-split`;
 
 const pageTitle = "Split PDF Online Free — Extract Pages & Page Ranges";

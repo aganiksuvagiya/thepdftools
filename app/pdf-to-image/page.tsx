@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Image Converter Free — Convert PDF Pages to JPG or PNG",
   description:
     "Convert PDF to image online free — export any PDF page as JPG or PNG. Select specific pages, choose format, and download instantly. No signup, no upload required.",
-  url: "https://thepdftools.site/pdf-to-image",
+  url: "https://www.thepdftools.site/pdf-to-image",
   keywords: [
     "pdf to image",
     "pdf to jpg",
@@ -39,7 +39,7 @@ export default function PdfToImagePage() {
       {
         "@type": "WebApplication",
         name: "Free PDF to Image Converter",
-        url: "https://thepdftools.site/pdf-to-image",
+        url: "https://www.thepdftools.site/pdf-to-image",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -55,9 +55,9 @@ export default function PdfToImagePage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", "position": 3, "name": "PDF to Image", "item": "https://thepdftools.site/pdf-to-image" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF to Image", "item": "https://www.thepdftools.site/pdf-to-image" },
         ],
       },
     ],

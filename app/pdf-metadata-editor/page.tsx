@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF Metadata Editor Online Free — Edit Title, Author & Keywords",
   description:
     "Edit PDF metadata online for free — change title, author, subject, and keywords. No upload to server, no signup, works instantly in your browser.",
-  url: "https://thepdftools.site/pdf-metadata-editor",
+  url: "https://www.thepdftools.site/pdf-metadata-editor",
   keywords: [
     "pdf metadata editor",
     "edit pdf metadata online free",
@@ -38,7 +38,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free PDF Metadata Editor",
-      url: "https://thepdftools.site/pdf-metadata-editor",
+      url: "https://www.thepdftools.site/pdf-metadata-editor",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -53,9 +53,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "PDF Metadata Editor", item: "https://thepdftools.site/pdf-metadata-editor" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "PDF Metadata Editor", item: "https://www.thepdftools.site/pdf-metadata-editor" },
       ],
     },
   ],

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Free CSS Color Picker Online — HEX, RGB, HSL & CMYK Converter",
   description:
     "Free CSS color picker online for HEX, RGB, HSL, and CMYK conversion. Generate web color codes, copy CSS variables, and check contrast for accessible UI without signup.",
-  url: "https://thepdftools.site/color-picker",
+  url: "https://www.thepdftools.site/color-picker",
   keywords: [
     "color picker online free",
     "hex color picker online",
@@ -38,7 +38,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free Color Picker & Converter",
-      url: "https://thepdftools.site/color-picker",
+      url: "https://www.thepdftools.site/color-picker",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: {
@@ -53,9 +53,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Color Picker", "item": "https://thepdftools.site/color-picker" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Color Picker", "item": "https://www.thepdftools.site/color-picker" },
       ],
     },
     buildOrganizationSchema(),

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Text To PDF Online Free No Upload",
   description:
     "Convert text to PDF online free — paste plain text and download a clean PDF document. Choose font, page size, and margins. No upload, no signup required.",
-  url: "https://thepdftools.site/text-to-pdf",
+  url: "https://www.thepdftools.site/text-to-pdf",
   keywords: [
     "text to pdf",
     "convert text to pdf",
@@ -38,7 +38,7 @@ export default function TextToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free Text to PDF Converter",
-        url: "https://thepdftools.site/text-to-pdf",
+        url: "https://www.thepdftools.site/text-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -53,9 +53,9 @@ export default function TextToPdfPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "Text to PDF", item: "https://thepdftools.site/text-to-pdf" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "Text to PDF", item: "https://www.thepdftools.site/text-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

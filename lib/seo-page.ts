@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 const SITE_NAME = "thepdftools";
-const DEFAULT_IMAGE = "https://thepdftools.site/opengraph-image";
+const DEFAULT_IMAGE = "https://www.thepdftools.site/opengraph-image";
 
 type BuildPageMetadataOptions = {
   title: string;
@@ -24,7 +24,7 @@ export function buildPageMetadata({
     title,
     description,
     keywords,
-    authors: [{ name: "thepdftools Editorial Team", url: "https://thepdftools.site" }],
+    authors: [{ name: "thepdftools Editorial Team", url: "https://www.thepdftools.site" }],
     alternates: {
       canonical: url,
       languages: {
@@ -65,12 +65,12 @@ export function buildOrganizationSchema() {
   return {
     "@type": "Organization",
     name: SITE_NAME,
-    url: "https://thepdftools.site",
+    url: "https://www.thepdftools.site",
     logo: {
       "@type": "ImageObject",
-      url: "https://thepdftools.site/icon.svg",
+      url: "https://www.thepdftools.site/icon.svg",
     },
-    publishingPrinciples: "https://thepdftools.site/privacy",
+    publishingPrinciples: "https://www.thepdftools.site/privacy",
   };
 }
 
@@ -78,12 +78,12 @@ export function buildWebsiteSchema() {
   return {
     "@type": "WebSite",
     name: SITE_NAME,
-    url: "https://thepdftools.site",
+    url: "https://www.thepdftools.site",
     inLanguage: "en-US",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
-      url: "https://thepdftools.site",
+      url: "https://www.thepdftools.site",
     },
   };
 }

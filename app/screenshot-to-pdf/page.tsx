@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Screenshot To PDF Online Free No Upload",
   description:
     "Convert screenshots to PDF online free — combine multiple screenshots or images into a single PDF document. Reorder pages, customize layout. No upload, no signup.",
-  url: "https://thepdftools.site/screenshot-to-pdf",
+  url: "https://www.thepdftools.site/screenshot-to-pdf",
   keywords: [
     "screenshot to pdf",
     "image to pdf",
@@ -33,7 +33,7 @@ export default function ScreenshotToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free Screenshot to PDF Converter",
-        url: "https://thepdftools.site/screenshot-to-pdf",
+        url: "https://www.thepdftools.site/screenshot-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -48,9 +48,9 @@ export default function ScreenshotToPdfPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Screenshot to PDF", "item": "https://thepdftools.site/screenshot-to-pdf" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Screenshot to PDF", "item": "https://www.thepdftools.site/screenshot-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

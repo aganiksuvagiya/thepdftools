@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Extract PDF Pages Online Free — Pull Out Specific Pages",
   description:
     "Extract pages from a PDF online for free — pull out specific pages or page ranges into a new file. No upload to server, no signup, instant download.",
-  url: "https://thepdftools.site/extract-pdf-pages",
+  url: "https://www.thepdftools.site/extract-pdf-pages",
   keywords: [
     "extract pdf pages",
     "extract pdf pages online free",
@@ -33,7 +33,7 @@ export default function ExtractPdfPagesPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Page Extractor",
-        url: "https://thepdftools.site/extract-pdf-pages",
+        url: "https://www.thepdftools.site/extract-pdf-pages",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -45,9 +45,9 @@ export default function ExtractPdfPagesPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Extract PDF Pages", item: "https://thepdftools.site/extract-pdf-pages" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Extract PDF Pages", item: "https://www.thepdftools.site/extract-pdf-pages" },
         ],
       },
     ],

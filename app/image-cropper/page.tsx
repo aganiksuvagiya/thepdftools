@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Image Cropper Online Free No Upload",
   description:
     "Crop images online for free — trim, cut, and resize photos to exact dimensions. Set aspect ratios for social media, profile photos, and print. No upload, no signup.",
-  url: "https://thepdftools.site/image-cropper",
+  url: "https://www.thepdftools.site/image-cropper",
   keywords: [
     "image cropper",
     "crop image online",
@@ -34,7 +34,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image Cropper Online",
-      "url": "https://thepdftools.site/image-cropper",
+      "url": "https://www.thepdftools.site/image-cropper",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -46,9 +46,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Cropper", "item": "https://thepdftools.site/image-cropper" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Cropper", "item": "https://www.thepdftools.site/image-cropper" },
       ],
     },
   ],

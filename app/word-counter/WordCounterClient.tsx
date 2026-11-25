@@ -52,9 +52,27 @@ function normalizePageText(rawText: string) {
     .trim();
 }
 
+// A word is a whitespace-separated token that contains a letter or number in any script, so "9.99",
+// "4,250.00", "well-known" and Gujarati/Hindi words each count once (like Word and Google Docs).
+// Chinese, Japanese and Korean characters count individually.
+const HAS_WORD_CHAR = new RegExp("[\\p{L}\\p{N}]", "u");
+const CJK_CHAR = new RegExp("[\\u3040-\\u30ff\\u3400-\\u9fff\\uf900-\\ufaff\\uac00-\\ud7af]", "gu");
+const TERM_RE = new RegExp("[\\p{L}\\p{N}\\p{M}]+(?:['\u2019.\\-][\\p{L}\\p{N}\\p{M}]+)*", "gu");
+
 function countWords(text: string) {
-  const matches = text.match(/[A-Za-z0-9]+(?:[’'-][A-Za-z0-9]+)*/g);
-  return matches ? matches.length : 0;
+  let count = 0;
+  text.split(/\s+/).forEach((token) => {
+    if (!token || !HAS_WORD_CHAR.test(token)) return;
+    const cjk = token.match(CJK_CHAR);
+    if (!cjk) {
+      count++;
+      return;
+    }
+    count += cjk.length;
+    const rest = token.replace(CJK_CHAR, " ").trim();
+    if (rest) count += rest.split(/\s+/).filter((t) => HAS_WORD_CHAR.test(t)).length;
+  });
+  return count;
 }
 
 function countParagraphs(text: string) {
@@ -71,8 +89,9 @@ function topTerms(text: string, limit: number) {
   ]);
   const frequencies: Record<string, number> = {};
 
-  for (const token of text.toLowerCase().match(/[a-z0-9]+(?:['-][a-z0-9]+)*/g) || []) {
-    if (token.length < 3 || stopWords.has(token)) continue;
+  for (const token of text.toLowerCase().match(TERM_RE) || []) {
+    const minLength = /^[\x00-\x7f]+$/.test(token) ? 3 : 2;
+    if (token.length < minLength || stopWords.has(token)) continue;
     frequencies[token] = (frequencies[token] || 0) + 1;
   }
 
@@ -307,7 +326,7 @@ export default function WordCounterClient() {
       words,
       charsWithSpaces: text.length,
       charsNoSpaces: text.replace(/\s/g, "").length,
-      sentences: (trimmed.match(/[.!?]+(\s|$)/g) || []).length || (words > 0 ? 1 : 0),
+      sentences: (trimmed.match(/[.!?\u0964\u0965\u2026]+(\s|$)/g) || []).length || (words > 0 ? 1 : 0),
       paragraphs: trimmed.split(/\n\s*\n/).filter((part) => part.trim().length > 0).length || 1,
       readingTime: formatTime(words / 225),
     };

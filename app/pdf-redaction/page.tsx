@@ -11,7 +11,7 @@ const PdfRedactionClient = dynamic(() => import("./PdfRedactionClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-redaction`;
 
 export const metadata: Metadata = buildPageMetadata({
@@ -49,8 +49,8 @@ export default function PdfRedactionPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
           { "@type": "ListItem", position: 3, name: "PDF Redaction", item: PAGE_URL },
         ],
       },

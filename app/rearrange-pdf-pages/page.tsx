@@ -18,7 +18,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Rearrange PDF Pages Online Free — Reorder Pages Instantly",
   description:
     "Rearrange PDF pages online for free — move pages into any order and export instantly. No upload to server, no signup, works in your browser.",
-  url: "https://thepdftools.site/rearrange-pdf-pages",
+  url: "https://www.thepdftools.site/rearrange-pdf-pages",
   keywords: [
     "rearrange pdf pages",
     "rearrange pdf pages online free",
@@ -36,7 +36,7 @@ export default function RearrangePdfPagesPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Page Rearranger",
-        url: "https://thepdftools.site/rearrange-pdf-pages",
+        url: "https://www.thepdftools.site/rearrange-pdf-pages",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -48,9 +48,9 @@ export default function RearrangePdfPagesPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Rearrange PDF Pages", item: "https://thepdftools.site/rearrange-pdf-pages" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Rearrange PDF Pages", item: "https://www.thepdftools.site/rearrange-pdf-pages" },
         ],
       },
     ],

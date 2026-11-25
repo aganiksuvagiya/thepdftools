@@ -13,7 +13,7 @@ const staticBlogPosts = getLatestPosts(6).map((post) => ({
   tags: post.tags,
 }));
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 
 export const metadata: Metadata = {
   title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
@@ -70,10 +70,10 @@ export const metadata: Metadata = {
     title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
     description:
       "Merge PDF, compress PDF, convert PDF to Word, split PDF, edit PDF online — all free. No upload, no signup. Plus free image tools. Runs privately in your browser.",
-    url: "https://thepdftools.site",
+    url: "https://www.thepdftools.site",
     images: [
       {
-        url: "https://thepdftools.site/opengraph-image",
+        url: "https://www.thepdftools.site/opengraph-image",
         width: 1200,
         height: 630,
         alt: "thepdftools.site — Free PDF Tools Online",
@@ -85,10 +85,10 @@ export const metadata: Metadata = {
     title: "Free PDF Tools Online — Merge, Compress, Convert & Edit PDF",
     description:
       "Merge PDF, compress PDF, convert PDF to Word, split PDF, and edit PDF files online — free, no upload, no signup required.",
-    images: ["https://thepdftools.site/opengraph-image"],
+    images: ["https://www.thepdftools.site/opengraph-image"],
   },
   alternates: {
-    canonical: "https://thepdftools.site",
+    canonical: "https://www.thepdftools.site",
   },
 };
 

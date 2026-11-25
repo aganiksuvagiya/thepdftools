@@ -478,7 +478,7 @@ const popularPdfTools = [
 export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
-  url: "https://thepdftools.site/word-counter",
+  url: "https://www.thepdftools.site/word-counter",
   keywords: [
     ...semanticKeywords,
     ...longTailKeywords,
@@ -520,19 +520,19 @@ export default function WordCounterPage() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://thepdftools.site",
+            item: "https://www.thepdftools.site",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Utility Tools",
-            item: "https://thepdftools.site/utility-tools",
+            item: "https://www.thepdftools.site/utility-tools",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "PDF Word Counter",
-            item: "https://thepdftools.site/word-counter",
+            item: "https://www.thepdftools.site/word-counter",
           },
         ],
       },
@@ -543,7 +543,7 @@ export default function WordCounterPage() {
         operatingSystem: "Any",
         browserRequirements: "Requires JavaScript and a modern browser.",
         isAccessibleForFree: true,
-        mainEntityOfPage: "https://thepdftools.site/word-counter",
+        mainEntityOfPage: "https://www.thepdftools.site/word-counter",
         offers: {
           "@type": "Offer",
           price: "0",
@@ -557,7 +557,7 @@ export default function WordCounterPage() {
           "Support scanned PDF workflows with OCR guidance",
         ],
         description: pageDescription,
-        url: "https://thepdftools.site/word-counter",
+        url: "https://www.thepdftools.site/word-counter",
       },
       {
         "@type": "HowTo",

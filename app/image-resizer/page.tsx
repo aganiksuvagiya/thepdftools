@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Resize Images Online Free - JPG, PNG, WebP No Upload",
   description:
     "Resize images online free with no upload required. Change JPG, PNG, and WebP dimensions in your browser with no signup.",
-  url: "https://thepdftools.site/image-resizer",
+  url: "https://www.thepdftools.site/image-resizer",
   keywords: [
     "image resizer",
     "resize image online",
@@ -37,7 +37,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free Image Resizer Tool",
-      url: "https://thepdftools.site/image-resizer",
+      url: "https://www.thepdftools.site/image-resizer",
       description:
         "Resize JPG, PNG, and WebP images for free online. Set custom width and height, lock aspect ratio, and download instantly.",
       applicationCategory: "MultimediaApplication",
@@ -54,9 +54,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Resizer", "item": "https://thepdftools.site/image-resizer" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Resizer", "item": "https://www.thepdftools.site/image-resizer" },
       ],
     },
   ],

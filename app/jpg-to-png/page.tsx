@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "JPG to PNG Converter Online Free — Convert JPEG to PNG Instantly",
   description:
     "Convert JPG to PNG online free — instant, lossless conversion in your browser. No upload, no signup, supports transparent PNG output.",
-  url: "https://thepdftools.site/jpg-to-png",
+  url: "https://www.thepdftools.site/jpg-to-png",
   keywords: [
     "jpg to png",
     "jpeg to png converter",
@@ -41,7 +41,7 @@ export default function JpgToPngPage() {
       {
         "@type": "WebApplication",
         name: "Free JPG to PNG Converter",
-        url: "https://thepdftools.site/jpg-to-png",
+        url: "https://www.thepdftools.site/jpg-to-png",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -62,7 +62,7 @@ export default function JpgToPngPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the JPG to PNG converter",
-            text: "Go to https://thepdftools.site/jpg-to-png and open the free converter.",
+            text: "Go to https://www.thepdftools.site/jpg-to-png and open the free converter.",
           },
           {
             "@type": "HowToStep",
@@ -87,9 +87,9 @@ export default function JpgToPngPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "JPG to PNG", "item": "https://thepdftools.site/jpg-to-png" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "JPG to PNG", "item": "https://www.thepdftools.site/jpg-to-png" },
         ],
       },
       buildOrganizationSchema(),

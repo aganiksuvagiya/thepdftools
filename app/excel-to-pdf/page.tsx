@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Excel to PDF Converter Free — Convert XLSX to PDF Online",
   description:
     "Convert Excel spreadsheets to PDF online free — turn XLSX and CSV files into PDFs that keep cell colours, fonts, borders, number formats, merged cells and charts. No upload required, no signup.",
-  url: "https://thepdftools.site/excel-to-pdf",
+  url: "https://www.thepdftools.site/excel-to-pdf",
   keywords: [
     "excel to pdf",
     "xlsx to pdf",
@@ -39,7 +39,7 @@ export default function ExcelToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free Excel to PDF Converter",
-        url: "https://thepdftools.site/excel-to-pdf",
+        url: "https://www.thepdftools.site/excel-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -53,9 +53,9 @@ export default function ExcelToPdfPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Excel to PDF", item: "https://thepdftools.site/excel-to-pdf" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Excel to PDF", item: "https://www.thepdftools.site/excel-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

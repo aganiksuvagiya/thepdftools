@@ -11,7 +11,7 @@ const ImageCompressorClient = dynamic(
   { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-xl bg-slate-100" /> }
 );
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/compress-image-to-100kb`;
 
 const pageTitle = "Compress Image to 100KB Online Free — Reduce Image Size";

@@ -16,12 +16,12 @@ export default function BlogPost() {
       "Discover free online PDF and image tools that help small businesses save money. No subscriptions needed.",
     datePublished: "2026-04-03",
     dateModified: "2026-04-03",
-    url: "https://thepdftools.site/blog/free-online-tools-small-business",
+    url: "https://www.thepdftools.site/blog/free-online-tools-small-business",
     author: { "@type": "Organization", name: "thepdftools" },
     publisher: { "@type": "Organization", name: "thepdftools" },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://thepdftools.site/blog/free-online-tools-small-business",
+      "@id": "https://www.thepdftools.site/blog/free-online-tools-small-business",
     },
   };
 

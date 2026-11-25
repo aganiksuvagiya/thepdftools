@@ -10,7 +10,7 @@ const PdfOcrClient = dynamic(() => import("./PdfOcrClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-ocr`;
 
 const faqItems = [

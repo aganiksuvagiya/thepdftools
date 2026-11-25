@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Organize PDF Pages Online Free — Reorder & Delete Pages",
   description:
     "Organize PDF pages online for free — reorder pages, remove unwanted pages, and export a clean PDF. No upload to server, no signup, works instantly in your browser.",
-  url: "https://thepdftools.site/pdf-organize-pages",
+  url: "https://www.thepdftools.site/pdf-organize-pages",
   keywords: [
     "organize pdf pages",
     "organize pdf pages online free",
@@ -35,7 +35,7 @@ export default function PdfOrganizePagesPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Page Organizer",
-        url: "https://thepdftools.site/pdf-organize-pages",
+        url: "https://www.thepdftools.site/pdf-organize-pages",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -59,9 +59,9 @@ export default function PdfOrganizePagesPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Organize PDF Pages", item: "https://thepdftools.site/pdf-organize-pages" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Organize PDF Pages", item: "https://www.thepdftools.site/pdf-organize-pages" },
         ],
       },
     ],

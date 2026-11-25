@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Compress Image Online Free — Reduce Image File Size Instantly",
   description:
     "Compress JPG, PNG, and WebP images online free — reduce file size by up to 90% without visible quality loss. No upload, no signup. Works on any device.",
-  url: "https://thepdftools.site/image-compressor",
+  url: "https://www.thepdftools.site/image-compressor",
   keywords: [
     "image compressor",
     "compress image online",
@@ -44,7 +44,7 @@ export default function ImageCompressorPage() {
       {
         "@type": "WebApplication",
         name: "Free Image Compressor",
-        url: "https://thepdftools.site/image-compressor",
+        url: "https://www.thepdftools.site/image-compressor",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -66,7 +66,7 @@ export default function ImageCompressorPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the Image Compressor",
-            text: "Go to https://thepdftools.site/image-compressor and open the free image compression tool.",
+            text: "Go to https://www.thepdftools.site/image-compressor and open the free image compression tool.",
           },
           {
             "@type": "HowToStep",
@@ -97,9 +97,9 @@ export default function ImageCompressorPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Compressor", "item": "https://thepdftools.site/image-compressor" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Compressor", "item": "https://www.thepdftools.site/image-compressor" },
         ],
       },
     ],

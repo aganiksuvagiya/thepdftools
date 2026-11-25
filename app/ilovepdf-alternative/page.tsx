@@ -3,7 +3,7 @@ import Link from "next/link";
 import SeoReferences from "@/components/SeoReferences";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/ilovepdf-alternative`;
 
 export const metadata: Metadata = buildPageMetadata({

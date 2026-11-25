@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Image To WebP Online Free No Upload",
   description:
     "Convert images to WebP format online free — reduce file size while keeping quality. Supports JPG, PNG, and BMP to WebP conversion. No upload, no signup required.",
-  url: "https://thepdftools.site/image-to-webp",
+  url: "https://www.thepdftools.site/image-to-webp",
   keywords: [
     "image to webp",
     "jpg to webp",
@@ -33,7 +33,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free Image to WebP Converter Online",
-      "url": "https://thepdftools.site/image-to-webp",
+      "url": "https://www.thepdftools.site/image-to-webp",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -45,9 +45,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image to WebP", "item": "https://thepdftools.site/image-to-webp" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image to WebP", "item": "https://www.thepdftools.site/image-to-webp" },
       ],
     },
   ],

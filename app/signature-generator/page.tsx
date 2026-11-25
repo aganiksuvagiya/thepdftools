@@ -141,7 +141,7 @@ const relatedTools = [
 export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
-  url: "https://thepdftools.site/signature-generator",
+  url: "https://www.thepdftools.site/signature-generator",
   keywords: [...semanticKeywords, ...longTailKeywords],
 });
 
@@ -168,26 +168,26 @@ export default function SignaturePage() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://thepdftools.site",
+            item: "https://www.thepdftools.site",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Generators",
-            item: "https://thepdftools.site/generators",
+            item: "https://www.thepdftools.site/generators",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Signature Generator",
-            item: "https://thepdftools.site/signature-generator",
+            item: "https://www.thepdftools.site/signature-generator",
           },
         ],
       },
       {
         "@type": "WebApplication",
         name: "Free Online Signature Generator",
-        url: "https://thepdftools.site/signature-generator",
+        url: "https://www.thepdftools.site/signature-generator",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Any",
         browserRequirements: "Requires a modern browser with JavaScript enabled.",

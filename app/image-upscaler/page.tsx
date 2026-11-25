@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Image Upscaler Online Free No Upload",
   description:
     "Upscale images online free — increase image resolution to 2x, 3x, or 4x without quality loss. Works in your browser with no upload required, no signup.",
-  url: "https://thepdftools.site/image-upscaler",
+  url: "https://www.thepdftools.site/image-upscaler",
   keywords: [
     "image upscaler",
     "upscale image online",
@@ -33,7 +33,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free AI Image Upscaler",
-      url: "https://thepdftools.site/image-upscaler",
+      url: "https://www.thepdftools.site/image-upscaler",
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Any",
       offers: {
@@ -49,9 +49,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Upscaler", "item": "https://thepdftools.site/image-upscaler" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Upscaler", "item": "https://www.thepdftools.site/image-upscaler" },
       ],
     },
   ],

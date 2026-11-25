@@ -49,8 +49,8 @@ export default function BlogCategoryIndexPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "Blog", item: "https://thepdftools.site/blog" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.thepdftools.site/blog" },
           { "@type": "ListItem", position: 3, name: "Blog Categories", item: `${BLOG_URL}/category` },
         ],
       },

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Invoice Generator Online Free No Upload",
   description:
     "Create and download free PDF invoices online — add items, taxes, discounts, and your business details. Professional invoice generator with no signup required.",
-  url: "https://thepdftools.site/invoice-generator",
+  url: "https://www.thepdftools.site/invoice-generator",
   keywords: [
     "invoice generator",
     "free invoice generator",
@@ -40,7 +40,7 @@ export default function InvoiceGeneratorPage() {
       {
         "@type": "WebApplication",
         name: "Free Invoice Generator",
-        url: "https://thepdftools.site/invoice-generator",
+        url: "https://www.thepdftools.site/invoice-generator",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Any",
         offers: {
@@ -55,9 +55,9 @@ export default function InvoiceGeneratorPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" },
-        { "@type": "ListItem", position: 3, name: "Invoice Generator", item: "https://thepdftools.site/invoice-generator" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Generators", item: "https://www.thepdftools.site/generators" },
+        { "@type": "ListItem", position: 3, name: "Invoice Generator", item: "https://www.thepdftools.site/invoice-generator" },
         ],
       },
       buildOrganizationSchema(),

@@ -18,7 +18,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Delete PDF Pages Online Free — Remove Unwanted Pages",
   description:
     "Delete PDF pages online for free — remove unwanted or blank pages and export a clean PDF. No upload to server, no signup, works instantly in your browser.",
-  url: "https://thepdftools.site/delete-pdf-pages",
+  url: "https://www.thepdftools.site/delete-pdf-pages",
   keywords: [
     "delete pdf pages",
     "delete pdf pages online free",
@@ -36,7 +36,7 @@ export default function DeletePdfPagesPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Page Deleter",
-        url: "https://thepdftools.site/delete-pdf-pages",
+        url: "https://www.thepdftools.site/delete-pdf-pages",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -48,9 +48,9 @@ export default function DeletePdfPagesPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "Delete PDF Pages", item: "https://thepdftools.site/delete-pdf-pages" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "Delete PDF Pages", item: "https://www.thepdftools.site/delete-pdf-pages" },
         ],
       },
     ],

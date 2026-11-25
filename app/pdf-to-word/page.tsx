@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF to Word Converter Online Free - No Upload",
   description:
     "Convert PDF to Word online free with no upload required. Extract editable text from PDFs in your browser with no signup.",
-  url: "https://thepdftools.site/pdf-to-word",
+  url: "https://www.thepdftools.site/pdf-to-word",
   keywords: [
     "pdf to word",
     "pdf to docx",
@@ -38,7 +38,7 @@ export default function PdfToWordPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF to Word Converter",
-        url: "https://thepdftools.site/pdf-to-word",
+        url: "https://www.thepdftools.site/pdf-to-word",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -60,7 +60,7 @@ export default function PdfToWordPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the PDF to Word converter",
-            text: "Go to https://thepdftools.site/pdf-to-word and open the free converter.",
+            text: "Go to https://www.thepdftools.site/pdf-to-word and open the free converter.",
           },
           {
             "@type": "HowToStep",
@@ -85,9 +85,9 @@ export default function PdfToWordPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", "position": 3, "name": "PDF to Word", "item": "https://thepdftools.site/pdf-to-word" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "PDF Tools", "item": "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF to Word", "item": "https://www.thepdftools.site/pdf-to-word" },
         ],
       },
     ],

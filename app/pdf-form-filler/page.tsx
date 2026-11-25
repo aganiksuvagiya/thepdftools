@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF Form Filler Online Free — Fill PDF Forms Without Adobe",
   description:
     "Fill PDF forms online for free. Upload a PDF with form fields, type your answers, and download the filled PDF instantly. No Adobe, no signup, runs in your browser.",
-  url: "https://thepdftools.site/pdf-form-filler",
+  url: "https://www.thepdftools.site/pdf-form-filler",
   keywords: [
     "pdf form filler online free",
     "fill pdf form online",
@@ -34,7 +34,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free PDF Form Filler",
-      url: "https://thepdftools.site/pdf-form-filler",
+      url: "https://www.thepdftools.site/pdf-form-filler",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -74,9 +74,9 @@ const jsonLd = {
       {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "PDF Form Filler", item: "https://thepdftools.site/pdf-form-filler" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "PDF Form Filler", item: "https://www.thepdftools.site/pdf-form-filler" },
       ],
     },
     buildOrganizationSchema(),

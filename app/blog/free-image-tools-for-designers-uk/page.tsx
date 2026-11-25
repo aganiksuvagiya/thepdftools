@@ -16,12 +16,12 @@ export default function BlogPost() {
       "Discover the best free online image tools for UK designers and creative professionals. No software required.",
     datePublished: "2026-04-04",
     dateModified: "2026-04-04",
-    url: "https://thepdftools.site/blog/free-image-tools-for-designers-uk",
+    url: "https://www.thepdftools.site/blog/free-image-tools-for-designers-uk",
     author: { "@type": "Organization", name: "thepdftools" },
     publisher: { "@type": "Organization", name: "thepdftools" },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://thepdftools.site/blog/free-image-tools-for-designers-uk",
+      "@id": "https://www.thepdftools.site/blog/free-image-tools-for-designers-uk",
     },
   };
 

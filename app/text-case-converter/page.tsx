@@ -12,7 +12,7 @@ const TextCaseClient = dynamic(() => import("./TextCaseClient"), {
   loading: () => <div className="h-64 animate-pulse rounded-xl bg-slate-100" />,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/text-case-converter`;
 
 export const metadata: Metadata = buildPageMetadata({

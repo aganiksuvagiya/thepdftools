@@ -1,4 +1,4 @@
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 
 const navItems = [
   { name: "Home", url: SITE_URL },

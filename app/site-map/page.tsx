@@ -4,7 +4,7 @@ import SeoReferences from "@/components/SeoReferences";
 import { blogCategories, blogPostsSorted, getCategoryUrl } from "@/lib/blog";
 import { buildOrganizationSchema, buildPageMetadata, buildWebsiteSchema } from "@/lib/seo-page";
 
-const PAGE_URL = "https://thepdftools.site/site-map";
+const PAGE_URL = "https://www.thepdftools.site/site-map";
 
 const pageGroups = [
   {
@@ -129,7 +129,7 @@ export default function SiteMapPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
           { "@type": "ListItem", position: 2, name: "HTML Sitemap", item: PAGE_URL },
         ],
       },

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://thepdftools.site";
+export const SITE_URL = "https://www.thepdftools.site";
 
 export type SeoTool = {
   slug: string;

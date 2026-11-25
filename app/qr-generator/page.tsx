@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "QR Generator Online Free No Upload",
   description:
     "Generate QR codes online for free — create QR codes for URLs, text, email, or any data. Customize size and colors, download as PNG. No signup required.",
-  url: "https://thepdftools.site/qr-generator",
+  url: "https://www.thepdftools.site/qr-generator",
   keywords: [
     "qr code generator",
     "create qr code online",
@@ -33,7 +33,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free QR Code Generator",
-      url: "https://thepdftools.site/qr-generator",
+      url: "https://www.thepdftools.site/qr-generator",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: {
@@ -54,7 +54,7 @@ const jsonLd = {
             "@type": "HowToStep",
             position: 1,
             name: "Open the QR Code Generator",
-            text: "Go to https://thepdftools.site/qr-generator and open the free QR code creator.",
+            text: "Go to https://www.thepdftools.site/qr-generator and open the free QR code creator.",
           },
           {
             "@type": "HowToStep",
@@ -87,9 +87,9 @@ const jsonLd = {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://thepdftools.site/generators" },
-        { "@type": "ListItem", "position": 3, "name": "QR Generator", "item": "https://thepdftools.site/qr-generator" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://www.thepdftools.site/generators" },
+        { "@type": "ListItem", "position": 3, "name": "QR Generator", "item": "https://www.thepdftools.site/qr-generator" },
       ],
     },
   ],

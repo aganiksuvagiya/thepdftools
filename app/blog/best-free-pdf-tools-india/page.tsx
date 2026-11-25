@@ -16,12 +16,12 @@ export default function BlogPost() {
       "Discover the best free PDF and image tools for Indian students, businesses, and professionals. No signup, works on Jio network, mobile friendly.",
     datePublished: "2026-04-05",
     dateModified: "2026-04-05",
-    url: "https://thepdftools.site/blog/best-free-pdf-tools-india",
+    url: "https://www.thepdftools.site/blog/best-free-pdf-tools-india",
     author: { "@type": "Organization", name: "thepdftools" },
     publisher: { "@type": "Organization", name: "thepdftools" },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://thepdftools.site/blog/best-free-pdf-tools-india",
+      "@id": "https://www.thepdftools.site/blog/best-free-pdf-tools-india",
     },
   };
 

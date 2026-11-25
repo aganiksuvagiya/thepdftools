@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "HTML to PDF Converter Free — Convert Webpage to PDF Online",
   description:
     "Convert HTML to PDF online free — paste HTML code or a URL and download a clean PDF document. No upload, no signup, runs in your browser.",
-  url: "https://thepdftools.site/html-to-pdf",
+  url: "https://www.thepdftools.site/html-to-pdf",
   keywords: [
     "html to pdf",
     "convert html to pdf",
@@ -35,7 +35,7 @@ export default function HtmlToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free HTML to PDF Converter",
-        url: "https://thepdftools.site/html-to-pdf",
+        url: "https://www.thepdftools.site/html-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -49,9 +49,9 @@ export default function HtmlToPdfPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-          { "@type": "ListItem", position: 3, name: "HTML to PDF", item: "https://thepdftools.site/html-to-pdf" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+          { "@type": "ListItem", position: 3, name: "HTML to PDF", item: "https://www.thepdftools.site/html-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Tailwind CSS Color Palette — Complete Reference with HEX Codes",
   description:
     "Browse all Tailwind CSS colors with HEX codes, copy classes instantly for web design. Complete color reference for developers and designers.",
-  url: "https://thepdftools.site/tailwind-colors",
+  url: "https://www.thepdftools.site/tailwind-colors",
   keywords: [
     "tailwind color palette",
     "tailwind css colors",
@@ -33,7 +33,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Tailwind Colors Reference",
-      url: "https://thepdftools.site/tailwind-colors",
+      url: "https://www.thepdftools.site/tailwind-colors",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: {
@@ -48,9 +48,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Tailwind Colors", "item": "https://thepdftools.site/tailwind-colors" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Tailwind Colors", "item": "https://www.thepdftools.site/tailwind-colors" },
       ],
     },
     buildOrganizationSchema(),

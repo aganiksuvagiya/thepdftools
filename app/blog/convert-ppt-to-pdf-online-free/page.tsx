@@ -3,7 +3,7 @@ import { buildBlogMetadata } from "@/lib/blog-seo";
 import Link from "next/link";
 import BlogFooterLinks from "@/components/BlogFooterLinks";
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const POST_URL = `${SITE_URL}/blog/convert-ppt-to-pdf-online-free`;
 
 export async function generateMetadata(): Promise<Metadata> {

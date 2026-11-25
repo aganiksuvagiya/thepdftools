@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "HEIC to JPG Converter Free — Convert iPhone Photos Online",
   description:
     "Convert HEIC photos to JPG online free — turn iPhone HEIC images into universally compatible JPG files. Batch convert multiple photos. No upload, no signup required.",
-  url: "https://thepdftools.site/heic-to-jpg",
+  url: "https://www.thepdftools.site/heic-to-jpg",
   keywords: [
     "heic to jpg",
     "convert heic to jpg",
@@ -43,7 +43,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       "name": "Free HEIC to JPG Converter Online",
-      "url": "https://thepdftools.site/heic-to-jpg",
+      "url": "https://www.thepdftools.site/heic-to-jpg",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -55,9 +55,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "HEIC to JPG", "item": "https://thepdftools.site/heic-to-jpg" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "HEIC to JPG", "item": "https://www.thepdftools.site/heic-to-jpg" },
       ],
     },
   ],

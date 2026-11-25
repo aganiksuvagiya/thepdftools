@@ -16,8 +16,8 @@ export default function BlogPost() {
     datePublished: "2026-04-07",
     dateModified: "2026-04-07",
     author: { "@type": "Organization", name: "thepdftools" },
-    publisher: { "@type": "Organization", name: "thepdftools", url: "https://thepdftools.site" },
-    url: "https://thepdftools.site/blog/best-free-online-tools-for-students-2026",
+    publisher: { "@type": "Organization", name: "thepdftools", url: "https://www.thepdftools.site" },
+    url: "https://www.thepdftools.site/blog/best-free-online-tools-for-students-2026",
   };
 
   return (

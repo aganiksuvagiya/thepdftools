@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Flatten PDF Online Free — Merge Form Fields into the Page",
   description:
     "Flatten a PDF online for free — merge fillable form fields into static page content so the PDF can't be edited further. No upload to server, no signup.",
-  url: "https://thepdftools.site/flatten-pdf",
+  url: "https://www.thepdftools.site/flatten-pdf",
   keywords: [
     "flatten pdf",
     "flatten pdf online free",
@@ -38,7 +38,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free PDF Flattener",
-      url: "https://thepdftools.site/flatten-pdf",
+      url: "https://www.thepdftools.site/flatten-pdf",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -51,9 +51,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "Flatten PDF", item: "https://thepdftools.site/flatten-pdf" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "Flatten PDF", item: "https://www.thepdftools.site/flatten-pdf" },
       ],
     },
     buildOrganizationSchema(),

@@ -11,7 +11,7 @@ const ImageToPdfClient = dynamic(() => import("../image-to-pdf/ImageToPdfClient"
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/png-to-pdf`;
 
 const pageTitle = "PNG to PDF Online Free — Convert PNG Images to PDF Instantly";

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Image Rotate Online Free No Upload",
   description:
     "Rotate and flip images online free — rotate by 90°, 180°, or custom angle. Flip horizontally or vertically. Supports JPG, PNG, WebP. No upload, no signup required.",
-  url: "https://thepdftools.site/image-rotate",
+  url: "https://www.thepdftools.site/image-rotate",
   keywords: [
     "image rotate",
     "rotate image online",
@@ -35,7 +35,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free Image Rotate & Flip Tool",
-      url: "https://thepdftools.site/image-rotate",
+      url: "https://www.thepdftools.site/image-rotate",
       description:
         "Rotate and flip JPG, PNG, and WebP images for free online. Rotate 90°, 180°, custom angles, flip horizontally or vertically.",
       applicationCategory: "MultimediaApplication",
@@ -52,9 +52,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Image Rotate", "item": "https://thepdftools.site/image-rotate" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+        { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Image Rotate", "item": "https://www.thepdftools.site/image-rotate" },
       ],
     },
   ],

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://thepdftools.site";
+export const SITE_URL = "https://www.thepdftools.site";
 export const BLOG_PATH = "/blog";
 export const BLOG_URL = `${SITE_URL}${BLOG_PATH}`;
 

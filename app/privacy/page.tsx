@@ -7,7 +7,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy — ThePDFTools",
   description:
     "ThePDFTools privacy policy. All file processing happens locally in your browser. No files are uploaded to our servers.",
-  url: "https://thepdftools.site/privacy",
+  url: "https://www.thepdftools.site/privacy",
   keywords: [
     "thepdftools privacy policy",
     "browser-based file processing privacy",
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
       {
         "@type": "WebPage",
         name: "Privacy Policy",
-        url: "https://thepdftools.site/privacy",
+        url: "https://www.thepdftools.site/privacy",
         description: "Privacy policy for thepdftools, including local processing and limited analytics details.",
         author: { "@type": "Organization", name: "thepdftools Editorial Team" },
         dateModified: "2026-07-05",
@@ -34,8 +34,8 @@ export default function PrivacyPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "Privacy Policy", item: "https://thepdftools.site/privacy" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Privacy Policy", item: "https://www.thepdftools.site/privacy" },
         ],
       },
       {

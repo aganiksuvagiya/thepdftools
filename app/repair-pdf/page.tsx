@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Repair PDF Online Free — Fix Broken or Corrupt PDF Files",
   description:
     "Repair a broken or corrupt PDF online for free — rebuild the file structure so it opens correctly again. No upload to server, no signup.",
-  url: "https://thepdftools.site/repair-pdf",
+  url: "https://www.thepdftools.site/repair-pdf",
   keywords: [
     "repair pdf",
     "repair pdf online free",
@@ -38,7 +38,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free PDF Repair Tool",
-      url: "https://thepdftools.site/repair-pdf",
+      url: "https://www.thepdftools.site/repair-pdf",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -53,9 +53,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "Repair PDF", item: "https://thepdftools.site/repair-pdf" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "Repair PDF", item: "https://www.thepdftools.site/repair-pdf" },
       ],
     },
   ],

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Free CSS Gradient Generator — Linear, Radial & Conic Gradients",
   description:
     "Generate beautiful CSS color gradients online for free. Create linear, radial, and conic gradients with custom color stops. Copy CSS code instantly — no signup required.",
-  url: "https://thepdftools.site/color-gradient",
+  url: "https://www.thepdftools.site/color-gradient",
   keywords: [
     "css gradient generator",
     "color gradient generator online free",
@@ -36,7 +36,7 @@ const jsonLd = {
     {
       "@type": "WebApplication",
       name: "Free CSS Gradient Generator",
-      url: "https://thepdftools.site/color-gradient",
+      url: "https://www.thepdftools.site/color-gradient",
       applicationCategory: "UtilityApplication",
       operatingSystem: "Any",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -46,9 +46,9 @@ const jsonLd = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", position: 3, name: "Color Gradient Generator", item: "https://thepdftools.site/color-gradient" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", position: 3, name: "Color Gradient Generator", item: "https://www.thepdftools.site/color-gradient" },
       ],
     },
     buildOrganizationSchema(),

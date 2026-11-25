@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Resume Builder Online Free No Upload",
   description:
     "Build a professional resume online for free — add your experience, education, and skills, then download as a clean PDF. No signup, no uploads, runs in your browser.",
-  url: "https://thepdftools.site/resume-builder",
+  url: "https://www.thepdftools.site/resume-builder",
   keywords: [
     "resume builder",
     "free resume builder",
@@ -40,7 +40,7 @@ export default function ResumeBuilderPage() {
       {
         "@type": "WebApplication",
         name: "Free Resume Builder",
-        url: "https://thepdftools.site/resume-builder",
+        url: "https://www.thepdftools.site/resume-builder",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Any",
         offers: {
@@ -110,9 +110,9 @@ export default function ResumeBuilderPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" },
-          { "@type": "ListItem", position: 3, name: "Resume Builder", item: "https://thepdftools.site/resume-builder" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "Generators", item: "https://www.thepdftools.site/generators" },
+          { "@type": "ListItem", position: 3, name: "Resume Builder", item: "https://www.thepdftools.site/resume-builder" },
         ],
       },
       buildOrganizationSchema(),

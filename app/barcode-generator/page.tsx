@@ -15,14 +15,14 @@ const BarcodeClient = dynamic(() => import("./BarcodeClient"), {
 export const metadata: Metadata = buildPageMetadata({
   title: "Free Barcode Generator Online — Code 128, EAN-13, QR & More",
   description: "Generate barcodes online for free. Supports Code 128, EAN-13, EAN-8, UPC-A, Code 39, ITF-14. Download as PNG or SVG. No signup required.",
-  url: "https://thepdftools.site/barcode-generator",
+  url: "https://www.thepdftools.site/barcode-generator",
   keywords: ["barcode generator online free", "ean-13 barcode generator", "code 128 barcode generator", "barcode maker online", "free barcode creator", "upc barcode generator", "barcode generator download"],
 });
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "WebApplication", name: "Free Barcode Generator", url: "https://thepdftools.site/barcode-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
+    { "@type": "WebApplication", name: "Free Barcode Generator", url: "https://www.thepdftools.site/barcode-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
     
       {
         "@type": "FAQPage",
@@ -54,7 +54,7 @@ const jsonLd = {
           }
         ],
       },
-      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Generators", item: "https://thepdftools.site/generators" }, { "@type": "ListItem", position: 3, name: "Barcode Generator", item: "https://thepdftools.site/barcode-generator" }]},
+      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Generators", item: "https://www.thepdftools.site/generators" }, { "@type": "ListItem", position: 3, name: "Barcode Generator", item: "https://www.thepdftools.site/barcode-generator" }]},
       buildOrganizationSchema(),
       buildWebsiteSchema(),
   ],

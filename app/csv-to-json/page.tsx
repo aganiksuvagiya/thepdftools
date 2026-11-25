@@ -16,7 +16,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "CSV To JSON Online Free No Upload",
   description:
     "Convert CSV to JSON online free — paste CSV data and download formatted JSON instantly. Supports custom delimiters, headers, and pretty printing. No signup required.",
-  url: "https://thepdftools.site/csv-to-json",
+  url: "https://www.thepdftools.site/csv-to-json",
   keywords: [
     "csv to json",
     "csv to json converter",
@@ -40,7 +40,7 @@ export default function CsvToJsonPage() {
       {
         "@type": "WebApplication",
         name: "Free CSV to JSON Converter",
-        url: "https://thepdftools.site/csv-to-json",
+        url: "https://www.thepdftools.site/csv-to-json",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -55,9 +55,9 @@ export default function CsvToJsonPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://thepdftools.site/developer-tools" },
-        { "@type": "ListItem", "position": 3, "name": "CSV to JSON", "item": "https://thepdftools.site/csv-to-json" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://www.thepdftools.site/developer-tools" },
+        { "@type": "ListItem", "position": 3, "name": "CSV to JSON", "item": "https://www.thepdftools.site/csv-to-json" },
         ],
       },
       buildOrganizationSchema(),

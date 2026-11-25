@@ -12,7 +12,7 @@ const PdfToPptClient = dynamic(() => import("./PdfToPptClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/pdf-to-ppt`;
 
 export const metadata: Metadata = buildPageMetadata({
@@ -64,7 +64,7 @@ export default function PdfToPptPage() {
           "@type": "ListItem",
           position: 2,
           name: "PDF Tools",
-          item: "https://thepdftools.site/pdf-tools",
+          item: "https://www.thepdftools.site/pdf-tools",
         },
         {
           "@type": "ListItem",

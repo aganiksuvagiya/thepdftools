@@ -14,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Markdown To PDF Online Free No Upload",
   description:
     "Convert Markdown to PDF online free — paste your Markdown content and download a formatted PDF. Live preview, customizable fonts and page sizes. No upload, no signup.",
-  url: "https://thepdftools.site/markdown-to-pdf",
+  url: "https://www.thepdftools.site/markdown-to-pdf",
   keywords: [
     "markdown to pdf",
     "convert markdown to pdf",
@@ -38,7 +38,7 @@ export default function MarkdownToPdfPage() {
       {
         "@type": "WebApplication",
         name: "Free Markdown to PDF Converter",
-        url: "https://thepdftools.site/markdown-to-pdf",
+        url: "https://www.thepdftools.site/markdown-to-pdf",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -53,9 +53,9 @@ export default function MarkdownToPdfPage() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://thepdftools.site/pdf-tools" },
-        { "@type": "ListItem", position: 3, name: "Markdown to PDF", item: "https://thepdftools.site/markdown-to-pdf" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+          { "@type": "ListItem", position: 2, name: "PDF Tools", item: "https://www.thepdftools.site/pdf-tools" },
+        { "@type": "ListItem", position: 3, name: "Markdown to PDF", item: "https://www.thepdftools.site/markdown-to-pdf" },
         ],
       },
       buildOrganizationSchema(),

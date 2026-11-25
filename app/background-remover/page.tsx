@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Remove Background From Image Online Free - AI No Upload",
   description:
     "Remove background from images online free with AI and no upload required. Create transparent PNGs in your browser with no signup.",
-  url: "https://thepdftools.site/background-remover",
+  url: "https://www.thepdftools.site/background-remover",
   keywords: [
     "background remover",
     "remove background online",
@@ -37,7 +37,7 @@ export default function BackgroundRemoverPage() {
       {
         "@type": "WebApplication",
         name: "Free AI Background Remover",
-        url: "https://thepdftools.site/background-remover",
+        url: "https://www.thepdftools.site/background-remover",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -59,7 +59,7 @@ export default function BackgroundRemoverPage() {
             "@type": "HowToStep",
             position: 1,
             name: "Open the Background Remover",
-            text: "Go to https://thepdftools.site/background-remover and open the free AI background remover.",
+            text: "Go to https://www.thepdftools.site/background-remover and open the free AI background remover.",
           },
           {
             "@type": "HowToStep",
@@ -84,9 +84,9 @@ export default function BackgroundRemoverPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://thepdftools.site/image-tools" },
-        { "@type": "ListItem", "position": 3, "name": "Background Remover", "item": "https://thepdftools.site/background-remover" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Image Tools", "item": "https://www.thepdftools.site/image-tools" },
+        { "@type": "ListItem", "position": 3, "name": "Background Remover", "item": "https://www.thepdftools.site/background-remover" },
         ],
       },
     ],

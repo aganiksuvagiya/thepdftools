@@ -8,7 +8,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "PDF Converter Online Free — Convert PDF to Word, JPG, Excel & More",
   description:
     "Free online PDF converter — convert PDF to Word, Excel, PowerPoint, JPG, or convert Word, JPG, and images to PDF. No signup, no upload to server, all in your browser.",
-  url: "https://thepdftools.site/pdf-converter",
+  url: "https://www.thepdftools.site/pdf-converter",
   keywords: [
     "pdf converter",
     "convert pdf online",
@@ -45,7 +45,7 @@ const jsonLd = {
     {
       "@type": "CollectionPage",
       name: "Free PDF Converter",
-      url: "https://thepdftools.site/pdf-converter",
+      url: "https://www.thepdftools.site/pdf-converter",
       description:
         "A directory of free browser-based PDF conversion tools — PDF to Word, Excel, PowerPoint, JPG, and more.",
     },
@@ -54,15 +54,15 @@ const jsonLd = {
       itemListElement: converters.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        url: `https://thepdftools.site${c.href}`,
+        url: `https://www.thepdftools.site${c.href}`,
         name: c.label,
       })),
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" },
-        { "@type": "ListItem", position: 2, name: "PDF Converter", item: "https://thepdftools.site/pdf-converter" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" },
+        { "@type": "ListItem", position: 2, name: "PDF Converter", item: "https://www.thepdftools.site/pdf-converter" },
       ],
     },
     buildOrganizationSchema(),

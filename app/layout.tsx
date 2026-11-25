@@ -11,7 +11,7 @@ const SidePopupAd = dynamic(() => import("@/components/SidePopupAd"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 
 export const viewport: Viewport = {
   width: "device-width",

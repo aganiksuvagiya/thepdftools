@@ -15,14 +15,14 @@ const FaviconClient = dynamic(() => import("./FaviconClient"), {
 export const metadata: Metadata = buildPageMetadata({
   title: "Free Favicon Generator — Convert Image to Favicon ICO & PNG",
   description: "Generate favicons from any image online for free. Create 16x16, 32x32, 48x48, 64x64, 180x180 PNG favicon files. Download all sizes as ZIP. No signup required.",
-  url: "https://thepdftools.site/favicon-generator",
+  url: "https://www.thepdftools.site/favicon-generator",
   keywords: ["favicon generator online free", "favicon creator", "image to favicon", "favicon png generator", "apple touch icon generator", "website favicon maker", "favicon ico generator"],
 });
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "WebApplication", name: "Free Favicon Generator", url: "https://thepdftools.site/favicon-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
+    { "@type": "WebApplication", name: "Free Favicon Generator", url: "https://www.thepdftools.site/favicon-generator", applicationCategory: "UtilityApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } },
     
       {
         "@type": "FAQPage",
@@ -54,7 +54,7 @@ const jsonLd = {
           }
         ],
       },
-      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://thepdftools.site/developer-tools" }, { "@type": "ListItem", position: 3, name: "Favicon Generator", item: "https://thepdftools.site/favicon-generator" }]},
+      { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.thepdftools.site" }, { "@type": "ListItem", position: 2, name: "Developer Tools", item: "https://www.thepdftools.site/developer-tools" }, { "@type": "ListItem", position: 3, name: "Favicon Generator", item: "https://www.thepdftools.site/favicon-generator" }]},
       buildOrganizationSchema(),
       buildWebsiteSchema(),
   ],

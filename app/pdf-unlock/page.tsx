@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Unlock PDF Online Free — Remove PDF Password & Restrictions",
   description:
     "Unlock PDF files online for free — remove printing, copying, and editing restrictions from your own PDF documents. No upload, no signup, instant result.",
-  url: "https://thepdftools.site/pdf-unlock",
+  url: "https://www.thepdftools.site/pdf-unlock",
   keywords: [
     "pdf unlock",
     "remove pdf password",
@@ -39,7 +39,7 @@ export default function PdfUnlockPage() {
       {
         "@type": "WebApplication",
         name: "Free PDF Unlock Tool",
-        url: "https://thepdftools.site/pdf-unlock",
+        url: "https://www.thepdftools.site/pdf-unlock",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -59,19 +59,19 @@ export default function PdfUnlockPage() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://thepdftools.site",
+            item: "https://www.thepdftools.site",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "PDF Tools",
-            item: "https://thepdftools.site/pdf-tools",
+            item: "https://www.thepdftools.site/pdf-tools",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "PDF Unlock",
-            item: "https://thepdftools.site/pdf-unlock",
+            item: "https://www.thepdftools.site/pdf-unlock",
           },
         ],
       },

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Lorem Ipsum Online Free No Upload",
   description:
     "Generate Lorem Ipsum placeholder text online free — create paragraphs, sentences, or words of dummy text for design and development. Customizable output, no signup.",
-  url: "https://thepdftools.site/lorem-ipsum",
+  url: "https://www.thepdftools.site/lorem-ipsum",
   keywords: [
     "lorem ipsum generator",
     "placeholder text",
@@ -34,7 +34,7 @@ export default function LoremIpsumPage() {
       {
         "@type": "WebApplication",
         name: "Free Lorem Ipsum Generator",
-        url: "https://thepdftools.site/lorem-ipsum",
+        url: "https://www.thepdftools.site/lorem-ipsum",
         applicationCategory: "UtilityApplication",
         operatingSystem: "Any",
         offers: {
@@ -48,9 +48,9 @@ export default function LoremIpsumPage() {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thepdftools.site" },
-          { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://thepdftools.site/generators" },
-        { "@type": "ListItem", "position": 3, "name": "Lorem Ipsum", "item": "https://thepdftools.site/lorem-ipsum" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.thepdftools.site" },
+          { "@type": "ListItem", "position": 2, "name": "Generators", "item": "https://www.thepdftools.site/generators" },
+        { "@type": "ListItem", "position": 3, "name": "Lorem Ipsum", "item": "https://www.thepdftools.site/lorem-ipsum" },
         ],
       },
       buildOrganizationSchema(),

@@ -11,7 +11,7 @@ const ImageToPdfClient = dynamic(() => import("./ImageToPdfClient"), {
   ssr: false,
 });
 
-const SITE_URL = "https://thepdftools.site";
+const SITE_URL = "https://www.thepdftools.site";
 const PAGE_URL = `${SITE_URL}/image-to-pdf`;
 
 const pageTitle = "Image to PDF Online Free — Convert JPG, PNG, or WebP to PDF";
