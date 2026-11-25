@@ -52,6 +52,8 @@ interface TextItem {
   lossy?: boolean; // the PDF could not map some glyphs back to text (they were dropped)
   coverLeft?: number; // the white cover must reach this far left/right (unmapped glyphs next to the text)
   coverRight?: number;
+  rulePad?: { t: number; b: number; l: number; r: number }; // cover padding that stops short of table lines around the text
+  maxRight?: number; // x of the vertical table line to the right of the text (the cell edge), when there is one
 }
 
 interface EditableTextData {
@@ -265,6 +267,33 @@ function mergeNearbyTextItems(items: TextItem[]) {
     lines.push(line);
   }
 
+  // Table cells and page columns: a wide gap that lines up with a wide gap on the line above or below
+  // is a column boundary. Splitting there makes every cell its own item, so editing one cell neither
+  // covers the table lines around it nor drags its neighbours along.
+  const gapXs = lines.map((line) => {
+    const xs: number[] = [];
+    for (let k = 1; k < line.length; k++) {
+      const prev = line[k - 1];
+      const cur = line[k];
+      const gap = cur.x - (prev.x + prev.width);
+      const em = Math.max(prev.fontSize, cur.fontSize);
+      if (gap >= Math.max(6, em * 1.0) && !COMPLEX_SCRIPT_RE.test(prev.str + cur.str)) xs.push(cur.x);
+    }
+    return xs;
+  });
+  const hardBreaks = lines.map((line, li) => {
+    const out: number[] = [];
+    gapXs[li].forEach((x) => {
+      // look a few rows up and down: a row with an empty cell must not hide the column from its neighbours
+      for (let nj = Math.max(0, li - 3); nj <= Math.min(lines.length - 1, li + 3); nj++) {
+        if (nj === li) continue;
+        const near = Math.abs(lines[nj][0].y - line[0].y) <= Math.max(line[0].height, lines[nj][0].height) * 3 * Math.abs(nj - li);
+        if (near && gapXs[nj].some((nx) => Math.abs(nx - x) <= 4) && out.indexOf(x) < 0) out.push(x);
+      }
+    });
+    return out;
+  });
+
   // Step 2: Merge ALL items on each line into one item.
   // Since Step 1 already verified Y proximity + similar height,
   // everything on the same line belongs together as one selectable unit.
@@ -272,7 +301,8 @@ function mergeNearbyTextItems(items: TextItem[]) {
   // which indicates separate columns.
   const merged: TextItem[] = [];
 
-  for (const line of lines) {
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li];
     let current = { ...line[0] };
     // The longest piece decides the font of the whole line (a bullet or a small label must not win).
     let dominantLength = textLength(current);
@@ -286,8 +316,8 @@ function mergeNearbyTextItems(items: TextItem[]) {
       const currentRight = current.x + current.width;
       const gap = item.x - currentRight;
 
-      // Only split for column-level gaps (very large horizontal distance)
-      if (gap > columnGapThreshold) {
+      // Only split for column-level gaps (very large horizontal distance) or table / column boundaries
+      if (gap > columnGapThreshold || hardBreaks[li].some((x) => Math.abs(x - item.x) <= 1)) {
         merged.push(current);
         current = { ...item };
         dominantLength = textLength(current);
@@ -438,6 +468,62 @@ function sampleTextColors(ctx: CanvasRenderingContext2D, items: TextItem[]) {
     const bgG = Math.round(top.g / top.n);
     const bgB = Math.round(top.b / top.n);
     item.bgColor = bgR >= 250 && bgG >= 250 && bgB >= 250 ? "#ffffff" : toHex(bgR, bgG, bgB);
+
+    // Table lines around the text: the white cover must stop before them, and the cell's right edge
+    // limits how far the edited text may grow. A rule is a dark line that continues past the text box
+    // (letter stems and underlines do not, so they are not mistaken for one).
+    const isDark = (x: number, y: number) => {
+      if (x < 0 || y < 0 || x >= width || y >= height) return false;
+      const i = (y * width + x) * 4;
+      return Math.abs(data[i] - bgR) + Math.abs(data[i + 1] - bgG) + Math.abs(data[i + 2] - bgB) > 200;
+    };
+    const hRule = (y: number) => {
+      if (y < 0 || y >= height) return false;
+      let n = 0;
+      for (let x = x0; x < x1; x++) if (isDark(x, y)) n++;
+      return n >= (x1 - x0) * 0.8 && isDark(x0 - 4, y) && isDark(x1 + 4, y);
+    };
+    const vRule = (x: number) => {
+      if (x < 0 || x >= width) return false;
+      let n = 0;
+      for (let y = y0; y < y1; y++) if (isDark(x, y)) n++;
+      return n >= (y1 - y0) * 0.9 && isDark(x, y0 - 3) && isDark(x, y1 + 3);
+    };
+    let padB = 4;
+    for (let d = 0; d <= 4; d++) {
+      if (hRule(y1 + d)) {
+        padB = Math.max(0, d - 1);
+        break;
+      }
+    }
+    let padT = 2;
+    for (let d = 1; d <= 3; d++) {
+      if (hRule(y0 - d)) {
+        padT = Math.max(0, d - 1);
+        break;
+      }
+    }
+    let padL = 2;
+    for (let d = 1; d <= 3; d++) {
+      if (vRule(x0 - d)) {
+        padL = Math.max(0, d - 1);
+        break;
+      }
+    }
+    let padR = 4;
+    for (let d = 0; d <= 5; d++) {
+      if (vRule(x1 + d)) {
+        padR = Math.max(0, d - 1);
+        break;
+      }
+    }
+    if (padT < 2 || padB < 4 || padL < 2 || padR < 4) item.rulePad = { t: padT, b: padB, l: padL, r: padR };
+    for (let x = x1 + 1; x < Math.min(width, x1 + 500); x++) {
+      if (vRule(x)) {
+        item.maxRight = x;
+        break;
+      }
+    }
 
     // Ink: the exact colour that occurs most among the pixels furthest from the background.
     let maxDist = 0;
@@ -800,14 +886,17 @@ export default function PdfEditorClient() {
     // Indic, Thai, Arabic... scripts have marks well above and below the line box; a Latin-sized
     // cover would leave pieces of the old glyphs showing around the new text.
     const tall = COMPLEX_SCRIPT_RE.test(item.str);
-    const padTop = tall ? item.height * 0.3 : 2;
-    const padBottom = tall ? item.height * 0.5 : 4;
+    const rp = item.rulePad;
+    const padTop = Math.min(tall ? item.height * 0.3 : 2, rp ? rp.t : Infinity);
+    const padBottom = Math.min(tall ? item.height * 0.5 : 4, rp ? rp.b : Infinity);
+    const padLeft = rp ? rp.l : 2;
+    const padRight = rp ? rp.r : 4;
     const coverL = Math.min(item.x, item.coverLeft ?? item.x);
     const coverR = Math.max(item.x + item.width, item.coverRight ?? 0);
     return new Rect({
-      left: coverL - 2,
+      left: coverL - padLeft,
       top: item.y - padTop,
-      width: coverR - coverL + 6,
+      width: coverR - coverL + padLeft + padRight,
       height: item.height + padTop + padBottom,
       originX: "left",
       originY: "top",
@@ -944,7 +1033,9 @@ export default function PdfEditorClient() {
       // A line of text must not wrap onto the line below while it is being typed: let the box
       // reach the right page margin (it shrinks back to the text when editing ends).
       const pageWidth = fc.getWidth() / (fc.getZoom() || 1);
-      const room = pageWidth - (textbox.left ?? 0) - EDIT_RIGHT_MARGIN_PX;
+      let room = pageWidth - (textbox.left ?? 0) - EDIT_RIGHT_MARGIN_PX;
+      // inside a table cell the text must not run through the cell's right line
+      if (item.maxRight !== undefined) room = Math.min(room, item.maxRight - (textbox.left ?? 0) - 3);
       if (room > (textbox.width ?? 0)) {
         textbox.set({ width: room });
         textbox.initDimensions();
@@ -952,6 +1043,25 @@ export default function PdfEditorClient() {
       }
       fc.requestRenderAll();
     });
+    // Typed text that no longer fits the table cell shrinks (down to 60 %) instead of crossing the cell lines.
+    if (item.maxRight !== undefined) {
+      textbox.on("changed", () => {
+        const d = textbox.get("data") as EditableTextData;
+        const cap = item.maxRight! - (textbox.left ?? 0) - 3;
+        const orig = d.originalFontSize ?? item.fontSize;
+        const natural = measureTextWidth(
+          textbox.text ?? "",
+          fontShorthand(String(textbox.fontStyle || "normal"), String(textbox.fontWeight || "normal"), orig, String(textbox.fontFamily || ""))
+        );
+        const next = natural > cap ? Math.max(orig * 0.6, (orig * cap) / natural) : orig;
+        if (Math.abs((textbox.fontSize ?? orig) - next) > 0.05) {
+          textbox.set({ fontSize: next, top: item.baseline - 0.879 * next, width: Math.max(cap, 20) });
+          textbox.initDimensions();
+          textbox.setCoords();
+          fc.requestRenderAll();
+        }
+      });
+    }
     textbox.on("editing:exited", () => {
       if (!fc.getObjects().includes(textbox)) return;
       const fitted = Math.ceil(textbox.calcTextWidth()) + 4;
@@ -1087,10 +1197,10 @@ export default function PdfEditorClient() {
       setError(null);
       setProgress("Loading PDF library...");
       try {
-        const cdnUrl = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+        const cdnUrl = "/vendor/pdfjs-4.0.379/pdf.mjs";
         const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);
         pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+          "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
 
         setProgress("Reading PDF file...");
         const arrayBuffer = await file.arrayBuffer();
