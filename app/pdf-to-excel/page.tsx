@@ -146,7 +146,7 @@ export default function PdfToExcelPage() {
             <h2 className="text-xl font-semibold text-slate-900">How to Convert PDF to Excel Online</h2>
             <ol className="mt-3 list-inside list-decimal space-y-2 text-sm text-slate-600">
               <li>Upload your PDF file by clicking the upload area or dragging it in.</li>
-              <li>The tool automatically extracts tabular data from your PDF document.</li>
+              <li>The tool reads the text positions on every page, groups them into rows and aligns them into columns. Numbers, currency and percentages are saved as real numeric cells.</li>
               <li>Preview the extracted rows and columns in the data table to verify accuracy.</li>
               <li>Click the download button to save your Excel (.xlsx) spreadsheet file.</li>
               <li>Open the file in Microsoft Excel, Google Sheets, or LibreOffice Calc to edit.</li>

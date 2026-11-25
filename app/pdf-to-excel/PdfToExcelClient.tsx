@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
+import { pageToRows, toTypedCell, TextItemLite } from "./extractTable";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -47,12 +48,12 @@ export default function PdfToExcelClient() {
       setProgress("Loading PDF library...");
 
       const cdnUrl =
-        "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.mjs";
+        "/vendor/pdfjs-4.0.379/pdf.mjs";
       const pdfjsLib = await (Function(
         `return import("${cdnUrl}")`
       )() as Promise<any>);
       pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.mjs";
+        "/vendor/pdfjs-4.0.379/pdf.worker.mjs";
 
       setProgress("Reading PDF file...");
       const arrayBuffer = await file.arrayBuffer();
@@ -67,50 +68,19 @@ export default function PdfToExcelClient() {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
 
-        // Group text items by Y coordinate to detect rows
-        const lineMap = new Map<number, { x: number; str: string }[]>();
-
+        const items: TextItemLite[] = [];
         for (const item of textContent.items) {
           if (!("str" in item) || !(item as any).str.trim()) continue;
-          const textItem = item as {
-            str: string;
-            transform: number[];
-            width: number;
-          };
-          const y = Math.round(textItem.transform[5] * 10) / 10; // round to 1 decimal
-          const x = textItem.transform[4];
-
-          if (!lineMap.has(y)) lineMap.set(y, []);
-          lineMap.get(y)!.push({ x, str: textItem.str.trim() });
+          const ti = item as { str: string; transform: number[]; width: number; height: number };
+          items.push({
+            str: ti.str,
+            x: ti.transform[4],
+            y: ti.transform[5],
+            w: ti.width || 0,
+            h: ti.height || Math.abs(ti.transform[3]) || 10,
+          });
         }
-
-        // Sort lines by Y descending (PDF coordinates: top = higher Y)
-        const sortedYs = Array.from(lineMap.keys()).sort((a, b) => b - a);
-
-        for (const y of sortedYs) {
-          const items = lineMap.get(y)!;
-          items.sort((a, b) => a.x - b.x);
-
-          // Detect columns by looking for significant gaps between items
-          const cells: string[] = [];
-          let currentCell = items[0].str;
-
-          for (let j = 1; j < items.length; j++) {
-            const gap = items[j].x - (items[j - 1].x + items[j - 1].str.length * 4);
-            if (gap > 15) {
-              // significant gap = new column
-              cells.push(currentCell.trim());
-              currentCell = items[j].str;
-            } else {
-              currentCell += " " + items[j].str;
-            }
-          }
-          cells.push(currentCell.trim());
-
-          if (cells.some((c) => c.length > 0)) {
-            allRows.push(cells);
-          }
-        }
+        allRows.push(...pageToRows(items));
       }
 
       if (allRows.length === 0) {
@@ -135,7 +105,9 @@ export default function PdfToExcelClient() {
       setProgress("Generating Excel file...");
 
       const XLSX = await import("xlsx");
-      const ws = XLSX.utils.aoa_to_sheet(normalizedRows);
+      const ws = XLSX.utils.aoa_to_sheet(
+        normalizedRows.map((r) => r.map((c) => (c === "" ? null : toTypedCell(c))).map((c) => (c === null ? null : c.z ? { v: c.v, t: "n", z: c.z } : c.v)))
+      );
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
