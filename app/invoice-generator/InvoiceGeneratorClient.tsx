@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { jsPDF } from "jspdf";
+import { enableUnicodeText } from "@/lib/jspdfUnicode";
 
 type Currency = "USD" | "EUR" | "GBP" | "INR";
 
@@ -102,7 +103,7 @@ export default function InvoiceGeneratorClient() {
     setError(null);
 
     try {
-      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const doc = enableUnicodeText(new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" }));
       const pageW = doc.internal.pageSize.getWidth();
       const margin = 20;
       const contentW = pageW - margin * 2;

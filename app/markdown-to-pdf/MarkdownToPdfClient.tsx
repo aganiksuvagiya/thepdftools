@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import DropZone from "@/components/DropZone";
 import { marked } from "marked";
+import { enableUnicodeText } from "@/lib/jspdfUnicode";
 
 type PageSize = "a4" | "letter";
 type FontSize = "small" | "medium" | "large";
@@ -200,11 +201,11 @@ export default function MarkdownToPdfClient() {
         throw new Error("No printable text found in the Markdown.");
       }
 
-      const doc = new jsPDF({
+      const doc = enableUnicodeText(new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: pageSize,
-      });
+      }));
 
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();

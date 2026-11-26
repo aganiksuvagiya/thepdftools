@@ -265,7 +265,7 @@ export default function CompressImageTo100kbPage() {
           </p>
 
           <div className="mt-6">
-            <ImageCompressorClient />
+            <ImageCompressorClient defaultMode="target" />
           </div>
         </div>
 

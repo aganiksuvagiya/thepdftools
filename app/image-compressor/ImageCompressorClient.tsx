@@ -25,11 +25,11 @@ function SizeBadge({ label, size, highlight }: { label: string; size: number; hi
   );
 }
 
-export default function ImageCompressorClient() {
+export default function ImageCompressorClient({ defaultMode = "quality" }: { defaultMode?: Mode } = {}) {
   const [original, setOriginal] = useState<ImageInfo | null>(null);
   const [compressed, setCompressed] = useState<ImageInfo | null>(null);
   const [quality, setQuality] = useState(0.8);
-  const [mode, setMode] = useState<Mode>("quality");
+  const [mode, setMode] = useState<Mode>(defaultMode);
   const [targetKb, setTargetKb] = useState(100);
   const [maxWidth, setMaxWidth] = useState<number | "">(1920);
   const [maxHeight, setMaxHeight] = useState<number | "">(1080);

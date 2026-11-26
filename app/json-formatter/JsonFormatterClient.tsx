@@ -70,11 +70,16 @@ function toTypeScriptInterface(obj: unknown, name = "Root"): string {
 function jsonToCsv(obj: unknown): string | null {
   const arr = Array.isArray(obj) ? obj : [obj];
   if (!arr.length || typeof arr[0] !== "object" || arr[0] === null) return null;
-  const keys = Object.keys(arr[0] as object);
+  // Union of keys across all rows, so records with different fields keep every column.
+  const keys: string[] = [];
+  arr.forEach((row) => {
+    if (row && typeof row === "object") Object.keys(row as object).forEach((k) => { if (keys.indexOf(k) === -1) keys.push(k); });
+  });
   const rows = arr.map((row) =>
     keys.map((k) => {
-      const v = (row as Record<string, unknown>)[k];
-      const s = v === null || v === undefined ? "" : String(v);
+      const v = row && typeof row === "object" ? (row as Record<string, unknown>)[k] : undefined;
+      // Nested objects/arrays are written as JSON text instead of "[object Object]".
+      const s = v === null || v === undefined ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
       return s.includes(",") || s.includes('"') || s.includes("\n") ? `"${s.replace(/"/g, '""')}"` : s;
     }).join(",")
   );

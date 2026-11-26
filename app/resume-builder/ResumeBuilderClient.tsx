@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { jsPDF } from "jspdf";
+import { enableUnicodeText } from "@/lib/jspdfUnicode";
 
 interface ExperienceItem {
   id: string;
@@ -510,7 +511,7 @@ export default function ResumeBuilderClient() {
       const font = template.font;
       const accent = effectiveAccent;
 
-      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const doc = enableUnicodeText(new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" }));
       const pageW = doc.internal.pageSize.getWidth();
       const pageH = doc.internal.pageSize.getHeight();
       const margin = 18;
@@ -602,7 +603,7 @@ export default function ResumeBuilderClient() {
       doc.setFont(font, "bold");
       doc.setTextColor(30, 30, 30);
       doc.text(fullName, nameX, y + 6, textOpts);
-      y += 9;
+      y += 14; // next baseline clears the 24pt name
 
       if (jobTitle.trim()) {
         doc.setFontSize(12);

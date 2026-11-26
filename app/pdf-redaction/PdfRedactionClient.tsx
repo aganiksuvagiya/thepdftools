@@ -17,6 +17,8 @@ type TextSpan = {
   y: number;
   width: number;
   height: number;
+  /** CSS font shorthand (size + family) used to measure where a match sits inside the span. */
+  font?: string;
 };
 
 type PagePreview = {
@@ -74,8 +76,10 @@ async function extractTextSpans(pdfjsLib: any, page: any, viewport: any): Promis
       text: item.str,
       x: tx[4],
       y: tx[5] - ascent,
-      width: Math.max(item.width * viewport.scale, item.str.length * fontHeight * 0.45),
+      // Use the real advance width; a minimum width here pushed every box to the right of its text.
+      width: item.width > 0 ? item.width * viewport.scale : item.str.length * fontHeight * 0.45,
       height: fontHeight,
+      font: style?.fontFamily ? `${Math.round(fontHeight * 10) / 10}px ${style.fontFamily}` : undefined,
     });
   }
 
@@ -376,6 +380,14 @@ export default function PdfRedactionClient() {
     }
 
     const matches: SearchMatch[] = [];
+    // Measure real glyph widths so the box lands exactly on the matched text. Averaging the
+    // character width left letters of proportional / justified text uncovered.
+    const measureCtx = document.createElement("canvas").getContext("2d");
+    const measure = (font: string | undefined, value: string): number => {
+      if (!measureCtx || !font) return 0;
+      measureCtx.font = font;
+      return measureCtx.measureText(value).width;
+    };
 
     pages.forEach((page, pageIndex) => {
       page.textSpans.forEach((span) => {
@@ -386,15 +398,36 @@ export default function PdfRedactionClient() {
           const foundAt = haystack.indexOf(needle, startIndex);
           if (foundAt === -1) break;
 
-          const charWidth = span.width / Math.max(span.text.length, 1);
+          const matchLen = needle.length;
+          const total = measure(span.font, span.text);
+          const spaceCount = span.text.split(" ").length - 1;
+          const extra = span.width - total;
+          // x offset (inside the span) of the boundary after `upTo` characters. Justified text
+          // stretches the spaces, so when the span is clearly wider than its measured glyphs the
+          // extra width is shared between the spaces instead of spread over every letter.
+          const boundary = (upTo: number): number => {
+            if (total <= 0) return (span.width / Math.max(span.text.length, 1)) * upTo;
+            const head = span.text.slice(0, upTo);
+            const w = measure(span.font, head);
+            if (spaceCount > 0 && extra > total * 0.02) {
+              return w + extra * ((head.split(" ").length - 1) / spaceCount);
+            }
+            return (w / total) * span.width;
+          };
+          const startX = boundary(foundAt);
+          const endX = boundary(foundAt + matchLen);
+          const offsetX = startX;
+          const matchW = endX - startX;
+          // A little padding on every side so antialiased glyph edges are covered too.
+          const padX = 3;
           matches.push({
             id: `${pageIndex}-${foundAt}-${matches.length}`,
             pageIndex,
-            text: span.text.slice(foundAt, foundAt + needle.length),
-            x: span.x + charWidth * foundAt,
-            y: span.y,
-            width: Math.max(charWidth * needle.length, 12),
-            height: Math.max(span.height, 12),
+            text: span.text.slice(foundAt, foundAt + matchLen),
+            x: Math.max(0, span.x + offsetX - padX),
+            y: span.y - 1,
+            width: Math.max(matchW + padX * 2, 12),
+            height: Math.max(span.height, 12) + 2,
           });
 
           startIndex = foundAt + needle.length;

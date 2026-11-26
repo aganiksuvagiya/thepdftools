@@ -2,13 +2,43 @@
 
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
-import { PDFDocument } from "pdf-lib";
+import { needsUnicode } from "@/app/text-to-pdf/unicodePdf";
+import { textToPng } from "@/lib/textImage";
+import { PDFDocument, PDFTextField, PDFCheckBox, PDFDropdown, PDFRadioGroup } from "pdf-lib";
 
 interface FormField {
   name: string;
   type: "text" | "checkbox" | "dropdown" | "radio" | "unknown";
   value: string;
   options?: string[];
+}
+
+// pdf-lib's form fonts cannot encode Gujarati, Hindi, "₹" etc. Such a value is drawn onto the page
+// where the field sits, and the (now filled) field is removed.
+async function stampUnicodeField(doc: PDFDocument, name: string, value: string) {
+  const form = doc.getForm();
+  const field = form.getTextField(name);
+  const widgets = field.acroField.getWidgets();
+  for (let w = 0; w < widgets.length; w++) {
+    const rect = widgets[w].getRectangle();
+    const page = doc.getPages().find((p) => {
+      const annots = p.node.Annots();
+      if (!annots) return false;
+      for (let i = 0; i < annots.size(); i++) if (annots.lookup(i) === widgets[w].dict) return true;
+      return false;
+    });
+    if (!page) continue;
+    const art = textToPng(value, Math.min(12, rect.height * 0.6), "#000000", false);
+    const image = await doc.embedPng(art.dataUrl);
+    const scale = Math.min(1, (rect.width - 4) / art.textWidth);
+    page.drawImage(image, {
+      x: rect.x + 2 - art.pad * scale,
+      y: rect.y + (rect.height - art.height * scale) / 2,
+      width: art.width * scale,
+      height: art.height * scale,
+    });
+  }
+  form.removeField(field);
 }
 
 export default function PdfFormFillerClient() {
@@ -36,23 +66,23 @@ export default function PdfFormFillerClient() {
 
       const parsed: FormField[] = rawFields.map((field) => {
         const name = field.getName();
-        const typeName = field.constructor.name;
-
-        if (typeName.includes("TextField")) {
+        // instanceof, not constructor.name: class names are minified in the production build,
+        // which made every field show up as "unknown".
+        if (field instanceof PDFTextField) {
           try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const tf = field as any;
             return { name, type: "text", value: tf.getText() || "" };
           } catch { return { name, type: "text", value: "" }; }
         }
-        if (typeName.includes("CheckBox")) {
+        if (field instanceof PDFCheckBox) {
           try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const cb = field as any;
             return { name, type: "checkbox", value: cb.isChecked() ? "true" : "false" };
           } catch { return { name, type: "checkbox", value: "false" }; }
         }
-        if (typeName.includes("Dropdown")) {
+        if (field instanceof PDFDropdown) {
           try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const dd = field as any;
@@ -61,7 +91,7 @@ export default function PdfFormFillerClient() {
             return { name, type: "dropdown", value: sel[0] || "", options: opts };
           } catch { return { name, type: "dropdown", value: "", options: [] }; }
         }
-        if (typeName.includes("RadioGroup")) {
+        if (field instanceof PDFRadioGroup) {
           try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const rg = field as any;
@@ -97,7 +127,9 @@ export default function PdfFormFillerClient() {
       for (const field of fields) {
         try {
           const val = values[field.name] ?? "";
-          if (field.type === "text") {
+          if (field.type === "text" && needsUnicode(val)) {
+            await stampUnicodeField(doc, field.name, val);
+          } else if (field.type === "text") {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (form.getTextField(field.name) as any).setText(val);
           } else if (field.type === "checkbox") {

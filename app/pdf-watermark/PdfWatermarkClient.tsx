@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 import DropZone from "@/components/DropZone";
+import { needsUnicode } from "@/app/text-to-pdf/unicodePdf";
+import { textToPng } from "@/lib/textImage";
 
 type Position = "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
@@ -43,20 +45,24 @@ export default function PdfWatermarkClient() {
       const buf = await file.arrayBuffer();
       const doc = await PDFDocument.load(buf);
       const font = await doc.embedFont(StandardFonts.HelveticaBold);
+      // The built-in font cannot encode Gujarati, Hindi, "₹" etc., so such text is stamped as an image.
+      const art = needsUnicode(text) ? textToPng(text, fontSize, "#808080", true) : null;
+      const image = art ? await doc.embedPng(art.dataUrl) : null;
       const pages = doc.getPages();
 
       for (const page of pages) {
         const { width, height } = page.getSize();
-        const textWidth = font.widthOfTextAtSize(text, fontSize);
+        const textWidth = art ? art.textWidth : font.widthOfTextAtSize(text, fontSize);
 
-        let x = 0, y = 0, rotate = degrees(0);
+        let x = 0, y = 0, angle = 0;
         const pad = 20;
 
         switch (position) {
           case "center":
-            x = (width - textWidth) / 2;
-            y = height / 2;
-            rotate = degrees(45);
+            // text rotates about its start point, so step back half its length along the diagonal
+            angle = 45;
+            x = width / 2 - (textWidth / 2) * Math.SQRT1_2 + fontSize * 0.35 * Math.SQRT1_2;
+            y = height / 2 - (textWidth / 2) * Math.SQRT1_2 - fontSize * 0.35 * Math.SQRT1_2;
             break;
           case "top-left":
             x = pad;
@@ -76,15 +82,28 @@ export default function PdfWatermarkClient() {
             break;
         }
 
-        page.drawText(text, {
-          x,
-          y,
-          size: fontSize,
-          font,
-          color: rgb(0.5, 0.5, 0.5),
-          opacity,
-          rotate,
-        });
+        if (art && image) {
+          // (x, y) is the text's baseline start; move to the image's bottom-left corner
+          const rad = (angle * Math.PI) / 180;
+          page.drawImage(image, {
+            x: x - art.pad * Math.cos(rad) + art.descent * Math.sin(rad),
+            y: y - art.pad * Math.sin(rad) - art.descent * Math.cos(rad),
+            width: art.width,
+            height: art.height,
+            opacity,
+            rotate: degrees(angle),
+          });
+        } else {
+          page.drawText(text, {
+            x,
+            y,
+            size: fontSize,
+            font,
+            color: rgb(0.5, 0.5, 0.5),
+            opacity,
+            rotate: degrees(angle),
+          });
+        }
       }
 
       const pdfBytes = await doc.save();

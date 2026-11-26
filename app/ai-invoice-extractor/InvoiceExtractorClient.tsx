@@ -135,8 +135,16 @@ function cleanEntityValue(value: string | null) {
 
 function extractLikelyNameAfterLabel(text: string, labels: string[]) {
   const escaped = labels.map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  const pattern = new RegExp(`(?:${escaped.join("|")})\\s*[:\\-]?\\s*([^\\n]{2,80})`, "i");
-  return cleanEntityValue(text.match(pattern)?.[1] ?? null);
+  // Whole words only ("to" must not match inside "Total"); the generic "to" / "from" also need a
+  // colon at the start of a line, otherwise any sentence containing them would match.
+  for (let i = 0; i < escaped.length; i++) {
+    const pattern = /^(to|from)$/.test(labels[i])
+      ? new RegExp(`(?:^|\\n)[ \\t]*${escaped[i]}[ \\t]*:[ \\t]*\\n?[ \\t]*([^\\n]{2,80})`, "i")
+      : new RegExp(`(?:^|[^A-Za-z])${escaped[i]}(?![A-Za-z])\\s*[:\\-]?\\s*([^\\n]{2,80})`, "i");
+    const value = cleanEntityValue(text.match(pattern)?.[1] ?? null);
+    if (value) return value;
+  }
+  return null;
 }
 
 function extractVendorName(text: string) {
@@ -162,49 +170,57 @@ function extractCustomerName(text: string) {
 function chooseAmountByLabel(text: string, labels: string[]) {
   const escaped = labels.map((label) => label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   const pattern = new RegExp(
-    `(?:${escaped.join("|")})\\s*[:\\-]?\\s*((?:₹|\\$|€|£)?\\s?\\d[\\d,]*(?:\\.\\d{2})?)`,
+    // whole words only, so "total" does not pick up the figure after "Subtotal"
+    `(?:^|[^A-Za-z])(?:${escaped.join("|")})(?![A-Za-z])\\s*[:\\-]?\\s*((?:₹|\\$|€|£)?\\s?\\d[\\d,]*(?:\\.\\d{2})?)`,
     "i"
   );
   return cleanEntityValue(text.match(pattern)?.[1] ?? null);
 }
 
 function parseInvoice(rawText: string, pageCount: number, extractionMethod: string): ExtractedInvoice {
-  const invoiceNumber = extractFirstMatch(rawText, [
-    /invoice(?:\s*(?:#|no\.?|number))?\s*[:\-]?\s*([A-Z0-9\-\/]+)/i,
-    /bill(?:\s*(?:#|no\.?|number))?\s*[:\-]?\s*([A-Z0-9\-\/]+)/i,
+  // the "--- Page N ---" separators are for display only and must not be read as invoice content
+  const text = rawText.replace(/^--- Page \d+ ---$/gm, "").trim();
+  // "sub total" (two words) would otherwise match the "total" label
+  const totalsText = text.replace(/sub[\s-]total/gi, "subtotal");
+  // a number must contain a digit, so "Tax Invoice" or "Invoice Date" is never taken as the number
+  const invoiceNumber = extractFirstMatch(text, [
+    /invoice(?:\s*(?:#|no\.?|number))?\s*[:\-]?\s*([A-Z0-9\-\/]*\d[A-Z0-9\-\/]*)/i,
+    /bill(?:\s*(?:#|no\.?|number))?\s*[:\-]?\s*([A-Z0-9\-\/]*\d[A-Z0-9\-\/]*)/i,
   ]);
 
   const invoiceDate =
-    extractFirstMatch(rawText, [
+    extractFirstMatch(text, [
       /invoice date\s*[:\-]?\s*([^\n]+)/i,
       /issue date\s*[:\-]?\s*([^\n]+)/i,
       /date\s*[:\-]?\s*([^\n]+)/i,
     ]) ?? null;
 
   const dueDate =
-    extractFirstMatch(rawText, [
+    extractFirstMatch(text, [
       /due date\s*[:\-]?\s*([^\n]+)/i,
       /payment due\s*[:\-]?\s*([^\n]+)/i,
     ]) ?? null;
 
-  const subtotal = chooseAmountByLabel(rawText, ["subtotal", "sub total", "amount before tax"]);
-  const tax = chooseAmountByLabel(rawText, ["tax", "gst", "vat", "cgst", "sgst", "igst"]);
+  const subtotal = chooseAmountByLabel(totalsText, ["subtotal", "amount before tax"]);
+  const tax = chooseAmountByLabel(text, ["tax", "gst", "vat", "cgst", "sgst", "igst"]);
+  // strongest label first: a "Total" column or line must not win over "Grand Total"
   const total =
-    chooseAmountByLabel(rawText, ["grand total", "total due", "balance due", "amount due", "total"]) ??
-    null;
+    chooseAmountByLabel(totalsText, ["grand total"]) ??
+    chooseAmountByLabel(totalsText, ["total due", "balance due", "amount due"]) ??
+    chooseAmountByLabel(totalsText, ["total"]);
 
   return {
     invoiceNumber,
     invoiceDate: cleanEntityValue(invoiceDate),
     dueDate: cleanEntityValue(dueDate),
-    vendorName: extractVendorName(rawText),
-    customerName: extractCustomerName(rawText),
+    vendorName: extractVendorName(text),
+    customerName: extractCustomerName(text),
     subtotal,
     tax,
     total,
-    currency: detectCurrency(rawText),
-    amountsFound: extractAmounts(rawText).slice(0, 20),
-    datesFound: extractDates(rawText).slice(0, 20),
+    currency: detectCurrency(text),
+    amountsFound: extractAmounts(text).slice(0, 20),
+    datesFound: extractDates(text).slice(0, 20),
     rawText,
     pageCount,
     extractionMethod,
