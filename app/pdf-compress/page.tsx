@@ -61,7 +61,7 @@ const howToSteps = [
 const faqItems = [
   {
     q: "How does this PDF compressor actually reduce file size?",
-    a: "By default it re-encodes the JPEG images embedded in your PDF at a lower quality and, at Medium and Maximum, a lower resolution, then rebuilds the file with a more compact structure. Text, fonts, links and form fields are not touched. For scanned or photo-only PDFs there is an optional “Convert pages to images” setting that renders each page as an image for the smallest possible file.",
+    a: "By default it re-encodes the images embedded in your PDF (JPEG photos, and PNG-style pictures when that saves a lot of space) at a lower quality and, at Medium and Maximum, a lower resolution, then rebuilds the file with a more compact structure. Text, fonts, links and form fields are not touched. For scanned or photo-only PDFs there is an optional “Convert pages to images” setting that renders each page as an image for the smallest possible file.",
   },
   {
     q: "Will the text in my PDF still be selectable and searchable after compressing?",
@@ -272,10 +272,12 @@ export default function PdfCompressPage() {
           </h2>
           <div className="mt-4 space-y-4 text-[15px] leading-8 text-slate-700">
             <p>
-              By default this tool looks for the JPEG images embedded in your
+              By default this tool looks for the images embedded in your
               PDF, re-encodes them at the quality (and, for Medium and
               Maximum, the resolution) you chose, and rebuilds the file with a
-              more compact structure. <strong>Text, fonts, links, bookmarks and
+              more compact structure. PNG-style pictures are turned into JPEG
+              only when that makes them much smaller, so most screenshots and
+              line art stay sharp. <strong>Text, fonts, links, bookmarks and
               form fields are not touched</strong>, so the result stays
               selectable and searchable. A new version is only offered when it
               is actually smaller than your original.
@@ -302,9 +304,9 @@ export default function PdfCompressPage() {
           </h2>
           <p className="mt-4 text-[15px] leading-8 text-slate-700">
             Your PDF's contents are read and processed in your browser rather
-            than uploaded to a server to be compressed. The tool does load
-            its PDF-rendering library from a public CDN on first use, but
-            your document itself is never transmitted anywhere. This keeps
+            than uploaded to a server to be compressed. Its PDF libraries are
+            loaded from this website, and your document itself is never
+            transmitted anywhere. This keeps
             invoices, contracts, resumes, and other private documents off a
             remote upload queue.
           </p>
@@ -315,7 +317,7 @@ export default function PdfCompressPage() {
             Tool Limitations
           </h2>
           <ul className="mt-4 list-inside list-disc space-y-2 text-[15px] leading-7 text-slate-600">
-            <li>Only embedded JPEG images are re-encoded. PNG-style images, vector art and text are left as they are.</li>
+            <li>Only gray and RGB images are re-encoded. CMYK, palette and black-and-white fax images, transparency masks, vector art and text are not re-encoded.</li>
             <li>Text-only PDFs may shrink very little; if nothing smaller can be made, no download is offered.</li>
             <li>“Convert pages to images” makes text non-selectable and drops links, bookmarks and form fields.</li>
             <li>Password-protected PDFs must be unlocked before compressing.</li>
@@ -398,7 +400,7 @@ export default function PdfCompressPage() {
             </h3>
             <p className="mt-3 text-[15px] leading-8 text-slate-600">
               This compressor is a strong fit for PDFs that contain photos,
-              scans or other large JPEG images, and it keeps the text,
+              scans or other large images, and it keeps the text,
               links and forms of such documents intact. A PDF that is only
               text has almost nothing to shrink; the tool will report that
               honestly. For scans without any selectable text, the “Convert
