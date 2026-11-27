@@ -23,14 +23,6 @@ export const RASTER_LEVELS: Record<CompressLevel, { scale: number; quality: numb
   3: { scale: 1.0, quality: 0.5 },
 };
 
-// Progressively harsher raster settings, used only when a size target must be reached.
-export const RASTER_LADDER: { scale: number; quality: number }[] = [
-  { scale: 1.0, quality: 0.5 },
-  { scale: 0.85, quality: 0.4 },
-  { scale: 0.7, quality: 0.35 },
-  { scale: 0.55, quality: 0.3 },
-];
-
 export class EncryptedPdfError extends Error {
   constructor() {
     super("This PDF is password-protected. Unlock it with the PDF Unlock tool first, then compress it.");
@@ -314,7 +306,7 @@ export async function smartCompress(
   return { bytes, imagesTotal: images.length, imagesShrunk: shrunk };
 }
 
-async function loadPdfJs() {
+export async function loadPdfJs() {
   const cdnUrl = "/vendor/pdfjs-4.0.379/pdf.mjs";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pdfjsLib = await (Function(`return import("${cdnUrl}")`)() as Promise<any>);

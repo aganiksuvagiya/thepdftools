@@ -113,7 +113,7 @@ const faqItems = [
   },
   {
     q: "What's the difference between this and Compress PDF to 100KB?",
-    a: "Compress PDF to 100KB and Compress PDF to 200KB use the same engine but keep going until the file is under the target: first stronger image compression with text kept, and only if that is not enough, converting pages to images step by step. Use this general compressor when you want to choose the level yourself.",
+    a: "Compress PDF to 100KB and Compress PDF to 200KB use the same engine but keep going until the file is under the target: first stronger image compression with text kept, and only if that is not enough, converting pages to images at the clearest quality that fits, in colour or sharp black and white. Use this general compressor when you want to choose the level yourself.",
   },
   {
     q: "Should I merge or split PDFs before or after compressing?",
@@ -292,8 +292,9 @@ export default function PdfCompressPage() {
               files, but <strong>text is no longer selectable or searchable
               and links and form fields are lost</strong>, so leave it off for
               resumes, contracts and fillable forms. The 100KB and 200KB pages
-              use that fallback automatically only when the target cannot be
-              reached any other way, and say so in the result.
+              convert pages to images only when the target cannot be reached any
+              other way, pick the clearest quality that fits, and say so in the
+              result.
             </p>
           </div>
         </section>

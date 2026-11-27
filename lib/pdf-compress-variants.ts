@@ -20,8 +20,8 @@ export const PDF_COMPRESS_VARIANTS = [
       {
         heading: "Best workflow for 100KB targets",
         body: [
-          "Open the PDF compressor, upload the document, and start with medium compression. Check the output size first, then open the file and zoom into signatures, stamps, and small text before submitting it anywhere important.",
-          "If the PDF is still above 100KB, try a stronger pass or split unnecessary pages out before compressing again. This works especially well for admit cards, ID proofs, certificates, and application forms with only one or two pages.",
+          "Upload the document and press Compress PDF. The tool first shrinks the pictures and keeps text selectable. If that is not enough, it turns the pages into images and picks the clearest quality that fits under 100KB. Use the preview to zoom into signatures, stamps, and small text before submitting the file anywhere important.",
+          "Leave the page style on Auto in most cases: colour is kept when it fits, and text pages switch to sharp black and white when colour would turn blurry. This works especially well for admit cards, ID proofs, certificates, and application forms with only a few pages.",
         ],
       },
       {
@@ -35,15 +35,15 @@ export const PDF_COMPRESS_VARIANTS = [
     faq: [
       {
         q: "Can I compress PDF to 100KB online free?",
-        a: "Yes. Start with balanced compression, then increase compression only if the file still exceeds the size limit.",
+        a: "Yes. Upload the file and press Compress PDF. The tool tries the gentlest options first and only reduces quality as far as the 100KB limit requires.",
       },
       {
         q: "Will text stay readable after compression?",
-        a: "Usually yes for text-based PDFs. Scanned documents need an extra quality check because heavy compression can affect clarity.",
+        a: "Usually yes for text-based PDFs and scans with a few pages. The tool warns you when small text may be hard to read, and the preview lets you check before downloading.",
       },
       {
         q: "What if my PDF is still above 100KB?",
-        a: "Try removing unnecessary pages, compressing again, or rebuilding the PDF from smaller source images.",
+        a: "The tool tells you about how many pages fit at readable quality. Choose Black & white if your document is text, or split the file and compress each part.",
       },
       {
         q: "Is this useful for government and exam forms?",
@@ -170,14 +170,14 @@ export const PDF_COMPRESS_VARIANTS = [
         heading: "When do you need to compress PDF to 200KB?",
         body: [
           "Many college admission portals, job application forms, scholarship submissions, and HR systems set a 200KB limit for uploaded documents. PDF files from scanners, design software, or email chains often exceed this limit without any obvious reason — embedded fonts, high-resolution images, and revision history all add invisible weight.",
-          "The solution is a targeted compression pass. Rather than using the strongest compression blindly, start with medium compression, check the result, and increase only if necessary.",
+          "The solution is a targeted compression pass. Rather than using the strongest compression blindly, this page looks for the best quality that still fits under 200KB.",
         ],
       },
       {
         heading: "How to compress a PDF to under 200KB",
         body: [
-          "Upload the PDF to the compressor above and run a medium-strength compression pass. After downloading, check the file size in your file manager. If it is already under 200KB, you are done.",
-          "If the file is still above 200KB, try a higher compression level. For scanned documents with images, this can reduce size by 60–80% while keeping text readable. For text-only PDFs, the reduction may be smaller — in that case, consider removing blank or unnecessary pages using the PDF Split tool first.",
+          "Upload the PDF to the compressor above and press Compress PDF. The tool first shrinks the pictures and keeps text selectable. If that is not enough, it turns the pages into images and picks the clearest quality that fits.",
+          "Check the preview before downloading. If the file cannot fit at readable quality, the tool says about how many pages will fit, so you can remove blank or unnecessary pages with the PDF Split tool or compress the document in parts.",
         ],
       },
       {
@@ -191,15 +191,15 @@ export const PDF_COMPRESS_VARIANTS = [
     faq: [
       {
         q: "Can I compress a PDF to exactly 200KB?",
-        a: "The compressor reduces file size as much as possible based on the compression level you choose. You may need to try different levels to get close to 200KB.",
+        a: "The result is made to be 200KB or smaller, not exactly 200KB. The tool picks the highest quality step that fits, so the file is usually somewhat under the limit.",
       },
       {
         q: "What is the difference between 100KB and 200KB compression targets?",
-        a: "The target is the same — reducing file size. For 200KB you have more room, so medium compression is usually enough. For 100KB you may need maximum compression or to remove pages.",
+        a: "Both work the same way. 200KB leaves twice the room, so pages stay sharper, keep their colour more often, and more of them fit.",
       },
       {
         q: "Does compressing to 200KB reduce quality?",
-        a: "At medium compression, text stays sharp and images remain readable. Quality only noticeably drops at maximum compression settings.",
+        a: "Only as much as the limit requires. A few pages usually stay clear. With many scanned pages, text pages switch to black and white, and the tool warns you if small text may be hard to read.",
       },
       {
         q: "Is this tool free?",
