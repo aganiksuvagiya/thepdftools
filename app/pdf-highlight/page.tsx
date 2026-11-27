@@ -49,7 +49,7 @@ export default function PdfHighlightPage() {
           {
             "@type": "Question",
             name: "Can I highlight text in any PDF?",
-            acceptedAnswer: { "@type": "Answer", text: "Yes. The tool works on text-based PDFs. Scanned PDFs require OCR first to make the text selectable before highlighting." },
+            acceptedAnswer: { "@type": "Answer", text: "Yes. You drag a box over any part of the page, so it works on text PDFs and scanned ones. The highlight is drawn on top of the original page, so text you could select before can still be selected. Password-protected PDFs are saved as page images instead." },
           },
           {
             "@type": "Question",
@@ -155,7 +155,7 @@ export default function PdfHighlightPage() {
             <h2 className="text-xl font-semibold text-slate-900 mb-4">Frequently Asked Questions</h2>
             <div className="divide-y divide-slate-100">
               {[
-                { q: "Can I highlight text in any PDF?", a: "Yes. The tool works on text-based PDFs. Scanned PDFs require OCR first to make the text selectable before highlighting." },
+                { q: "Can I highlight text in any PDF?", a: "Yes. You drag a box over any part of the page, so it works on text PDFs and scanned ones. The highlight is drawn on top of the original page, so text you could select before can still be selected. Password-protected PDFs are saved as page images instead." },
                 { q: "Does highlighting modify the original PDF file?", a: "No. Your original file is not modified. The tool creates a new annotated PDF with highlights applied on top of the original content." },
                 { q: "Can I choose highlight colors?", a: "Yes. Multiple highlight colors are available including yellow, green, blue, pink, and orange." },
                 { q: "Is the PDF highlight tool free?", a: "Yes. Completely free with no signup and no upload to any server." },

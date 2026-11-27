@@ -146,7 +146,7 @@ export default function ImageRotatePage() {
               <li>Use the quick-rotate buttons to rotate your image 90 degrees clockwise or counter-clockwise, or enter any custom angle from 0 to 360 degrees.</li>
               <li>Flip the image horizontally to create a mirror image, or flip vertically to turn it upside down. Combine flips with rotation for any orientation.</li>
               <li>Preview the transformed image in real time — adjustments are applied instantly so you can fine-tune the angle before downloading.</li>
-              <li>Click download to save the rotated or flipped image. Choose your preferred output format and quality level.</li>
+              <li>Click download to save the rotated or flipped image. It is saved in the format you uploaded: JPG stays JPG, PNG stays PNG and WebP stays WebP.</li>
             </ol>
           </div>
 
@@ -167,8 +167,8 @@ export default function ImageRotatePage() {
                 <p className="mt-1 text-sm text-slate-500">Every rotation and flip is rendered instantly in your browser so you can see the exact result before downloading. No guesswork, no waiting — adjust until the image looks perfect.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
-                <h3 className="text-sm font-medium text-slate-900">No Quality Loss</h3>
-                <p className="mt-1 text-sm text-slate-500">Rotations at 90, 180, and 270 degrees are lossless. Custom-angle rotations use high-quality canvas rendering to preserve maximum detail. You control the output format and compression level.</p>
+                <h3 className="text-sm font-medium text-slate-900">Keeps Your Format</h3>
+                <p className="mt-1 text-sm text-slate-500">PNG results are lossless, while JPG and WebP are saved again at high quality. Custom angles leave empty corners, which stay transparent in PNG and WebP and are white in JPG.</p>
               </div>
             </div>
           </div>
@@ -390,9 +390,9 @@ export default function ImageRotatePage() {
             <div className="mt-5 divide-y divide-slate-100">
               {[
                 { q: "Can I rotate by a custom angle instead of just 90 degrees?", a: "Yes. In addition to the quick 90-degree and 180-degree preset buttons, you can enter any custom angle from 0 to 360 degrees using the angle slider or the numeric input field. The preview updates in real time so you can fine-tune the rotation until the horizon is perfectly level or the composition looks exactly right." },
-                { q: "Does rotating an image reduce its quality?", a: "Rotations at exact 90-degree increments (90, 180, 270) are lossless because they simply rearrange pixels without any interpolation. Custom-angle rotations require sub-pixel rendering, but our tool uses high-quality bicubic-equivalent canvas rendering to preserve as much detail as possible. You can also choose your output format and compression level for full control." },
+                { q: "Does rotating an image reduce its quality?", a: "PNG images are saved without any loss at 90, 180 and 270 degrees, because the pixels are only rearranged. JPG and WebP images have to be saved again, which this tool does at high quality, so the difference is normally hard to see. Custom angles also resample the pixels slightly." },
                 { q: "Can I flip and rotate an image at the same time?", a: "Absolutely. You can combine any rotation angle with a horizontal flip, a vertical flip, or both. All transformations are composited together and previewed in real time before you download, so you always know exactly what the final image will look like." },
-                { q: "What image formats are supported?", a: "The rotate and flip tool supports JPG, PNG, and WebP images. You can upload any of these formats and download the result in the same format or convert to a different supported format during the process. This flexibility makes it easy to rotate a photo and change its format in a single step." },
+                { q: "What image formats are supported?", a: "The rotate and flip tool supports JPG, PNG, and WebP images. The result is downloaded in the same format as the file you uploaded. To change the format afterwards, use the PNG to JPG or JPG to PNG tools." },
               ].map((item) => (
                 <details key={item.q} className="group py-5">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-medium text-slate-900 transition-colors hover:text-brand-700 [&::-webkit-details-marker]:hidden">

@@ -1,12 +1,46 @@
 // jsPDF's built-in fonts only cover WinAnsi: a single Gujarati / Hindi letter or "₹" turns the whole
 // string into garbage. This patches one jsPDF document so such strings are drawn with the browser's own
-// fonts and placed as images; everything else stays normal, selectable PDF text.
+// fonts and placed as images; everything else stays normal PDF text. saveUnicodePdf() then lays
+// invisible text over those images, so they can be selected, copied and searched too.
 // The document must use millimetres as its unit.
 import type { jsPDF } from "jspdf";
 import { needsUnicode } from "@/app/text-to-pdf/unicodePdf";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 
 const PX_PER_MM = 12; // about 300 DPI
 const PT_TO_MM = 25.4 / 72;
+
+/** a line that was placed as an image: position in millimetres from the top left of its page */
+type ImageLine = { page: number; text: string; x: number; y: number; sizePt: number; width: number };
+const imageLines = new WeakMap<jsPDF, ImageLine[]>();
+
+export async function saveUnicodePdf(doc: jsPDF, filename: string): Promise<void> {
+  const lines = imageLines.get(doc);
+  if (!lines || !lines.length) {
+    doc.save(filename);
+    return;
+  }
+  const { PDFDocument } = await import("pdf-lib");
+  const pdf = await PDFDocument.load(doc.output("arraybuffer"), { updateMetadata: false });
+  const layer = await createTextLayer(pdf);
+  lines.forEach((line) => {
+    const page = pdf.getPage(line.page - 1);
+    layer.add(page, {
+      text: line.text,
+      x: line.x / PT_TO_MM,
+      y: page.getHeight() - line.y / PT_TO_MM,
+      size: line.sizePt,
+      width: line.width / PT_TO_MM,
+    });
+  });
+  layer.finish();
+  const url = URL.createObjectURL(new Blob([new Uint8Array(await pdf.save())], { type: "application/pdf" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
 
 export function enableUnicodeText(doc: jsPDF): jsPDF {
   const canvas = document.createElement("canvas");
@@ -78,6 +112,9 @@ export function enableUnicodeText(doc: jsPDF): jsPDF {
     ctx.fillText(line, pad, ascent);
     const textMm = textPx / PX_PER_MM;
     const left = align === "center" ? x - textMm / 2 : align === "right" ? x - textMm : x;
+    const placed = imageLines.get(doc) || [];
+    placed.push({ page: d.getCurrentPageInfo().pageNumber, text: line, x: left, y, sizePt: doc.getFontSize(), width: textMm });
+    imageLines.set(doc, placed);
     doc.addImage(
       canvas.toDataURL("image/png"),
       "PNG",

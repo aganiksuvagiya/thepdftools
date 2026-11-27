@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { jsPDF } from "jspdf";
-import { enableUnicodeText } from "@/lib/jspdfUnicode";
+import { enableUnicodeText, saveUnicodePdf } from "@/lib/jspdfUnicode";
 
 interface ExperienceItem {
   id: string;
@@ -502,7 +502,7 @@ export default function ResumeBuilderClient() {
 
   const canGenerate = fullName.trim().length > 0;
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!canGenerate) return;
     setLoading(true);
     setError(null);
@@ -729,7 +729,7 @@ export default function ResumeBuilderClient() {
       }
 
       const safeName = fullName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      doc.save(`resume-${safeName || "untitled"}.pdf`);
+      await saveUnicodePdf(doc, `resume-${safeName || "untitled"}.pdf`);
     } catch {
       setError("Failed to generate resume. Please try again.");
     } finally {

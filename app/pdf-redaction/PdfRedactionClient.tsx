@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DropZone from "@/components/DropZone";
+import { findInSpans, type TextHit, type TextSpan } from "./textSearch";
 
 type RedactionBox = {
   id: string;
@@ -9,16 +10,6 @@ type RedactionBox = {
   y: number;
   width: number;
   height: number;
-};
-
-type TextSpan = {
-  text: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  /** CSS font shorthand (size + family) used to measure where a match sits inside the span. */
-  font?: string;
 };
 
 type PagePreview = {
@@ -30,14 +21,9 @@ type PagePreview = {
   textSpans: TextSpan[];
 };
 
-type SearchMatch = {
+type SearchMatch = TextHit & {
   id: string;
   pageIndex: number;
-  text: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
 };
 
 function formatBytes(bytes: number): string {
@@ -61,7 +47,12 @@ async function extractTextSpans(pdfjsLib: any, page: any, viewport: any): Promis
   const spans: TextSpan[] = [];
 
   for (const item of textContent.items as any[]) {
-    if (!("str" in item) || !item.str.trim()) continue;
+    if (!("str" in item)) continue;
+    if (!item.str.trim()) {
+      // a space stored on its own still separates the words around it
+      if (item.str && spans.length) spans[spans.length - 1].spaceAfter = true;
+      continue;
+    }
 
     const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
     const fontHeight = Math.hypot(tx[2], tx[3]);
@@ -76,6 +67,7 @@ async function extractTextSpans(pdfjsLib: any, page: any, viewport: any): Promis
       text: item.str,
       x: tx[4],
       y: tx[5] - ascent,
+      baseline: tx[5],
       // Use the real advance width; a minimum width here pushed every box to the right of its text.
       width: item.width > 0 ? item.width * viewport.scale : item.str.length * fontHeight * 0.45,
       height: fontHeight,
@@ -125,6 +117,14 @@ export default function PdfRedactionClient() {
     );
     activeThumb?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [currentPage]);
+
+  // An exported file no longer matches the page once the boxes change, and must not be offered:
+  // it could be missing the newest redaction.
+  const dropDownload = useCallback(() => {
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    setDownloadUrl(null);
+    setDownloadSize(0);
+  }, [downloadUrl]);
 
   const releaseUrls = useCallback((items: PagePreview[]) => {
     for (const page of items) {
@@ -291,6 +291,7 @@ export default function PdfRedactionClient() {
 
       if (width < 12 || height < 12) return;
 
+      dropDownload();
       setPages((current) =>
         current.map((page, index) =>
           index === currentPage
@@ -311,7 +312,7 @@ export default function PdfRedactionClient() {
         )
       );
     },
-    [currentPage, getRelativePoint]
+    [currentPage, dropDownload, getRelativePoint]
   );
 
   const cancelDrag = useCallback(() => {
@@ -345,6 +346,7 @@ export default function PdfRedactionClient() {
 
   const removeRedaction = useCallback(
     (id: string) => {
+      dropDownload();
       setPages((current) =>
         current.map((page, index) =>
           index === currentPage
@@ -356,10 +358,11 @@ export default function PdfRedactionClient() {
         )
       );
     },
-    [currentPage]
+    [currentPage, dropDownload]
   );
 
   const clearCurrentPage = useCallback(() => {
+    dropDownload();
     setPages((current) =>
       current.map((page, index) =>
         index === currentPage
@@ -370,16 +373,9 @@ export default function PdfRedactionClient() {
           : page
       )
     );
-  }, [currentPage]);
+  }, [currentPage, dropDownload]);
 
   const findTextMatches = useCallback(() => {
-    const needle = searchQuery.trim().toLowerCase();
-    if (!needle) {
-      setSearchMatches([]);
-      return;
-    }
-
-    const matches: SearchMatch[] = [];
     // Measure real glyph widths so the box lands exactly on the matched text. Averaging the
     // character width left letters of proportional / justified text uncovered.
     const measureCtx = document.createElement("canvas").getContext("2d");
@@ -389,58 +385,25 @@ export default function PdfRedactionClient() {
       return measureCtx.measureText(value).width;
     };
 
-    pages.forEach((page, pageIndex) => {
-      page.textSpans.forEach((span) => {
-        const haystack = span.text.toLowerCase();
-        let startIndex = 0;
-
-        while (startIndex < haystack.length) {
-          const foundAt = haystack.indexOf(needle, startIndex);
-          if (foundAt === -1) break;
-
-          const matchLen = needle.length;
-          const total = measure(span.font, span.text);
-          const spaceCount = span.text.split(" ").length - 1;
-          const extra = span.width - total;
-          // x offset (inside the span) of the boundary after `upTo` characters. Justified text
-          // stretches the spaces, so when the span is clearly wider than its measured glyphs the
-          // extra width is shared between the spaces instead of spread over every letter.
-          const boundary = (upTo: number): number => {
-            if (total <= 0) return (span.width / Math.max(span.text.length, 1)) * upTo;
-            const head = span.text.slice(0, upTo);
-            const w = measure(span.font, head);
-            if (spaceCount > 0 && extra > total * 0.02) {
-              return w + extra * ((head.split(" ").length - 1) / spaceCount);
-            }
-            return (w / total) * span.width;
-          };
-          const startX = boundary(foundAt);
-          const endX = boundary(foundAt + matchLen);
-          const offsetX = startX;
-          const matchW = endX - startX;
-          // A little padding on every side so antialiased glyph edges are covered too.
-          const padX = 3;
-          matches.push({
-            id: `${pageIndex}-${foundAt}-${matches.length}`,
-            pageIndex,
-            text: span.text.slice(foundAt, foundAt + matchLen),
-            x: Math.max(0, span.x + offsetX - padX),
-            y: span.y - 1,
-            width: Math.max(matchW + padX * 2, 12),
-            height: Math.max(span.height, 12) + 2,
-          });
-
-          startIndex = foundAt + needle.length;
-        }
-      });
-    });
-
-    setSearchMatches(matches);
+    setSearchMatches(
+      pages.reduce<SearchMatch[]>(
+        (all, page, pageIndex) =>
+          all.concat(
+            findInSpans(page.textSpans, searchQuery, measure).map((hit, index) => ({
+              ...hit,
+              id: `${pageIndex}-${index}`,
+              pageIndex,
+            }))
+          ),
+        []
+      )
+    );
   }, [pages, searchQuery]);
 
   const redactSearchMatches = useCallback(() => {
     if (!searchMatches.length) return;
 
+    dropDownload();
     setPages((current) =>
       current.map((page, pageIndex) => {
         const pageMatches = searchMatches.filter((match) => match.pageIndex === pageIndex);
@@ -450,18 +413,16 @@ export default function PdfRedactionClient() {
           ...page,
           redactions: [
             ...page.redactions,
-            ...pageMatches.map((match) => ({
-              id: createRedactionId("search"),
-              x: match.x,
-              y: match.y,
-              width: match.width,
-              height: match.height,
-            })),
+            ...pageMatches.reduce<RedactionBox[]>(
+              (all, match) =>
+                all.concat(match.boxes.map((box) => ({ ...box, id: createRedactionId("search") }))),
+              []
+            ),
           ],
         };
       })
     );
-  }, [searchMatches]);
+  }, [dropDownload, searchMatches]);
 
   const exportRedactedPdf = useCallback(async () => {
     if (!file || !pages.length) return;
@@ -733,18 +694,20 @@ export default function PdfRedactionClient() {
                       draggable={false}
                     />
 
-                    {activePageMatches.map((match) => (
-                      <div
-                        key={match.id}
-                        className="pointer-events-none absolute border border-amber-400 bg-amber-300/25"
-                        style={{
-                          left: `${(match.x / activePage.width) * 100}%`,
-                          top: `${(match.y / activePage.height) * 100}%`,
-                          width: `${(match.width / activePage.width) * 100}%`,
-                          height: `${(match.height / activePage.height) * 100}%`,
-                        }}
-                      />
-                    ))}
+                    {activePageMatches.map((match) =>
+                      match.boxes.map((box, boxIndex) => (
+                        <div
+                          key={`${match.id}-${boxIndex}`}
+                          className="pointer-events-none absolute border border-amber-400 bg-amber-300/25"
+                          style={{
+                            left: `${(box.x / activePage.width) * 100}%`,
+                            top: `${(box.y / activePage.height) * 100}%`,
+                            width: `${(box.width / activePage.width) * 100}%`,
+                            height: `${(box.height / activePage.height) * 100}%`,
+                          }}
+                        />
+                      ))
+                    )}
 
                     {draftRedaction &&
                     draftRedaction.width > 0 &&

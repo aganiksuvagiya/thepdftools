@@ -4,7 +4,29 @@ import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
 import { needsUnicode } from "@/app/text-to-pdf/unicodePdf";
 import { textToPng } from "@/lib/textImage";
-import { PDFDocument, PDFTextField, PDFCheckBox, PDFDropdown, PDFRadioGroup } from "pdf-lib";
+import {
+  PDFDocument,
+  PDFTextField,
+  PDFCheckBox,
+  PDFDropdown,
+  PDFRadioGroup,
+  PDFHexString,
+  PDFName,
+  clip,
+  concatTransformationMatrix,
+  drawObject,
+  endPath,
+  fill,
+  popGraphicsState,
+  pushGraphicsState,
+  rectangle,
+  setFillingColor,
+  setLineWidth,
+  setStrokingColor,
+  componentsToColor,
+  stroke,
+  type PDFRef,
+} from "pdf-lib";
 
 interface FormField {
   name: string;
@@ -13,32 +35,95 @@ interface FormField {
   options?: string[];
 }
 
-// pdf-lib's form fonts cannot encode Gujarati, Hindi, "₹" etc. Such a value is drawn onto the page
-// where the field sits, and the (now filled) field is removed.
-async function stampUnicodeField(doc: PDFDocument, name: string, value: string) {
-  const form = doc.getForm();
-  const field = form.getTextField(name);
+// pdf-lib's form fonts cannot encode Gujarati, Hindi, "₹" etc. The value is stored in the field as
+// usual, but its on-page appearance is drawn with the browser's fonts, so the field stays fillable.
+async function setUnicodeValue(doc: PDFDocument, field: PDFTextField | PDFDropdown, value: string) {
+  const multiline = field instanceof PDFTextField && field.isMultiline();
+  const align = field instanceof PDFTextField ? field.getAlignment() : 0; // 0 left, 1 centre, 2 right
+  const declared = Number(/([\d.]+)\s+Tf/.exec(field.acroField.getDefaultAppearance() || "")?.[1] || 0);
   const widgets = field.acroField.getWidgets();
+
   for (let w = 0; w < widgets.length; w++) {
-    const rect = widgets[w].getRectangle();
-    const page = doc.getPages().find((p) => {
-      const annots = p.node.Annots();
-      if (!annots) return false;
-      for (let i = 0; i < annots.size(); i++) if (annots.lookup(i) === widgets[w].dict) return true;
-      return false;
+    const { width, height } = widgets[w].getRectangle();
+    // The form's own font size (0 means "choose one"), but never more than the box can show.
+    let size = Math.min(declared || 12, multiline ? 18 : height * 0.65);
+    while (multiline && size > 4 && wrapValue(value, size, width - 4).length * size * 1.35 > height - 4) size -= 0.5;
+    const look = widgets[w].getAppearanceCharacteristics();
+    const background = componentsToColor(look?.getBackgroundColor());
+    const border = componentsToColor(look?.getBorderColor());
+    const borderWidth = widgets[w].getBorderStyle()?.getWidth() ?? (border ? 1 : 0);
+
+    const operators = [pushGraphicsState()];
+    if (background) operators.push(setFillingColor(background), rectangle(0, 0, width, height), fill());
+    if (border && borderWidth > 0) {
+      operators.push(
+        setStrokingColor(border),
+        setLineWidth(borderWidth),
+        rectangle(borderWidth / 2, borderWidth / 2, width - borderWidth, height - borderWidth),
+        stroke()
+      );
+    }
+    operators.push(rectangle(1, 1, width - 2, height - 2), clip(), endPath());
+
+    const lines = multiline ? wrapValue(value, size, width - 4) : [value.replace(/\s*\n\s*/g, " ")];
+    const images: Record<string, PDFRef> = {};
+    for (let i = 0; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      const art = textToPng(lines[i], size, "#000000", false);
+      const image = await doc.embedPng(art.dataUrl);
+      // a single line is shrunk to fit its box
+      const scale = multiline ? 1 : Math.min(1, (width - 4) / art.textWidth);
+      const textWidth = art.textWidth * scale;
+      const left = align === 1 ? (width - textWidth) / 2 : align === 2 ? width - 2 - textWidth : 2;
+      const bottom = multiline
+        ? height - 2 - (i + 1) * size * 1.35
+        : (height - art.height * scale) / 2;
+      images[`U${i}`] = image.ref;
+      operators.push(
+        pushGraphicsState(),
+        concatTransformationMatrix(art.width * scale, 0, 0, art.height * scale, left - art.pad * scale, bottom),
+        drawObject(`U${i}`),
+        popGraphicsState()
+      );
+    }
+    operators.push(popGraphicsState());
+
+    const appearance = doc.context.formXObject(operators, {
+      BBox: doc.context.obj([0, 0, width, height]),
+      Resources: doc.context.obj({ XObject: images }),
     });
-    if (!page) continue;
-    const art = textToPng(value, Math.min(12, rect.height * 0.6), "#000000", false);
-    const image = await doc.embedPng(art.dataUrl);
-    const scale = Math.min(1, (rect.width - 4) / art.textWidth);
-    page.drawImage(image, {
-      x: rect.x + 2 - art.pad * scale,
-      y: rect.y + (rect.height - art.height * scale) / 2,
-      width: art.width * scale,
-      height: art.height * scale,
-    });
+    widgets[w].setNormalAppearance(doc.context.register(appearance));
   }
-  form.removeField(field);
+
+  field.acroField.dict.set(PDFName.of("V"), PDFHexString.fromText(value));
+  field.acroField.dict.delete(PDFName.of("I")); // a dropdown's old selected index no longer applies
+  // otherwise some readers redraw the field with a font that cannot show these letters
+  doc.getForm().acroForm.dict.delete(PDFName.of("NeedAppearances"));
+}
+
+// Breaks a long value into lines that fit the box.
+function wrapValue(value: string, sizePt: number, maxWidth: number): string[] {
+  const widthOf = (text: string) => textToPng(text, sizePt, "#000000", false).textWidth;
+  const lines: string[] = [];
+  value.replace(/\r\n?/g, "\n").split("\n").forEach((paragraph) => {
+    let line = "";
+    paragraph.split(/(\s+)/).forEach((word) => {
+      if (line && widthOf(line + word) > maxWidth) {
+        lines.push(line.trim());
+        line = word.trim();
+      } else line += word;
+      // a word wider than the whole box is cut
+      while (widthOf(line) > maxWidth && line.length > 1) {
+        const chars = Array.from(line);
+        let cut = chars.length - 1;
+        while (cut > 1 && widthOf(chars.slice(0, cut).join("")) > maxWidth) cut--;
+        lines.push(chars.slice(0, cut).join(""));
+        line = chars.slice(cut).join("");
+      }
+    });
+    lines.push(line.trim());
+  });
+  return lines;
 }
 
 export default function PdfFormFillerClient() {
@@ -128,7 +213,9 @@ export default function PdfFormFillerClient() {
         try {
           const val = values[field.name] ?? "";
           if (field.type === "text" && needsUnicode(val)) {
-            await stampUnicodeField(doc, field.name, val);
+            await setUnicodeValue(doc, form.getTextField(field.name), val);
+          } else if (field.type === "dropdown" && needsUnicode(val)) {
+            await setUnicodeValue(doc, form.getDropdown(field.name), val);
           } else if (field.type === "text") {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (form.getTextField(field.name) as any).setText(val);

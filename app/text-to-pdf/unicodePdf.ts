@@ -1,7 +1,8 @@
 // Text -> PDF for text that the standard PDF fonts cannot show (Gujarati, Hindi, Arabic, CJK, emoji...):
-// the pages are drawn on a canvas with the browser's own fonts and added as images (plus an invisible
-// text layer for the Latin parts so the PDF stays searchable).
+// the pages are drawn on a canvas with the browser's own fonts and added as images, with an invisible
+// text layer on top so the text can still be selected, copied and searched.
 import { addCanvasPage } from "@/lib/ooxml/pdfPage";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 
 export type FamilyName = "helvetica" | "courier" | "times";
 
@@ -35,7 +36,7 @@ export async function generateUnicodePdf(opts: {
   family: FamilyName;
   lineHeight: number;
 }): Promise<Blob> {
-  const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+  const { PDFDocument } = await import("pdf-lib");
   const pageW = opts.pageWmm * MM_TO_PX;
   const pageH = opts.pageHmm * MM_TO_PX;
   const margin = opts.marginMm * MM_TO_PX;
@@ -77,8 +78,7 @@ export async function generateUnicodePdf(opts: {
   const perPage = Math.max(1, Math.floor((pageH - margin * 2) / lineH));
   const pageCount = Math.max(1, Math.ceil(lines.length / perPage));
   const pdf = await PDFDocument.create();
-  const helv = await pdf.embedFont(StandardFonts.Helvetica);
-  const charSet = new Set<number>(helv.getCharacterSet());
+  const hidden = await createTextLayer(pdf);
   const dpi = Math.min(2, 4096 / Math.max(pageW, pageH));
 
   for (let p = 0; p < pageCount; p++) {
@@ -105,24 +105,21 @@ export async function generateUnicodePdf(opts: {
       pageH * PX_TO_PT,
       0.9
     );
-    pageLines.forEach((ln, i) => {
-      const clean = Array.from(ln).map((ch) => (charSet.has(ch.codePointAt(0) as number) ? ch : " ")).join("").replace(/\s+/g, " ").trim();
-      if (!/[A-Za-z0-9]/.test(clean)) return;
-      const sz = size * PX_TO_PT;
-      const target = widthOf(ln) * PX_TO_PT;
-      const natural = helv.widthOfTextAtSize(clean, sz);
-      const fitted = natural > 0 && target > 0 ? Math.min(sz * 2, Math.max(sz * 0.4, (sz * target) / natural)) : sz;
-      try {
-        page.drawText(clean, { x: margin * PX_TO_PT, y: pageH * PX_TO_PT - (margin + i * lineH + lineH - lineH * 0.25) * PX_TO_PT, size: fitted, font: helv, color: rgb(0, 0, 0), opacity: 0 });
-      } catch {
-        /* skip */
-      }
-    });
+    pageLines.forEach((ln, i) =>
+      hidden.add(page, {
+        text: ln,
+        x: margin * PX_TO_PT,
+        y: (pageH - (margin + i * lineH + lineH - lineH * 0.25)) * PX_TO_PT,
+        size: size * PX_TO_PT,
+        width: widthOf(ln) * PX_TO_PT,
+      })
+    );
     canvas.width = 0;
     canvas.height = 0;
   }
   pdf.setProducer("ThePDFTools");
   pdf.setTitle("text-document");
+  hidden.finish();
   const bytes = await pdf.save();
   return new Blob([new Uint8Array(bytes)], { type: "application/pdf" });
 }

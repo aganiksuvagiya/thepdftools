@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { jsPDF } from "jspdf";
-import { enableUnicodeText } from "@/lib/jspdfUnicode";
+import { enableUnicodeText, saveUnicodePdf } from "@/lib/jspdfUnicode";
 
 type Currency = "USD" | "EUR" | "GBP" | "INR";
 
@@ -97,7 +97,7 @@ export default function InvoiceGeneratorClient() {
 
   const canGenerate = fromName.trim() && toName.trim() && items.some((it) => it.description.trim());
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!canGenerate) return;
     setLoading(true);
     setError(null);
@@ -269,7 +269,7 @@ export default function InvoiceGeneratorClient() {
         doc.text(noteLines, margin, tableY);
       }
 
-      doc.save(`invoice-${invoiceNumber}.pdf`);
+      await saveUnicodePdf(doc, `invoice-${invoiceNumber}.pdf`);
     } catch {
       setError("Failed to generate invoice. Please try again.");
     } finally {

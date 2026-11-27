@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef } from "react";
 import DropZone from "@/components/DropZone";
+import { generateUnicodePdf, needsUnicode } from "@/app/text-to-pdf/unicodePdf";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -250,8 +251,8 @@ export default function HtmlToPdfClient() {
       const parser = new DOMParser();
       const doc = parser.parseFromString(printableHtml, "text/html");
       const rawText = doc.body?.textContent || doc.documentElement?.textContent || "";
-      // Remove non-WinAnsi characters (keep basic ASCII + common Latin)
-      const safeText = rawText.replace(/[^\x20-\x7E\xA0-\xFF\n\t]/g, "");
+      // Drop invisible control characters; everything readable is kept, whatever the script.
+      const safeText = rawText.replace(/[\u0000-\u0008\u000b-\u001f\u007f-\u009f\u200b\ufeff]/g, "");
       const lines = safeText
         .split("\n")
         .map((l) => l.trim())
@@ -263,6 +264,38 @@ export default function HtmlToPdfClient() {
 
       setProgress("Generating PDF...");
       const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      const baseName = fileName
+        ? fileName.replace(/\.[^/.]+$/, "")
+        : "html-document";
+      const finish = (pdfBytes: Uint8Array, pageCount: number) => {
+        const blob = new Blob([new Uint8Array(pdfBytes)], {
+          type: "application/pdf",
+        });
+        setTextResult({
+          url: URL.createObjectURL(blob),
+          pdfSize: blob.size,
+          name: `${baseName}.pdf`,
+          pageCount,
+        });
+        setProgress("");
+      };
+
+      const title = fileName ? baseName : "HTML Document";
+      // The built-in PDF fonts cannot show Gujarati, Hindi, Arabic, emoji and so on.
+      if (needsUnicode(title + lines.join(" "))) {
+        const blob = await generateUnicodePdf({
+          text: `${title}\n\n${lines.join("\n\n")}`,
+          pageWmm: 215.9,
+          pageHmm: 279.4,
+          marginMm: 17.6,
+          fontSizePt: 11,
+          family: "helvetica",
+          lineHeight: 1.5,
+        });
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        finish(bytes, (await PDFDocument.load(bytes)).getPageCount());
+        return;
+      }
       const pdfDoc = await PDFDocument.create();
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
       const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -279,9 +312,6 @@ export default function HtmlToPdfClient() {
       let pageCount = 1;
 
       // Draw title
-      const title = fileName
-        ? fileName.replace(/\.[^/.]+$/, "")
-        : "HTML Document";
       page.drawText(title, {
         x: MARGIN,
         y: yPosition,
@@ -346,22 +376,7 @@ export default function HtmlToPdfClient() {
       }
 
       setProgress("Finalizing PDF...");
-      const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([new Uint8Array(pdfBytes)], {
-        type: "application/pdf",
-      });
-      const url = URL.createObjectURL(blob);
-      const baseName = fileName
-        ? fileName.replace(/\.[^/.]+$/, "")
-        : "html-document";
-
-      setTextResult({
-        url,
-        pdfSize: blob.size,
-        name: `${baseName}.pdf`,
-        pageCount,
-      });
-      setProgress("");
+      finish(await pdfDoc.save(), pageCount);
     } catch (err: any) {
       setError(err.message || "Failed to extract text. Please try again.");
     } finally {

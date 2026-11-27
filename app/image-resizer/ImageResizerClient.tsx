@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
+import { canvasToImage, extensionFor, sameFormat, type OutputMime } from "@/lib/imageOutput";
 
 type OutputFormat = "png" | "jpg" | "webp";
 type Status = "idle" | "done" | "error";
@@ -14,6 +15,8 @@ interface ImageItem {
   originalH: number;
   resultUrl: string | null;
   resultSize: number;
+  /** file extension of the saved result */
+  resultExt?: string;
   status: Status;
 }
 
@@ -23,7 +26,7 @@ function resizeOnCanvas(
   targetH: number,
   format: OutputFormat,
   quality: number
-): Promise<{ url: string; size: number }> {
+): Promise<{ url: string; size: number; ext: string }> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -32,14 +35,10 @@ function resizeOnCanvas(
       canvas.height = targetH;
       const ctx = canvas.getContext("2d")!;
       ctx.drawImage(img, 0, 0, targetW, targetH);
-      const mime = format === "jpg" ? "image/jpeg" : `image/${format}`;
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) return reject(new Error("Resize failed"));
-          resolve({ url: URL.createObjectURL(blob), size: blob.size });
-        },
-        mime,
-        quality
+      const mime = (format === "jpg" ? "image/jpeg" : `image/${format}`) as OutputMime;
+      canvasToImage(canvas, mime, quality).then(
+        (blob) => resolve({ url: URL.createObjectURL(blob), size: blob.size, ext: extensionFor(blob.type) }),
+        reject
       );
     };
     img.onerror = reject;
@@ -93,6 +92,8 @@ export default function ImageResizerClient() {
       setSelectedId((sel) => sel ?? newItems[0]?.id ?? null);
       // Auto-fill dimensions from first image
       if (!prev.length && newItems[0]) {
+        // Start with the format of the first image, so a JPG photo does not become a much larger PNG.
+        setFormat(extensionFor(sameFormat(newItems[0].file.type)));
         setWidth(String(newItems[0].originalW));
         setHeight(String(newItems[0].originalH));
       }
@@ -122,8 +123,8 @@ export default function ImageResizerClient() {
     const w = Math.max(1, Number(width));
     const h = Math.max(1, Number(height));
     try {
-      const { url, size } = await resizeOnCanvas(item.file, w, h, format, quality);
-      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "done", resultUrl: url, resultSize: size } : i));
+      const { url, size, ext } = await resizeOnCanvas(item.file, w, h, format, quality);
+      setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "done", resultUrl: url, resultSize: size, resultExt: ext } : i));
     } catch {
       setItems((prev) => prev.map((i) => i.id === id ? { ...i, status: "error" } : i));
     }
@@ -137,7 +138,7 @@ export default function ImageResizerClient() {
     if (!item.resultUrl) return;
     const a = document.createElement("a");
     a.href = item.resultUrl;
-    a.download = `${item.file.name.replace(/\.[^/.]+$/, "")}_resized.${format}`;
+    a.download = `${item.file.name.replace(/\.[^/.]+$/, "")}_resized.${item.resultExt ?? format}`;
     a.click();
   };
 
@@ -361,7 +362,7 @@ export default function ImageResizerClient() {
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download {format.toUpperCase()}
+              Download {(selectedItem.resultExt ?? format).toUpperCase()}
             </button>
           )}
         </div>

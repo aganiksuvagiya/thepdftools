@@ -6,6 +6,7 @@ import { loadDocx } from "./docx/parse";
 import { headerFooterCmds, paginate } from "./docx/layout";
 import { paintPage } from "./docx/paint";
 import { addCanvasPage } from "@/lib/ooxml/pdfPage";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -61,7 +62,7 @@ export default function WordToPdfClient() {
       if (/\.doc$/i.test(file.name)) {
         throw new Error("Old .doc files are not supported. Open the file in Word (or Google Docs) and save it as .docx, then try again.");
       }
-      const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      const { PDFDocument } = await import("pdf-lib");
       const { model, pkg } = await loadDocx(await file.arrayBuffer());
       pkgRef = pkg;
 
@@ -79,8 +80,7 @@ export default function WordToPdfClient() {
 
       const q = QUALITY[quality];
       const pdfDoc = await PDFDocument.create();
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      const charSet = new Set<number>(font.getCharacterSet());
+      const hidden = await createTextLayer(pdfDoc);
       let preview = "";
 
       for (let i = 0; i < total; i++) {
@@ -103,31 +103,16 @@ export default function WordToPdfClient() {
         const pageH = page.sect.pageH * PT_PER_PX;
         const pdfPage = await addCanvasPage(pdfDoc, canvas, pageW, pageH, q.jpeg);
 
-        // invisible text layer so the PDF is searchable / copyable (Latin text)
-        texts.forEach((t) => {
-          const clean = Array.from(t.text)
-            .map((ch) => (charSet.has(ch.codePointAt(0) as number) ? ch : " "))
-            .join("")
-            .replace(/\s+/g, " ")
-            .trim();
-          if (!/[A-Za-z0-9]/.test(clean)) return;
-          const size = Math.max(1, (t.size / scale) * PT_PER_PX);
-          const target = (t.w / scale) * PT_PER_PX;
-          const natural = font.widthOfTextAtSize(clean, size);
-          const fitted = natural > 0 && target > 0 ? Math.min(size * 2, Math.max(size * 0.4, (size * target) / natural)) : size;
-          try {
-            pdfPage.drawText(clean, {
-              x: (t.x / scale) * PT_PER_PX,
-              y: pageH - (t.y / scale) * PT_PER_PX,
-              size: fitted,
-              font,
-              color: rgb(0, 0, 0),
-              opacity: 0,
-            });
-          } catch {
-            /* skip text we cannot encode */
-          }
-        });
+        // invisible text layer so the PDF is searchable / copyable
+        texts.forEach((t) =>
+          hidden.add(pdfPage, {
+            text: t.text,
+            x: (t.x / scale) * PT_PER_PX,
+            y: pageH - (t.y / scale) * PT_PER_PX,
+            size: Math.max(1, (t.size / scale) * PT_PER_PX),
+            width: (t.w / scale) * PT_PER_PX,
+          })
+        );
         canvas.width = 0;
         canvas.height = 0;
       }
@@ -137,6 +122,7 @@ export default function WordToPdfClient() {
       pdfDoc.setTitle(baseName);
       pdfDoc.setProducer("ThePDFTools");
       pdfDoc.setCreator("ThePDFTools Word to PDF");
+      hidden.finish();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);

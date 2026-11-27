@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import DropZone from "@/components/DropZone";
+import { canvasToImage, extensionFor, sameFormat, type OutputMime } from "@/lib/imageOutput";
 
 interface TransformState {
   rotation: number; // degrees, cumulative
@@ -91,10 +92,13 @@ export default function ImageRotateClient() {
   });
   const [customAngle, setCustomAngle] = useState(0);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const mimeRef = useRef<OutputMime>("image/png");
+  const [resultExt, setResultExt] = useState("png");
 
   const handleFiles = useCallback((files: File[]) => {
     const f = files[0];
     if (!f) return;
+    mimeRef.current = sameFormat(f.type);
     setFile(f);
     setPreviewUrl(URL.createObjectURL(f));
     setTransform({ rotation: 0, flipH: false, flipV: false });
@@ -124,13 +128,13 @@ export default function ImageRotateClient() {
       const img = imgRef.current;
       if (!img) return;
       const canvas = applyTransform(img, t);
-      canvas.toBlob((blob) => {
-        if (!blob) return;
+      canvasToImage(canvas, mimeRef.current, 0.92).then((blob) => {
         if (resultUrl) URL.revokeObjectURL(resultUrl);
         const url = URL.createObjectURL(blob);
         setResultUrl(url);
         setResultSize(blob.size);
-      }, "image/png");
+        setResultExt(extensionFor(blob.type));
+      }, () => setResultUrl(null));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -174,7 +178,7 @@ export default function ImageRotateClient() {
     if (!resultUrl || !file) return;
     const a = document.createElement("a");
     a.href = resultUrl;
-    a.download = `${file.name.replace(/\.[^/.]+$/, "")}_rotated.png`;
+    a.download = `${file.name.replace(/\.[^/.]+$/, "")}_rotated.${resultExt}`;
     a.click();
   };
 

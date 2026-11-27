@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import DropZone from "@/components/DropZone";
 import { marked } from "marked";
-import { enableUnicodeText } from "@/lib/jspdfUnicode";
+import { enableUnicodeText, saveUnicodePdf } from "@/lib/jspdfUnicode";
 
 type PageSize = "a4" | "letter";
 type FontSize = "small" | "medium" | "large";
@@ -278,7 +278,8 @@ export default function MarkdownToPdfClient() {
         y += gapAfter;
       }
 
-      doc.save(
+      await saveUnicodePdf(
+        doc,
         fileName
           ? fileName.replace(/\.[^/.]+$/, "") + ".pdf"
           : "markdown-document.pdf"

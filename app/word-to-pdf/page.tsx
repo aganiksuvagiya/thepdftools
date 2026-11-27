@@ -188,7 +188,7 @@ export default function WordToPdfPage() {
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Real Page Layout</h3>
-                <p className="mt-1 text-sm text-slate-500">Each page is laid out like in Word: paper size and margins, fonts, headings, bullets and numbering, tables, pictures, headers, footers and page numbers. Latin text stays searchable and copyable.</p>
+                <p className="mt-1 text-sm text-slate-500">Each page is laid out like in Word: paper size and margins, fonts, headings, bullets and numbering, tables, pictures, headers, footers and page numbers. The text stays searchable and copyable.</p>
               </div>
               <div className="rounded-2xl bg-slate-50 p-5">
                 <h3 className="text-sm font-medium text-slate-900">Universal PDF Format</h3>
@@ -207,7 +207,7 @@ export default function WordToPdfPage() {
               {[
                 { q: "Is it safe to convert Word documents here?", a: "Absolutely. Your Word files never leave your browser. All conversion runs client-side using JavaScript, so no data is uploaded to any server. Your documents remain completely private on your device." },
                 { q: "What Word formats are supported?", a: "DOCX files (Microsoft Word 2007 and later) are supported. Old binary .doc files cannot be read in the browser: open them in Word or Google Docs and save them as .docx first." },
-                { q: "Will my formatting be preserved in the PDF?", a: "For most documents, yes. Paper size and margins, fonts, bold and italic, colours, headings, bullets and numbering, tabs, tables with borders and shading, pictures, headers, footers and page numbers are kept. Not supported yet: text boxes and shapes, charts, SmartArt, footnote text, multi-column layouts and equations. If a font is not installed on your device, a similar font is used, so line and page breaks can differ slightly from Word. For a pixel-perfect legal or print file, export directly from Word. Latin text is searchable and copyable; Gujarati, Hindi and other scripts look correct but cannot be selected." },
+                { q: "Will my formatting be preserved in the PDF?", a: "For most documents, yes. Paper size and margins, fonts, bold and italic, colours, headings, bullets and numbering, tabs, tables with borders and shading, pictures, headers, footers and page numbers are kept. Not supported yet: text boxes and shapes, charts, SmartArt, footnote text, multi-column layouts and equations. If a font is not installed on your device, a similar font is used, so line and page breaks can differ slightly from Word. For a pixel-perfect legal or print file, export directly from Word. The text can be selected, copied and searched, including Gujarati, Hindi and other scripts." },
                 { q: "Is there a file size limit?", a: "There is no hard file size limit. Since all processing happens in your browser, performance depends on your device memory. Most Word documents up to 20MB convert smoothly on modern devices." },
                 { q: "Can I convert multiple Word files at once?", a: "You can convert Word files one at a time for best results. Each conversion happens instantly in your browser, so batch workflows are fast. Simply upload your next document after downloading the previous PDF." },
               ].map((item) => (

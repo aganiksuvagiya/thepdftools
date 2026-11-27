@@ -9,6 +9,8 @@ type HighlightBox = {
   y: number;
   width: number;
   height: number;
+  /** index into HIGHLIGHT_COLORS */
+  color: number;
 };
 
 type PagePreview = {
@@ -18,6 +20,22 @@ type PagePreview = {
   imageUrl: string;
   highlights: HighlightBox[];
 };
+
+const HIGHLIGHT_COLORS: { name: string; rgb: [number, number, number] }[] = [
+  { name: "Yellow", rgb: [1, 0.93, 0.2] },
+  { name: "Green", rgb: [0.45, 0.93, 0.4] },
+  { name: "Blue", rgb: [0.45, 0.78, 1] },
+  { name: "Pink", rgb: [1, 0.58, 0.8] },
+  { name: "Orange", rgb: [1, 0.68, 0.25] },
+];
+// The preview and the saved PDF both multiply the colour over the page, so black text stays black.
+const HIGHLIGHT_OPACITY = 0.6;
+const PREVIEW_SCALE = 1.35;
+
+function cssColor(index: number, alpha: number): string {
+  const [r, g, b] = HIGHLIGHT_COLORS[index].rgb;
+  return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${alpha})`;
+}
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -50,6 +68,8 @@ export default function PdfHighlightClient() {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [downloadSize, setDownloadSize] = useState(0);
   const [draftHighlight, setDraftHighlight] = useState<HighlightBox | null>(null);
+  const [color, setColor] = useState(0);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pageSurfaceRef = useRef<HTMLDivElement | null>(null);
@@ -70,6 +90,14 @@ export default function PdfHighlightClient() {
     activeThumb?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [currentPage]);
 
+  // An exported file no longer matches the page once the highlights change.
+  const dropDownload = useCallback(() => {
+    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    setDownloadUrl(null);
+    setDownloadSize(0);
+    setNotice(null);
+  }, [downloadUrl]);
+
   const releaseUrls = useCallback((items: PagePreview[]) => {
     for (const page of items) {
       URL.revokeObjectURL(page.imageUrl);
@@ -89,6 +117,7 @@ export default function PdfHighlightClient() {
     setDownloadUrl(null);
     setDownloadSize(0);
     setDraftHighlight(null);
+    setNotice(null);
   }, [downloadUrl, pages, releaseUrls]);
 
   const loadFile = useCallback(async (nextFile: File) => {
@@ -105,6 +134,7 @@ export default function PdfHighlightClient() {
     setDownloadUrl(null);
     setDownloadSize(0);
     setDraftHighlight(null);
+    setNotice(null);
 
     try {
       const pdfjsLib = await loadPdfJs();
@@ -115,7 +145,7 @@ export default function PdfHighlightClient() {
       for (let i = 1; i <= pdf.numPages; i += 1) {
         setProgress(`Rendering page ${i} of ${pdf.numPages}...`);
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 1.35 });
+        const viewport = page.getViewport({ scale: PREVIEW_SCALE });
         const canvas = document.createElement("canvas");
         canvas.width = Math.ceil(viewport.width);
         canvas.height = Math.ceil(viewport.height);
@@ -173,8 +203,8 @@ export default function PdfHighlightClient() {
     const point = getRelativePoint(clientX, clientY);
     if (!point) return;
     dragStartRef.current = point;
-    setDraftHighlight({ id: "draft", x: point.x, y: point.y, width: 0, height: 0 });
-  }, [getRelativePoint]);
+    setDraftHighlight({ id: "draft", x: point.x, y: point.y, width: 0, height: 0, color });
+  }, [color, getRelativePoint]);
 
   const updateDrag = useCallback((clientX: number, clientY: number) => {
     const start = dragStartRef.current;
@@ -187,8 +217,9 @@ export default function PdfHighlightClient() {
       y: Math.min(start.y, end.y),
       width: Math.abs(end.x - start.x),
       height: Math.abs(end.y - start.y),
+      color,
     });
-  }, [getRelativePoint]);
+  }, [color, getRelativePoint]);
 
   const finishDrag = useCallback((clientX: number, clientY: number) => {
     const start = dragStartRef.current;
@@ -204,17 +235,18 @@ export default function PdfHighlightClient() {
 
     if (width < 12 || height < 12) return;
 
+    dropDownload();
     setPages((current) =>
       current.map((page, index) =>
         index === currentPage
           ? {
               ...page,
-              highlights: [...page.highlights, { id: createBoxId(), x, y, width, height }],
+              highlights: [...page.highlights, { id: createBoxId(), x, y, width, height, color }],
             }
           : page,
       ),
     );
-  }, [currentPage, getRelativePoint]);
+  }, [color, currentPage, dropDownload, getRelativePoint]);
 
   const cancelDrag = useCallback(() => {
     dragStartRef.current = null;
@@ -235,6 +267,7 @@ export default function PdfHighlightClient() {
   }, [pages.length]);
 
   const removeHighlight = useCallback((id: string) => {
+    dropDownload();
     setPages((current) =>
       current.map((page, index) =>
         index === currentPage
@@ -242,15 +275,16 @@ export default function PdfHighlightClient() {
           : page,
       ),
     );
-  }, [currentPage]);
+  }, [currentPage, dropDownload]);
 
   const clearCurrentPage = useCallback(() => {
+    dropDownload();
     setPages((current) =>
       current.map((page, index) =>
         index === currentPage ? { ...page, highlights: [] } : page,
       ),
     );
-  }, [currentPage]);
+  }, [currentPage, dropDownload]);
 
   const exportHighlightedPdf = useCallback(async () => {
     if (!file || !pages.length) return;
@@ -258,63 +292,91 @@ export default function PdfHighlightClient() {
     setSaving(true);
     setProgress("Building highlighted PDF...");
     setError(null);
-    if (downloadUrl) {
-      URL.revokeObjectURL(downloadUrl);
-      setDownloadUrl(null);
-    }
+    dropDownload();
 
     try {
       const [pdfjsLib, pdfLib] = await Promise.all([loadPdfJs(), import("pdf-lib")]);
-      const { PDFDocument, rgb } = pdfLib;
+      const { PDFDocument, BlendMode, rgb } = pdfLib;
       const sourceBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: sourceBuffer }).promise;
-      const outPdf = await PDFDocument.create();
+      // pdf.js takes over the buffer it is given, so each library gets its own copy.
+      const pdf = await pdfjsLib.getDocument({ data: sourceBuffer.slice(0) }).promise;
+
+      // Normal case: draw on top of the original pages, so text, links and quality stay as they were.
+      let original: Awaited<ReturnType<typeof PDFDocument.load>> | null = null;
+      try {
+        original = await PDFDocument.load(sourceBuffer.slice(0), { updateMetadata: false });
+        if (original.getPageCount() !== pdf.numPages) original = null;
+      } catch {
+        original = null; // protected or damaged file: rebuilt from page images below
+      }
+      const outPdf = original ?? (await PDFDocument.create());
 
       for (let i = 0; i < pages.length; i += 1) {
+        const { highlights, width, height } = pages[i];
+        if (original && !highlights.length) continue;
         setProgress(`Applying highlights to page ${i + 1} of ${pages.length}...`);
         const sourcePage = await pdf.getPage(i + 1);
-        const viewport = sourcePage.getViewport({ scale: 2 });
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.ceil(viewport.width);
-        canvas.height = Math.ceil(viewport.height);
-        const context = canvas.getContext("2d");
+        // The same view as the preview, which accounts for rotated and cropped pages.
+        const viewport = sourcePage.getViewport({ scale: PREVIEW_SCALE });
+        let outPage = original ? original.getPage(i) : null;
 
-        if (!context) throw new Error("Could not create export canvas.");
+        if (!outPage) {
+          const sharp = sourcePage.getViewport({ scale: 2 });
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.ceil(sharp.width);
+          canvas.height = Math.ceil(sharp.height);
+          const context = canvas.getContext("2d");
 
-        await sourcePage.render({ canvasContext: context, viewport, canvas }).promise;
+          if (!context) throw new Error("Could not create export canvas.");
 
-        const dataUrl = canvas.toDataURL("image/png");
-        const imageBytes = await fetch(dataUrl).then((response) => response.arrayBuffer());
-        const embedded = await outPdf.embedPng(imageBytes);
-        const outPage = outPdf.addPage([viewport.width, viewport.height]);
+          await sourcePage.render({ canvasContext: context, viewport: sharp, canvas }).promise;
 
-        outPage.drawImage(embedded, {
-          x: 0,
-          y: 0,
-          width: viewport.width,
-          height: viewport.height,
-        });
+          const dataUrl = canvas.toDataURL("image/png");
+          const imageBytes = await fetch(dataUrl).then((response) => response.arrayBuffer());
+          const embedded = await outPdf.embedPng(imageBytes);
+          const pageWidth = viewport.width / PREVIEW_SCALE;
+          const pageHeight = viewport.height / PREVIEW_SCALE;
+          outPage = outPdf.addPage([pageWidth, pageHeight]);
+          outPage.drawImage(embedded, { x: 0, y: 0, width: pageWidth, height: pageHeight });
+        }
 
-        const scaleX = viewport.width / pages[i].width;
-        const scaleY = viewport.height / pages[i].height;
-        for (const highlight of pages[i].highlights) {
+        const scaleX = viewport.width / width;
+        const scaleY = viewport.height / height;
+        for (const highlight of highlights) {
+          const left = highlight.x * scaleX;
+          const top = highlight.y * scaleY;
+          const right = (highlight.x + highlight.width) * scaleX;
+          const bottom = (highlight.y + highlight.height) * scaleY;
+          // Preview pixels -> points on the page.
+          const [x1, y1] = original
+            ? viewport.convertToPdfPoint(left, top)
+            : [left / PREVIEW_SCALE, (viewport.height - top) / PREVIEW_SCALE];
+          const [x2, y2] = original
+            ? viewport.convertToPdfPoint(right, bottom)
+            : [right / PREVIEW_SCALE, (viewport.height - bottom) / PREVIEW_SCALE];
           outPage.drawRectangle({
-            x: highlight.x * scaleX,
-            y: viewport.height - (highlight.y + highlight.height) * scaleY,
-            width: highlight.width * scaleX,
-            height: highlight.height * scaleY,
-            color: rgb(1, 0.93, 0.2),
-            opacity: 0.45,
+            x: Math.min(x1, x2),
+            y: Math.min(y1, y2),
+            width: Math.abs(x2 - x1),
+            height: Math.abs(y2 - y1),
+            color: rgb(...HIGHLIGHT_COLORS[highlight.color].rgb),
+            opacity: HIGHLIGHT_OPACITY,
+            blendMode: BlendMode.Multiply,
             borderWidth: 0,
           });
         }
       }
 
       const pdfBytes = await outPdf.save();
-      const blob = new Blob([pdfBytes.buffer as ArrayBuffer], { type: "application/pdf" });
+      const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setDownloadUrl(url);
       setDownloadSize(blob.size);
+      setNotice(
+        original
+          ? null
+          : "This PDF is protected or damaged, so its pages were saved as images. Text in the new file cannot be selected.",
+      );
       setProgress("");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Could not export the highlighted PDF.");
@@ -322,7 +384,7 @@ export default function PdfHighlightClient() {
     } finally {
       setSaving(false);
     }
-  }, [downloadUrl, file, pages]);
+  }, [dropDownload, file, pages]);
 
   return (
     <div className="space-y-6">
@@ -407,7 +469,22 @@ export default function PdfHighlightClient() {
                     <h3 className="text-lg font-semibold text-slate-900">Page {activePage.pageNumber}</h3>
                     <p className="text-sm text-slate-500">Click and drag to place a highlight box.</p>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="mr-2 flex items-center gap-1.5" role="radiogroup" aria-label="Highlight color">
+                      {HIGHLIGHT_COLORS.map((item, index) => (
+                        <button
+                          key={item.name}
+                          type="button"
+                          role="radio"
+                          aria-checked={color === index}
+                          aria-label={item.name}
+                          title={item.name}
+                          onClick={() => setColor(index)}
+                          className={`h-7 w-7 rounded-full border-2 transition ${color === index ? "border-slate-900" : "border-white ring-1 ring-slate-200"}`}
+                          style={{ backgroundColor: cssColor(index, 1) }}
+                        />
+                      ))}
+                    </div>
                     <button onClick={exportHighlightedPdf} disabled={saving || loading || totalHighlights === 0} className="btn-primary text-sm">
                       {saving ? "Exporting..." : "Export Highlighted PDF"}
                     </button>
@@ -441,8 +518,9 @@ export default function PdfHighlightClient() {
 
                     {draftHighlight && draftHighlight.width > 0 && draftHighlight.height > 0 ? (
                       <div
-                        className="pointer-events-none absolute border-2 border-amber-400 bg-amber-300/30"
+                        className="pointer-events-none absolute border border-slate-500 mix-blend-multiply"
                         style={{
+                          backgroundColor: cssColor(draftHighlight.color, HIGHLIGHT_OPACITY),
                           left: `${(draftHighlight.x / activePage.width) * 100}%`,
                           top: `${(draftHighlight.y / activePage.height) * 100}%`,
                           width: `${(draftHighlight.width / activePage.width) * 100}%`,
@@ -455,8 +533,9 @@ export default function PdfHighlightClient() {
                       <button
                         key={item.id}
                         onClick={() => removeHighlight(item.id)}
-                        className="group absolute border border-amber-500 bg-amber-300/45 transition hover:border-amber-600 hover:bg-amber-300/60"
+                        className="group absolute border border-transparent mix-blend-multiply transition hover:border-slate-600"
                         style={{
+                          backgroundColor: cssColor(item.color, HIGHLIGHT_OPACITY),
                           left: `${(item.x / activePage.width) * 100}%`,
                           top: `${(item.y / activePage.height) * 100}%`,
                           width: `${(item.width / activePage.width) * 100}%`,
@@ -479,6 +558,7 @@ export default function PdfHighlightClient() {
                 {downloadUrl ? (
                   <div className="rounded-xl border border-green-100 bg-green-50 p-4 text-sm text-green-700">
                     Highlighted PDF ready. File size: {formatBytes(downloadSize)}.
+                    {notice ? <span className="mt-1 block text-amber-700">{notice}</span> : null}
                   </div>
                 ) : null}
               </div>

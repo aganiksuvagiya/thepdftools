@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import DropZone from "@/components/DropZone";
 import { addCanvasPage } from "@/lib/ooxml/pdfPage";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 import { loadCsv, loadXlsx, XBook } from "./xlsx/parse";
 import { layoutSheet, paintPage, Options, SheetLayout } from "./xlsx/render";
 
@@ -87,7 +88,7 @@ export default function ExcelToPdfClient() {
     setProgress("Laying out sheets...");
 
     try {
-      const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      const { PDFDocument } = await import("pdf-lib");
       const opts: Options = { orientation, fitWidth, gridLines };
       await new Promise((r) => setTimeout(r, 0));
 
@@ -112,8 +113,7 @@ export default function ExcelToPdfClient() {
       const total = layouts.reduce((n, L) => n + L.pages.length, 0);
       const q = QUALITY[quality];
       const pdfDoc = await PDFDocument.create();
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      const charSet = new Set<number>(font.getCharacterSet());
+      const hidden = await createTextLayer(pdfDoc);
       const baseName = file.name.replace(/\.[^/.]+$/, "");
       const warn: Record<string, number> = {};
       let done = 0;
@@ -139,30 +139,16 @@ export default function ExcelToPdfClient() {
           const pageH = L.paperH * PT_PER_PX;
           const page = await addCanvasPage(pdfDoc, canvas, pageW, pageH, q.jpeg);
 
-          texts.forEach((t) => {
-            const clean = Array.from(t.text)
-              .map((ch) => (charSet.has(ch.codePointAt(0) as number) ? ch : " "))
-              .join("")
-              .replace(/\s+/g, " ")
-              .trim();
-            if (!/[A-Za-z0-9]/.test(clean)) return;
-            const size = Math.max(1, (t.size / dpi) * PT_PER_PX);
-            const target = (t.w / dpi) * PT_PER_PX;
-            const natural = font.widthOfTextAtSize(clean, size);
-            const fitted = natural > 0 && target > 0 ? Math.min(size * 2, Math.max(size * 0.4, (size * target) / natural)) : size;
-            try {
-              page.drawText(clean, {
-                x: (t.x / dpi) * PT_PER_PX,
-                y: pageH - (t.y / dpi) * PT_PER_PX,
-                size: fitted,
-                font,
-                color: rgb(0, 0, 0),
-                opacity: 0,
-              });
-            } catch {
-              /* skip text we cannot encode */
-            }
-          });
+          // invisible text layer so the PDF is searchable / copyable
+          texts.forEach((t) =>
+            hidden.add(page, {
+              text: t.text,
+              x: (t.x / dpi) * PT_PER_PX,
+              y: pageH - (t.y / dpi) * PT_PER_PX,
+              size: Math.max(1, (t.size / dpi) * PT_PER_PX),
+              width: (t.w / dpi) * PT_PER_PX,
+            })
+          );
           canvas.width = 0;
           canvas.height = 0;
         }
@@ -172,6 +158,7 @@ export default function ExcelToPdfClient() {
       pdfDoc.setTitle(baseName);
       pdfDoc.setProducer("ThePDFTools");
       pdfDoc.setCreator("ThePDFTools Excel to PDF");
+      hidden.finish();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);

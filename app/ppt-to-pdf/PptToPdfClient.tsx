@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import DropZone from "@/components/DropZone";
 import { loadDeck, disposeDeck, renderSlide, getNotes, Deck } from "./pptx/render";
 import { addCanvasPage } from "@/lib/ooxml/pdfPage";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
@@ -78,7 +79,7 @@ function wrapLines(g: CanvasRenderingContext2D, text: string, maxW: number): str
   return out;
 }
 
-function notesCanvas(deck: Deck, slideNo: number, notes: string, scale: number): HTMLCanvasElement {
+function notesCanvas(deck: Deck, slideNo: number, notes: string, scale: number) {
   const c = document.createElement("canvas");
   c.width = Math.round(deck.width * scale);
   c.height = Math.round(deck.height * scale);
@@ -90,7 +91,14 @@ function notesCanvas(deck: Deck, slideNo: number, notes: string, scale: number):
   g.fillStyle = "#111827";
   g.textBaseline = "alphabetic";
   g.font = `bold ${Math.round(deck.height * 0.04)}px Arial, sans-serif`;
-  g.fillText(`Slide ${slideNo} – speaker notes`, pad, pad + deck.height * 0.03);
+  const texts: Array<{ text: string; x: number; y: number; w: number; size: number }> = [];
+  // draws one line and remembers where it is, for the PDF's text layer
+  const write = (text: string, y: number, size: number) => {
+    if (!text) return;
+    g.fillText(text, pad, y);
+    texts.push({ text, x: pad * scale, y: y * scale, w: g.measureText(text).width * scale, size: size * scale });
+  };
+  write(`Slide ${slideNo} – speaker notes`, pad + deck.height * 0.03, Math.round(deck.height * 0.04));
   let size = Math.round(deck.height * 0.032);
   let lines: string[] = [];
   const top = pad + deck.height * 0.09;
@@ -101,8 +109,8 @@ function notesCanvas(deck: Deck, slideNo: number, notes: string, scale: number):
   }
   g.font = `${size}px Arial, sans-serif`;
   g.fillStyle = "#1f2937";
-  lines.forEach((l, i) => g.fillText(l, pad, top + (i + 1) * size * 1.35));
-  return c;
+  lines.forEach((l, i) => write(l, top + (i + 1) * size * 1.35, size));
+  return { canvas: c, texts };
 }
 
 export default function PptToPdfClient() {
@@ -131,7 +139,7 @@ export default function PptToPdfClient() {
     let deck: Deck | null = null;
 
     try {
-      const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
+      const { PDFDocument } = await import("pdf-lib");
       deck = await loadDeck(await file.arrayBuffer());
       const total = deck.slides.length;
       const wanted = parseRange(range, total);
@@ -142,8 +150,7 @@ export default function PptToPdfClient() {
       const pageH = deck.height * PT_PER_PX;
 
       const pdfDoc = await PDFDocument.create();
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      const charSet = new Set<number>(font.getCharacterSet());
+      const hidden = await createTextLayer(pdfDoc);
 
       const warnings: Record<string, number> = {};
       const addWarn = (k: string, n: number) => {
@@ -198,31 +205,18 @@ export default function PptToPdfClient() {
 
         const page = await addCanvasPage(pdfDoc, canvas, pageW, pageH, q.jpeg);
 
-        // invisible text layer so the PDF is searchable / copyable (Latin text)
-        texts.forEach((t) => {
-          const clean = Array.from(t.text)
-            .map((ch) => (charSet.has(ch.codePointAt(0) as number) ? ch : " "))
-            .join("")
-            .replace(/\s+/g, " ")
-            .trim();
-          if (!/[A-Za-z0-9]/.test(clean)) return;
-          const size = Math.max(1, (t.size / scale) * PT_PER_PX);
-          const target = (t.w / scale) * PT_PER_PX;
-          const natural = font.widthOfTextAtSize(clean, size);
-          const fitted = natural > 0 && target > 0 ? Math.min(size * 2, Math.max(size * 0.4, (size * target) / natural)) : size;
-          try {
-            page.drawText(clean, {
-              x: (t.x / scale) * PT_PER_PX,
-              y: pageH - (t.y / scale) * PT_PER_PX,
-              size: fitted,
-              font,
-              color: rgb(0, 0, 0),
-              opacity: 0,
-            });
-          } catch {
-            /* skip text we cannot encode */
-          }
-        });
+        // invisible text layer so the PDF is searchable / copyable
+        const addText = (target: typeof page, list: typeof texts, drawnAt: number) =>
+          list.forEach((t) =>
+            hidden.add(target, {
+              text: t.text,
+              x: (t.x / drawnAt) * PT_PER_PX,
+              y: pageH - (t.y / drawnAt) * PT_PER_PX,
+              size: Math.max(1, (t.size / drawnAt) * PT_PER_PX),
+              width: (t.w / drawnAt) * PT_PER_PX,
+            })
+          );
+        addText(page, texts, scale);
         canvas.width = 0;
         canvas.height = 0;
         rendered++;
@@ -230,10 +224,12 @@ export default function PptToPdfClient() {
         if (includeNotes) {
           const notes = await getNotes(deck, ref);
           if (notes) {
-            const nc = notesCanvas(deck, ref.index + 1, notes, Math.min(scale, 1.5));
-            await addCanvasPage(pdfDoc, nc, pageW, pageH, 0.88);
-            nc.width = 0;
-            nc.height = 0;
+            const notesScale = Math.min(scale, 1.5);
+            const nc = notesCanvas(deck, ref.index + 1, notes, notesScale);
+            const notesPage = await addCanvasPage(pdfDoc, nc.canvas, pageW, pageH, 0.88);
+            addText(notesPage, nc.texts, notesScale);
+            nc.canvas.width = 0;
+            nc.canvas.height = 0;
             addWarn("notesPages", 1);
           }
         }
@@ -244,6 +240,7 @@ export default function PptToPdfClient() {
       pdfDoc.setTitle(baseName);
       pdfDoc.setProducer("ThePDFTools");
       pdfDoc.setCreator("ThePDFTools PPT to PDF");
+      hidden.finish();
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);

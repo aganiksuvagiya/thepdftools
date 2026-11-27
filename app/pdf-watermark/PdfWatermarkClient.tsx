@@ -5,6 +5,7 @@ import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 import DropZone from "@/components/DropZone";
 import { needsUnicode } from "@/app/text-to-pdf/unicodePdf";
 import { textToPng } from "@/lib/textImage";
+import { createTextLayer } from "@/lib/pdfTextLayer";
 
 type Position = "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
@@ -48,6 +49,7 @@ export default function PdfWatermarkClient() {
       // The built-in font cannot encode Gujarati, Hindi, "₹" etc., so such text is stamped as an image.
       const art = needsUnicode(text) ? textToPng(text, fontSize, "#808080", true) : null;
       const image = art ? await doc.embedPng(art.dataUrl) : null;
+      const hidden = art ? await createTextLayer(doc) : null;
       const pages = doc.getPages();
 
       for (const page of pages) {
@@ -93,6 +95,7 @@ export default function PdfWatermarkClient() {
             opacity,
             rotate: degrees(angle),
           });
+          hidden?.add(page, { text, x, y, size: fontSize, width: art.textWidth, angle });
         } else {
           page.drawText(text, {
             x,
@@ -106,6 +109,7 @@ export default function PdfWatermarkClient() {
         }
       }
 
+      hidden?.finish();
       const pdfBytes = await doc.save();
       const pdfOutput = Uint8Array.from(pdfBytes);
       const blob = new Blob([pdfOutput], { type: "application/pdf" });

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import DropZone from "@/components/DropZone";
+import { canvasToImage, extensionFor, sameFormat } from "@/lib/imageOutput";
 
 type Position =
   | "top-left"
@@ -73,6 +74,7 @@ export default function ImageWatermarkClient() {
   const [position, setPosition] = useState<Position>("center");
   const [tile, setTile] = useState(false);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
+  const [resultExt, setResultExt] = useState("png");
 
   // The decoded image lives in state (not a ref) so the preview effect re-runs once it has loaded.
   const [imgEl, setImgEl] = useState<HTMLImageElement | null>(null);
@@ -159,12 +161,12 @@ export default function ImageWatermarkClient() {
 
   const applyWatermark = () => {
     const canvas = canvasRef.current;
-    if (!canvas || !imgEl) return;
-    canvas.toBlob((blob) => {
-      if (!blob) return;
+    if (!canvas || !imgEl || !file) return;
+    canvasToImage(canvas, sameFormat(file.type), 0.92).then((blob) => {
       if (resultUrl) URL.revokeObjectURL(resultUrl);
       setResultUrl(URL.createObjectURL(blob));
-    }, "image/png");
+      setResultExt(extensionFor(blob.type));
+    }, () => setLoadError("Could not save the watermarked image."));
   };
 
   const downloadResult = () => {
@@ -172,7 +174,7 @@ export default function ImageWatermarkClient() {
     if (!url || !file) return;
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${file.name.replace(/\.[^/.]+$/, "")}_watermarked.png`;
+    a.download = `${file.name.replace(/\.[^/.]+$/, "")}_watermarked.${resultExt}`;
     a.click();
   };
 
@@ -321,7 +323,7 @@ export default function ImageWatermarkClient() {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                Download PNG
+                Download {resultExt.toUpperCase()}
               </button>
             )}
           </div>
